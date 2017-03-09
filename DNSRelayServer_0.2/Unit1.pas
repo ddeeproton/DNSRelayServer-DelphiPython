@@ -39,7 +39,6 @@ type
     ToolButton7: TToolButton;
     Notebook1: TNotebook;
     GroupBox2: TGroupBox;
-    Image2: TImage;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -50,7 +49,6 @@ type
     EditPort: TEdit;
     EditFilehost: TEdit;
     GroupBox1: TGroupBox;
-    Image5: TImage;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButtonUpdateDNSMaster: TToolButton;
@@ -59,15 +57,12 @@ type
     ToolButtonUpDNSMaster: TToolButton;
     ListBoxDNSMaster: TListBox;
     GroupBox3: TGroupBox;
-    Image1: TImage;
     ListBoxIpClients: TListBox;
     GroupBox4: TGroupBox;
-    Image3: TImage;
     ToolBar2: TToolBar;
     ToolButtonEditHost: TToolButton;
     ListBoxDomains: TListBox;
     GroupBox5: TGroupBox;
-    Image4: TImage;
     MemoLogs: TMemo;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
