@@ -101,22 +101,33 @@ object Form1: TForm1
     Left = 8
     Top = 8
     Width = 177
-    Height = 407
+    Height = 393
     Align = alNone
     Anchors = [akLeft, akTop, akBottom]
     ButtonHeight = 77
     ButtonWidth = 173
     Caption = 'ToolBar3'
+    Color = clWhite
     EdgeInner = esNone
     EdgeOuter = esNone
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBtnText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Images = ImageList2
     List = True
+    ParentColor = False
+    ParentFont = False
+    ParentShowHint = False
     ShowCaptions = True
+    ShowHint = False
     TabOrder = 3
     object ToolButton7: TToolButton
       Left = 0
       Top = 2
       Caption = 'DNS Relay'
+      Grouped = True
       ImageIndex = 4
       Wrap = True
       OnClick = ToolButton7Click
@@ -125,6 +136,7 @@ object Form1: TForm1
       Left = 0
       Top = 79
       Caption = 'DNS Master'
+      Grouped = True
       ImageIndex = 2
       Wrap = True
       OnClick = ToolButton5Click
@@ -133,6 +145,7 @@ object Form1: TForm1
       Left = 0
       Top = 156
       Caption = 'Logs (Clients)'
+      Grouped = True
       ImageIndex = 1
       Wrap = True
       OnClick = ToolButton4Click
@@ -141,6 +154,7 @@ object Form1: TForm1
       Left = 0
       Top = 233
       Caption = 'Logs (Filter web)'
+      Grouped = True
       ImageIndex = 3
       Wrap = True
       OnClick = ToolButton6Click
@@ -149,6 +163,7 @@ object Form1: TForm1
       Left = 0
       Top = 310
       Caption = 'Pure Logs'
+      Grouped = True
       ImageIndex = 0
       OnClick = ToolButton3Click
     end
@@ -159,6 +174,7 @@ object Form1: TForm1
     Width = 387
     Height = 369
     Anchors = [akLeft, akTop, akRight, akBottom]
+    PageIndex = 3
     TabOrder = 4
     object TPage
       Left = 0

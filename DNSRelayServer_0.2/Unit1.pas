@@ -96,6 +96,7 @@ type
     procedure ToolButton4Click(Sender: TObject);
     procedure ToolButton6Click(Sender: TObject);
     procedure ToolButton3Click(Sender: TObject);
+    procedure allToolButtonUp();
   private
     { Private declarations }
   public
@@ -882,7 +883,10 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  Notebook1.PageIndex := 0;
+  Notebook1.PageIndex := 0;  
+  allToolButtonUp();
+  ToolButton7.Down := True;
+  
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
   if not DirectoryExists(DataDirectoryPath) then makeDir(DataDirectoryPath);
   if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
@@ -1133,27 +1137,53 @@ end;
 
 procedure TForm1.ToolButton7Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 0;
+  Notebook1.PageIndex := 0;    
+  allToolButtonUp();
+  TToolButton(Sender).Down := True;
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 1;
+  Notebook1.PageIndex := 1;  
+  allToolButtonUp();
+  TToolButton(Sender).Down := True;
 end;
 
 procedure TForm1.ToolButton4Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 2;
+  Notebook1.PageIndex := 2;    
+  allToolButtonUp();
+  TToolButton(Sender).Down := True;
 end;
 
 procedure TForm1.ToolButton6Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 3;
+  Notebook1.PageIndex := 3;     
+  allToolButtonUp();
+  TToolButton(Sender).Down := True;
 end;
 
 procedure TForm1.ToolButton3Click(Sender: TObject);
 begin
   Notebook1.PageIndex := 4;
+  allToolButtonUp();
+  TToolButton(Sender).Down := True;
 end;
 
+procedure TForm1.allToolButtonUp();
+var
+  i: Integer;
+  buttons: array of TToolButton;
+begin
+  SetLength(buttons, 5);
+  buttons[0] := ToolButton7;
+  buttons[1] := ToolButton5;
+  buttons[2] := ToolButton4;
+  buttons[3] := ToolButton6;
+  buttons[4] := ToolButton3;
+  for i := 0 to Length(buttons) - 1 do
+  begin
+    buttons[i].Down := False;
+  end;
+end;
 end.
