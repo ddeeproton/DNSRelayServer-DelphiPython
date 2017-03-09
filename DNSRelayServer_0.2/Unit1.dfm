@@ -5,8 +5,8 @@ object Form1: TForm1
   Height = 441
   Caption = 'DNS Relay Server 0.2'
   Color = clWhite
-  Constraints.MinHeight = 430
-  Constraints.MinWidth = 457
+  Constraints.MinHeight = 435
+  Constraints.MinWidth = 464
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -169,9 +169,9 @@ object Form1: TForm1
     end
   end
   object Notebook1: TNotebook
-    Left = 192
+    Left = 184
     Top = 0
-    Width = 387
+    Width = 395
     Height = 369
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 4
@@ -180,18 +180,18 @@ object Form1: TForm1
       Top = 0
       Caption = 'Default'
       DesignSize = (
-        387
+        395
         369)
       object GroupBox2: TGroupBox
         Left = 8
         Top = 8
-        Width = 371
+        Width = 379
         Height = 353
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Relay Server (Slave)'
         TabOrder = 0
         DesignSize = (
-          371
+          379
           353)
         object Label1: TLabel
           Left = 8
@@ -254,7 +254,7 @@ object Form1: TForm1
         object EditFilehost: TEdit
           Left = 8
           Top = 168
-          Width = 353
+          Width = 361
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 2
@@ -266,23 +266,23 @@ object Form1: TForm1
       Top = 0
       Caption = 'Config DNS Master'
       DesignSize = (
-        387
+        395
         369)
       object GroupBox1: TGroupBox
         Left = 8
         Top = 8
-        Width = 371
+        Width = 379
         Height = 353
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Server (Master)'
         TabOrder = 0
         DesignSize = (
-          371
+          379
           353)
         object ToolBar1: TToolBar
           Left = 8
           Top = 15
-          Width = 356
+          Width = 364
           Height = 29
           Align = alNone
           Anchors = [akLeft, akTop, akRight]
@@ -329,7 +329,7 @@ object Form1: TForm1
         object ListBoxDNSMaster: TListBox
           Left = 8
           Top = 48
-          Width = 355
+          Width = 363
           Height = 294
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
@@ -346,23 +346,23 @@ object Form1: TForm1
       Top = 0
       Caption = 'IP Clients'
       DesignSize = (
-        387
+        395
         369)
       object GroupBox3: TGroupBox
         Left = 8
         Top = 8
-        Width = 371
+        Width = 379
         Height = 353
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'IP Clients'
         TabOrder = 0
         DesignSize = (
-          371
+          379
           353)
         object ListBoxIpClients: TListBox
           Left = 8
           Top = 16
-          Width = 355
+          Width = 363
           Height = 326
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
@@ -375,23 +375,23 @@ object Form1: TForm1
       Top = 0
       Caption = 'DNS Domains'
       DesignSize = (
-        387
+        395
         369)
       object GroupBox4: TGroupBox
         Left = 8
         Top = 9
-        Width = 371
+        Width = 379
         Height = 352
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Domains'
         TabOrder = 0
         DesignSize = (
-          371
+          379
           352)
         object ToolBar2: TToolBar
           Left = 8
           Top = 15
-          Width = 355
+          Width = 363
           Height = 26
           Align = alNone
           Anchors = [akLeft, akTop, akRight]
@@ -410,7 +410,7 @@ object Form1: TForm1
         object ListBoxDomains: TListBox
           Left = 8
           Top = 48
-          Width = 355
+          Width = 363
           Height = 294
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
@@ -424,23 +424,23 @@ object Form1: TForm1
       Top = 0
       Caption = 'Logs'
       DesignSize = (
-        387
+        395
         369)
       object GroupBox5: TGroupBox
         Left = 8
         Top = 7
-        Width = 371
+        Width = 379
         Height = 354
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'Logs'
         TabOrder = 0
         DesignSize = (
-          371
+          379
           354)
         object MemoLogs: TMemo
           Left = 8
           Top = 15
-          Width = 356
+          Width = 364
           Height = 330
           Anchors = [akLeft, akTop, akRight, akBottom]
           ScrollBars = ssVertical
