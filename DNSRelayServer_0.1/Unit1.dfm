@@ -67,7 +67,7 @@ object Form1: TForm1
   TextHeight = 13
   object ButtonStart: TButton
     Left = 393
-    Top = 358
+    Top = 366
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -77,7 +77,7 @@ object Form1: TForm1
   end
   object ButtonClose: TButton
     Left = 481
-    Top = 358
+    Top = 366
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -87,7 +87,7 @@ object Form1: TForm1
   end
   object ButtonInstall: TButton
     Left = 96
-    Top = 358
+    Top = 366
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -151,9 +151,8 @@ object Form1: TForm1
     Left = 88
     Top = 0
     Width = 481
-    Height = 348
+    Height = 361
     Anchors = [akLeft, akTop, akRight, akBottom]
-    PageIndex = 4
     TabOrder = 4
     object TPage
       Left = 0
@@ -161,18 +160,18 @@ object Form1: TForm1
       Caption = 'Default'
       DesignSize = (
         481
-        348)
+        361)
       object GroupBox2: TGroupBox
         Left = 8
         Top = 8
         Width = 465
-        Height = 332
+        Height = 345
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Relay Server (Slave)'
         TabOrder = 0
         DesignSize = (
           465
-          332)
+          345)
         object Image2: TImage
           Left = -8
           Top = 16
@@ -761,12 +760,11 @@ object Form1: TForm1
           Caption = 'Fichier Host'
         end
         object Label6: TLabel
-          Left = 392
-          Top = 136
-          Width = 66
+          Left = 16
+          Top = 152
+          Width = 80
           Height = 13
-          Anchors = [akTop, akRight]
-          Caption = 'Exemple: host'
+          Caption = 'Exemple: host.txt'
         end
         object EditDNSServerSlaveIP: TEdit
           Left = 80
@@ -787,7 +785,7 @@ object Form1: TForm1
         object EditFilehost: TEdit
           Left = 16
           Top = 128
-          Width = 369
+          Width = 433
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 2
@@ -800,18 +798,18 @@ object Form1: TForm1
       Caption = 'Config DNS Master'
       DesignSize = (
         481
-        348)
+        361)
       object GroupBox1: TGroupBox
         Left = 8
         Top = 8
         Width = 465
-        Height = 332
+        Height = 345
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Server (Master)'
         TabOrder = 0
         DesignSize = (
           465
-          332)
+          345)
         object Image5: TImage
           Left = -8
           Top = 24
@@ -1415,7 +1413,7 @@ object Form1: TForm1
           Left = 80
           Top = 48
           Width = 377
-          Height = 273
+          Height = 286
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
           Items.Strings = (
@@ -1432,18 +1430,18 @@ object Form1: TForm1
       Caption = 'IP Clients'
       DesignSize = (
         481
-        348)
+        361)
       object GroupBox3: TGroupBox
         Left = 8
         Top = 8
         Width = 465
-        Height = 332
+        Height = 345
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'IP Clients'
         TabOrder = 0
         DesignSize = (
           465
-          332)
+          345)
         object Image1: TImage
           Left = -8
           Top = 16
@@ -2000,7 +1998,7 @@ object Form1: TForm1
           Left = 80
           Top = 16
           Width = 377
-          Height = 305
+          Height = 318
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
           TabOrder = 0
@@ -2013,18 +2011,18 @@ object Form1: TForm1
       Caption = 'DNS Domains'
       DesignSize = (
         481
-        348)
+        361)
       object GroupBox4: TGroupBox
         Left = 8
         Top = 9
         Width = 465
-        Height = 331
+        Height = 344
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Domains'
         TabOrder = 0
         DesignSize = (
           465
-          331)
+          344)
         object Image3: TImage
           Left = -8
           Top = 16
@@ -2600,7 +2598,7 @@ object Form1: TForm1
           Left = 80
           Top = 48
           Width = 377
-          Height = 273
+          Height = 286
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
           TabOrder = 1
@@ -2614,18 +2612,18 @@ object Form1: TForm1
       Caption = 'Logs'
       DesignSize = (
         481
-        348)
+        361)
       object GroupBox5: TGroupBox
         Left = 8
         Top = 7
         Width = 465
-        Height = 333
+        Height = 346
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'Logs'
         TabOrder = 0
         DesignSize = (
           465
-          333)
+          346)
         object Image4: TImage
           Left = -8
           Top = 9
@@ -3182,7 +3180,7 @@ object Form1: TForm1
           Left = 80
           Top = 15
           Width = 378
-          Height = 309
+          Height = 322
           Anchors = [akLeft, akTop, akRight, akBottom]
           ScrollBars = ssVertical
           TabOrder = 0
@@ -4020,7 +4018,7 @@ object Form1: TForm1
     Left = 224
     Top = 8
     Bitmap = {
-      494C010105000900040051004700FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010105000900040051004700FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000044010000D500000001002000000000005036
       0400000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -12943,6 +12941,7 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       F0000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFF0000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000000}
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000
+      000000000000000000000000000000000000}
   end
 end
