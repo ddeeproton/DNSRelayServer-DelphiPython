@@ -1,16 +1,17 @@
 object FormHost: TFormHost
-  Left = 598
-  Top = 134
+  Left = 433
+  Top = 158
   Width = 454
   Height = 381
   Caption = 'FormHost'
-  Color = clBtnFace
+  Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDesktopCenter
   DesignSize = (
     446
     347)
@@ -20,7 +21,7 @@ object FormHost: TFormHost
     Left = 0
     Top = 0
     Width = 449
-    Height = 313
+    Height = 305
     Anchors = [akLeft, akTop, akRight, akBottom]
     Lines.Strings = (
       'Memo1')
@@ -31,7 +32,7 @@ object FormHost: TFormHost
   end
   object ButtonSave: TButton
     Left = 267
-    Top = 319
+    Top = 311
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -41,7 +42,7 @@ object FormHost: TFormHost
   end
   object ButtonCancel: TButton
     Left = 355
-    Top = 319
+    Top = 311
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
