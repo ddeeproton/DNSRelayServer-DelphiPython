@@ -1186,4 +1186,5 @@ begin
     buttons[i].Down := False;
   end;
 end;
+
 end.
