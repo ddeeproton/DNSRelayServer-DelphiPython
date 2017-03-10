@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
-  UnitHost, XPMan, Systray,
+  UnitHost, XPMan, Systray, Registry,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -39,7 +39,6 @@ type
     ToolButton7: TToolButton;
     Notebook1: TNotebook;
     GroupBox2: TGroupBox;
-    Image2: TImage;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -69,6 +68,8 @@ type
     GroupBox5: TGroupBox;
     Image4: TImage;
     MemoLogs: TMemo;
+    Image2: TImage;
+    CheckBoxStartWithWindows: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -97,6 +98,8 @@ type
     procedure ToolButton6Click(Sender: TObject);
     procedure ToolButton3Click(Sender: TObject);
     procedure allToolButtonUp();
+    procedure CheckBoxStartWithWindowsClick(Sender: TObject);
+    procedure refreshCheckBox(Checkbox:TCheckBox);
   private
     { Private declarations }
   public
@@ -882,6 +885,7 @@ begin
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
+var i: Integer;
 begin
   Notebook1.PageIndex := 0;  
   allToolButtonUp();
@@ -896,6 +900,12 @@ begin
   if FileExists(MasterDNSFile) then
     ListBoxDNSMaster.Items.LoadFromFile(MasterDNSFile);
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+
+  refreshCheckBox(CheckBoxStartWithWindows);
+  
+  for i:=0 to ParamCount() do
+    if ParamStr(i) = '/background' then
+      Masquer1Click(nil);
 end;
 
 
@@ -1120,13 +1130,16 @@ procedure TForm1.Masquer1Click(Sender: TObject);
 begin
   Self.Hide;
   ShowWindow(Application.Handle, SW_HIDE);
+  Application.ShowMainForm := false;
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
   Self.Show;
   ShowWindow(Application.Handle, SW_SHOW);
+  Application.ShowMainForm := true; 
 end;
+
 
 procedure TForm1.Quitter1Click(Sender: TObject);
 var CanClose: Boolean;
@@ -1185,6 +1198,44 @@ begin
   begin
     buttons[i].Down := False;
   end;
+end;
+
+
+procedure TForm1.refreshCheckBox(Checkbox:TCheckBox);
+var
+  Reg: TRegistry;
+begin
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_CURRENT_USER;
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+    Checkbox.Checked := Reg.ValueExists(ExtractFileName(Application.ExeName));
+    Reg.CloseKey;
+  end;
+  Reg.Free;
+end;
+
+
+
+procedure TForm1.CheckBoxStartWithWindowsClick(Sender: TObject);
+var
+  Reg: TRegistry;
+begin
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_CURRENT_USER;
+  try
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+    if TCheckBox(Sender).Checked then
+      Reg.WriteString(ExtractFileName(Application.ExeName), '"'+Application.ExeName+'" /background')
+    else
+      Reg.DeleteValue(ExtractFileName(Application.ExeName));
+    Reg.CloseKey;
+  end;
+  finally
+    Reg.Free;
+  end;
+
 end;
 
 end.

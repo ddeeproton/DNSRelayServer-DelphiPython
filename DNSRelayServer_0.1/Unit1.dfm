@@ -174,6 +174,48 @@ object Form1: TForm1
         DesignSize = (
           409
           342)
+        object Label1: TLabel
+          Left = 80
+          Top = 16
+          Width = 51
+          Height = 13
+          Caption = 'Adresse IP'
+        end
+        object Label2: TLabel
+          Left = 80
+          Top = 64
+          Width = 19
+          Height = 13
+          Caption = 'Port'
+        end
+        object Label3: TLabel
+          Left = 208
+          Top = 40
+          Width = 79
+          Height = 13
+          Caption = 'Exemple: 0.0.0.0'
+        end
+        object Label4: TLabel
+          Left = 208
+          Top = 88
+          Width = 58
+          Height = 13
+          Caption = 'Exemple: 53'
+        end
+        object Label5: TLabel
+          Left = 16
+          Top = 112
+          Width = 56
+          Height = 13
+          Caption = 'Fichier Host'
+        end
+        object Label6: TLabel
+          Left = 16
+          Top = 152
+          Width = 80
+          Height = 13
+          Caption = 'Exemple: host.txt'
+        end
         object Image2: TImage
           Left = -8
           Top = 16
@@ -726,48 +768,6 @@ object Form1: TForm1
             FFFFFFFFFFFFFFFFFFFFFFFFFF00}
           Transparent = True
         end
-        object Label1: TLabel
-          Left = 80
-          Top = 16
-          Width = 51
-          Height = 13
-          Caption = 'Adresse IP'
-        end
-        object Label2: TLabel
-          Left = 80
-          Top = 64
-          Width = 19
-          Height = 13
-          Caption = 'Port'
-        end
-        object Label3: TLabel
-          Left = 208
-          Top = 40
-          Width = 79
-          Height = 13
-          Caption = 'Exemple: 0.0.0.0'
-        end
-        object Label4: TLabel
-          Left = 208
-          Top = 88
-          Width = 58
-          Height = 13
-          Caption = 'Exemple: 53'
-        end
-        object Label5: TLabel
-          Left = 16
-          Top = 112
-          Width = 56
-          Height = 13
-          Caption = 'Fichier Host'
-        end
-        object Label6: TLabel
-          Left = 16
-          Top = 152
-          Width = 80
-          Height = 13
-          Caption = 'Exemple: host.txt'
-        end
         object EditDNSServerSlaveIP: TEdit
           Left = 80
           Top = 32
@@ -791,6 +791,15 @@ object Form1: TForm1
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 2
+        end
+        object CheckBoxStartWithWindows: TCheckBox
+          Left = 16
+          Top = 192
+          Width = 281
+          Height = 17
+          Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
+          TabOrder = 3
+          OnClick = CheckBoxStartWithWindowsClick
         end
       end
     end
