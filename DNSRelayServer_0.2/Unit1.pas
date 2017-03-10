@@ -721,7 +721,8 @@ end;
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var i: Integer;
 begin
-  Notebook1.PageIndex := 4;
+  ToolButton3Click(ToolButton3);
+
   closeProcessCreated;
 
   if not FileExists(EditFilehost.Text) then
