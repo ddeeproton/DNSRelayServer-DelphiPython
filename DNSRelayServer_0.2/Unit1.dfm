@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 302
-  Top = 223
+  Left = 258
+  Top = 151
   Width = 589
   Height = 441
   Caption = 'DNS Relay Server 0.2'
@@ -258,6 +258,15 @@ object Form1: TForm1
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 2
+        end
+        object CheckBoxStartWithWindows: TCheckBox
+          Left = 8
+          Top = 224
+          Width = 273
+          Height = 17
+          Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
+          TabOrder = 3
+          OnClick = CheckBoxStartWithWindowsClick
         end
       end
     end

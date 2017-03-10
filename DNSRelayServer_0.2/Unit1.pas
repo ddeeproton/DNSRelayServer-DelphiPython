@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
-  UnitHost, XPMan, Systray,
+  UnitHost, XPMan, Systray, Registry,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -64,6 +64,7 @@ type
     ListBoxDomains: TListBox;
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
+    CheckBoxStartWithWindows: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -92,6 +93,8 @@ type
     procedure ToolButton6Click(Sender: TObject);
     procedure ToolButton3Click(Sender: TObject);
     procedure allToolButtonUp();
+    procedure refreshCheckBox(Checkbox:TCheckBox);
+    procedure CheckBoxStartWithWindowsClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -877,11 +880,10 @@ begin
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
+var i: Integer;
 begin
-  Notebook1.PageIndex := 0;  
-  allToolButtonUp();
-  ToolButton7.Down := True;
-  
+  ToolButton7.Click;
+
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
   if not DirectoryExists(DataDirectoryPath) then makeDir(DataDirectoryPath);
   if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
@@ -891,6 +893,12 @@ begin
   if FileExists(MasterDNSFile) then
     ListBoxDNSMaster.Items.LoadFromFile(MasterDNSFile);
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+
+
+  for i:=0 to ParamCount() do
+    if ParamStr(i) = '/background' then
+      Masquer1Click(nil);
+
 end;
 
 
@@ -1103,7 +1111,7 @@ begin
   GetCursorPos(Pos);//positon de la souris;
   case X of
     WM_LBUTTONDBLCLK: Show; //Double klik gauche
-    WM_LBUTTONDOWN:  ;    //Bouton gauche pousse
+    WM_LBUTTONDOWN:  Show;    //Bouton gauche pousse
     WM_LBUTTONUP: ; //PopupMenu1.Popup(Pos.X,Pos.Y); //Bouton gauche lève
     WM_RBUTTONDBLCLK:; //Double klik droit
     WM_RBUTTONDOWN:;    //Bouton droit pousse
@@ -1115,12 +1123,14 @@ procedure TForm1.Masquer1Click(Sender: TObject);
 begin
   Self.Hide;
   ShowWindow(Application.Handle, SW_HIDE);
+  Application.ShowMainForm := false;
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
   Self.Show;
   ShowWindow(Application.Handle, SW_SHOW);
+  Application.ShowMainForm := true; 
 end;
 
 procedure TForm1.Quitter1Click(Sender: TObject);
@@ -1132,9 +1142,10 @@ end;
 
 procedure TForm1.ToolButton7Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 0;    
+  Notebook1.PageIndex := 0;
   allToolButtonUp();
   TToolButton(Sender).Down := True;
+  refreshCheckBox(CheckBoxStartWithWindows);
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);
@@ -1180,6 +1191,45 @@ begin
   begin
     buttons[i].Down := False;
   end;
+end;
+
+
+
+procedure TForm1.refreshCheckBox(Checkbox:TCheckBox);
+var
+  Reg: TRegistry;
+begin
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_CURRENT_USER;
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+    Checkbox.Checked := Reg.ValueExists(ExtractFileName(Application.ExeName));
+    Reg.CloseKey;
+  end;
+  Reg.Free;
+end;
+
+
+
+procedure TForm1.CheckBoxStartWithWindowsClick(Sender: TObject);
+var
+  Reg: TRegistry;
+begin
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_CURRENT_USER;
+  try
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+    if TCheckBox(Sender).Checked then
+      Reg.WriteString(ExtractFileName(Application.ExeName), '"'+Application.ExeName+'" /background')
+    else
+      Reg.DeleteValue(ExtractFileName(Application.ExeName));
+    Reg.CloseKey;
+  end;
+  finally
+    Reg.Free;
+  end;
+
 end;
 
 end.
