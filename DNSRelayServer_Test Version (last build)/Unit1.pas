@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
-  UnitHost, XPMan, Systray, Registry,
+  UnitHost, XPMan, Systray, Registry, md5,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -1211,7 +1211,7 @@ begin
   Reg.RootKey := HKEY_CURRENT_USER;
   if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
   begin
-    Checkbox.Checked := Reg.ValueExists(ExtractFileName(Application.ExeName));
+    Checkbox.Checked := Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
     Reg.CloseKey;
   end;
   Reg.Free;
@@ -1229,9 +1229,9 @@ begin
   if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
   begin
     if TCheckBox(Sender).Checked then
-      Reg.WriteString(ExtractFileName(Application.ExeName), '"'+Application.ExeName+'" /background')
+      Reg.WriteString(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName), '"'+Application.ExeName+'" /background')
     else
-      Reg.DeleteValue(ExtractFileName(Application.ExeName));
+      Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
     Reg.CloseKey;
   end;
   finally
