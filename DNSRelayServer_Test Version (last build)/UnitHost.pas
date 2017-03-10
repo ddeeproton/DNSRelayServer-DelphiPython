@@ -56,8 +56,17 @@ end;
 
 procedure TFormHost.Load();
 begin
-  //Memo1.Lines.Text := readFile(Filename);
-  //ShowMessage(readFile(Filename));
+  if not FileExists(Filename) then
+    writeFile(Filename, '127.0.0.1	localhost');
+
+  {
+  if not FileExists(Filename) then
+    if MessageDlg('Le fichier host n''existe pas, le créer?',  mtConfirmation, [mbYes, mbNo], 0) = IDNO then
+      Exit
+    else
+      ecrireDansUnFichier(EditFilehost.Text, '127.0.0.1	localhost');
+  }
+  
   Memo1.Lines.LoadFromFile(Filename);
   Self.Caption := PChar('Edit "'+Filename+'"');
 end;
