@@ -65,6 +65,8 @@ type
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
     CheckBoxStartWithWindows: TCheckBox;
+    ButtonSelectFilehost: TButton;
+    SaveDialog1: TSaveDialog;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -95,6 +97,7 @@ type
     procedure allToolButtonUp();
     procedure refreshCheckBox(Checkbox:TCheckBox);
     procedure CheckBoxStartWithWindowsClick(Sender: TObject);
+    procedure ButtonSelectFilehostClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1235,6 +1238,15 @@ begin
     Reg.Free;
   end;
 
+end;
+
+procedure TForm1.ButtonSelectFilehostClick(Sender: TObject);
+begin
+  if DirectoryExists(ExtractFilePath(EditFilehost.Text)) then
+    SaveDialog1.InitialDir := ExtractFilePath(EditFilehost.Text);
+
+  if SaveDialog1.Execute then
+    EditFilehost.Text := SaveDialog1.FileName;
 end;
 
 end.

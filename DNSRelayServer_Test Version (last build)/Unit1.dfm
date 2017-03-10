@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 151
   Width = 589
   Height = 441
-  Caption = 'DNS Relay Server Test Version'
+  Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 435
   Constraints.MinWidth = 464
@@ -174,7 +174,6 @@ object Form1: TForm1
     Width = 395
     Height = 369
     Anchors = [akLeft, akTop, akRight, akBottom]
-    PageIndex = 3
     TabOrder = 4
     object TPage
       Left = 0
@@ -255,7 +254,7 @@ object Form1: TForm1
         object EditFilehost: TEdit
           Left = 8
           Top = 168
-          Width = 361
+          Width = 313
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 2
@@ -268,6 +267,15 @@ object Form1: TForm1
           Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
           TabOrder = 3
           OnClick = CheckBoxStartWithWindowsClick
+        end
+        object ButtonSelectFilehost: TButton
+          Left = 328
+          Top = 165
+          Width = 35
+          Height = 25
+          Caption = '...'
+          TabOrder = 4
+          OnClick = ButtonSelectFilehostClick
         end
       end
     end
@@ -10213,5 +10221,10 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFF0000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000
       000000000000000000000000000000000000}
+  end
+  object SaveDialog1: TSaveDialog
+    Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
+    Left = 320
+    Top = 312
   end
 end
