@@ -898,7 +898,10 @@ begin
 
   for i:=0 to ParamCount() do
     if ParamStr(i) = '/background' then
+    begin
       Masquer1Click(nil);
+      ButtonStartClick(ButtonStart);
+    end;
 
 end;
 
@@ -1137,7 +1140,7 @@ end;
 procedure TForm1.Quitter1Click(Sender: TObject);
 var CanClose: Boolean;
 begin
-  FormCloseQuery(nil, CanClose);
+  FormCloseQuery(Form1, CanClose);
   Application.Terminate;
 end;
 
