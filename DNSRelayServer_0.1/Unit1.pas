@@ -887,6 +887,8 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 var i: Integer;
 begin
+  ToolBar3.DoubleBuffered := True;
+
   Notebook1.PageIndex := 0;  
   allToolButtonUp();
   ToolButton7.Down := True;

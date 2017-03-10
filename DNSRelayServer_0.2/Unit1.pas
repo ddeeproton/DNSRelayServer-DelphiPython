@@ -883,6 +883,7 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 var i: Integer;
 begin
+  ToolBar3.DoubleBuffered := True;
   ToolButton7.Click;
 
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
