@@ -69,7 +69,7 @@ object Form1: TForm1
   TextHeight = 13
   object ButtonStart: TButton
     Left = 403
-    Top = 375
+    Top = 369
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -79,7 +79,7 @@ object Form1: TForm1
   end
   object ButtonClose: TButton
     Left = 491
-    Top = 375
+    Top = 369
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -89,7 +89,7 @@ object Form1: TForm1
   end
   object ButtonInstall: TButton
     Left = 192
-    Top = 375
+    Top = 369
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -172,7 +172,7 @@ object Form1: TForm1
     Left = 184
     Top = 0
     Width = 395
-    Height = 374
+    Height = 369
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 4
     object TPage
@@ -181,18 +181,18 @@ object Form1: TForm1
       Caption = 'Default'
       DesignSize = (
         395
-        374)
+        369)
       object GroupBox2: TGroupBox
         Left = 8
         Top = 8
         Width = 379
-        Height = 358
+        Height = 353
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Relay Server (Slave)'
         TabOrder = 0
         DesignSize = (
           379
-          358)
+          353)
         object Label1: TLabel
           Left = 8
           Top = 24
@@ -276,18 +276,18 @@ object Form1: TForm1
       Caption = 'Config DNS Master'
       DesignSize = (
         395
-        374)
+        369)
       object GroupBox1: TGroupBox
         Left = 8
         Top = 8
         Width = 379
-        Height = 358
+        Height = 353
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Server (Master)'
         TabOrder = 0
         DesignSize = (
           379
-          358)
+          353)
         object ToolBar1: TToolBar
           Left = 8
           Top = 15
@@ -339,7 +339,7 @@ object Form1: TForm1
           Left = 8
           Top = 48
           Width = 363
-          Height = 299
+          Height = 294
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
           Items.Strings = (
@@ -356,23 +356,23 @@ object Form1: TForm1
       Caption = 'IP Clients'
       DesignSize = (
         395
-        374)
+        369)
       object GroupBox3: TGroupBox
         Left = 8
         Top = 8
         Width = 379
-        Height = 358
+        Height = 353
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'IP Clients'
         TabOrder = 0
         DesignSize = (
           379
-          358)
+          353)
         object ListBoxIpClients: TListBox
           Left = 8
           Top = 16
           Width = 363
-          Height = 331
+          Height = 326
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
           TabOrder = 0
@@ -385,18 +385,18 @@ object Form1: TForm1
       Caption = 'DNS Domains'
       DesignSize = (
         395
-        374)
+        369)
       object GroupBox4: TGroupBox
         Left = 8
         Top = 9
         Width = 379
-        Height = 357
+        Height = 352
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Domains'
         TabOrder = 0
         DesignSize = (
           379
-          357)
+          352)
         object ToolBar2: TToolBar
           Left = 8
           Top = 15
@@ -420,7 +420,7 @@ object Form1: TForm1
           Left = 8
           Top = 48
           Width = 363
-          Height = 299
+          Height = 294
           Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
           TabOrder = 1
@@ -434,23 +434,23 @@ object Form1: TForm1
       Caption = 'Logs'
       DesignSize = (
         395
-        374)
+        369)
       object GroupBox5: TGroupBox
         Left = 8
         Top = 7
         Width = 379
-        Height = 359
+        Height = 354
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'Logs'
         TabOrder = 0
         DesignSize = (
           379
-          359)
+          354)
         object MemoLogs: TMemo
           Left = 8
           Top = 15
           Width = 364
-          Height = 335
+          Height = 330
           Anchors = [akLeft, akTop, akRight, akBottom]
           ScrollBars = ssVertical
           TabOrder = 0
