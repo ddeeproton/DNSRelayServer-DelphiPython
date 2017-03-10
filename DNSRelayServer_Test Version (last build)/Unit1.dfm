@@ -273,6 +273,7 @@ object Form1: TForm1
           Top = 165
           Width = 35
           Height = 25
+          Anchors = [akTop, akRight]
           Caption = '...'
           TabOrder = 4
           OnClick = ButtonSelectFilehostClick
