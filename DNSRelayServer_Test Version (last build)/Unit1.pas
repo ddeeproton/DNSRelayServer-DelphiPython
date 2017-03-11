@@ -181,10 +181,10 @@ begin
     isNew := true;
     for i := 0 to form1.ListView1.Items.Count-1 do
     begin
-      if form1.ListView1.Items[i].Caption =  domain then isNew := false;
+      if form1.ListView1.Items[i].SubItems[0] =  domain then isNew := false;
     end;
     if isNew then
-      EditerLigne2(form1.ListView1, form1.ListView1.Items.Count, 0, domain,ipdomain);
+      EditerLigne2(form1.ListView1, form1.ListView1.Items.Count, 0, ipdomain, domain);
   {
     if form1.ListBoxDomains.Items.IndexOf(domain+'->'+ipdomain+' ('+ipclient+')') = -1 then
     begin
@@ -192,7 +192,8 @@ begin
     end;
     }
   end;
-  sl.Free;
+  if sl <> nil then
+    sl.Free;
 end;
 
 
@@ -217,6 +218,7 @@ var
     txt: string;
   begin
     repeat
+
       BytesRead := 0;
       {Llenamos un troncho de la pipe, igual a nuestro buffer}
       PeekNamedPipe(PaLeer, nil, 0, nil, tb, nil);
@@ -781,7 +783,6 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   ButtonCloseClick(Sender);
   Systray.EnleveIconeTray();
-  ShowWindow(Application.Handle, SW_SHOW);
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
