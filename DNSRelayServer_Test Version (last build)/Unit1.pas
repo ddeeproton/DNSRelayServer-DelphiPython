@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
-  UnitHost, XPMan, Systray, Registry, md5,
+  UnitHost, XPMan, Systray, Registry, md5, ListViewManager,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -61,12 +61,12 @@ type
     GroupBox4: TGroupBox;
     ToolBar2: TToolBar;
     ToolButtonEditHost: TToolButton;
-    ListBoxDomains: TListBox;
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
     CheckBoxStartWithWindows: TCheckBox;
     ButtonSelectFilehost: TButton;
     SaveDialog1: TSaveDialog;
+    ListView1: TListView;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -151,6 +151,8 @@ end;
 
 procedure OnOutput(txt:String);
 var
+  i: integer;
+  isNew: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
   date:string;
@@ -176,10 +178,19 @@ begin
       form1.ListBoxIpClients.Items.Add(ipclient);
     end;
 
+    isNew := true;
+    for i := 0 to form1.ListView1.Items.Count-1 do
+    begin
+      if form1.ListView1.Items[i].Caption =  domain then isNew := false;
+    end;
+    if isNew then
+      EditerLigne2(form1.ListView1, form1.ListView1.Items.Count, 0, domain,ipdomain);
+  {
     if form1.ListBoxDomains.Items.IndexOf(domain+'->'+ipdomain+' ('+ipclient+')') = -1 then
     begin
       form1.ListBoxDomains.Items.Add(domain+'->'+ipdomain+' ('+ipclient+')');
     end;
+    }
   end;
   sl.Free;
 end;
@@ -907,6 +918,12 @@ begin
       ButtonStartClick(ButtonStart);
     end;
 
+  ListViewCreate(ListView1);
+  // Add at the end
+  //EditerLigne2(ListView1, ListView1.Items.Count, 0, 'yes','nice');
+  // Add at the begining
+  //EditerLigne2(ListView1, -1, 0, 'cool','nice');
+
 end;
 
 
@@ -937,12 +954,14 @@ var
   i:integer;
   txt:string;
 begin
+{
   i := ListBoxDomains.ItemIndex;
   if i < 0 then exit;
   txt := ListBoxDomains.Items.Strings[i];
   txt := InputBox('DNS Domains', 'Update domain', txt);
   if txt = '' then exit;
   ListBoxDomains.Items.Strings[i] := txt;
+  }
 end;
 
 

@@ -6,7 +6,8 @@ uses
   UnitHost in 'UnitHost.pas' {FormHost},
   FilesManager in 'FilesManager.pas',
   Registre in 'Registre.pas',
-  UnitInstallation in 'UnitInstallation.pas' {FormInstall};
+  UnitInstallation in 'UnitInstallation.pas' {FormInstall},
+  ListViewManager in 'ListViewManager.pas';
 
 {$R *.res}
 

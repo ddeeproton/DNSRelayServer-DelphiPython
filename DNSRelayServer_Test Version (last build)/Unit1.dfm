@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 258
-  Top = 151
+  Left = 199
+  Top = 153
   Width = 589
   Height = 441
   Caption = 'DNS Relay Server 0.3 beta'
@@ -174,6 +174,7 @@ object Form1: TForm1
     Width = 395
     Height = 369
     Anchors = [akLeft, akTop, akRight, akBottom]
+    PageIndex = 3
     TabOrder = 4
     object TPage
       Left = 0
@@ -426,15 +427,18 @@ object Form1: TForm1
             OnClick = ToolButtonEditHostClick
           end
         end
-        object ListBoxDomains: TListBox
+        object ListView1: TListView
           Left = 8
           Top = 48
-          Width = 363
-          Height = 293
+          Width = 361
+          Height = 297
           Anchors = [akLeft, akTop, akRight, akBottom]
-          ItemHeight = 13
+          Checkboxes = True
+          Columns = <>
+          LargeImages = ImageList1
+          SmallImages = ImageList1
           TabOrder = 1
-          OnDblClick = ListBoxDomainsDblClick
+          ViewStyle = vsReport
         end
       end
     end
@@ -474,7 +478,7 @@ object Form1: TForm1
     Left = 240
     Top = 312
     Bitmap = {
-      494C010116001800040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1270,7 +1274,8 @@ object Form1: TForm1
       F81F87F3FC1FFC1FF81F83E3F80FFC1FF81FC3C7F007FC1F0000E18FE003FC1F
       0000F01FC001FC1F0000F83FFC1FFC1F0000FC3FFC1FFC1F0000F81FFC1FC001
       0000F18FFC1FE003F81FE3C7FC1FF007F81FC7E7FC1FF80FF81F8FFFFC1FFC1F
-      F81F9FFFFC1FFE3FF81FFFFFFFFFFF7F}
+      F81F9FFFFC1FFE3FF81FFFFFFFFFFF7F00000000000000000000000000000000
+      000000000000}
   end
   object PopupMenu1: TPopupMenu
     Left = 200
