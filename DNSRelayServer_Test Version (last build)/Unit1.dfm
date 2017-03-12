@@ -432,7 +432,7 @@ object Form1: TForm1
           object ToolButton8: TToolButton
             Left = 23
             Top = 2
-            Hint = 'Block Domains'
+            Hint = 'Bloquer des domaines'
             Caption = 'ToolButton8'
             ImageIndex = 3
             ParentShowHint = False

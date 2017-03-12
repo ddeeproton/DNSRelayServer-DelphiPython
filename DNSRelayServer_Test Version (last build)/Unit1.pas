@@ -1296,6 +1296,7 @@ begin
   begin
     filterAction := 'block';
     Form1.ListView1Click(Form1.ListView1);
+    ShowMessage('Sélectionnez les domaines à bloquer dans les cases à cocher.'#13#13'Et redémarrez le serveur (bouton Start) pour appliquer les changements.');
   end
   else
     filterAction := '';
