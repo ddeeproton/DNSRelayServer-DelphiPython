@@ -7,7 +7,8 @@ uses
   FilesManager in 'FilesManager.pas',
   Registre in 'Registre.pas',
   UnitInstallation in 'UnitInstallation.pas' {FormInstall},
-  ListViewManager in 'ListViewManager.pas';
+  ListViewManager in 'ListViewManager.pas',
+  HostParser in 'images\HostParser.pas';
 
 {$R *.res}
 

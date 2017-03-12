@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
-  UnitHost, XPMan, Systray, Registry, md5, ListViewManager,
+  UnitHost, XPMan, Systray, Registry, md5, ListViewManager, HostParser,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -67,6 +67,8 @@ type
     ButtonSelectFilehost: TButton;
     SaveDialog1: TSaveDialog;
     ListView1: TListView;
+    ToolButton8: TToolButton;
+    ImageList3: TImageList;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -98,6 +100,8 @@ type
     procedure refreshCheckBox(Checkbox:TCheckBox);
     procedure CheckBoxStartWithWindowsClick(Sender: TObject);
     procedure ButtonSelectFilehostClick(Sender: TObject);
+    procedure ToolButton8Click(Sender: TObject);
+    procedure ListView1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -126,6 +130,7 @@ var
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
   PythonPath: string = '';
   DataDirectoryPath: string = '';
+  filterAction: string = '';
 implementation
 
 {$R *.dfm}
@@ -151,15 +156,11 @@ end;
 
 procedure OnOutput(txt:String);
 var
-  i: integer;
+  i, imgIndex: integer;
   isNew: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
-  date:string;
-  time:string;
-  ipclient:string;
-  ipdomain:string;
-  domain:string;
+  date, time, ipclient, ipdomain, domain, ip:string;
 begin
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
@@ -184,7 +185,19 @@ begin
       if form1.ListView1.Items[i].SubItems[0] =  domain then isNew := false;
     end;
     if isNew then
-      EditerLigne2(form1.ListView1, form1.ListView1.Items.Count, 0, ipdomain, domain);
+    begin
+      i := form1.ListView1.Items.Count;
+      imgIndex := 3;
+      ip := getDomain(Form1.EditFilehost.Text, domain);
+      if ip = '' then imgIndex := 0
+      else if ip = '127.0.0.1' then imgIndex := 3
+      else if ipdomain = '127.0.0.1' then imgIndex := 3
+      else imgIndex := 1;
+
+      EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
+      Form1.ListView1Click(Form1.ListView1);
+
+    end;
   {
     if form1.ListBoxDomains.Items.IndexOf(domain+'->'+ipdomain+' ('+ipclient+')') = -1 then
     begin
@@ -781,8 +794,9 @@ end;
 
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  ButtonCloseClick(Sender);
   Systray.EnleveIconeTray();
+  ButtonCloseClick(Sender);
+
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
@@ -793,7 +807,7 @@ begin
   max := Length(listThreads)-1;
   for i:=0 to max do
   begin
-    if (listThreads[i] <> nil) then
+    if (listThreads[i] <> nil) and not (listThreads[i].Terminated) then
     begin
       try
         DestroyProcess(listThreads[i].h);
@@ -896,7 +910,9 @@ begin
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
-var i: Integer;
+var
+  i: Integer;
+
 begin
   ToolBar3.DoubleBuffered := True;
   ToolButton7.Click;
@@ -920,11 +936,14 @@ begin
     end;
 
   ListViewCreate(ListView1);
+  getDomains(EditFilehost.Text, ListView1);
+  {
   // Add at the end
-  //EditerLigne2(ListView1, ListView1.Items.Count, 0, 'yes','nice');
+  EditerLigne2(ListView1, ListView1.Items.Count, 3, 'yes','nice');
   // Add at the begining
-  //EditerLigne2(ListView1, -1, 0, 'cool','nice');
-
+  EditerLigne2(ListView1, -1, 0, 'cool','nice');
+  ShowMessage(getDomain(EditFilehost.Text, 'localhost'));
+  }
 end;
 
 
@@ -1268,5 +1287,68 @@ begin
   if SaveDialog1.Execute then
     EditFilehost.Text := SaveDialog1.FileName;
 end;
+
+procedure TForm1.ToolButton8Click(Sender: TObject);
+begin
+  ListView1.Checkboxes := not ListView1.Checkboxes;
+  TToolButton(Sender).Down := ListView1.Checkboxes;
+  if ListView1.Checkboxes then
+  begin
+    filterAction := 'block';
+    Form1.ListView1Click(Form1.ListView1);
+  end
+  else
+    filterAction := '';
+end;
+
+
+procedure TForm1.ListView1Click(Sender: TObject);
+var
+  ListItem:TListItem;
+  CurPos:TPoint;
+  i:integer;
+  ip:string;
+begin
+  // Si on clique dans la case à cocher, on séléctionne la ligne
+  // Donc on récupère la position de la souris sur l'écran
+  GetcursorPos(CurPos);
+  // on indique sa position en fonction du ListView
+  CurPos:=TListView(Sender).ScreenToClient(CurPos);
+  // On récupère la ligne du listView où se trouve la souris
+  ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
+  // Si on récupère bien une ligne et pas un espace blanc
+  if Assigned(ListItem) then
+  begin
+    // Si on se trouve bien dans la case à cocher
+    if (CurPos.x >= 5) and (CurPos.x <= 20) then
+    begin
+      if ListItem.Checked then
+      begin
+        if (filterAction = 'block') and (ListItem.SubItems.Strings[0] <> '') then
+          setDomain( EditFilehost.Text, ListItem.SubItems.Strings[0], '127.0.0.1');
+          //ShowMessage(ListItem.Caption);
+      end
+      else begin
+        if filterAction = 'block' then
+          delDomain(EditFilehost.Text, ListItem.SubItems.Strings[0]);
+      end;
+    end;
+  end;
+
+  for i := 0 to ListView1.items.count - 1 do
+  begin
+
+    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
+    ip := onlyChars(ip);
+    //ShowMessage('"'+ip+'"');
+    if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
+    else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
+    else ListView1.Items.Item[i].ImageIndex := 1;
+
+    // On coche la case du proxy actuel (si actif) et decoche les autres
+    ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
+  end;
+end;
+
 
 end.

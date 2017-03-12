@@ -9,11 +9,11 @@ procedure RafraichirProxies(ListView: TListView);
 procedure ChargerProxies(ListView: TListView);
 procedure AjouterUneColone(NewColumn: TListColumn; Titre:string; Largeur:integer);
 procedure SauvegarderProxies(ListView: TListView);
-procedure EditerLigne(ListView: TListView; ListItem: TListItem; Ligne:integer; ImageNum:integer = -1; Colone1: string = ''; Colone2: string = '');
+procedure EditerLigne(ListView: TListView; ListItem: TListItem; Ligne:integer; ImageNum:integer = -1; Colone1: string = ''; Colone2: string = ''; isChecked: Boolean = false);
 procedure ListViewClick(Sender: TObject);
 procedure ListView1DblClick(Sender: TObject);
 procedure EditerLigne2(ListView: TListView; Ligne:integer; ImageNum:integer = -1;
-  Colone1: string = ''; Colone2: string = '');
+  Colone1: string = ''; Colone2: string = ''; isChecked: Boolean = false);
 
 implementation
 
@@ -119,7 +119,7 @@ end;
 
 // Edite (ou ajoute) une ligne dans le listView
 procedure EditerLigne(ListView: TListView; ListItem: TListItem; Ligne:integer; ImageNum:integer = -1;
-  Colone1: string = ''; Colone2: string = '');
+  Colone1: string = ''; Colone2: string = ''; isChecked: Boolean = false);
 begin
   // Met dans le listView l'adresse IP si on en indique une
   if Colone1 <> '' then
@@ -147,7 +147,7 @@ end;
 
 // Edite (ou ajoute) une ligne dans le listView
 procedure EditerLigne2(ListView: TListView; Ligne:integer; ImageNum:integer = -1;
-  Colone1: string = ''; Colone2: string = '');
+  Colone1: string = ''; Colone2: string = ''; isChecked: Boolean = false);
 var ListItem: TListItem;
 begin
   if (ListView.Items.Count < Ligne) then exit;
@@ -179,6 +179,7 @@ begin
   if ImageNum > -1 then
     // On change d'image
     ListItem.ImageIndex := ImageNum;
+  ListItem.Checked := isChecked;
 end;
 
 
