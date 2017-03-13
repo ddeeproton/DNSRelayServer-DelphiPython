@@ -820,6 +820,8 @@ begin
       //CloseHandle(hProcess);
     end;
   except
+  On E : EOSError do
+    exit;
   end;
 end;
 
@@ -842,6 +844,8 @@ begin
       try
         DestroyProcess(listThreads[i].h);
       except
+        On E : EOSError do
+          exit;
       end;
     end;
   end;
@@ -1060,6 +1064,8 @@ begin
   try
     CloseHandle(FSnapshotHandle);
   except
+    On E : EOSError do
+      exit;
   end;
 end;
 
@@ -1096,6 +1102,8 @@ begin
   try
     CloseHandle(FSnapshotHandle);
   except
+    On E : EOSError do
+      exit;
   end;
 end;
 
@@ -1113,6 +1121,8 @@ begin
       CloseHandle(ProcessHandle);
     end;
   except
+    On E : EOSError do
+      exit;
   end;
 end;
 
@@ -1144,6 +1154,8 @@ begin
       end;
     end;
   except
+    On E : EOSError do
+      exit;
   end;
 end;
 
@@ -1191,6 +1203,8 @@ begin
         //CloseProcessPID(h);
         CloseTaskPID('python.exe',h);
       except
+        On E : EOSError do
+          exit;
       end;
     end;
   end;
