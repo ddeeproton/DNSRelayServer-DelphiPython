@@ -6,6 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
   UnitHost, XPMan, Systray, Registry, md5, ListViewManager, HostParser,
+  NetworkManager,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -71,6 +72,7 @@ type
     ImageList3: TImageList;
     ToolButton9: TToolButton;
     TimerSaveChange: TTimer;
+    ToolButton10: TToolButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -110,6 +112,7 @@ type
     procedure ToolButton9Click(Sender: TObject);
     procedure EditFilehostChange(Sender: TObject);
     procedure TimerSaveChangeTimer(Sender: TObject);
+    procedure ToolButton10Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -926,7 +929,7 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
-
+  net: tNetworkInterfaceList;
 begin
   ToolBar3.DoubleBuffered := True;
   ListView1.DoubleBuffered := True;
@@ -952,8 +955,6 @@ begin
     
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 
-
-
   for i:=0 to ParamCount() do
     if ParamStr(i) = '/background' then
     begin
@@ -971,6 +972,29 @@ begin
   EditerLigne2(ListView1, -1, 0, 'cool','nice');
   ShowMessage(getDomain(EditFilehost.Text, 'localhost'));
   }
+
+  If (GetNetworkInterfaces (net)) THen
+  Begin
+    MemoLogs.Clear;
+    MemoLogs.Lines.Add (DateTimeToStr (Now)+ ' : ');
+
+    For i := 0 to High (net) do
+    Begin
+      MemoLogs.Lines.Add ('');
+      MemoLogs.Lines.Add ('#                          : ' + IntToStr(i));
+      MemoLogs.Lines.Add ('Name                       : ' + net[i].ComputerName);
+      MemoLogs.Lines.Add ('IP-Address                 : ' + net[i].AddrIP);
+      MemoLogs.Lines.Add ('Subnet mask                : ' + net[i].SubnetMask);
+      MemoLogs.Lines.Add ('Net address                : ' + net[i].AddrNet);
+      MemoLogs.Lines.Add ('Limited broadcast address  : ' + net[i].AddrLimitedBroadcast);
+      MemoLogs.Lines.Add ('Directed Broadcast address : ' + net[i].AddrDirectedBroadcast);
+      MemoLogs.Lines.Add ('Interface up               : ' + BoolToStr (net[i].IsInterfaceUp, True));
+      MemoLogs.Lines.Add ('Broadcast supported        : ' + BoolToStr (net[i].BroadcastSupport, True));
+      MemoLogs.Lines.Add ('Loopback interface         : ' + BoolToStr (net[i].IsLoopback, True));
+      MemoLogs.Lines.Add ('');
+    end;
+  end;
+
 end;
 
 
@@ -1432,7 +1456,9 @@ end;
 procedure TForm1.ToolButton9Click(Sender: TObject);
 begin
   if MessageDlg('Ce bouton est un bouton d''aide. Vous allez voir quelques messages qui vont vous expliquer les boutons qui se trouvent à côté de celui que vous venez de cliquer. Voulez-vous continuer?',  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
-    ShowMessage('Cliquez sur le premier bouton pour éditer manuellement le fichier host'#13#13
+    ShowMessage('Cliquez sur le premier bouton pour effacer les domaines inconnus et ne garder que ceux qui sont connus.');
+    ShowMessage('Cliquez sur le deuxième bouton pour pouvoir cocher des cases. Si la case est coché, alors le domaine est bloqué. Cliquez sur l''ip pour ajouter le domaine dans le fichier host avec l''ip d''origine. Ou cliquez sur le nom une deuxième fois pour changer l''ip.');
+    ShowMessage('Cliquez sur le troisième bouton pour éditer manuellement le fichier host'#13#13
     +'Edition du fichier host'#13#13
   +'Exemple:'#13
   +'127.0.0.1  localhost'#13#13
@@ -1441,10 +1467,6 @@ begin
   +'D''abord l''ip ensuite le domaine.'#13
   +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
   +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
-
-    ShowMessage('Cliquez sur le bouton du milieu pour pouvoir cocher des cases. Si la case est coché, alors le domaine est bloqué. Cliquez sur l''ip pour ajouter le domaine dans le fichier host avec l''ip d''origine. Ou cliquez sur le nom une deuxième fois pour changer l''ip.');
-
-    ShowMessage('Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
 end;
 
 procedure TForm1.EditFilehostChange(Sender: TObject);
@@ -1459,6 +1481,14 @@ begin
   ecrireDansUnFichier(FilehostPathConfig, EditFilehost.Text);
   ecrireDansUnFichier(SlaveDNSIPConfig, EditDNSServerSlaveIP.Text);
   ecrireDansUnFichier(SlaveDNSPortConfig, EditPort.Text);
+end;
+
+procedure TForm1.ToolButton10Click(Sender: TObject);
+begin
+  ListView1.OnChange := nil;
+  ListView1.Clear;
+  getDomains(EditFilehost.Text, ListView1);
+  ListView1.OnChange := ListView1Change;
 end;
 
 end.
