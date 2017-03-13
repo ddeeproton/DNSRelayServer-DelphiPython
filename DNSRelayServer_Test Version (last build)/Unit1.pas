@@ -87,7 +87,6 @@ type
     procedure ToolButtonEditHostClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure MemoLogsChange(Sender: TObject);
-    procedure ListBoxDomainsDblClick(Sender: TObject);
     procedure onProcessCreated(h: Cardinal);
     procedure closeProcessCreated();
     function isPythonInstalled(PythonDirPath: string):bool;
@@ -209,8 +208,7 @@ begin
     
     if isNew then
     begin
-      i := form1.ListView1.Items.Count;
-      imgIndex := 3;
+
       ip := getDomain(Form1.EditFilehost.Text, domain);
       if ip = '' then imgIndex := 0
       else if ip = '127.0.0.1' then imgIndex := 3
@@ -218,6 +216,7 @@ begin
       else imgIndex := 1;
 
       EditerLigne2(form1.ListView1, -1, imgIndex, ipdomain, domain, imgIndex = 3);
+      //i := form1.ListView1.Items.Count;
       //EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
       Form1.refreshListView1Click();
     end;
@@ -821,6 +820,8 @@ begin
       //CloseHandle(hProcess);
     end;
   except
+  On E : EOSError do
+    exit;
   end;
 end;
 
@@ -843,6 +844,8 @@ begin
       try
         DestroyProcess(listThreads[i].h);
       except
+        On E : EOSError do
+          exit;
       end;
     end;
   end;
@@ -1034,22 +1037,6 @@ begin
 end;
 
 
-procedure TForm1.ListBoxDomainsDblClick(Sender: TObject);
-var
-  i:integer;
-  txt:string;
-begin
-{
-  i := ListBoxDomains.ItemIndex;
-  if i < 0 then exit;
-  txt := ListBoxDomains.Items.Strings[i];
-  txt := InputBox('DNS Domains', 'Update domain', txt);
-  if txt = '' then exit;
-  ListBoxDomains.Items.Strings[i] := txt;
-  }
-end;
-
-
 function TForm1.KillTask(ExeFileName: string): Integer;
 const
   PROCESS_TERMINATE = $0001;
@@ -1077,6 +1064,8 @@ begin
   try
     CloseHandle(FSnapshotHandle);
   except
+    On E : EOSError do
+      exit;
   end;
 end;
 
@@ -1113,6 +1102,8 @@ begin
   try
     CloseHandle(FSnapshotHandle);
   except
+    On E : EOSError do
+      exit;
   end;
 end;
 
@@ -1130,6 +1121,8 @@ begin
       CloseHandle(ProcessHandle);
     end;
   except
+    On E : EOSError do
+      exit;
   end;
 end;
 
@@ -1161,6 +1154,8 @@ begin
       end;
     end;
   except
+    On E : EOSError do
+      exit;
   end;
 end;
 
@@ -1208,6 +1203,8 @@ begin
         //CloseProcessPID(h);
         CloseTaskPID('python.exe',h);
       except
+        On E : EOSError do
+          exit;
       end;
     end;
   end;
@@ -1394,13 +1391,13 @@ begin
     ShowMessage('Cliquez sur le premier bouton pour effacer les domaines inconnus (boule noire) et ne garder que ceux qui sont connus.');
     ShowMessage('Cliquez sur le deuxième bouton pour éditer manuellement le fichier host'#13#13
     +'Edition du fichier host'#13#13
-  +'Exemple:'#13
-  +'127.0.0.1  localhost'#13#13
-  +'Règle: '#13
-  +'Un ligne par domaine et ip.'#13
-  +'D''abord l''ip ensuite le domaine.'#13
-  +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
-  +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
+    +'Exemple:'#13
+    +'127.0.0.1  localhost'#13#13
+    +'Règle: '#13
+    +'Un ligne par domaine et ip.'#13
+    +'D''abord l''ip ensuite le domaine.'#13
+    +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
+    +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
     ShowMessage('Cliquer bouton droit sur une IP de la liste (colone gauche) pour afficher le menu.');
 end;
 

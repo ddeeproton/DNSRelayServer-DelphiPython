@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 108
-  Top = 509
+  Left = 196
+  Top = 387
   Width = 589
   Height = 441
   Caption = 'DNS Relay Server 0.4 beta'
@@ -153,7 +153,7 @@ object Form1: TForm1
     object ToolButton6: TToolButton
       Left = 0
       Top = 233
-      Caption = 'Logs (Filter web)'
+      Caption = 'Web Filter'
       Grouped = True
       ImageIndex = 3
       Wrap = True
