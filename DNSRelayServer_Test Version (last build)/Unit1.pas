@@ -187,6 +187,7 @@ begin
     begin
       if form1.ListView1.Items[i].SubItems[0] =  domain then isNew := false;
     end;
+    
     if isNew then
     begin
       i := form1.ListView1.Items.Count;
@@ -199,14 +200,8 @@ begin
 
       EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
       Form1.ListView1Click(Form1.ListView1);
+    end;
 
-    end;
-  {
-    if form1.ListBoxDomains.Items.IndexOf(domain+'->'+ipdomain+' ('+ipclient+')') = -1 then
-    begin
-      form1.ListBoxDomains.Items.Add(domain+'->'+ipdomain+' ('+ipclient+')');
-    end;
-    }
   end
   else begin
     if Pos('Error: Port  53  already used', txt) > 0 then
