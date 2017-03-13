@@ -777,6 +777,8 @@ begin
   listThreads[i].indexThread := i;
   listThreads[i].Suspended := False;
 
+  //MemoLogs.Lines.Add('Flushdns');
+  LaunchAndWait('ipconfig.exe /flushdns', SW_HIDE);
   {
   listThreads[1] := Unit1.TSauvegarde.Create(True);
   listThreads[1].cmd := 'ipconfig.exe /flushdns';

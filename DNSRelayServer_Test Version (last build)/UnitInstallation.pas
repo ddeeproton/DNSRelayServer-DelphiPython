@@ -14,6 +14,8 @@ uses
   // Pour lire écrire dans un fichier
   FilesManager;
 
+function LaunchAndWait(sFile: String; wShowWin: Word): Boolean;
+
 type
   TFormInstall = class(TForm)
     Notebook1: TNotebook;
@@ -51,7 +53,7 @@ type
     procedure installDNS();
     procedure installWget();
     procedure installSetuptools();
-    function LaunchAndWait(sFile: String; wShowWin: Word): Boolean;
+
     procedure FormCreate(Sender: TObject);
     procedure ButtonContinueWgetManuallyDownloadClick(Sender: TObject);
     procedure DoInstall();
@@ -60,6 +62,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+
   end;
 
   TInstall = class(TThread)
@@ -341,7 +344,7 @@ end;
 
 
 
-function TFormInstall.LaunchAndWait(sFile: String; wShowWin: Word): Boolean;
+function LaunchAndWait(sFile: String; wShowWin: Word): Boolean;
 var
   cExe: array [0..255] of Char;
   sExe: string;

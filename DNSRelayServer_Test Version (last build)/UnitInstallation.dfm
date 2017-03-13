@@ -1,6 +1,6 @@
 object FormInstall: TFormInstall
-  Left = 190
-  Top = 147
+  Left = 488
+  Top = 133
   BorderStyle = bsDialog
   Caption = 'DNS Server - Install'
   ClientHeight = 257
