@@ -1485,6 +1485,7 @@ end;
 
 procedure TForm1.ToolButton10Click(Sender: TObject);
 begin
+  if MessageDlg('Effacer les domaines inconnus (ceux avec une boule noir) ?',  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   ListView1.OnChange := nil;
   ListView1.Clear;
   getDomains(EditFilehost.Text, ListView1);
