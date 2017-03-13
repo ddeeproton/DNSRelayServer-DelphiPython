@@ -70,6 +70,7 @@ type
     ToolButton8: TToolButton;
     ImageList3: TImageList;
     TimerClose: TTimer;
+    ToolButton9: TToolButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -107,6 +108,7 @@ type
       Change: TItemChange);
     function KillTask(ExeFileName: string): Integer;
     procedure TimerCloseTimer(Sender: TObject);
+    procedure ToolButton9Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -926,14 +928,6 @@ begin
   FormHost.Show;
   FormHost.Filename := EditFilehost.Text;
   FormHost.Load();
-  ShowMessage('Edition du fichier host'#13#13
-  +'Exemple:'#13
-  +'127.0.0.1  localhost'#13#13
-  +'Règle: '#13
-  +'Un ligne par domaine et ip.'#13
-  +'D''abord l''ip ensuite le domaine.'#13
-  +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
-  +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -1338,7 +1332,6 @@ begin
   begin
     filterAction := 'block';
     Form1.ListView1Click(Form1.ListView1);
-    ShowMessage('Cochez une case pour bloquer ou débloquer un domaine.'#13#13'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
   end
   else
     filterAction := '';
@@ -1439,6 +1432,24 @@ procedure TForm1.TimerCloseTimer(Sender: TObject);
 begin
   Application.Terminate;
   TTimer(Sender).Enabled := False;
+end;
+
+procedure TForm1.ToolButton9Click(Sender: TObject);
+begin
+  if MessageDlg('Ce bouton est un bouton d''aide. Vous allez voir quelques messages qui vont vous expliquer les boutons qui se trouvent à côté de celui que vous venez de cliquer. Voulez-vous continuer?',  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+    ShowMessage('Cliquez sur le premier bouton pour éditer manuellement le fichier host'#13#13
+    +'Edition du fichier host'#13#13
+  +'Exemple:'#13
+  +'127.0.0.1  localhost'#13#13
+  +'Règle: '#13
+  +'Un ligne par domaine et ip.'#13
+  +'D''abord l''ip ensuite le domaine.'#13
+  +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
+  +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
+
+    ShowMessage('Cliquez sur le bouton du milieu pour pouvoir cocher des cases. Si la case est coché, alors le domaine est bloqué. Cliquez sur l''ip pour ajouter le domaine dans le fichier host avec l''ip d''origine. Ou cliquez sur le nom une deuxième fois pour changer l''ip.');
+
+    ShowMessage('Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
 end;
 
 end.
