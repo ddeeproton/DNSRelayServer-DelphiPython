@@ -1394,6 +1394,7 @@ var
   i:integer;
   ip:string;
 begin
+  if not ListView1.IsEditing then exit;
   if (Item.Caption <> '') and (Item.SubItems.Count > 0) then
   begin
     setDomain(EditFilehost.Text, Item.SubItems.Strings[0], Item.Caption);
