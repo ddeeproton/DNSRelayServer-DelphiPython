@@ -1377,13 +1377,14 @@ begin
     ShowMessage('Cliquez sur le premier bouton pour effacer les domaines inconnus (boule noire) et ne garder que ceux qui sont connus.');
     ShowMessage('Cliquez sur le deuxième bouton pour éditer manuellement le fichier host'#13#13
     +'Edition du fichier host'#13#13
-  +'Exemple:'#13
-  +'127.0.0.1  localhost'#13#13
-  +'Règle: '#13
-  +'Un ligne par domaine et ip.'#13
-  +'D''abord l''ip ensuite le domaine.'#13
-  +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
-  +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
+    +'Exemple:'#13
+    +'127.0.0.1  localhost'#13#13
+    +'Règle: '#13
+    +'Un ligne par domaine et ip.'#13
+    +'D''abord l''ip ensuite le domaine.'#13
+    +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
+    +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
+    ShowMessage('Cliquer bouton droit sur une IP de la liste (colone gauche) pour afficher le menu.');
 end;
 
 procedure TForm1.EditFilehostChange(Sender: TObject);

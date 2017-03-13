@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 215
-  Top = 156
+  Left = 108
+  Top = 509
   Width = 589
   Height = 441
   Caption = 'DNS Relay Server 0.4 beta'
@@ -429,18 +429,8 @@ object Form1: TForm1
             ImageIndex = 7
             OnClick = ToolButton10Click
           end
-          object ToolButton8: TToolButton
-            Left = 23
-            Top = 2
-            Hint = 'Modifier des domaines'
-            Caption = 'ToolButton8'
-            ImageIndex = 1
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButton8Click
-          end
           object ToolButtonEditHost: TToolButton
-            Left = 46
+            Left = 23
             Top = 2
             Hint = 'Host File'
             Caption = 'ToolButton20'
@@ -450,7 +440,7 @@ object Form1: TForm1
             OnClick = ToolButtonEditHostClick
           end
           object ToolButton9: TToolButton
-            Left = 69
+            Left = 46
             Top = 2
             Caption = 'ToolButton9'
             ImageIndex = 6
@@ -468,7 +458,7 @@ object Form1: TForm1
           SmallImages = ImageList3
           TabOrder = 1
           ViewStyle = vsReport
-          OnClick = ListView1Click
+          OnContextPopup = ListView1ContextPopup
         end
       end
     end
@@ -10267,7 +10257,7 @@ object Form1: TForm1
     Left = 336
     Top = 313
     Bitmap = {
-      494C010108000900040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -10667,13 +10657,30 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFF81FF81FF81FF81FF00FF00FF00FF00FE007E007E007E007
       E007E007E007E007E007E007E007E007E007E007E007E007E007E007E007E007
       E007E007E007E007F00FF00FF00FF00FF81FF81FF81FF81FFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
   end
   object TimerSaveChange: TTimer
     Enabled = False
     Interval = 3000
     OnTimer = TimerSaveChangeTimer
-    Left = 464
-    Top = 176
+    Left = 416
+    Top = 312
+  end
+  object PopupMenuListView: TPopupMenu
+    Left = 216
+    Top = 273
+    object Autoriser1: TMenuItem
+      Caption = 'Autoriser'
+      OnClick = Autoriser1Click
+    end
+    object Modifier1: TMenuItem
+      Caption = 'Modifier'
+      OnClick = Modifier1Click
+    end
+    object Bloquerledomaine1: TMenuItem
+      Caption = 'Bloquer'
+      OnClick = Bloquerledomaine1Click
+    end
   end
 end
