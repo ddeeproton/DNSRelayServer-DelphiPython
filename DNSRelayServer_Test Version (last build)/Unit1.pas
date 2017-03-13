@@ -907,6 +907,13 @@ begin
   FormHost.Show;
   FormHost.Filename := EditFilehost.Text;
   FormHost.Load();
+  ShowMessage('Edition du fichier host'#13#13
+  +'Exemple:'#13
+  +'127.0.0.1  localhost'#13#13
+  +'Règle: '#13
+  +'Un ligne par domaine et ip.'#13
+  +'D''abord l''ip ensuite le domaine.'#13
+  +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).');
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
