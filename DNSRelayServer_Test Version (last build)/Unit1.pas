@@ -931,6 +931,8 @@ var
 
 begin
   ToolBar3.DoubleBuffered := True;
+  ListView1.DoubleBuffered := True;
+  MemoLogs.DoubleBuffered := True;
   ToolButton7.Click;
 
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
