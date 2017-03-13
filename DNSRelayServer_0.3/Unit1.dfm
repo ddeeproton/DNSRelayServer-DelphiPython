@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 156
   Width = 589
   Height = 441
-  Caption = 'DNS Relay Server 0.4 beta'
+  Caption = 'DNS Relay Server 0.3'
   Color = clWhite
   Constraints.MinHeight = 435
   Constraints.MinWidth = 464
