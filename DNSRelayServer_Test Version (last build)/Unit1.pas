@@ -102,6 +102,8 @@ type
     procedure ButtonSelectFilehostClick(Sender: TObject);
     procedure ToolButton8Click(Sender: TObject);
     procedure ListView1Click(Sender: TObject);
+    procedure ListView1Change(Sender: TObject; Item: TListItem;
+      Change: TItemChange);
   private
     { Private declarations }
   public
@@ -944,6 +946,7 @@ begin
 
   ListViewCreate(ListView1);
   getDomains(EditFilehost.Text, ListView1);
+  ListView1.OnChange := ListView1Change;
   {
   // Add at the end
   EditerLigne2(ListView1, ListView1.Items.Count, 3, 'yes','nice');
@@ -1340,6 +1343,10 @@ begin
         if filterAction = 'block' then
           delDomain(EditFilehost.Text, ListItem.SubItems.Strings[0]);
       end;
+    end
+    else begin
+      if ListItem.Caption <> '' then
+        setDomain( EditFilehost.Text, ListItem.SubItems.Strings[0], ListItem.Caption);
     end;
   end;
 
@@ -1358,5 +1365,32 @@ begin
   end;
 end;
 
+
+procedure TForm1.ListView1Change(Sender: TObject; Item: TListItem;
+  Change: TItemChange);
+var
+  ListItem:TListItem;
+  CurPos:TPoint;
+  i:integer;
+  ip:string;
+begin
+
+  if Item.Caption <> '' then
+    setDomain( EditFilehost.Text, Item.SubItems.Strings[0], Item.Caption);
+
+  for i := 0 to ListView1.items.count - 1 do
+  begin
+
+    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
+    ip := onlyChars(ip);
+    //ShowMessage('"'+ip+'"');
+    if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
+    else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
+    else ListView1.Items.Item[i].ImageIndex := 1;
+
+    // On coche la case du proxy actuel (si actif) et decoche les autres
+    ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
+  end;
+end;
 
 end.
