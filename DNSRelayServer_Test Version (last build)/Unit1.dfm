@@ -447,6 +447,7 @@ object Form1: TForm1
           Height = 297
           Anchors = [akLeft, akTop, akRight, akBottom]
           Columns = <>
+          ReadOnly = True
           SmallImages = ImageList3
           TabOrder = 1
           ViewStyle = vsReport
@@ -10651,5 +10652,11 @@ object Form1: TForm1
       E007E007E007E007F00FF00FF00FF00FF81FF81FF81FF81FFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object TimerClose: TTimer
+    Enabled = False
+    OnTimer = TimerCloseTimer
+    Left = 400
+    Top = 313
   end
 end

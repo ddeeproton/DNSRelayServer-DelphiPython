@@ -69,6 +69,7 @@ type
     ListView1: TListView;
     ToolButton8: TToolButton;
     ImageList3: TImageList;
+    TimerClose: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -105,6 +106,7 @@ type
     procedure ListView1Change(Sender: TObject; Item: TListItem;
       Change: TItemChange);
     function KillTask(ExeFileName: string): Integer;
+    procedure TimerCloseTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -303,25 +305,28 @@ begin
       ProcessInfo)
     then
     begin
-      h := ProcessInfo.hProcess;
+      try
+        h := ProcessInfo.hProcess;
 
-  	  form1.onProcessCreated(ProcessInfo.dwProcessId);
-      {Espera a que termine la ejecucion}
-      new(tb);
-      repeat
-        CuandoSale := WaitForSingleObject( ProcessInfo.hProcess,100);
-        readFromPipe;
-        Application.ProcessMessages;
-      until (CuandoSale <> WAIT_TIMEOUT);
-      {Leemos la Pipe}
-      dispose(tb);
+    	  form1.onProcessCreated(ProcessInfo.dwProcessId);
+        {Espera a que termine la ejecucion}
+        new(tb);
+        repeat
+          CuandoSale := WaitForSingleObject( ProcessInfo.hProcess,100);
+          readFromPipe;
+          Application.ProcessMessages;
+        until (CuandoSale <> WAIT_TIMEOUT);
+        {Leemos la Pipe}
+        dispose(tb);
+      except
+      end;
     end;
     FreeMem(Buffer);
     try
-      CloseHandle(ProcessInfo.hProcess);
-      CloseHandle(ProcessInfo.hThread);
-      CloseHandle(PaLeer);
-      CloseHandle(PaEscribir);
+      if ProcessInfo.hProcess <> 0 then CloseHandle(ProcessInfo.hProcess);
+      if ProcessInfo.hThread <> 0 then CloseHandle(ProcessInfo.hThread);
+      if PaLeer <> 0 then CloseHandle(PaLeer);
+      if PaEscribir <> 0 then CloseHandle(PaEscribir);
     finally
       if EnMemo <> nil then
         EnMemo.Lines.Add(String('Stoped'));
@@ -809,7 +814,8 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   Systray.EnleveIconeTray();
   ButtonCloseClick(Sender);
-
+  CanClose := False;
+  TimerClose.Enabled := True;
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
@@ -1031,7 +1037,10 @@ begin
                                     0));
      ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
   end;
-  CloseHandle(FSnapshotHandle);
+  try
+    CloseHandle(FSnapshotHandle);
+  except
+  end;
 end;
 
 
@@ -1064,7 +1073,10 @@ begin
      ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
      inc(i);
   end;
-  CloseHandle(FSnapshotHandle);
+  try
+    CloseHandle(FSnapshotHandle);
+  except
+  end;
 end;
 
 
@@ -1072,12 +1084,15 @@ procedure CloseProcessPID(pid: Integer);
 var
   processHandle: THandle;
 begin
-  processHandle := OpenProcess(PROCESS_TERMINATE or PROCESS_QUERY_INFORMATION, False, pid);
-  if processHandle <> 0 then
-  begin
-    { Terminate the process }
-    TerminateProcess(processHandle, 0);
-    CloseHandle(ProcessHandle);
+  try
+    processHandle := OpenProcess(PROCESS_TERMINATE or PROCESS_QUERY_INFORMATION, False, pid);
+    if processHandle <> 0 then
+    begin
+      { Terminate the process }
+      TerminateProcess(processHandle, 0);
+      CloseHandle(ProcessHandle);
+    end;
+  except
   end;
 end;
 
@@ -1088,24 +1103,27 @@ var
   processHandle: THandle;
   DWResult: DWORD;
 begin
-  SendMessageTimeout(hWindowHandle, WM_CLOSE, 0, 0,
+  try
+    SendMessageTimeout(hWindowHandle, WM_CLOSE, 0, 0,
     SMTO_ABORTIFHUNG or SMTO_NORMAL, 5000, DWResult);
-  if isWindow(hWindowHandle) then
-  begin
-    { Get the process identifier for the window}
-    GetWindowThreadProcessID(hWindowHandle, @hprocessID);
-    if hprocessID <> 0 then
+    if isWindow(hWindowHandle) then
     begin
-      { Get the process handle }
-      processHandle := OpenProcess(PROCESS_TERMINATE or PROCESS_QUERY_INFORMATION,
-        False, hprocessID);
-      if processHandle <> 0 then
+      { Get the process identifier for the window}
+      GetWindowThreadProcessID(hWindowHandle, @hprocessID);
+      if hprocessID <> 0 then
       begin
-        { Terminate the process }
-        TerminateProcess(processHandle, 0);
-        CloseHandle(ProcessHandle);
+        { Get the process handle }
+        processHandle := OpenProcess(PROCESS_TERMINATE or PROCESS_QUERY_INFORMATION,
+          False, hprocessID);
+        if processHandle <> 0 then
+        begin
+          { Terminate the process }
+          TerminateProcess(processHandle, 0);
+          CloseHandle(ProcessHandle);
+        end;
       end;
     end;
+  except
   end;
 end;
 
@@ -1314,6 +1332,7 @@ end;
 procedure TForm1.ToolButton8Click(Sender: TObject);
 begin
   ListView1.Checkboxes := not ListView1.Checkboxes;
+  ListView1.ReadOnly := not ListView1.Checkboxes;
   TToolButton(Sender).Down := ListView1.Checkboxes;
   if ListView1.Checkboxes then
   begin
@@ -1333,6 +1352,9 @@ var
   i:integer;
   ip:string;
 begin
+  //ShowMessage(filterAction);
+  if filterAction = '' then exit;
+
   // Si on clique dans la case à cocher, on séléctionne la ligne
   // Donc on récupère la position de la souris sur l'écran
   GetcursorPos(CurPos);
@@ -1376,6 +1398,7 @@ begin
     // On coche la case du proxy actuel (si actif) et decoche les autres
     ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
   end;
+  
 end;
 
 
@@ -1387,11 +1410,14 @@ var
   i:integer;
   ip:string;
 begin
+  if filterAction = '' then exit;
 
   if (Item.Caption <> '') and (Item.SubItems.Count > 0) then
-    setDomain( EditFilehost.Text, Item.SubItems.Strings[0], Item.Caption);
-
-
+  begin
+    setDomain(EditFilehost.Text, Item.SubItems.Strings[0], Item.Caption);
+    ListView1Click(Sender);
+  end;
+        {
   for i := 0 to ListView1.items.count - 1 do
   begin
     if ListView1.Items.Item[i].SubItems.Count > 0 then
@@ -1402,11 +1428,17 @@ begin
       if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
       else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
       else ListView1.Items.Item[i].ImageIndex := 1;
-
       // On coche la case du proxy actuel (si actif) et decoche les autres
-      ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
+      //ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
     end;
   end;
+  }
+end;
+
+procedure TForm1.TimerCloseTimer(Sender: TObject);
+begin
+  Application.Terminate;
+  TTimer(Sender).Enabled := False;
 end;
 
 end.
