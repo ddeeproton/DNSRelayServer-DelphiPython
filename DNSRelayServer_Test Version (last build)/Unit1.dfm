@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = 116
-  Top = 148
+  Left = 210
+  Top = 130
   Width = 589
   Height = 441
-  Caption = 'DNS Relay Server 0.3'
+  Caption = 'DNS Relay Server 0.4 beta'
   Color = clWhite
   Constraints.MinHeight = 435
   Constraints.MinWidth = 464
@@ -495,7 +495,7 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 240
+    Left = 256
     Top = 312
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -1298,7 +1298,7 @@ object Form1: TForm1
       000000000000}
   end
   object PopupMenu1: TPopupMenu
-    Left = 200
+    Left = 216
     Top = 312
     object Afficher1: TMenuItem
       Caption = 'Afficher'
@@ -1319,7 +1319,7 @@ object Form1: TForm1
   object ImageList2: TImageList
     Height = 71
     Width = 81
-    Left = 280
+    Left = 296
     Top = 312
     Bitmap = {
       494C010105000900040051004700FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -10250,11 +10250,11 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 360
+    Left = 376
     Top = 312
   end
   object ImageList3: TImageList
-    Left = 320
+    Left = 336
     Top = 313
     Bitmap = {
       494C010107000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
