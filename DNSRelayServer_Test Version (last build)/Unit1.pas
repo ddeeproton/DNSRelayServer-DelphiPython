@@ -69,7 +69,6 @@ type
     ListView1: TListView;
     ToolButton8: TToolButton;
     ImageList3: TImageList;
-    TimerClose: TTimer;
     ToolButton9: TToolButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -107,7 +106,6 @@ type
     procedure ListView1Change(Sender: TObject; Item: TListItem;
       Change: TItemChange);
     function KillTask(ExeFileName: string): Integer;
-    procedure TimerCloseTimer(Sender: TObject);
     procedure ToolButton9Click(Sender: TObject);
   private
     { Private declarations }
@@ -815,8 +813,6 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   Systray.EnleveIconeTray();
   ButtonCloseClick(Sender);
-  CanClose := False;
-  TimerClose.Enabled := True;
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
@@ -1416,12 +1412,6 @@ begin
     end;
   end;
   }
-end;
-
-procedure TForm1.TimerCloseTimer(Sender: TObject);
-begin
-  Application.Terminate;
-  TTimer(Sender).Enabled := False;
 end;
 
 procedure TForm1.ToolButton9Click(Sender: TObject);

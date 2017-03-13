@@ -10660,10 +10660,4 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
   end
-  object TimerClose: TTimer
-    Enabled = False
-    OnTimer = TimerCloseTimer
-    Left = 400
-    Top = 313
-  end
 end
