@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 210
-  Top = 130
+  Left = 215
+  Top = 156
   Width = 589
   Height = 441
   Caption = 'DNS Relay Server 0.4 beta'
@@ -174,7 +174,6 @@ object Form1: TForm1
     Width = 395
     Height = 369
     Anchors = [akLeft, akTop, akRight, akBottom]
-    PageIndex = 3
     TabOrder = 4
     object TPage
       Left = 0
@@ -243,6 +242,7 @@ object Form1: TForm1
           Height = 21
           TabOrder = 0
           Text = '0.0.0.0'
+          OnChange = EditFilehostChange
         end
         object EditPort: TEdit
           Left = 8
@@ -251,6 +251,7 @@ object Form1: TForm1
           Height = 21
           TabOrder = 1
           Text = '53'
+          OnChange = EditFilehostChange
         end
         object EditFilehost: TEdit
           Left = 8
@@ -259,6 +260,7 @@ object Form1: TForm1
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 2
+          OnChange = EditFilehostChange
         end
         object CheckBoxStartWithWindows: TCheckBox
           Left = 8
@@ -10659,5 +10661,12 @@ object Form1: TForm1
       E007E007E007E007F00FF00FF00FF00FF81FF81FF81FF81FFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object TimerSaveChange: TTimer
+    Enabled = False
+    Interval = 3000
+    OnTimer = TimerSaveChangeTimer
+    Left = 464
+    Top = 176
   end
 end

@@ -70,6 +70,7 @@ type
     ToolButton8: TToolButton;
     ImageList3: TImageList;
     ToolButton9: TToolButton;
+    TimerSaveChange: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -107,6 +108,8 @@ type
       Change: TItemChange);
     function KillTask(ExeFileName: string): Integer;
     procedure ToolButton9Click(Sender: TObject);
+    procedure EditFilehostChange(Sender: TObject);
+    procedure TimerSaveChangeTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -133,6 +136,10 @@ var
   listThreads: array of TSauvegarde;
   MasterDNSFile: string = 'MasterDNSFile.cfg';
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
+  FilehostPathConfig: string = 'FileHostPath.cfg';
+  SlaveDNSIPConfig: string = 'SlaveDNSIP.cfg';
+  SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
+
   PythonPath: string = '';
   DataDirectoryPath: string = '';
 implementation
@@ -347,15 +354,6 @@ end;
 
 
 
-procedure ecrireDansUnFichier(Fichier: string; txt : string);
-var
-  Fp : textfile;
-begin
-  assignFile(Fp, Fichier);
-  reWrite(Fp); // ouvre en lecture
-  Writeln(Fp, txt);
-  closefile(Fp);
-end;
 
 procedure createVBScript();
 var
@@ -936,6 +934,11 @@ begin
   ToolButton7.Click;
 
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
+  FilehostPathConfig := DataDirectoryPath + FilehostPathConfig ;
+  SlaveDNSIPConfig := DataDirectoryPath + SlaveDNSIPConfig;
+  SlaveDNSPortConfig := DataDirectoryPath + SlaveDNSPortConfig;
+
+
   if not DirectoryExists(DataDirectoryPath) then makeDir(DataDirectoryPath);
   if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
   MasterDNSFile := DataDirectoryPath+MasterDNSFile;
@@ -943,7 +946,12 @@ begin
   PythonPath := getPythonPath();
   if FileExists(MasterDNSFile) then
     ListBoxDNSMaster.Items.LoadFromFile(MasterDNSFile);
+
+  if FileExists(FilehostPathConfig) then
+    EditFilehost.Text := lireFichier(FilehostPathConfig);
+    
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+
 
 
   for i:=0 to ParamCount() do
@@ -1317,7 +1325,12 @@ begin
     SaveDialog1.InitialDir := ExtractFilePath(EditFilehost.Text);
 
   if SaveDialog1.Execute then
+  begin
     EditFilehost.Text := SaveDialog1.FileName;
+    ListView1.OnChange := nil;
+    getDomains(EditFilehost.Text, ListView1);
+    ListView1.OnChange := ListView1Change;
+  end;
 end;
 
 procedure TForm1.ToolButton8Click(Sender: TObject);
@@ -1432,6 +1445,20 @@ begin
     ShowMessage('Cliquez sur le bouton du milieu pour pouvoir cocher des cases. Si la case est coché, alors le domaine est bloqué. Cliquez sur l''ip pour ajouter le domaine dans le fichier host avec l''ip d''origine. Ou cliquez sur le nom une deuxième fois pour changer l''ip.');
 
     ShowMessage('Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
+end;
+
+procedure TForm1.EditFilehostChange(Sender: TObject);
+begin
+  TimerSaveChange.Enabled := False;
+  TimerSaveChange.Enabled := True;
+end;
+
+procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+  ecrireDansUnFichier(FilehostPathConfig, EditFilehost.Text);
+  ecrireDansUnFichier(SlaveDNSIPConfig, EditDNSServerSlaveIP.Text);
+  ecrireDansUnFichier(SlaveDNSPortConfig, EditPort.Text);
 end;
 
 end.

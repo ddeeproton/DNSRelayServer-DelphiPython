@@ -8,6 +8,8 @@ interface
 
 implementation
 
+uses SysUtils;
+
 
 function LireFichier(Filename: string):String;
 var
@@ -29,10 +31,22 @@ procedure ecrireDansUnFichier(Fichier: string; txt: string);
 var
   Fp : textfile;
 begin
+  if not DirectoryExists(ExtractFileDir(Fichier)) then exit;
   assignFile(Fp, Fichier);
-  reWrite(Fp); // ouvre en lecture
-  Write(Fp, txt);
-  closefile(Fp);
+
+  try
+    //reset(Fp);
+    reWrite(Fp); // ouvre en lecture
+    Write(Fp, txt);
+    closefile(Fp);
+
+  except
+  // If there was an error the reason can be found here
+  on E: EInOutError do
+    //writeln('File handling error occurred. Details: ', E.ClassName, '/', E.Message);
+    exit;
+  end;
+
 end;
 
 function makeDir(path:string):Boolean; // return true if created
