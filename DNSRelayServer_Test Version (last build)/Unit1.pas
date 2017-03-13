@@ -1391,18 +1391,21 @@ begin
   if (Item.Caption <> '') and (Item.SubItems.Count > 0) then
     setDomain( EditFilehost.Text, Item.SubItems.Strings[0], Item.Caption);
 
+
   for i := 0 to ListView1.items.count - 1 do
   begin
+    if ListView1.Items.Item[i].SubItems.Count > 0 then
+    begin
+      ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
+      ip := onlyChars(ip);
+      //ShowMessage('"'+ip+'"');
+      if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
+      else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
+      else ListView1.Items.Item[i].ImageIndex := 1;
 
-    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
-    ip := onlyChars(ip);
-    //ShowMessage('"'+ip+'"');
-    if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
-    else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
-    else ListView1.Items.Item[i].ImageIndex := 1;
-
-    // On coche la case du proxy actuel (si actif) et decoche les autres
-    ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
+      // On coche la case du proxy actuel (si actif) et decoche les autres
+      ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
+    end;
   end;
 end;
 
