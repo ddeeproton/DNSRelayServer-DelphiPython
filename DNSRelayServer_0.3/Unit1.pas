@@ -137,7 +137,6 @@ var
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
   PythonPath: string = '';
   DataDirectoryPath: string = '';
-  filterAction: string = '';
 implementation
 
 {$R *.dfm}
@@ -1329,12 +1328,7 @@ begin
   ListView1.ReadOnly := not ListView1.Checkboxes;
   TToolButton(Sender).Down := ListView1.Checkboxes;
   if ListView1.Checkboxes then
-  begin
-    filterAction := 'block';
     Form1.ListView1Click(Form1.ListView1);
-  end
-  else
-    filterAction := '';
 end;
 
 
@@ -1346,7 +1340,6 @@ var
   ip:string;
 begin
   //ShowMessage(filterAction);
-  if filterAction = '' then exit;
 
   // Si on clique dans la case à cocher, on séléctionne la ligne
   // Donc on récupère la position de la souris sur l'écran
@@ -1363,14 +1356,12 @@ begin
     begin
       if ListItem.Checked then
       begin
-        if (filterAction = 'block') and (ListItem.SubItems.Strings[0] <> '') then
+        if (ListItem.SubItems.Strings[0] <> '') then
           setDomain( EditFilehost.Text, ListItem.SubItems.Strings[0], '127.0.0.1');
-          //ShowMessage(ListItem.Caption);
       end
-      else begin
-        if filterAction = 'block' then
-          delDomain(EditFilehost.Text, ListItem.SubItems.Strings[0]);
-      end;
+      else if (ListItem.SubItems.Strings[0] <> '') then
+        delDomain(EditFilehost.Text, ListItem.SubItems.Strings[0]);
+
     end
     else begin
       if ListItem.Caption <> '' then
@@ -1403,8 +1394,6 @@ var
   i:integer;
   ip:string;
 begin
-  if filterAction = '' then exit;
-
   if (Item.Caption <> '') and (Item.SubItems.Count > 0) then
   begin
     setDomain(EditFilehost.Text, Item.SubItems.Strings[0], Item.Caption);
