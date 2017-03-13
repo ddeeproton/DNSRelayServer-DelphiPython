@@ -104,13 +104,14 @@ type
     procedure ListView1Click(Sender: TObject);
     procedure ListView1Change(Sender: TObject; Item: TListItem;
       Change: TItemChange);
+    function KillTask(ExeFileName: string): Integer;
   private
     { Private declarations }
   public
     { Public declarations }
   end;
 
-  TSauvegarde = class(TThread)                      
+  TSauvegarde = class(TThread)
     cmd:String;
     EnMemo:TMemo;
     h: Cardinal;
@@ -206,6 +207,14 @@ begin
       form1.ListBoxDomains.Items.Add(domain+'->'+ipdomain+' ('+ipclient+')');
     end;
     }
+  end
+  else begin
+    if Pos('Error: Port  53  already used', txt) > 0 then
+    begin
+      Form1.MemoLogs.Lines.Add('Close all python.exe process');
+      Form1.KillTask('python.exe');
+      Form1.ButtonStartClick(nil);
+    end;
   end;
   if sl <> nil then
     sl.Free;
@@ -316,7 +325,8 @@ begin
       CloseHandle(PaLeer);
       CloseHandle(PaEscribir);
     finally
-      EnMemo.Lines.Add(String('Stoped'));
+      if EnMemo <> nil then
+        EnMemo.Lines.Add(String('Stoped'));
     end;
   end;
 end;
@@ -756,7 +766,8 @@ begin
 
   closeProcessCreated;
 
-  if not FileExists(EditFilehost.Text) then
+
+  if FileExists(String(EditFilehost.Text)) = False then
     ecrireDansUnFichier(EditFilehost.Text, '127.0.0.1	localhost');
   createVBScript();
 
@@ -770,10 +781,10 @@ begin
 
   {
   listThreads[1] := Unit1.TSauvegarde.Create(True);
-  listThreads[1].cmd := 'ping.exe 127.0.0.1';
-  listThreads[1].EnMemo := Memo2;
+  listThreads[1].cmd := 'ipconfig.exe /flushdns';
+  listThreads[1].EnMemo := nil;
   listThreads[1].Suspended := False;
-  }
+   }
   //listThreads[0].Terminate;
 end;
 
@@ -915,7 +926,8 @@ begin
   +'Règle: '#13
   +'Un ligne par domaine et ip.'#13
   +'D''abord l''ip ensuite le domaine.'#13
-  +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).');
+  +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
+  +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -995,7 +1007,7 @@ begin
 end;
 
 
-function KillTask(ExeFileName: string): Integer;
+function TForm1.KillTask(ExeFileName: string): Integer;
 const
   PROCESS_TERMINATE = $0001;
 var
@@ -1122,8 +1134,9 @@ var
 begin
   if not FileExists(SlaveDNSProcesslist) then exit;
 
-
-  h := StrToInt(LireFichier(SlaveDNSProcesslist));
+  txt := LireFichier(SlaveDNSProcesslist);
+  if txt = '' then exit;
+  h := StrToInt(txt);
   CloseTaskPID('python.exe',h);
   exit;
 
@@ -1306,7 +1319,7 @@ begin
   begin
     filterAction := 'block';
     Form1.ListView1Click(Form1.ListView1);
-    ShowMessage('Sélectionnez les domaines à bloquer dans les cases à cocher.'#13#13'Et redémarrez le serveur (bouton Start) pour appliquer les changements.');
+    ShowMessage('Cochez une case pour bloquer ou débloquer un domaine.'#13#13'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
   end
   else
     filterAction := '';
