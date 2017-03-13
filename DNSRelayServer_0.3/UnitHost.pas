@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls;
+  Dialogs, StdCtrls, HostParser;
 
 type
   TFormHost = class(TForm)
@@ -28,6 +28,7 @@ implementation
 
 {$R *.dfm}
 
+uses Unit1;
 
 procedure writeFile(Fichier, txt : string);
 var
@@ -80,6 +81,12 @@ procedure TFormHost.ButtonSaveClick(Sender: TObject);
 begin
   Memo1.Lines.SaveToFile(Filename);
   Self.Close;
+  with Unit1.Form1 do
+  begin
+    ListView1.OnChange := nil;
+    getDomains(EditFilehost.Text, ListView1);
+    ListView1.OnChange := ListView1Change;
+  end;
 end;
 
 end.

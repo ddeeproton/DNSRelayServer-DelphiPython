@@ -6,6 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
   UnitHost, XPMan, Systray, Registry, md5, ListViewManager, HostParser,
+  NetworkManager,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -67,10 +68,14 @@ type
     ButtonSelectFilehost: TButton;
     SaveDialog1: TSaveDialog;
     ListView1: TListView;
-    ToolButton8: TToolButton;
     ImageList3: TImageList;
     ToolButton9: TToolButton;
     TimerSaveChange: TTimer;
+    ToolButton10: TToolButton;
+    PopupMenuListView: TPopupMenu;
+    Bloquerledomaine1: TMenuItem;
+    Autoriser1: TMenuItem;
+    Modifier1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -82,7 +87,6 @@ type
     procedure ToolButtonEditHostClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure MemoLogsChange(Sender: TObject);
-    procedure ListBoxDomainsDblClick(Sender: TObject);
     procedure onProcessCreated(h: Cardinal);
     procedure closeProcessCreated();
     function isPythonInstalled(PythonDirPath: string):bool;
@@ -102,14 +106,19 @@ type
     procedure refreshCheckBox(Checkbox:TCheckBox);
     procedure CheckBoxStartWithWindowsClick(Sender: TObject);
     procedure ButtonSelectFilehostClick(Sender: TObject);
-    procedure ToolButton8Click(Sender: TObject);
-    procedure ListView1Click(Sender: TObject);
     procedure ListView1Change(Sender: TObject; Item: TListItem;
       Change: TItemChange);
     function KillTask(ExeFileName: string): Integer;
     procedure ToolButton9Click(Sender: TObject);
     procedure EditFilehostChange(Sender: TObject);
     procedure TimerSaveChangeTimer(Sender: TObject);
+    procedure ToolButton10Click(Sender: TObject);
+    procedure Bloquerledomaine1Click(Sender: TObject);
+    procedure Autoriser1Click(Sender: TObject);
+    procedure ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure Modifier1Click(Sender: TObject);
+    procedure refreshListView1Click();
   private
     { Private declarations }
   public
@@ -133,6 +142,7 @@ var
   Form1: TForm1;
   FormHost: TFormHost;
   FormInstall:  TFormInstall = nil;
+  SelectedListItem:TListItem;
   listThreads: array of TSauvegarde;
   MasterDNSFile: string = 'MasterDNSFile.cfg';
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
@@ -198,16 +208,17 @@ begin
     
     if isNew then
     begin
-      i := form1.ListView1.Items.Count;
-      imgIndex := 3;
+
       ip := getDomain(Form1.EditFilehost.Text, domain);
       if ip = '' then imgIndex := 0
       else if ip = '127.0.0.1' then imgIndex := 3
       else if ipdomain = '127.0.0.1' then imgIndex := 3
       else imgIndex := 1;
 
-      EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
-      Form1.ListView1Click(Form1.ListView1);
+      EditerLigne2(form1.ListView1, -1, imgIndex, ipdomain, domain, imgIndex = 3);
+      //i := form1.ListView1.Items.Count;
+      //EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
+      Form1.refreshListView1Click();
     end;
 
   end
@@ -262,7 +273,7 @@ var
 
       txt := StringReplace(String(Buffer), ';EOL;', '', [rfReplaceAll, rfIgnoreCase]);
       form1.MemoLogs.Lines.Text := form1.MemoLogs.Lines.Text + txt;
-      
+
       sl:=TStringList.Create;
       SplitStr(String(Buffer),';EOL;',sl);
       for i:=0 to sl.Count-1 do
@@ -325,6 +336,8 @@ begin
         {Leemos la Pipe}
         dispose(tb);
       except
+        On E : EOSError do
+          exit;
       end;
     end;
     FreeMem(Buffer);
@@ -333,10 +346,13 @@ begin
       if ProcessInfo.hThread <> 0 then CloseHandle(ProcessInfo.hThread);
       if PaLeer <> 0 then CloseHandle(PaLeer);
       if PaEscribir <> 0 then CloseHandle(PaEscribir);
-    finally
-      if EnMemo <> nil then
-        EnMemo.Lines.Add(String('Stoped'));
+    except
+      On E : EOSError do
+        exit
     end;
+    if EnMemo <> nil then
+      EnMemo.Lines.Add(String('Stoped'));
+
   end;
 end;
 
@@ -926,7 +942,7 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
-
+  net: tNetworkInterfaceList;
 begin
   ToolBar3.DoubleBuffered := True;
   ListView1.DoubleBuffered := True;
@@ -952,8 +968,6 @@ begin
     
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 
-
-
   for i:=0 to ParamCount() do
     if ParamStr(i) = '/background' then
     begin
@@ -970,6 +984,29 @@ begin
   // Add at the begining
   EditerLigne2(ListView1, -1, 0, 'cool','nice');
   ShowMessage(getDomain(EditFilehost.Text, 'localhost'));
+  }
+  {
+  If (GetNetworkInterfaces (net)) THen
+  Begin
+    MemoLogs.Clear;
+    MemoLogs.Lines.Add (DateTimeToStr (Now)+ ' : ');
+
+    For i := 0 to High (net) do
+    Begin
+      MemoLogs.Lines.Add ('');
+      MemoLogs.Lines.Add ('#                          : ' + IntToStr(i));
+      MemoLogs.Lines.Add ('Name                       : ' + net[i].ComputerName);
+      MemoLogs.Lines.Add ('IP-Address                 : ' + net[i].AddrIP);
+      MemoLogs.Lines.Add ('Subnet mask                : ' + net[i].SubnetMask);
+      MemoLogs.Lines.Add ('Net address                : ' + net[i].AddrNet);
+      MemoLogs.Lines.Add ('Limited broadcast address  : ' + net[i].AddrLimitedBroadcast);
+      MemoLogs.Lines.Add ('Directed Broadcast address : ' + net[i].AddrDirectedBroadcast);
+      MemoLogs.Lines.Add ('Interface up               : ' + BoolToStr (net[i].IsInterfaceUp, True));
+      MemoLogs.Lines.Add ('Broadcast supported        : ' + BoolToStr (net[i].BroadcastSupport, True));
+      MemoLogs.Lines.Add ('Loopback interface         : ' + BoolToStr (net[i].IsLoopback, True));
+      MemoLogs.Lines.Add ('');
+    end;
+  end;
   }
 end;
 
@@ -993,22 +1030,6 @@ begin
   //if not CheckBoxScrollLogs.Checked then exit;
   LineCount := TMemo(Sender).Perform(EM_GETLINECOUNT, 0, 0) - 1;
   SendMessage(TMemo(Sender).Handle, EM_LINESCROLL, 0, LineCount);
-end;
-
-
-procedure TForm1.ListBoxDomainsDblClick(Sender: TObject);
-var
-  i:integer;
-  txt:string;
-begin
-{
-  i := ListBoxDomains.ItemIndex;
-  if i < 0 then exit;
-  txt := ListBoxDomains.Items.Strings[i];
-  txt := InputBox('DNS Domains', 'Update domain', txt);
-  if txt = '' then exit;
-  ListBoxDomains.Items.Strings[i] := txt;
-  }
 end;
 
 
@@ -1333,70 +1354,6 @@ begin
   end;
 end;
 
-procedure TForm1.ToolButton8Click(Sender: TObject);
-begin
-  ListView1.Checkboxes := not ListView1.Checkboxes;
-  ListView1.ReadOnly := not ListView1.Checkboxes;
-  TToolButton(Sender).Down := ListView1.Checkboxes;
-  if ListView1.Checkboxes then
-    Form1.ListView1Click(Form1.ListView1);
-end;
-
-
-procedure TForm1.ListView1Click(Sender: TObject);
-var
-  ListItem:TListItem;
-  CurPos:TPoint;
-  i:integer;
-  ip:string;
-begin
-  //ShowMessage(filterAction);
-
-  // Si on clique dans la case à cocher, on séléctionne la ligne
-  // Donc on récupère la position de la souris sur l'écran
-  GetcursorPos(CurPos);
-  // on indique sa position en fonction du ListView
-  CurPos:=TListView(Sender).ScreenToClient(CurPos);
-  // On récupère la ligne du listView où se trouve la souris
-  ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
-  // Si on récupère bien une ligne et pas un espace blanc
-  if Assigned(ListItem) then
-  begin
-    // Si on se trouve bien dans la case à cocher
-    if (CurPos.x >= 5) and (CurPos.x <= 20) then
-    begin
-      if ListItem.Checked then
-      begin
-        if (ListItem.SubItems.Strings[0] <> '') then
-          setDomain( EditFilehost.Text, ListItem.SubItems.Strings[0], '127.0.0.1');
-      end
-      else if (ListItem.SubItems.Strings[0] <> '') then
-        delDomain(EditFilehost.Text, ListItem.SubItems.Strings[0]);
-
-    end
-    else begin
-      if ListItem.Caption <> '' then
-        setDomain( EditFilehost.Text, ListItem.SubItems.Strings[0], ListItem.Caption);
-    end;
-  end;
-
-  for i := 0 to ListView1.items.count - 1 do
-  begin
-
-    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
-    ip := onlyChars(ip);
-    //ShowMessage('"'+ip+'"');
-    if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
-    else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
-    else ListView1.Items.Item[i].ImageIndex := 1;
-
-    // On coche la case du proxy actuel (si actif) et decoche les autres
-    ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
-  end;
-  
-end;
-
-
 procedure TForm1.ListView1Change(Sender: TObject; Item: TListItem;
   Change: TItemChange);
 var
@@ -1409,30 +1366,16 @@ begin
   if (Item.Caption <> '') and (Item.SubItems.Count > 0) then
   begin
     setDomain(EditFilehost.Text, Item.SubItems.Strings[0], Item.Caption);
-    ListView1Click(Sender);
+    refreshListView1Click();
   end;
-        {
-  for i := 0 to ListView1.items.count - 1 do
-  begin
-    if ListView1.Items.Item[i].SubItems.Count > 0 then
-    begin
-      ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
-      ip := onlyChars(ip);
-      //ShowMessage('"'+ip+'"');
-      if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
-      else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
-      else ListView1.Items.Item[i].ImageIndex := 1;
-      // On coche la case du proxy actuel (si actif) et decoche les autres
-      //ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
-    end;
-  end;
-  }
+
 end;
 
 procedure TForm1.ToolButton9Click(Sender: TObject);
 begin
   if MessageDlg('Ce bouton est un bouton d''aide. Vous allez voir quelques messages qui vont vous expliquer les boutons qui se trouvent à côté de celui que vous venez de cliquer. Voulez-vous continuer?',  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
-    ShowMessage('Cliquez sur le premier bouton pour éditer manuellement le fichier host'#13#13
+    ShowMessage('Cliquez sur le premier bouton pour effacer les domaines inconnus (boule noire) et ne garder que ceux qui sont connus.');
+    ShowMessage('Cliquez sur le deuxième bouton pour éditer manuellement le fichier host'#13#13
     +'Edition du fichier host'#13#13
   +'Exemple:'#13
   +'127.0.0.1  localhost'#13#13
@@ -1441,10 +1384,6 @@ begin
   +'D''abord l''ip ensuite le domaine.'#13
   +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
   +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
-
-    ShowMessage('Cliquez sur le bouton du milieu pour pouvoir cocher des cases. Si la case est coché, alors le domaine est bloqué. Cliquez sur l''ip pour ajouter le domaine dans le fichier host avec l''ip d''origine. Ou cliquez sur le nom une deuxième fois pour changer l''ip.');
-
-    ShowMessage('Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
 end;
 
 procedure TForm1.EditFilehostChange(Sender: TObject);
@@ -1459,6 +1398,89 @@ begin
   ecrireDansUnFichier(FilehostPathConfig, EditFilehost.Text);
   ecrireDansUnFichier(SlaveDNSIPConfig, EditDNSServerSlaveIP.Text);
   ecrireDansUnFichier(SlaveDNSPortConfig, EditPort.Text);
+end;
+
+procedure TForm1.ToolButton10Click(Sender: TObject);
+begin
+  if MessageDlg('Effacer les domaines inconnus (ceux avec une boule noir) ?',  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+  ListView1.OnChange := nil;
+  ListView1.Clear;
+  getDomains(EditFilehost.Text, ListView1);
+  ListView1.OnChange := ListView1Change;
+end;
+
+procedure TForm1.Bloquerledomaine1Click(Sender: TObject);
+begin
+  if not Assigned(SelectedListItem) then exit;
+  setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
+  refreshListView1Click();
+end;
+
+procedure TForm1.Autoriser1Click(Sender: TObject);
+begin
+  if not Assigned(SelectedListItem) then exit;
+  if (SelectedListItem.SubItems.Strings[0] = '') then exit;
+  delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
+  refreshListView1Click();
+end;
+
+procedure TForm1.Modifier1Click(Sender: TObject);
+var
+  i:integer;
+  txt, ip:string;
+begin
+  if not Assigned(SelectedListItem) then exit;
+  txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.Caption);
+  if txt = '' then exit;
+  setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], txt);
+  SelectedListItem.Caption := txt;
+  refreshListView1Click();
+end;
+
+procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+var
+  ListItem:TListItem;
+  CurPos:TPoint;
+  i:integer;
+  ip:string;
+begin
+
+  // Si on clique dans la case à cocher, on séléctionne la ligne
+  // Donc on récupère la position de la souris sur l'écran
+  GetcursorPos(MousePos);
+  // on indique sa position en fonction du ListView
+  CurPos:=TListView(Sender).ScreenToClient(MousePos);
+  // On récupère la ligne du listView où se trouve la souris
+  ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
+  // Si on récupère bien une ligne et pas un espace blanc
+  if Assigned(ListItem) then
+  begin
+    SelectedListItem := ListItem;
+    PopupMenuListView.Popup(Left+CurPos.x+Notebook1.Left,Top+CurPos.y+Notebook1.Top+100);
+  end;
+end;
+
+
+procedure TForm1.refreshListView1Click();
+var
+  i:integer;
+  ip:string;
+begin
+  for i := 0 to ListView1.items.count - 1 do
+  begin
+
+    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
+    ip := onlyChars(ip);
+    //ShowMessage('"'+ip+'"');
+    if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
+    else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
+    else ListView1.Items.Item[i].ImageIndex := 1;
+
+    // On coche la case du proxy actuel (si actif) et decoche les autres
+    ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
+  end;
+
 end;
 
 end.

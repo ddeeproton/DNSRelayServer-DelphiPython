@@ -1,6 +1,6 @@
 object FormHost: TFormHost
-  Left = 433
-  Top = 158
+  Left = 654
+  Top = 146
   Width = 454
   Height = 381
   Caption = 'FormHost'
