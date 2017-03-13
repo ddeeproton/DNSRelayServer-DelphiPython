@@ -206,9 +206,12 @@ begin
   else begin
     if Pos('Error: Port  53  already used', txt) > 0 then
     begin
-      Form1.MemoLogs.Lines.Add('Close all python.exe process');
-      Form1.KillTask('python.exe');
-      Form1.ButtonStartClick(nil);
+      if MessageDlg('Le port 53 est déjà utilisé. Désirez-vous forcer la fermerture des processus python et essayer à nouveau?'#13#13'(si ce message persiste, soit le port 53 est utilisé par un autre processus, soit vous avez indiqué une mauvaise adresse IP.',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+      begin
+        Form1.MemoLogs.Lines.Add('Close all python.exe process');
+        Form1.KillTask('python.exe');
+        Form1.ButtonStartClick(nil);
+      end;
     end;
   end;
   if sl <> nil then
@@ -1383,7 +1386,7 @@ var
   ip:string;
 begin
 
-  if Item.Caption <> '' then
+  if (Item.Caption <> '') and (Item.SubItems.Count > 0) then
     setDomain( EditFilehost.Text, Item.SubItems.Strings[0], Item.Caption);
 
   for i := 0 to ListView1.items.count - 1 do
