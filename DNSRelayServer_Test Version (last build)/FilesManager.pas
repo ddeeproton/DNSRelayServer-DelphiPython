@@ -32,12 +32,14 @@ var
   Fp : textfile;
 begin
   if not DirectoryExists(ExtractFileDir(Fichier)) then exit;
+  assignFile(Fp, Fichier);
+
   try
-    assignFile(Fp, Fichier);
     //reset(Fp);
     reWrite(Fp); // ouvre en lecture
     Write(Fp, txt);
     closefile(Fp);
+
   except
   // If there was an error the reason can be found here
   on E: EInOutError do

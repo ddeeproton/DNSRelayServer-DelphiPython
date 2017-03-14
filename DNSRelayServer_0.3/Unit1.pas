@@ -829,6 +829,7 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   Systray.EnleveIconeTray();
   ButtonCloseClick(Sender);
+  KillTask(ExtractFileName(Application.ExeName));
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);

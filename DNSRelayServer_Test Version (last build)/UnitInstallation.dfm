@@ -1358,9 +1358,9 @@ object FormInstall: TFormInstall
         object Label9: TLabel
           Left = 112
           Top = 80
-          Width = 292
+          Width = 316
           Height = 13
-          Caption = 'et placez-le dans le dossier "setup" voir ci-dessous'
+          Caption = 'et placez-le dans le m'#234'me dossier que cette application'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11

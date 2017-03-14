@@ -5,16 +5,12 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
-  UnitHost, XPMan, Systray, Registry, md5, ListViewManager, HostParser, Menus,
+  UnitHost, XPMan, Systray, Registry, md5, ListViewManager, HostParser,
   NetworkManager,
-  // Le serveur DMS
-  PythonDNS,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
   FilesManager,
-  // Pour les processus
-  ProcessManager,
   // Pour FProcessEntry32
   Tlhelp32,
   // Pour le registre
@@ -22,7 +18,7 @@ uses
   // POur l'installation
   UnitInstallation,
   // Pour AnsiReplaceStr
-  StrUtils;
+  StrUtils, Sockets, Menus;
 
 type
   TForm1 = class(TForm)
@@ -112,6 +108,7 @@ type
     procedure ButtonSelectFilehostClick(Sender: TObject);
     procedure ListView1Change(Sender: TObject; Item: TListItem;
       Change: TItemChange);
+    function KillTask(ExeFileName: string): Integer;
     procedure ToolButton9Click(Sender: TObject);
     procedure EditFilehostChange(Sender: TObject);
     procedure TimerSaveChangeTimer(Sender: TObject);
@@ -218,7 +215,6 @@ begin
       else if ipdomain = '127.0.0.1' then imgIndex := 3
       else imgIndex := 1;
 
-      domain := Copy(domain, 1, Length(domain)-1);
       EditerLigne2(form1.ListView1, -1, imgIndex, ipdomain, domain, imgIndex = 3);
       //i := form1.ListView1.Items.Count;
       //EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
@@ -232,7 +228,7 @@ begin
       if MessageDlg('Le port 53 est déjà utilisé. Désirez-vous forcer la fermerture des processus python et essayer à nouveau?'#13#13'(si ce message persiste, soit le port 53 est utilisé par un autre processus, soit vous avez indiqué une mauvaise adresse IP.',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
       begin
         Form1.MemoLogs.Lines.Add('Close all python.exe process');
-        KillTask('python.exe');
+        Form1.KillTask('python.exe');
         Form1.ButtonStartClick(nil);
       end;
     end;
@@ -374,6 +370,411 @@ end;
 
 
 
+
+procedure createVBScript();
+var
+  i: integer;
+  script, dnsMaster: string;
+begin
+  dnsMaster := '';
+  for i := 0 to form1.ListBoxDNSMaster.Items.Count -1 do
+  begin
+    if not (dnsMaster = '') then dnsMaster := dnsMaster + ',';
+    dnsMaster := dnsMaster + '''' + form1.ListBoxDNSMaster.Items.Strings[i] + '''';
+  end;
+
+  script :=   '#!/usr/bin/env python'#13#10+
+  'import sys, subprocess'#13#10+
+  'import socket'#13#10+
+  'import dns.resolver'#13#10+
+  'from dns.exception import DNSException'#13#10+
+  'import time'#13#10+
+  'import sys'#13#10+
+  ''#13#10+
+  '#import MySQLdb'#13#10+
+  ''#13#10+
+  '#============================='#13#10+
+  '# FastDNS version 0.1'#13#10+
+  '#============================='#13#10+
+  '# Requirements:'#13#10+
+  '# [Pyhton]'#13#10+
+  '#  http://www.python.org/getit/'#13#10+
+  '#'#13#10+
+  '# [dnspython]'#13#10+
+  '#  http://www.dnspython.org/'#13#10+
+  '#'#13#10+
+  '# [MySQL-python]'#13#10+
+  '#  http://sourceforge.net/projects/mysql-python/'#13#10+
+  '#'#13#10+
+  '# [MySQL server]'#13#10+
+  '#  http://dev.mysql.com/downloads/'#13#10+
+  '#'#13#10+
+  '# Create table SQL'#13#10+
+  '# CREATE TABLE IF NOT EXISTS `dnscache` (`domain` varchar(255) NOT NULL,`ip` varchar(15) NOT NULL,`banned` tinyint(1) NOT NULL, UNIQUE KEY `domain` (`domain`)) TYPE=InnoDB;'#13#10+
+  '#============================='#13#10+
+  ''#13#10+
+  '#============================='#13#10+
+  '# CONFIGURATION'#13#10+
+  '#============================='#13#10+
+  ''#13#10+
+  ''#13#10+
+  '# MySQL'#13#10+
+  'config_dbhost = "192.168.0.1"'#13#10+
+  'config_dbuser = "root2"'#13#10+
+  'config_dbpasswd = ""'#13#10+
+  'config_dbname = "DNSdata"'#13#10+
+  'config_dbtable = "dnscache"'#13#10+
+  'config_dbport = 33006'#13#10+
+  ''#13#10+
+  '# Relay DNS'#13#10+
+  '#config_dnsrelay = [''209.244.0.3'',''209.244.0.4'']'#13#10+
+  'config_dnsrelay = ['+dnsMaster+']'#13#10+
+  'config_dnstimeout = 5'#13#10+
+  ''#13#10+
+  '#Client DNS'#13#10+
+  'config_cache_sql = 0  # [ 0 | 1 ] utilise la base MySQL en priorite'#13#10+
+  'config_cache_memory = 1 # [ 0 | 1 ] utilise la memoire pour stocker les resolutions'#13#10+
+  ''#13#10+
+  '# Server DNS'#13#10+
+  'config_dnsip = ''0.0.0.0'''#13#10+
+  'if len(sys.argv) > 1:'#13#10+
+  '	if sys.argv[1] == ''config_dnsip'':'#13#10+
+  '		if len(sys.argv) > 2:'#13#10+
+  '			config_dnsip = sys.argv[2]'#13#10+
+  '			'#13#10+
+  '# hostfile = ''hosts ''+config_dnsip+''.txt'''#13#10+
+  'hostfile = ''hosts.txt'''#13#10+
+  'if len(sys.argv) > 3:'#13#10+
+  '	if sys.argv[3] == ''hostfile'':'#13#10+
+  '		if len(sys.argv) > 2:'#13#10+
+  '			hostfile = sys.argv[4]'#13#10+
+  ''#13#10+
+  'config_dnsport = '+form1.EditPort.Text+#13#10+
+  'config_delayerror = 1'#13#10+
+  ''#13#10+
+  'config_display = True'#13#10+
+  ''#13#10+
+  '# Banned countries'#13#10+
+  '#config_banned_countries = [''us'',''uk'',''il'',''ie'']'#13#10+
+  '#config_banned_countries = [''il'']'#13#10+
+  'config_banned_countries = []'#13#10+
+  ''#13#10+
+  'cache_domains = []'#13#10+
+  'cache_ips = []'#13#10+
+  ''#13#10+
+  '#============================='#13#10+
+  '# SQL'#13#10+
+  '#============================='#13#10+
+  ''#13#10+
+  ''#13#10+
+  ''#13#10+
+  ''#13#10+
+  'class DNSClient:'#13#10+
+  '	def __init__(self, nameservers, timeout):'#13#10+
+  '		self.res = dns.resolver.Resolver()'#13#10+
+  '		self.res.nameservers = nameservers'#13#10+
+  '		self.res.timeout = timeout'#13#10+
+  ''#13#10+
+  '	def dnsResolve(self, domain):'#13#10+
+  '		res = 0'#13#10+
+  '		try:'#13#10+
+  '			answer = self.res.query(domain, "A")'#13#10+
+  '			res = "%s" % answer[0]'#13#10+
+  '		except dns.resolver.NoAnswer:'#13#10+
+  '			print "Error: No AAAA record for", dnss.domain," ", data'#13#10+
+  '			sys.stdout.flush()'#13#10+
+  '		except dns.resolver.NXDOMAIN:'#13#10+
+  '			print "Error: The name ", dnss.domain, " does not exist"'#13#10+
+  '			sys.stdout.flush()'#13#10+
+  '		except DNSException:'#13#10+
+  '			print ''Error: DNS Exception: '', dnss.domain'#13#10+
+  '			sys.stdout.flush()'#13#10+
+  '		return res'#13#10+
+  ''#13#10+
+  'class DNSServer:'#13#10+
+  '	def __init__(self, ip, port, delayerror):'#13#10+
+  '		self.udps = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)'#13#10+
+  '		try:'#13#10+
+  '			self.udps.bind((ip,port))'#13#10+
+  '		except:'#13#10+
+  '			print "Error: Port ",port," already used (wait ",delayerror," seconds before close)"'#13#10+
+  '			sys.stdout.flush()'#13#10+
+  '			time.sleep(delayerror)'#13#10+
+  '			sys.exit(0)'#13#10+
+  ''#13#10+
+  '	def recieveQuery(self):'#13#10+
+  '		try:'#13#10+
+  '			return self.udps.recvfrom(1024)'#13#10+
+  '		except:'#13#10+
+  '			print "Error: recieving data on UDP server"'#13#10+
+  '			sys.stdout.flush()'#13#10+
+  ''#13#10+
+  '	def sendQuery(self, answer, addr):'#13#10+
+  '		self.udps.sendto(answer, addr)'#13#10+
+  ''#13#10+
+  '	def close(self):'#13#10+
+  '		self.udps.close()'#13#10+
+  '		print ''Close'''#13#10+
+  '		sys.stdout.flush()'#13#10+
+  ''#13#10+
+  'class DNSQuery:'#13#10+
+  '	def __init__(self, data):'#13#10+
+  '		try:'#13#10+
+  '			self.data=data'#13#10+
+  '			self.domain='''''#13#10+
+  '			#tipo : Opcode query type =  [ standard (0) | inverse (1) | server status (2) ]'#13#10+
+  '			tipo = (ord(data[2]) >> 3) & 15	 # Opcode bits'#13#10+
+  '			if tipo == 0:					 # Standard query'#13#10+
+  '				ini=12'#13#10+
+  '				lon=ord(data[ini])'#13#10+
+  '				while lon != 0:'#13#10+
+  '					self.domain+=data[ini+1:ini+lon+1]+''.'''#13#10+
+  '					ini+=lon+1'#13#10+
+  '					lon=ord(data[ini])'#13#10+
+  '		except:'#13#10+
+  '			return ""'#13#10+
+  ''#13#10+
+  '	def dnsAnswer(self, ip):'#13#10+
+  '		packet='''''#13#10+
+  '		if self.domain and len(self.domain) > 0:'#13#10+
+  '			packet+=self.data[:2] + "\x81\x80"'#13#10+
+  '			packet+=self.data[4:6] + self.data[4:6] + ''\x00\x00\x00\x00''	 # Questions and Answers Counts'#13#10+
+  '			packet+=self.data[12:]											 # Original Domain Name Question'#13#10+
+  '			packet+=''\xc0\x0c''												 # Pointer to domain name'#13#10+
+  '			packet+=''\x00\x01\x00\x01\x00\x00\x00\x3c\x00\x04''				 # Response type, ttl and resource data length -> 4 bytes'#13#10+
+  '			try:'#13#10+
+  '				packet+=str.join('''',map(lambda x: chr(int(x)), ip.split(''.''))) 	 # 4bytes of IP'#13#10+
+  '			except:'#13#10+
+  '				return ""'#13#10+
+  '		return packet'#13#10+
+  ''#13#10+
+  '	def checkHost(self, domain):'#13#10+
+  '		domain = domain[:-1]'#13#10+
+  '		res = '''';'#13#10+
+  '		#fp = open(''C:\WINDOWS\system32\drivers\etc\hosts'', ''r'')'#13#10+
+  '		fp = open(hostfile, ''r'')'#13#10+
+  '		#fp = open(''/mnt/sdcard2/!prog/hosts'', ''r'')'#13#10+
+  '		for line in fp.readlines():'#13#10+
+  '			#print line'#13#10+
+  '			if "	"+domain in line:'#13#10+
+  '				res = line.split("	")[0]'#13#10+
+  '			if " "+domain in line:'#13#10+
+  '				res = line.split("	")[0]'#13#10+
+  '		fp.close()'#13#10+
+  '		if res <> "":'#13#10+
+  '			if res[0] == "#":'#13#10+
+  '				res = '''';'#13#10+
+  '		return res'#13#10+
+  ''#13#10+
+  '	def onlyDomain(self, domain):'#13#10+
+  '		d = domain[:-1]'#13#10+
+  '		data = d.split(".")'#13#10+
+  '		if len(data) <= 2:'#13#10+
+  '			return d'#13#10+
+  '		result=""'#13#10+
+  '		start = len(data) - 2'#13#10+
+  '		for i in range(start,len(data),1):'#13#10+
+  '			result = result + data[i] + "."'#13#10+
+  '		if result <> '''':'#13#10+
+  '			return result[:-1]'#13#10+
+  ''#13#10+
+  ''#13#10+
+  '	def resolveDomain(self, domain, idstatus):'#13#10+
+  '	'#13#10+
+  '		if config_cache_memory == 1:'#13#10+
+  '			if domain in cache_domains:'#13#10+
+  '				i = cache_domains.index(domain)'#13#10+
+  '				return cache_ips[i]'#13#10+
+  '			else:'#13#10+
+  '				cache_domains.append(domain)'#13#10+
+  '				'#13#10+
+  '		if ".in-addr.arpa" in domain:'#13#10+
+  '			if config_display:'#13#10+
+  '				print "ARPA"'#13#10+
+  '			if config_cache_memory == 1:'#13#10+
+  '				cache_ips.append("127.0.0.1")'#13#10+
+  '			return "127.0.0.1"'#13#10+
+  '			'#13#10+
+  '		IPHost = dnss.checkHost(domain)'#13#10+
+  '		if IPHost <> '''':'#13#10+
+  '			if config_display:'#13#10+
+  '				print "Host file domain:"'#13#10+
+  '			if config_cache_memory == 1:'#13#10+
+  '				cache_ips.append(IPHost)'#13#10+
+  '			return IPHost'#13#10+
+  ''#13#10+
+  ''#13#10+
+  '			'#13#10+
+  '		d = dnss.onlyDomain(domain)'#13#10+
+  '		#print d'#13#10+
+  '		nameservers = config_dnsrelay'#13#10+
+  '		ip = dnsc.dnsResolve(domain) # Ask the Primary DNS server'#13#10+
+  '		if ip == 0:'#13#10+
+  '			if config_cache_memory == 1:'#13#10+
+  '				cache_ips.append("127.0.0.1")'#13#10+
+  '			return "127.0.0.1"'#13#10+
+  '			'#13#10+
+  '		#db.sqlsetdomain(domain, ip) # Add IP in database'#13#10+
+  '		if config_cache_memory == 1:'#13#10+
+  '			cache_ips.append(ip)'#13#10+
+  '		return ip'#13#10+
+  ''#13#10+
+  '		'#13#10+
+  ''#13#10+
+  'class SQLConnexion:'#13#10+
+  '	def __init__(self, dbhost, dbport, dbuser, dbpasswd, dbname, dbtable):'#13#10+
+  ''#13#10+
+  '                time.sleep(5)'#13#10+
+  '		self.db = MySQLdb.connect(host=dbhost, port=dbport, user=dbuser, passwd=dbpasswd, db=dbname)'#13#10+
+  '		self.cur = self.db.cursor()'#13#10+
+  '		self.tablecache = dbtable '#13#10+
+  '		try:'#13#10+
+  '			time.sleep(5)'#13#10+
+  '			self.db = MySQLdb.connect(host=dbhost, port=dbport, user=dbuser, passwd=dbpasswd, db=dbname)'#13#10+
+  '			self.cur = self.db.cursor()'#13#10+
+  '			self.tablecache = dbtable    '#13#10+
+  '		except:'#13#10+
+  '			print "Error connexion database MySQL"'#13#10+
+  '			sys.stdout.flush()'#13#10+
+  '			time.sleep(5)'#13#10+
+  '			sys.exit(0)'#13#10+
+  ''#13#10+
+  '	def close(self):'#13#10+
+  '		self.cur.close()'#13#10+
+  '		self.db.close()'#13#10+
+  ''#13#10+
+  '	def sqlquery(self, query):'#13#10+
+  '		try:'#13#10+
+  '			self.cur.execute(query)'#13#10+
+  '		except MySQLdb.Error, e:'#13#10+
+  '			print "Error %d: %s" % (e.args[0], e.args[1])'#13#10+
+  '			print "Query SQL \n %s" % query'#13#10+
+  '			sys.stdout.flush()'#13#10+
+  '			self.db.rollback()'#13#10+
+  '			time.sleep(5)'#13#10+
+  ''#13#10+
+  '	def sqlgetdomain(self, domain):'#13#10+
+  '		res = 0'#13#10+
+  '		self.sqlquery("SELECT * FROM `"+self.tablecache+"` WHERE `domain` = ''"+domain[:-1]+"'';")'#13#10+
+  '		resultcount = int(self.cur.rowcount)'#13#10+
+  '		if resultcount > 0:'#13#10+
+  '			q = self.cur.fetchall()'#13#10+
+  '			ip = q[0][1]'#13#10+
+  '			banned = q[0][2]'#13#10+
+  '			if banned == 1:'#13#10+
+  '				res = "127.0.0.1"'#13#10+
+  '			else:'#13#10+
+  '				res = ip'#13#10+
+  '		return res'#13#10+
+  ''#13#10+
+  '	def sqlsetdomain(self, domain, ip):'#13#10+
+  '		self.sqlquery("DELETE FROM `"+self.tablecache+"` WHERE `domain` = ''"+domain[:-1]+"'';")'#13#10+
+  '		self.db.commit()'#13#10+
+  '		self.sqlquery("INSERT INTO `"+self.tablecache+"` (`domain` ,`ip` ,`banned`) VALUES (''"+domain[:-1]+"'', ''"+ip+"'', ''0'');")'#13#10+
+  '		self.db.commit()'#13#10+
+  ''#13#10+
+  '	def sqlgetcountry(self, ip):'#13#10+
+  '		self.sqlquery("SELECT country FROM ip2nation WHERE ip < INET_ATON(''"+ip+"'') ORDER BY ip DESC LIMIT 0,1;")'#13#10+
+  '		resultcount = int(self.cur.rowcount)'#13#10+
+  '		if resultcount > 0:'#13#10+
+  '			q = self.cur.fetchall()'#13#10+
+  '			country = q[0][0]'#13#10+
+  '			return country'#13#10+
+  '		else:'#13#10+
+  '			return "unkown"'#13#10+
+  ''#13#10+
+  '	def sqlgetcountryname(self, ip):'#13#10+
+  '		self.sqlquery("SELECT c.country FROM ip2nationCountries c, ip2nation i WHERE i.ip < INET_ATON(''"+ip+"'') AND  c.code = i.country ORDER BY i.ip DESC LIMIT 0,1;")'#13#10+
+  '		resultcount = int(self.cur.rowcount)'#13#10+
+  '		if resultcount > 0:'#13#10+
+  '			q = self.cur.fetchall()'#13#10+
+  '			country = q[0][0]'#13#10+
+  '			return country'#13#10+
+  '		else:'#13#10+
+  '			return "unkown"'#13#10+
+  ''#13#10+
+  'if __name__ == ''__main__'':'#13#10+
+  '	print ''Started;EOL;'''#13#10+
+  '	sys.stdout.flush()'#13#10+
+  '	if config_cache_sql == 1:'#13#10+
+  '                db = SQLConnexion(config_dbhost, config_dbport, config_dbuser, config_dbpasswd, config_dbname, config_dbtable) # SQL Connexion'#13#10+
+  '	dnsc = DNSClient(config_dnsrelay, config_dnstimeout) # DNS Client'#13#10+
+  '	udps = DNSServer(config_dnsip, config_dnsport, config_delayerror) # DNS Server'#13#10+
+  '	'#13#10+
+  '	try:'#13#10+
+  '		while 1:'#13#10+
+  '			req = udps.recieveQuery() # recieve UDP data (usually on port 53)'#13#10+
+  '			if not req:'#13#10+
+  '				continue'#13#10+
+  '			data, addr = req # recieve UDP data (usually on port 53)'#13#10+
+  '			dnss = DNSQuery(data) # Parse DNS query'#13#10+
+  '			'#13#10+
+  '			isArpa = ".in-addr.arpa" in dnss.domain'#13#10+
+  '			country = ''unkown'''#13#10+
+  '			answer = ''127.0.0.1'''#13#10+
+  '			if isArpa:'#13#10+
+  '				print ''isArpa'''#13#10+
+  '				ip = dnss.domain.split(".") '#13#10+
+  '				answer = ip[3]+"."+ip[2]+"."+ip[1]+"."+ip[0]'#13#10+
+  '				#country = db.sqlgetcountry(answer)'#13#10+
+  '				#countryname = db.sqlgetcountryname(answer)'#13#10+
+  '				#if country in config_banned_countries:'#13#10+
+  '				#answer = answer+"."+country+"."+countryname'#13#10+
+  '				#TEST'#13#10+
+  '				#answer = ''127.0.0.1'''#13#10+
+  '				#print "arpa adress"'#13#10+
+  '			else:'#13#10+
+  '				#print "normal domain"'#13#10+
+  '				'#13#10+
+  ''#13#10+
+  '				if config_cache_sql == 1: # if domain exists'#13#10+
+  ''#13#10+
+  '					#UPDATE d''adresse deja existante'#13#10+
+  '					#answer = dnsc.dnsResolve(dnss.domain) # Ask the Primary DNS server'#13#10+
+  '					#db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
+  '					answer = db.sqlgetdomain(dnss.domain) # Check if domain exists in database'#13#10+
+  '					countryname = db.sqlgetcountryname(answer)'#13#10+
+  '					country = db.sqlgetcountry(answer)'#13#10+
+  '					if country in config_banned_countries and addr[0] == ''8.8.8.20'':'#13#10+
+  '						answer = ''127.0.0.1'''#13#10+
+  ''#13#10+
+  '					udps.sendQuery(dnss.dnsAnswer(answer), addr) # Send IP to the user'#13#10+
+  ''#13#10+
+  '				else: # if it''s a new domain'#13#10+
+  '					#print "New domain:"'#13#10+
+  '					answer = dnss.resolveDomain(dnss.domain, 2) # Ask the Primary DNS server'#13#10+
+  '					#answer = dnsc.dnsResolve(dnss.domain) # Ask the Primary DNS server'#13#10+
+  '					if answer == 0 :'#13#10+
+  '						answer = "127.0.0.1"'#13#10+
+  '					else:'#13#10+
+  '						#db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
+  '						#countryname = db.sqlgetcountryname(answer)'#13#10+
+  '						#country = db.sqlgetcountry(answer)'#13#10+
+  ''#13#10+
+  '						#if country in config_banned_countries and addr[0] == ''8.8.8.20'':'#13#10+
+  '						#	answer = ''127.0.0.1'''#13#10+
+  ''#13#10+
+  '						udps.sendQuery(dnss.dnsAnswer(answer), addr) # Send IP to the user'#13#10+
+  ''#13#10+
+  '			# Display log'#13#10+
+  '			heure = time.strftime(''%d.%m.%y; %H:%M:%S'',time.localtime())'#13#10+
+  ''#13#10+
+  '			'#13#10+
+  '			#if answer == ''127.0.0.1'':'#13#10+
+  '			#	countryname = '''''#13#10+
+  '			#	country = ''local'''#13#10+
+  '			#else:'#13#10+
+  '			#if answer != ''127.0.0.1'':'#13#10+
+  '			#	db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
+  '			print ''%s; %s; %s; %s;EOL;'' % (heure, addr[0], answer, dnss.domain)'#13#10+
+  '			sys.stdout.flush()'#13#10+
+  '	except KeyboardInterrupt:'#13#10+
+  '		udps.close()'#13#10;
+  ecrireDansUnFichier(DataDirectoryPath + 'relayDNS.py', script);
+end;
+
+
+
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var i: Integer;
 begin
@@ -428,6 +829,7 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   Systray.EnleveIconeTray();
   ButtonCloseClick(Sender);
+  KillTask(ExtractFileName(Application.ExeName));
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
@@ -636,6 +1038,127 @@ begin
 end;
 
 
+function TForm1.KillTask(ExeFileName: string): Integer;
+const
+  PROCESS_TERMINATE = $0001;
+var
+  ContinueLoop: BOOL;
+  FSnapshotHandle: THandle;
+  FProcessEntry32: TProcessEntry32;
+begin
+  Result := 0;
+  FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  FProcessEntry32.dwSize := SizeOf(FProcessEntry32);
+  ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);
+  while Integer(ContinueLoop) <> 0 do
+  begin
+    if ((UpperCase(ExtractFileName(FProcessEntry32.szExeFile)) =
+      UpperCase(ExeFileName)) or (UpperCase(FProcessEntry32.szExeFile) =
+      UpperCase(ExeFileName))) then
+      Result := Integer(TerminateProcess(
+                        OpenProcess(PROCESS_TERMINATE,
+                                    BOOL(0),
+                                    FProcessEntry32.th32ProcessID),
+                                    0));
+     ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
+  end;
+  try
+    CloseHandle(FSnapshotHandle);
+  except
+    On E : EOSError do
+      exit;
+  end;
+end;
+
+
+function CloseTaskPID(ExeFileName: string; pid: Integer): Integer;
+const
+  PROCESS_TERMINATE = $0001;
+  max_loop = 1000;
+var
+  i: Integer;
+  ContinueLoop: BOOL;
+  FSnapshotHandle: THandle;
+  FProcessEntry32: TProcessEntry32;
+begin
+  i := 0;
+  Result := 0;
+  FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  FProcessEntry32.dwSize := SizeOf(FProcessEntry32);
+  ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);
+  while (Integer(ContinueLoop) <> 0) and (i < max_loop) do
+  begin
+    if (
+      (UpperCase(ExtractFileName(FProcessEntry32.szExeFile)) = UpperCase(ExeFileName))
+      or (UpperCase(FProcessEntry32.szExeFile) = UpperCase(ExeFileName))
+      ) and (Integer(FProcessEntry32.th32ProcessID) = pid) then
+      Result := Integer(TerminateProcess(
+                        OpenProcess(PROCESS_TERMINATE,
+                                    BOOL(0),
+                                    FProcessEntry32.th32ProcessID),
+                                    0));
+     ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
+     inc(i);
+  end;
+  try
+    CloseHandle(FSnapshotHandle);
+  except
+    On E : EOSError do
+      exit;
+  end;
+end;
+
+
+procedure CloseProcessPID(pid: Integer);
+var
+  processHandle: THandle;
+begin
+  try
+    processHandle := OpenProcess(PROCESS_TERMINATE or PROCESS_QUERY_INFORMATION, False, pid);
+    if processHandle <> 0 then
+    begin
+      { Terminate the process }
+      TerminateProcess(processHandle, 0);
+      CloseHandle(ProcessHandle);
+    end;
+  except
+    On E : EOSError do
+      exit;
+  end;
+end;
+
+
+procedure KillProcess(hWindowHandle: HWND);
+var
+  hprocessID: INTEGER;
+  processHandle: THandle;
+  DWResult: DWORD;
+begin
+  try
+    SendMessageTimeout(hWindowHandle, WM_CLOSE, 0, 0,
+    SMTO_ABORTIFHUNG or SMTO_NORMAL, 5000, DWResult);
+    if isWindow(hWindowHandle) then
+    begin
+      { Get the process identifier for the window}
+      GetWindowThreadProcessID(hWindowHandle, @hprocessID);
+      if hprocessID <> 0 then
+      begin
+        { Get the process handle }
+        processHandle := OpenProcess(PROCESS_TERMINATE or PROCESS_QUERY_INFORMATION,
+          False, hprocessID);
+        if processHandle <> 0 then
+        begin
+          { Terminate the process }
+          TerminateProcess(processHandle, 0);
+          CloseHandle(ProcessHandle);
+        end;
+      end;
+    end;
+  except
+    On E : EOSError do
+      exit;
+  end;
+end;
 
 procedure TForm1.onProcessCreated(h: Cardinal);
 //var txt: string;
@@ -736,7 +1259,6 @@ end;
 procedure TForm1.Quitter1Click(Sender: TObject);
 var CanClose: Boolean;
 begin
-  CanClose := True;
   FormCloseQuery(Form1, CanClose);
   Application.Terminate;
 end;
