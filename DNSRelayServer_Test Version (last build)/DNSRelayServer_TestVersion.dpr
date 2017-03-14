@@ -9,7 +9,9 @@ uses
   UnitInstallation in 'UnitInstallation.pas' {FormInstall},
   ListViewManager in 'ListViewManager.pas',
   HostParser in 'HostParser.pas',
-  NetworkManager in 'NetworkManager.pas';
+  NetworkManager in 'NetworkManager.pas',
+  ProcessManager in 'ProcessManager.pas',
+  PythonDNS in 'PythonDNS.pas';
 
 {$R *.res}
 

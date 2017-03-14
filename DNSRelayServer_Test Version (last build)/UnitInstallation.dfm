@@ -23,7 +23,6 @@ object FormInstall: TFormInstall
     Width = 465
     Height = 249
     Color = clBtnFace
-    PageIndex = 1
     ParentColor = False
     TabOrder = 0
     object TPage

@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 153
-  Top = 293
+  Left = 221
+  Top = 198
   Width = 589
   Height = 441
   Caption = 'DNS Relay Server 0.4 beta'
@@ -495,7 +495,7 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 256
+    Left = 216
     Top = 312
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -1298,7 +1298,7 @@ object Form1: TForm1
       000000000000}
   end
   object PopupMenu1: TPopupMenu
-    Left = 216
+    Left = 256
     Top = 312
     object Afficher1: TMenuItem
       Caption = 'Afficher'
@@ -1319,8 +1319,8 @@ object Form1: TForm1
   object ImageList2: TImageList
     Height = 71
     Width = 81
-    Left = 296
-    Top = 312
+    Left = 216
+    Top = 272
     Bitmap = {
       494C010105000900040051004700FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000044010000D500000001002000000000005036
@@ -10250,12 +10250,12 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 376
+    Left = 336
     Top = 312
   end
   object ImageList3: TImageList
-    Left = 336
-    Top = 313
+    Left = 216
+    Top = 233
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -10664,11 +10664,11 @@ object Form1: TForm1
     Enabled = False
     Interval = 3000
     OnTimer = TimerSaveChangeTimer
-    Left = 416
+    Left = 296
     Top = 312
   end
   object PopupMenuListView: TPopupMenu
-    Left = 216
+    Left = 256
     Top = 273
     object Autoriser1: TMenuItem
       Caption = 'Autoriser'
