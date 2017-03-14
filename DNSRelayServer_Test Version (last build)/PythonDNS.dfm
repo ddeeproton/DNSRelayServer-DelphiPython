@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 196
-  Top = 387
+  Left = 221
+  Top = 198
   Width = 589
   Height = 441
   Caption = 'DNS Relay Server 0.4 beta'
@@ -174,6 +174,7 @@ object Form1: TForm1
     Width = 395
     Height = 369
     Anchors = [akLeft, akTop, akRight, akBottom]
+    PageIndex = 3
     TabOrder = 4
     object TPage
       Left = 0
@@ -298,11 +299,16 @@ object Form1: TForm1
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Server (Master)'
         TabOrder = 0
+        DesignSize = (
+          379
+          353)
         object ToolBar1: TToolBar
-          Left = 2
+          Left = 8
           Top = 15
-          Width = 375
+          Width = 364
           Height = 29
+          Align = alNone
+          Anchors = [akLeft, akTop, akRight]
           Caption = 'ToolBar1'
           EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
           Images = ImageList1
@@ -344,11 +350,11 @@ object Form1: TForm1
           end
         end
         object ListBoxDNSMaster: TListBox
-          Left = 2
-          Top = 44
-          Width = 375
-          Height = 307
-          Align = alClient
+          Left = 8
+          Top = 48
+          Width = 363
+          Height = 294
+          Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
           Items.Strings = (
             '209.244.0.3'
@@ -373,12 +379,15 @@ object Form1: TForm1
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'IP Clients'
         TabOrder = 0
+        DesignSize = (
+          379
+          353)
         object ListBoxIpClients: TListBox
-          Left = 2
-          Top = 15
-          Width = 375
-          Height = 336
-          Align = alClient
+          Left = 8
+          Top = 16
+          Width = 363
+          Height = 326
+          Anchors = [akLeft, akTop, akRight, akBottom]
           ItemHeight = 13
           TabOrder = 0
         end
@@ -399,11 +408,16 @@ object Form1: TForm1
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'DNS Domains'
         TabOrder = 0
+        DesignSize = (
+          379
+          352)
         object ToolBar2: TToolBar
-          Left = 2
+          Left = 8
           Top = 15
-          Width = 375
+          Width = 363
           Height = 26
+          Align = alNone
+          Anchors = [akLeft, akTop, akRight]
           Caption = 'ToolBar1'
           EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
           Images = ImageList3
@@ -434,11 +448,11 @@ object Form1: TForm1
           end
         end
         object ListView1: TListView
-          Left = 2
-          Top = 41
-          Width = 375
-          Height = 309
-          Align = alClient
+          Left = 8
+          Top = 48
+          Width = 361
+          Height = 297
+          Anchors = [akLeft, akTop, akRight, akBottom]
           Columns = <>
           ReadOnly = True
           SmallImages = ImageList3
@@ -463,12 +477,15 @@ object Form1: TForm1
         Anchors = [akLeft, akTop, akRight, akBottom]
         Caption = 'Logs'
         TabOrder = 0
+        DesignSize = (
+          379
+          354)
         object MemoLogs: TMemo
-          Left = 2
+          Left = 8
           Top = 15
-          Width = 375
-          Height = 337
-          Align = alClient
+          Width = 364
+          Height = 330
+          Anchors = [akLeft, akTop, akRight, akBottom]
           ScrollBars = ssVertical
           TabOrder = 0
           WordWrap = False
@@ -478,7 +495,7 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 256
+    Left = 216
     Top = 312
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -1281,7 +1298,7 @@ object Form1: TForm1
       000000000000}
   end
   object PopupMenu1: TPopupMenu
-    Left = 216
+    Left = 256
     Top = 312
     object Afficher1: TMenuItem
       Caption = 'Afficher'
@@ -1302,8 +1319,8 @@ object Form1: TForm1
   object ImageList2: TImageList
     Height = 71
     Width = 81
-    Left = 296
-    Top = 312
+    Left = 216
+    Top = 272
     Bitmap = {
       494C010105000900040051004700FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000044010000D500000001002000000000005036
@@ -10233,12 +10250,12 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 376
+    Left = 336
     Top = 312
   end
   object ImageList3: TImageList
-    Left = 336
-    Top = 313
+    Left = 216
+    Top = 233
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -10647,11 +10664,11 @@ object Form1: TForm1
     Enabled = False
     Interval = 3000
     OnTimer = TimerSaveChangeTimer
-    Left = 416
+    Left = 296
     Top = 312
   end
   object PopupMenuListView: TPopupMenu
-    Left = 216
+    Left = 256
     Top = 273
     object Autoriser1: TMenuItem
       Caption = 'Autoriser'
