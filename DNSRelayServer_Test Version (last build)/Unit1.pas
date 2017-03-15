@@ -995,7 +995,7 @@ begin
   EditerLigne2(ListView1, -1, 0, 'cool','nice');
   ShowMessage(getDomain(EditFilehost.Text, 'localhost'));
   }
-
+  exit;
   If (GetNetworkInterfaces (net)) THen
   Begin
     MemoLogs.Clear;
