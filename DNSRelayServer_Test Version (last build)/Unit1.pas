@@ -1436,7 +1436,7 @@ procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
 var
   ListItem:TListItem;
   CurPos:TPoint;
-  i:integer;
+  i, TopOffset, LeftOffset:integer;
   ip:string;
 begin
 
@@ -1448,10 +1448,19 @@ begin
   // On récupère la ligne du listView où se trouve la souris
   ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
   // Si on récupère bien une ligne et pas un espace blanc
+  if ToolBar3.Align = alTop then
+  begin
+    LeftOffset := 20;
+    TopOffset := 172
+  end
+  else begin
+    LeftOffset := 115;
+    TopOffset := 78;
+  end;
   if Assigned(ListItem) then
   begin
     SelectedListItem := ListItem;
-    PopupMenuListView.Popup(Left+CurPos.x+Notebook1.Left,Top+CurPos.y+Notebook1.Top+100);
+    PopupMenuListView.Popup(Left+CurPos.x+Notebook1.Left+LeftOffset,Top+CurPos.y+Notebook1.Top+TopOffset);
   end;
 end;
 

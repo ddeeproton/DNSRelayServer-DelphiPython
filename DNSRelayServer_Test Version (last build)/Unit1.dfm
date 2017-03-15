@@ -153,6 +153,7 @@ object Form1: TForm1
       Width = 451
       Height = 327
       Anchors = [akLeft, akTop, akRight, akBottom]
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -431,6 +432,7 @@ object Form1: TForm1
             SmallImages = ImageList3
             TabOrder = 1
             ViewStyle = vsReport
+            OnContextPopup = ListView1ContextPopup
           end
         end
       end
