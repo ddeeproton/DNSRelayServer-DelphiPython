@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 196
-  Top = 387
-  Width = 589
-  Height = 441
+  Left = 159
+  Top = 148
+  Width = 581
+  Height = 507
   Caption = 'DNS Relay Server 0.4 beta'
   Color = clWhite
-  Constraints.MinHeight = 435
+  Constraints.MinHeight = 507
   Constraints.MinWidth = 464
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -62,50 +62,15 @@ object Form1: TForm1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnMouseMove = FormMouseMove
-  DesignSize = (
-    581
-    407)
   PixelsPerInch = 96
   TextHeight = 13
-  object ButtonStart: TButton
-    Left = 403
-    Top = 369
-    Width = 75
-    Height = 25
-    Anchors = [akRight, akBottom]
-    Caption = 'Start'
-    TabOrder = 0
-    OnClick = ButtonStartClick
-  end
-  object ButtonClose: TButton
-    Left = 491
-    Top = 369
-    Width = 75
-    Height = 25
-    Anchors = [akRight, akBottom]
-    Caption = 'Stop'
-    TabOrder = 1
-    OnClick = ButtonCloseClick
-  end
-  object ButtonInstall: TButton
-    Left = 192
-    Top = 369
-    Width = 75
-    Height = 25
-    Anchors = [akLeft, akBottom]
-    Caption = 'Installer'
-    TabOrder = 2
-    OnClick = ButtonInstallClick
-  end
   object ToolBar3: TToolBar
-    Left = 8
-    Top = 8
-    Width = 177
-    Height = 393
-    Align = alNone
-    Anchors = [akLeft, akTop, akBottom]
-    ButtonHeight = 77
-    ButtonWidth = 173
+    Left = 0
+    Top = 0
+    Width = 573
+    Height = 97
+    ButtonHeight = 91
+    ButtonWidth = 88
     Caption = 'ToolBar3'
     Color = clWhite
     EdgeInner = esNone
@@ -116,365 +81,416 @@ object Form1: TForm1
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     Images = ImageList2
-    List = True
     ParentColor = False
     ParentFont = False
     ParentShowHint = False
     ShowCaptions = True
     ShowHint = False
-    TabOrder = 3
+    TabOrder = 0
     object ToolButton7: TToolButton
       Left = 0
       Top = 2
       Caption = 'DNS Relay'
       Grouped = True
       ImageIndex = 4
-      Wrap = True
+      Style = tbsCheck
       OnClick = ToolButton7Click
     end
     object ToolButton5: TToolButton
-      Left = 0
-      Top = 79
+      Left = 88
+      Top = 2
       Caption = 'DNS Master'
       Grouped = True
       ImageIndex = 2
-      Wrap = True
+      Marked = True
+      Style = tbsCheck
       OnClick = ToolButton5Click
     end
     object ToolButton4: TToolButton
-      Left = 0
-      Top = 156
+      Left = 176
+      Top = 2
       Caption = 'Logs (Clients)'
       Grouped = True
       ImageIndex = 1
-      Wrap = True
+      Style = tbsCheck
       OnClick = ToolButton4Click
     end
     object ToolButton6: TToolButton
-      Left = 0
-      Top = 233
+      Left = 264
+      Top = 2
+      Hint = 'Web Filter'
       Caption = 'Web Filter'
       Grouped = True
       ImageIndex = 3
-      Wrap = True
+      ParentShowHint = False
+      ShowHint = False
+      Style = tbsCheck
       OnClick = ToolButton6Click
     end
     object ToolButton3: TToolButton
-      Left = 0
-      Top = 310
+      Left = 352
+      Top = 2
       Caption = 'Pure Logs'
       Grouped = True
       ImageIndex = 0
+      Style = tbsCheck
       OnClick = ToolButton3Click
     end
   end
-  object Notebook1: TNotebook
-    Left = 184
-    Top = 0
-    Width = 395
-    Height = 369
-    Anchors = [akLeft, akTop, akRight, akBottom]
-    TabOrder = 4
-    object TPage
-      Left = 0
+  object Panel1: TPanel
+    Left = 0
+    Top = 97
+    Width = 573
+    Height = 376
+    Align = alClient
+    TabOrder = 1
+    DesignSize = (
+      573
+      376)
+    object Notebook1: TNotebook
+      Left = -2
       Top = 0
-      Caption = 'Default'
-      DesignSize = (
-        395
-        369)
-      object GroupBox2: TGroupBox
-        Left = 8
-        Top = 8
-        Width = 379
-        Height = 353
-        Anchors = [akLeft, akTop, akRight, akBottom]
-        Caption = 'DNS Relay Server (Slave)'
-        TabOrder = 0
+      Width = 564
+      Height = 327
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 0
+      object TPage
+        Left = 0
+        Top = 0
+        Caption = 'Default'
         DesignSize = (
-          379
-          353)
-        object Label1: TLabel
+          564
+          327)
+        object GroupBox2: TGroupBox
           Left = 8
-          Top = 24
-          Width = 51
-          Height = 13
-          Caption = 'Adresse IP'
-        end
-        object Label2: TLabel
-          Left = 8
-          Top = 88
-          Width = 19
-          Height = 13
-          Caption = 'Port'
-        end
-        object Label3: TLabel
-          Left = 8
-          Top = 64
-          Width = 79
-          Height = 13
-          Caption = 'Exemple: 0.0.0.0'
-        end
-        object Label4: TLabel
-          Left = 8
-          Top = 128
-          Width = 58
-          Height = 13
-          Caption = 'Exemple: 53'
-        end
-        object Label5: TLabel
-          Left = 8
-          Top = 152
-          Width = 56
-          Height = 13
-          Caption = 'Fichier Host'
-        end
-        object Label6: TLabel
-          Left = 8
-          Top = 192
-          Width = 80
-          Height = 13
-          Caption = 'Exemple: host.txt'
-        end
-        object EditDNSServerSlaveIP: TEdit
-          Left = 8
-          Top = 40
-          Width = 121
-          Height = 21
+          Top = 0
+          Width = 548
+          Height = 327
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = 'DNS Relay Server (Slave)'
           TabOrder = 0
-          Text = '0.0.0.0'
-          OnChange = EditFilehostChange
-        end
-        object EditPort: TEdit
-          Left = 8
-          Top = 104
-          Width = 121
-          Height = 21
-          TabOrder = 1
-          Text = '53'
-          OnChange = EditFilehostChange
-        end
-        object EditFilehost: TEdit
-          Left = 8
-          Top = 168
-          Width = 313
-          Height = 21
-          Anchors = [akLeft, akTop, akRight]
-          TabOrder = 2
-          OnChange = EditFilehostChange
-        end
-        object CheckBoxStartWithWindows: TCheckBox
-          Left = 8
-          Top = 224
-          Width = 273
-          Height = 17
-          Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
-          TabOrder = 3
-          OnClick = CheckBoxStartWithWindowsClick
-        end
-        object ButtonSelectFilehost: TButton
-          Left = 328
-          Top = 165
-          Width = 35
-          Height = 25
-          Anchors = [akTop, akRight]
-          Caption = '...'
-          TabOrder = 4
-          OnClick = ButtonSelectFilehostClick
+          DesignSize = (
+            548
+            327)
+          object Label1: TLabel
+            Left = 8
+            Top = 24
+            Width = 51
+            Height = 13
+            Caption = 'Adresse IP'
+          end
+          object Label2: TLabel
+            Left = 8
+            Top = 88
+            Width = 19
+            Height = 13
+            Caption = 'Port'
+          end
+          object Label3: TLabel
+            Left = 8
+            Top = 64
+            Width = 79
+            Height = 13
+            Caption = 'Exemple: 0.0.0.0'
+          end
+          object Label4: TLabel
+            Left = 8
+            Top = 128
+            Width = 58
+            Height = 13
+            Caption = 'Exemple: 53'
+          end
+          object Label5: TLabel
+            Left = 8
+            Top = 152
+            Width = 56
+            Height = 13
+            Caption = 'Fichier Host'
+          end
+          object Label6: TLabel
+            Left = 8
+            Top = 192
+            Width = 80
+            Height = 13
+            Caption = 'Exemple: host.txt'
+          end
+          object EditDNSServerSlaveIP: TEdit
+            Left = 8
+            Top = 40
+            Width = 121
+            Height = 21
+            TabOrder = 0
+            Text = '0.0.0.0'
+          end
+          object EditPort: TEdit
+            Left = 8
+            Top = 104
+            Width = 121
+            Height = 21
+            TabOrder = 1
+            Text = '53'
+          end
+          object EditFilehost: TEdit
+            Left = 8
+            Top = 168
+            Width = 482
+            Height = 21
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 2
+          end
+          object CheckBoxStartWithWindows: TCheckBox
+            Left = 8
+            Top = 224
+            Width = 273
+            Height = 17
+            Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
+            TabOrder = 3
+          end
+          object ButtonSelectFilehost: TButton
+            Left = 497
+            Top = 165
+            Width = 35
+            Height = 25
+            Anchors = [akTop, akRight]
+            Caption = '...'
+            TabOrder = 4
+          end
+          object CheckBoxToggleMenuTitle: TCheckBox
+            Left = 8
+            Top = 256
+            Width = 281
+            Height = 17
+            Caption = 'Afficher les titres sur les menus'
+            Checked = True
+            State = cbChecked
+            TabOrder = 5
+            OnClick = CheckBoxToggleMenuTitleClick
+          end
+          object CheckBoxMenuPosition: TCheckBox
+            Left = 8
+            Top = 288
+            Width = 241
+            Height = 17
+            Caption = 'Afficher le menu en haut (si non '#224' gauche)'
+            Checked = True
+            State = cbChecked
+            TabOrder = 6
+            OnClick = CheckBoxMenuPositionClick
+          end
         end
       end
-    end
-    object TPage
-      Left = 0
-      Top = 0
-      Caption = 'Config DNS Master'
-      DesignSize = (
-        395
-        369)
-      object GroupBox1: TGroupBox
-        Left = 8
-        Top = 8
-        Width = 379
-        Height = 353
-        Anchors = [akLeft, akTop, akRight, akBottom]
-        Caption = 'DNS Server (Master)'
-        TabOrder = 0
-        object ToolBar1: TToolBar
-          Left = 2
-          Top = 15
-          Width = 375
-          Height = 29
-          Caption = 'ToolBar1'
-          EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
-          Images = ImageList1
+      object TPage
+        Left = 0
+        Top = 0
+        Caption = 'Config DNS Master'
+        DesignSize = (
+          564
+          327)
+        object GroupBox1: TGroupBox
+          Left = 8
+          Top = 0
+          Width = 548
+          Height = 327
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = 'DNS Server (Master)'
           TabOrder = 0
-          object ToolButton1: TToolButton
-            Left = 0
-            Top = 2
-            Caption = 'ToolButtonAddDNSMaster'
-            ImageIndex = 0
-            OnClick = ToolButton1Click
+          object ToolBar1: TToolBar
+            Left = 2
+            Top = 15
+            Width = 544
+            Height = 29
+            Caption = 'ToolBar1'
+            EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
+            Images = ImageList1
+            TabOrder = 0
+            object ToolButton1: TToolButton
+              Left = 0
+              Top = 2
+              Caption = 'ToolButtonAddDNSMaster'
+              ImageIndex = 0
+            end
+            object ToolButtonUpdateDNSMaster: TToolButton
+              Left = 23
+              Top = 2
+              Caption = 'ToolButtonUpdateDNSMaster'
+              ImageIndex = 19
+            end
+            object ToolButton2: TToolButton
+              Left = 46
+              Top = 2
+              Caption = 'ToolButtonEraseDNSMaster'
+              ImageIndex = 1
+            end
+            object ToolButtonDownDNSMaster: TToolButton
+              Left = 69
+              Top = 2
+              Caption = 'ToolButtonDownDNSMaster'
+              ImageIndex = 2
+            end
+            object ToolButtonUpDNSMaster: TToolButton
+              Left = 92
+              Top = 2
+              Caption = 'ToolButtonDownDNSMaster'
+              ImageIndex = 3
+            end
           end
-          object ToolButtonUpdateDNSMaster: TToolButton
-            Left = 23
-            Top = 2
-            Caption = 'ToolButtonUpdateDNSMaster'
-            ImageIndex = 19
-            OnClick = ToolButtonUpdateDNSMasterClick
+          object ListBoxDNSMaster: TListBox
+            Left = 2
+            Top = 44
+            Width = 544
+            Height = 281
+            Align = alClient
+            ItemHeight = 13
+            Items.Strings = (
+              '209.244.0.3'
+              '209.244.0.4')
+            TabOrder = 1
           end
-          object ToolButton2: TToolButton
-            Left = 46
-            Top = 2
-            Caption = 'ToolButtonEraseDNSMaster'
-            ImageIndex = 1
-            OnClick = ToolButton2Click
-          end
-          object ToolButtonDownDNSMaster: TToolButton
-            Left = 69
-            Top = 2
-            Caption = 'ToolButtonDownDNSMaster'
-            ImageIndex = 2
-            OnClick = ToolButtonDownDNSMasterClick
-          end
-          object ToolButtonUpDNSMaster: TToolButton
-            Left = 92
-            Top = 2
-            Caption = 'ToolButtonDownDNSMaster'
-            ImageIndex = 3
-            OnClick = ToolButtonUpDNSMasterClick
-          end
-        end
-        object ListBoxDNSMaster: TListBox
-          Left = 2
-          Top = 44
-          Width = 375
-          Height = 307
-          Align = alClient
-          ItemHeight = 13
-          Items.Strings = (
-            '209.244.0.3'
-            '209.244.0.4')
-          TabOrder = 1
-          OnDblClick = ToolButtonUpdateDNSMasterClick
         end
       end
-    end
-    object TPage
-      Left = 0
-      Top = 0
-      Caption = 'IP Clients'
-      DesignSize = (
-        395
-        369)
-      object GroupBox3: TGroupBox
-        Left = 8
-        Top = 8
-        Width = 379
-        Height = 353
-        Anchors = [akLeft, akTop, akRight, akBottom]
+      object TPage
+        Left = 0
+        Top = 0
         Caption = 'IP Clients'
-        TabOrder = 0
-        object ListBoxIpClients: TListBox
-          Left = 2
-          Top = 15
-          Width = 375
-          Height = 336
-          Align = alClient
-          ItemHeight = 13
+        DesignSize = (
+          564
+          327)
+        object GroupBox3: TGroupBox
+          Left = 8
+          Top = 0
+          Width = 548
+          Height = 327
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = 'IP Clients'
           TabOrder = 0
+          object ListBoxIpClients: TListBox
+            Left = 2
+            Top = 15
+            Width = 544
+            Height = 310
+            Align = alClient
+            ItemHeight = 13
+            TabOrder = 0
+          end
         end
       end
-    end
-    object TPage
-      Left = 0
-      Top = 0
-      Caption = 'DNS Domains'
-      DesignSize = (
-        395
-        369)
-      object GroupBox4: TGroupBox
-        Left = 8
-        Top = 9
-        Width = 379
-        Height = 352
-        Anchors = [akLeft, akTop, akRight, akBottom]
+      object TPage
+        Left = 0
+        Top = 0
         Caption = 'DNS Domains'
-        TabOrder = 0
-        object ToolBar2: TToolBar
-          Left = 2
-          Top = 15
-          Width = 375
-          Height = 26
-          Caption = 'ToolBar1'
-          EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
-          Images = ImageList3
+        DesignSize = (
+          564
+          327)
+        object GroupBox4: TGroupBox
+          Left = 8
+          Top = 0
+          Width = 548
+          Height = 327
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = 'DNS Domains'
           TabOrder = 0
-          object ToolButton10: TToolButton
-            Left = 0
-            Top = 2
-            Caption = 'ToolButton10'
-            ImageIndex = 7
-            OnClick = ToolButton10Click
+          object ToolBar2: TToolBar
+            Left = 2
+            Top = 15
+            Width = 544
+            Height = 26
+            Caption = 'ToolBar1'
+            EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
+            Images = ImageList3
+            TabOrder = 0
+            object ToolButton10: TToolButton
+              Left = 0
+              Top = 2
+              Caption = 'ToolButton10'
+              ImageIndex = 7
+            end
+            object ToolButtonEditHost: TToolButton
+              Left = 23
+              Top = 2
+              Hint = 'Host File'
+              Caption = 'ToolButton20'
+              ImageIndex = 4
+              ParentShowHint = False
+              ShowHint = True
+            end
+            object ToolButton9: TToolButton
+              Left = 46
+              Top = 2
+              Caption = 'ToolButton9'
+              ImageIndex = 6
+            end
           end
-          object ToolButtonEditHost: TToolButton
-            Left = 23
-            Top = 2
-            Hint = 'Host File'
-            Caption = 'ToolButton20'
-            ImageIndex = 4
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonEditHostClick
-          end
-          object ToolButton9: TToolButton
-            Left = 46
-            Top = 2
-            Caption = 'ToolButton9'
-            ImageIndex = 6
-            OnClick = ToolButton9Click
+          object ListView1: TListView
+            Left = 2
+            Top = 41
+            Width = 544
+            Height = 284
+            Align = alClient
+            Columns = <>
+            ReadOnly = True
+            SmallImages = ImageList3
+            TabOrder = 1
+            ViewStyle = vsReport
           end
         end
-        object ListView1: TListView
-          Left = 2
-          Top = 41
-          Width = 375
-          Height = 309
-          Align = alClient
-          Columns = <>
-          ReadOnly = True
-          SmallImages = ImageList3
-          TabOrder = 1
-          ViewStyle = vsReport
-          OnContextPopup = ListView1ContextPopup
+      end
+      object TPage
+        Left = 0
+        Top = 0
+        Caption = 'Logs'
+        DesignSize = (
+          564
+          327)
+        object GroupBox5: TGroupBox
+          Left = 8
+          Top = 0
+          Width = 548
+          Height = 327
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = 'Logs'
+          TabOrder = 0
+          object MemoLogs: TMemo
+            Left = 2
+            Top = 15
+            Width = 544
+            Height = 310
+            Align = alClient
+            ScrollBars = ssVertical
+            TabOrder = 0
+            WordWrap = False
+          end
         end
       end
     end
-    object TPage
-      Left = 0
-      Top = 0
-      Caption = 'Logs'
-      DesignSize = (
-        395
-        369)
-      object GroupBox5: TGroupBox
-        Left = 8
-        Top = 7
-        Width = 379
-        Height = 354
-        Anchors = [akLeft, akTop, akRight, akBottom]
-        Caption = 'Logs'
-        TabOrder = 0
-        object MemoLogs: TMemo
-          Left = 2
-          Top = 15
-          Width = 375
-          Height = 337
-          Align = alClient
-          ScrollBars = ssVertical
-          TabOrder = 0
-          WordWrap = False
-          OnChange = MemoLogsChange
-        end
-      end
+    object ButtonInstall: TButton
+      Left = 6
+      Top = 335
+      Width = 75
+      Height = 25
+      Anchors = [akLeft, akBottom]
+      Caption = 'Installer'
+      TabOrder = 1
+      OnClick = ButtonInstallClick
+    end
+    object ButtonStart: TButton
+      Left = 391
+      Top = 335
+      Width = 75
+      Height = 25
+      Anchors = [akRight, akBottom]
+      Caption = 'Start'
+      TabOrder = 2
+      OnClick = ButtonStartClick
+    end
+    object ButtonClose: TButton
+      Left = 479
+      Top = 335
+      Width = 75
+      Height = 25
+      Anchors = [akRight, akBottom]
+      Caption = 'Stop'
+      TabOrder = 3
+      OnClick = ButtonCloseClick
     end
   end
   object ImageList1: TImageList

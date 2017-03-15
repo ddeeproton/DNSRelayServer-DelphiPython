@@ -22,10 +22,7 @@ uses
 
 type
   TForm1 = class(TForm)
-    ButtonStart: TButton;
-    ButtonClose: TButton;
     ImageList1: TImageList;
-    ButtonInstall: TButton;
     PopupMenu1: TPopupMenu;
     Quitter1: TMenuItem;
     N1: TMenuItem;
@@ -38,6 +35,14 @@ type
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
+    SaveDialog1: TSaveDialog;
+    ImageList3: TImageList;
+    TimerSaveChange: TTimer;
+    PopupMenuListView: TPopupMenu;
+    Bloquerledomaine1: TMenuItem;
+    Autoriser1: TMenuItem;
+    Modifier1: TMenuItem;
+    Panel1: TPanel;
     Notebook1: TNotebook;
     GroupBox2: TGroupBox;
     Label1: TLabel;
@@ -49,6 +54,9 @@ type
     EditDNSServerSlaveIP: TEdit;
     EditPort: TEdit;
     EditFilehost: TEdit;
+    CheckBoxStartWithWindows: TCheckBox;
+    ButtonSelectFilehost: TButton;
+    CheckBoxToggleMenuTitle: TCheckBox;
     GroupBox1: TGroupBox;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
@@ -61,21 +69,16 @@ type
     ListBoxIpClients: TListBox;
     GroupBox4: TGroupBox;
     ToolBar2: TToolBar;
+    ToolButton10: TToolButton;
     ToolButtonEditHost: TToolButton;
+    ToolButton9: TToolButton;
+    ListView1: TListView;
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
-    CheckBoxStartWithWindows: TCheckBox;
-    ButtonSelectFilehost: TButton;
-    SaveDialog1: TSaveDialog;
-    ListView1: TListView;
-    ImageList3: TImageList;
-    ToolButton9: TToolButton;
-    TimerSaveChange: TTimer;
-    ToolButton10: TToolButton;
-    PopupMenuListView: TPopupMenu;
-    Bloquerledomaine1: TMenuItem;
-    Autoriser1: TMenuItem;
-    Modifier1: TMenuItem;
+    ButtonInstall: TButton;
+    ButtonStart: TButton;
+    ButtonClose: TButton;
+    CheckBoxMenuPosition: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -102,7 +105,6 @@ type
     procedure ToolButton4Click(Sender: TObject);
     procedure ToolButton6Click(Sender: TObject);
     procedure ToolButton3Click(Sender: TObject);
-    procedure allToolButtonUp();
     procedure refreshCheckBox(Checkbox:TCheckBox);
     procedure CheckBoxStartWithWindowsClick(Sender: TObject);
     procedure ButtonSelectFilehostClick(Sender: TObject);
@@ -119,6 +121,8 @@ type
       var Handled: Boolean);
     procedure Modifier1Click(Sender: TObject);
     procedure refreshListView1Click();
+    procedure CheckBoxToggleMenuTitleClick(Sender: TObject);
+    procedure CheckBoxMenuPositionClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -953,6 +957,7 @@ begin
   ListView1.DoubleBuffered := True;
   MemoLogs.DoubleBuffered := True;
   ToolButton7.Click;
+  ToolButton7.Down := True;
 
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
   FilehostPathConfig := DataDirectoryPath + FilehostPathConfig ;
@@ -990,7 +995,7 @@ begin
   EditerLigne2(ListView1, -1, 0, 'cool','nice');
   ShowMessage(getDomain(EditFilehost.Text, 'localhost'));
   }
-  {
+
   If (GetNetworkInterfaces (net)) THen
   Begin
     MemoLogs.Clear;
@@ -1012,7 +1017,7 @@ begin
       MemoLogs.Lines.Add ('');
     end;
   end;
-  }
+ 
 end;
 
 
@@ -1266,54 +1271,27 @@ end;
 procedure TForm1.ToolButton7Click(Sender: TObject);
 begin
   Notebook1.PageIndex := 0;
-  allToolButtonUp();
-  TToolButton(Sender).Down := True;
   refreshCheckBox(CheckBoxStartWithWindows);
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 1;  
-  allToolButtonUp();
-  TToolButton(Sender).Down := True;
+  Notebook1.PageIndex := 1;
 end;
 
 procedure TForm1.ToolButton4Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 2;    
-  allToolButtonUp();
-  TToolButton(Sender).Down := True;
+  Notebook1.PageIndex := 2;
 end;
 
 procedure TForm1.ToolButton6Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 3;     
-  allToolButtonUp();
-  TToolButton(Sender).Down := True;
+  Notebook1.PageIndex := 3;
 end;
 
 procedure TForm1.ToolButton3Click(Sender: TObject);
 begin
   Notebook1.PageIndex := 4;
-  allToolButtonUp();
-  TToolButton(Sender).Down := True;
-end;
-
-procedure TForm1.allToolButtonUp();
-var
-  i: Integer;
-  buttons: array of TToolButton;
-begin
-  SetLength(buttons, 5);
-  buttons[0] := ToolButton7;
-  buttons[1] := ToolButton5;
-  buttons[2] := ToolButton4;
-  buttons[3] := ToolButton6;
-  buttons[4] := ToolButton3;
-  for i := 0 to Length(buttons) - 1 do
-  begin
-    buttons[i].Down := False;
-  end;
 end;
 
 
@@ -1497,6 +1475,19 @@ begin
     ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
   end;
 
+end;
+
+procedure TForm1.CheckBoxToggleMenuTitleClick(Sender: TObject);
+begin
+  ToolBar3.ShowCaptions := TCheckBox(Sender).Checked;
+end;
+
+procedure TForm1.CheckBoxMenuPositionClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ToolBar3.Align := alTop
+  else
+    ToolBar3.Align := alLeft;
 end;
 
 end.
