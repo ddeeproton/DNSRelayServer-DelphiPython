@@ -780,15 +780,17 @@ end;
 
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
-var i: Integer;
+var
+  i: Integer;
+  filepath: string;
 begin
   ToolButton3Click(ToolButton3);
 
   closeProcessCreated;
-
-
-  if FileExists(String(EditFilehost.Text)) = False then
-    ecrireDansUnFichier(EditFilehost.Text, '127.0.0.1	localhost');
+  filepath := ExtractFilePath(Application.ExeName)+ String(EditFilehost.Text);
+  if FileExists(filepath) = False then
+    ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
+    
   createVBScript();
 
   i := Length(listThreads);
@@ -888,7 +890,11 @@ var
   txt:string;
 begin
   i := ListBoxDNSMaster.ItemIndex;
-  if i < 0 then exit;
+  if i < 0 then
+  begin
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    exit;
+  end;
   txt := ListBoxDNSMaster.Items.Strings[i];
   MessageBeep(MB_OK);
   if MessageDlg('Effacer "' + txt + '"?',mtConfirmation, mbOKCancel, 0)  = mrOK then
@@ -907,7 +913,11 @@ var
   txt:string;
 begin
   i := ListBoxDNSMaster.ItemIndex;
-  if i < 0 then exit;
+  if i < 0 then
+  begin
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    exit;
+  end;
   txt := ListBoxDNSMaster.Items.Strings[i];
   txt := InputBox('Update DNS Master', 'Exemple 209.244.0.3', txt);
   if txt = '' then exit;
@@ -919,7 +929,11 @@ procedure TForm1.ToolButtonDownDNSMasterClick(Sender: TObject);
 var i:integer;
 begin
   i := ListBoxDNSMaster.ItemIndex;
-  if i < 0 then exit;
+  if i < 0 then
+  begin
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    exit;
+  end;
   if i >= ListBoxDNSMaster.Items.Count -1 then exit;
   ListBoxDNSMaster.Items.Move(i, i +1);
   ListBoxDNSMaster.ItemIndex := i +1;
@@ -930,7 +944,11 @@ procedure TForm1.ToolButtonUpDNSMasterClick(Sender: TObject);
 var i:integer;
 begin
   i := ListBoxDNSMaster.ItemIndex;
-  if i <= 0 then exit;
+  if i < 0 then
+  begin
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    exit;
+  end;
   if i > ListBoxDNSMaster.Items.Count -1 then exit;
   ListBoxDNSMaster.Items.Move(i, i - 1);
   ListBoxDNSMaster.ItemIndex := i - 1;
@@ -941,7 +959,12 @@ end;
 procedure TForm1.ToolButtonEditHostClick(Sender: TObject);
 var
   FormHost: TFormHost;
+  filepath: string;
 begin
+  filepath := ExtractFilePath(Application.ExeName)+ String(EditFilehost.Text);
+  if FileExists(filepath) = False then
+    ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
+
   FormHost := TFormHost.Create(Self);
   FormHost.Show;
   FormHost.Filename := EditFilehost.Text;

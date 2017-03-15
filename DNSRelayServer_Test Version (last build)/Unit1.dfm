@@ -153,7 +153,6 @@ object Form1: TForm1
       Width = 451
       Height = 327
       Anchors = [akLeft, akTop, akRight, akBottom]
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -255,6 +254,7 @@ object Form1: TForm1
             Anchors = [akTop, akRight]
             Caption = '...'
             TabOrder = 4
+            OnClick = ButtonSelectFilehostClick
           end
           object CheckBoxToggleMenuTitle: TCheckBox
             Left = 8
@@ -309,30 +309,35 @@ object Form1: TForm1
               Top = 2
               Caption = 'ToolButtonAddDNSMaster'
               ImageIndex = 0
+              OnClick = ToolButton1Click
             end
             object ToolButtonUpdateDNSMaster: TToolButton
               Left = 23
               Top = 2
               Caption = 'ToolButtonUpdateDNSMaster'
               ImageIndex = 19
+              OnClick = ToolButtonUpdateDNSMasterClick
             end
             object ToolButton2: TToolButton
               Left = 46
               Top = 2
               Caption = 'ToolButtonEraseDNSMaster'
               ImageIndex = 1
+              OnClick = ToolButton2Click
             end
             object ToolButtonDownDNSMaster: TToolButton
               Left = 69
               Top = 2
               Caption = 'ToolButtonDownDNSMaster'
               ImageIndex = 2
+              OnClick = ToolButtonDownDNSMasterClick
             end
             object ToolButtonUpDNSMaster: TToolButton
               Left = 92
               Top = 2
               Caption = 'ToolButtonDownDNSMaster'
               ImageIndex = 3
+              OnClick = ToolButtonUpDNSMasterClick
             end
           end
           object ListBoxDNSMaster: TListBox
@@ -404,6 +409,7 @@ object Form1: TForm1
               Top = 2
               Caption = 'ToolButton10'
               ImageIndex = 7
+              OnClick = ToolButton10Click
             end
             object ToolButtonEditHost: TToolButton
               Left = 23
@@ -413,12 +419,14 @@ object Form1: TForm1
               ImageIndex = 4
               ParentShowHint = False
               ShowHint = True
+              OnClick = ToolButtonEditHostClick
             end
             object ToolButton9: TToolButton
               Left = 46
               Top = 2
               Caption = 'ToolButton9'
               ImageIndex = 6
+              OnClick = ToolButton9Click
             end
           end
           object ListView1: TListView
@@ -478,7 +486,7 @@ object Form1: TForm1
       Left = 278
       Top = 335
       Width = 75
-      Height = 25
+      Height = 26
       Anchors = [akRight, akBottom]
       Caption = 'Start'
       TabOrder = 2
