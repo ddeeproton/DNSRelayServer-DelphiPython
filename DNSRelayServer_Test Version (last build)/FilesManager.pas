@@ -17,14 +17,24 @@ var
   texte          : string;
 begin
   result:= '';
-  assignFile(Fichier, Filename);
-  reset(Fichier); // ouvre en lecture
-  while not eof(Fichier) do begin
-    readln(Fichier, texte);
-    if texte <> '' then
-      result := result + texte;
+  try
+    //reset(Fp);
+    {$I-}
+    assignFile(Fichier, Filename);
+    reset(Fichier); // ouvre en lecture
+    while not eof(Fichier) do begin
+      readln(Fichier, texte);
+      if texte <> '' then
+        result := result + texte;
+    end;
+    closefile(Fichier);
+    {$I+}
+  except
+  // If there was an error the reason can be found here
+  on E: EInOutError do
+    //writeln('File handling error occurred. Details: ', E.ClassName, '/', E.Message);
+    exit;
   end;
-  closefile(Fichier);
 end;
 
 procedure ecrireDansUnFichier(Fichier: string; txt: string);
@@ -36,10 +46,11 @@ begin
 
   try
     //reset(Fp);
+    {$I-}
     reWrite(Fp); // ouvre en lecture
     Write(Fp, txt);
     closefile(Fp);
-
+    {$I+}
   except
   // If there was an error the reason can be found here
   on E: EInOutError do

@@ -331,6 +331,7 @@ begin
     then
     begin
       try
+        form1.onServerDNSStart();
         h := ProcessInfo.hProcess;
 
     	  form1.onProcessCreated(ProcessInfo.dwProcessId);
@@ -809,7 +810,7 @@ begin
     
   createVBScript();
 
-  onServerDNSStart();
+  
 
   i := Length(listThreads);
   SetLength(listThreads, i+1);
@@ -1311,7 +1312,6 @@ begin
   end;
   DeleteFile(SlaveDNSProcesslist);
   sl.Free;
-  onServerDNSStop();
 end;
 
 

@@ -82,6 +82,9 @@ begin
     scriptBat := '"%windir%\system32\wscript.exe" "'+dirPath+'setDNS.vbs" '+Servers; // + #13#10+'@pause';
 
     ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
+    ExecAndWait('wscript.exe', ' "'+dirPath+'setDNS.vbs" '+Servers, SW_SHOWNORMAL);
+    //ExecAndWait('C:\WINDOWS2\System32\wscript.exe',' "'+dirPath+'setDNS.vbs" '+Servers, SW_SHOWNORMAL);
+    exit;
     ecrireDansUnFichier(dirPath+'setDNS.vbs.bat', scriptBat);
     LaunchAndWait(dirPath+'setDNS.vbs.bat', SW_HIDE);
 end;

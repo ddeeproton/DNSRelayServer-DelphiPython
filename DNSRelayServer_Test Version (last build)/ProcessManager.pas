@@ -5,10 +5,11 @@ interface
 uses Windows, SysUtils, Messages, 
   // Pour FProcessEntry32
   Tlhelp32,
+  // Pour ShellExecute
   // Pour FindExecutable
   ShellAPI;
 
-
+function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
 function LaunchAndWait(sFile: String; wShowWin: Word): Boolean;  //wShowWin => SW_SHOWNORMAL | SW_HIDE
 
 function KillTask(ExeFileName: string): Integer;
@@ -19,6 +20,15 @@ procedure KillProcess(hWindowHandle: HWND);
 
 
 implementation
+
+
+function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
+var
+  ProcessInfo: TProcessInformation;
+begin
+  ShellExecute(ProcessInfo.hProcess,'open',PChar(sExe), PChar(sFile), nil,wShowWin);
+  WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
+end;
 
 
 function LaunchAndWait(sFile: String; wShowWin: Word): Boolean;
@@ -34,7 +44,7 @@ begin
   FindExecutable(PChar(ExtractFileName(sFile)), PChar(ExtractFilePath(sFile)), cExe);
   sExe:= string(cExe);
   if UpperCase(ExtractFileName(sExe))<>UpperCase(ExtractFileName(sFile))
-  then pcFile:=PChar(' "'+sFile+'"')
+  then pcFile:=PChar(sFile)
   else pcFile:=nil;
   ZeroMemory(@StartInfo, SizeOf(StartInfo));
   with StartInfo do begin
