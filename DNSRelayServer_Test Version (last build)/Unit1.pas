@@ -125,6 +125,8 @@ type
     procedure refreshListView1Click();
     procedure CheckBoxToggleMenuTitleClick(Sender: TObject);
     procedure CheckBoxMenuPositionClick(Sender: TObject);
+    procedure onServerDNSStart();
+    procedure onServerDNSStop();
   private
     { Private declarations }
   public
@@ -356,9 +358,11 @@ begin
       On E : EOSError do
         exit
     end;
+
     if EnMemo <> nil then
       EnMemo.Lines.Add(String('Stoped'));
 
+    Form1.onServerDNSStop();
   end;
 end;
 
@@ -375,7 +379,17 @@ end;
 
 
 
+procedure TForm1.onServerDNSStart();
+begin
+  setDNS('127.0.0.1');
+  MemoLogs.Lines.Add('set DNS 127.0.0.1');
+end;
 
+procedure TForm1.onServerDNSStop();
+begin
+  setDNS('209.244.0.3 209.244.0.4');
+  MemoLogs.Lines.Add('set DNS 209.244.0.3 209.244.0.4');
+end;
 
 procedure createVBScript();
 var
@@ -795,6 +809,8 @@ begin
     
   createVBScript();
 
+  onServerDNSStart();
+
   i := Length(listThreads);
   SetLength(listThreads, i+1);
   listThreads[i] := Unit1.TSauvegarde.Create(True);
@@ -836,6 +852,7 @@ end;
 
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
+  onServerDNSStop();
   Systray.EnleveIconeTray();
   ButtonCloseClick(Sender);
   KillTask(ExtractFileName(Application.ExeName));
@@ -1294,6 +1311,7 @@ begin
   end;
   DeleteFile(SlaveDNSProcesslist);
   sl.Free;
+  onServerDNSStop();
 end;
 
 

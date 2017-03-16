@@ -14,19 +14,22 @@ uses
   // For ExtractFilePath
   SysUtils,
   // For Application
-  Forms;
-  
-  procedure setDNS(Servers: TStrings);
+  Forms,
+  // For AnsiReplaceStr
+  StrUtils;
 
-var
-  installDirectoryPath: string = 'setup\';
+  procedure setDNS(Servers: string);
+  procedure setDNSList(Servers: TStrings);
 
 implementation
 
-procedure setDNS(Servers: TStrings);
+
+procedure setDNS(Servers: string);
 var
   scriptVBS, scriptBat, dirPath: string;
 begin
+  dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
+
   scriptVBS :=     '''Example: '#13#10+
     ''' Set IP DNS'#13#10+
     '''   wscript.exe this.vbs 127.0.0.1 192.168.0.1'#13#10+
@@ -41,8 +44,10 @@ begin
     '  i = 0'#13#10+
     '  redim res(WScript.Arguments.Count-1)'#13#10+
     '  For Each arg in WScript.Arguments'#13#10+
-    '    res(i) = arg'#13#10+
-    '    i = i + 1'#13#10+
+    '    if Replace(arg," ","") <> "" Then'#13#10+
+    '      res(i) = arg'#13#10+
+    '      i = i + 1'#13#10+
+    '    End If'#13#10+
     '  Next'#13#10+
     '  ArgumentsToArray = res'#13#10+
     'End function'#13#10+
@@ -74,14 +79,25 @@ begin
     '  loop'#13#10+
     'end sub';
 
-    dirPath := ExtractFilePath(Application.ExeName)+installDirectoryPath;
+    scriptBat := '"%windir%\system32\wscript.exe" "'+dirPath+'setDNS.vbs" '+Servers; // + #13#10+'@pause';
+
     ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
-
-    scriptBat := 'wscript.exe this.vbs 127.0.0.1 192.168.0.1';
     ecrireDansUnFichier(dirPath+'setDNS.vbs.bat', scriptBat);
-
-    //LaunchAndWait(dirPath+'setDNS.vbs.bat')
+    LaunchAndWait(dirPath+'setDNS.vbs.bat', SW_HIDE);
 end;
 
+
+procedure setDNSList(Servers: TStrings);
+var
+  i: Integer;
+  iplist: String;
+begin
+  iplist := '';
+  for i := 0 to Servers.Count -1 do
+  begin
+    iplist := iplist + ' ' + Servers.Strings[i];
+  end;
+  setDNS(iplist);
+end;
 
 end.
