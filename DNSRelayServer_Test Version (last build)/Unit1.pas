@@ -4,9 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin,
+  Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost, XPMan, Systray, Registry, md5, ListViewManager, HostParser,
-  NetworkManager,
+  NetworkManager, DNSManager,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -18,7 +18,9 @@ uses
   // POur l'installation
   UnitInstallation,
   // Pour AnsiReplaceStr
-  StrUtils, Sockets, Menus;
+  StrUtils,
+  // Pour LaunchAndWait
+  ProcessManager;
 
 type
   TForm1 = class(TForm)
@@ -141,7 +143,7 @@ type
     procedure RunDosInMemo(Que:String;EnMemo:TMemo);
   end;
 
-  
+
 var
   Form1: TForm1;
   FormHost: TFormHost;
@@ -797,6 +799,7 @@ begin
   SetLength(listThreads, i+1);
   listThreads[i] := Unit1.TSauvegarde.Create(True);
   listThreads[i].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+EditDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'"';
+  //MemoLogs.Lines.Add(listThreads[i].cmd);
   listThreads[i].EnMemo := MemoLogs;
   listThreads[i].indexThread := i;
   listThreads[i].Suspended := False;
@@ -973,12 +976,15 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-  i: Integer;
+  i,i2: Integer;
   net: tNetworkInterfaceList;
+  keys, keys2: TStrings;
+  idnetcard, IPAddress, DhcpIPAddress, NameServer, Description: string;
 begin
   ToolBar3.DoubleBuffered := True;
   ListView1.DoubleBuffered := True;
   MemoLogs.DoubleBuffered := True;
+  Panel1.Align := alClient;
   ToolButton7.Click;
   ToolButton7.Down := True;
 
@@ -998,7 +1004,7 @@ begin
 
   if FileExists(FilehostPathConfig) then
     EditFilehost.Text := lireFichier(FilehostPathConfig);
-    
+
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 
   for i:=0 to ParamCount() do
@@ -1018,10 +1024,57 @@ begin
   EditerLigne2(ListView1, -1, 0, 'cool','nice');
   ShowMessage(getDomain(EditFilehost.Text, 'localhost'));
   }
-  exit;
+  //result := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Python\PythonCore\2.7\InstallPath', '');
+  //if (result = '') and FileExists('c:\Python27\python.exe') then result := 'c:\Python27\';
+
+
+
+  // Config Network card from Registry
+  keys := ListKeys(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards');
+  for i := 0 to keys.Count-1 do
+  begin
+    MemoLogs.Lines.Add ('');
+    idnetcard := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards\'+keys.Strings[i], 'ServiceName');
+    Description := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards\'+keys.Strings[i], 'Description');
+
+    if ReadStringExists(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'DhcpIPAddress') then
+    begin
+      DhcpIPAddress := ReadString(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'DhcpIPAddress');
+      //MemoLogs.Lines.Add (DhcpIPAddress);
+    end;
+    if ReadStringExists(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'NameServer') then
+    begin
+      MemoLogs.Lines.Add (Description);
+      NameServer := ReadString(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'NameServer');
+      MemoLogs.Lines.Add (NameServer);
+    end;
+
+
+    if ReadStringExists(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'IPAddress') then
+    begin
+
+    IPAddress := ReadBinaryData(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'IPAddress');
+    MemoLogs.Lines.Add (IPAddress);
+      //MemoLogs.Lines.Add (ReadType(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'IPAddress'));
+      //MemoLogs.Lines.Add (IPAddress);
+    end;
+
+
+    {
+    keys2 := ListValues(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard);
+    MemoLogs.Lines.Add ('');
+    for i2 := 0 to keys2.Count-1 do
+    begin
+      MemoLogs.Lines.Add ('  '+keys2.Strings[i2]);
+    end;
+     }
+  end;
+  //MemoLogs.Lines.Add (IntToStr(keys.Count));
+
+  //exit;
   If (GetNetworkInterfaces (net)) THen
   Begin
-    MemoLogs.Clear;
+    //MemoLogs.Clear;
     MemoLogs.Lines.Add (DateTimeToStr (Now)+ ' : ');
 
     For i := 0 to High (net) do
@@ -1046,7 +1099,9 @@ end;
 
 function TForm1.getPythonPath():string;
 begin
-  result := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Python\PythonCore\2.7\InstallPath', '');
+  result := '';
+  if ReadStringExists(HKEY_LOCAL_MACHINE, 'SOFTWARE\Python\PythonCore\2.7', 'InstallPath') then
+    result := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Python\PythonCore\2.7', 'InstallPath');
   if (result = '') and FileExists('c:\Python27\python.exe') then result := 'c:\Python27\';
 end;
 

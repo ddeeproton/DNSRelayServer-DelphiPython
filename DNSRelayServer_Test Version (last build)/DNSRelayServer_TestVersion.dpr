@@ -11,7 +11,8 @@ uses
   HostParser in 'HostParser.pas',
   NetworkManager in 'NetworkManager.pas',
   ProcessManager in 'ProcessManager.pas',
-  PythonDNS in 'PythonDNS.pas';
+  PythonDNS in 'PythonDNS.pas',
+  DNSManager in 'DNSManager.pas';
 
 {$R *.res}
 

@@ -68,6 +68,7 @@ Type SockAddr_Gen          = Packed Record
                                AddrNet               : String;
                                AddrLimitedBroadcast  : String;
                                AddrDirectedBroadcast : String;
+                               otherInfo : String;
                                IsInterfaceUp         : Boolean;
                                BroadcastSupport      : Boolean;
                                IsLoopback            : Boolean;
@@ -160,26 +161,18 @@ Begin
 
           // Calculate the net and the directed broadcast address
           NetAddrDummy.S_addr      := Buffer[i].iiAddress.AddressIn.Sin_Addr.S_Addr;
-          NetAddrDummy.S_addr      := NetAddrDummy.S_addr And Buffer[i].iiNetMask.AddressIn.Sin_Addr.S_Addr;
-          DirBroadcastDummy.S_addr := NetAddrDummy.S_addr Or Not Buffer[i].iiNetMask.AddressIn.Sin_Addr.S_Addr;
+          NetAddrDummy.S_addr      := NetAddrDummy.S_addr and Buffer[i].iiNetMask.AddressIn.Sin_Addr.S_Addr;
+          DirBroadcastDummy.S_addr := NetAddrDummy.S_addr or not Buffer[i].iiNetMask.AddressIn.Sin_Addr.S_Addr;
 
           AddrNet                  := string(inet_ntoa ((NetAddrDummy)));
           AddrDirectedBroadcast    := string(inet_ntoa ((DirBroadcastDummy)));
 
-          // From the evaluation of the Flags we receive more information
-          InterfaceFlags           := Buffer[i].iiFlags;
 
-          // Is the network interface up or down ?
-          If (InterfaceFlags And IFF_UP) = IFF_UP THen IsInterfaceUp := True
-                                                  Else IsInterfaceUp := False;
-
-          // Does the network interface support limited broadcasts ?
-          If (InterfaceFlags And IFF_BROADCAST) = IFF_BROADCAST THen BroadcastSupport := True
-                                                                Else BroadcastSupport := False;
-
-          // Is the network interface a loopback interface ?
-          If (InterfaceFlags And IFF_LOOPBACK) = IFF_LOOPBACK THen IsLoopback := True
-                                                              Else IsLoopback := False;
+          InterfaceFlags           := Buffer[i].iiFlags;  // From the evaluation of the Flags we receive more information
+          IsInterfaceUp            := (InterfaceFlags and IFF_UP) = IFF_UP;   // Is the network interface up or down ?
+          BroadcastSupport         := (InterfaceFlags and IFF_BROADCAST) = IFF_BROADCAST ; // Does the network interface support limited broadcasts ?
+          IsLoopback               := (InterfaceFlags and IFF_LOOPBACK) = IFF_LOOPBACK; // Is the network interface a loopback interface ?
+          
         end;
       end;
     end;

@@ -5,7 +5,7 @@ object Form1: TForm1
   Height = 507
   Caption = 'DNS Relay Server 0.4 beta'
   Color = clWhite
-  Constraints.MinHeight = 507
+  Constraints.MinHeight = 497
   Constraints.MinWidth = 464
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -62,6 +62,9 @@ object Form1: TForm1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnMouseMove = FormMouseMove
+  DesignSize = (
+    460
+    473)
   PixelsPerInch = 96
   TextHeight = 13
   object ToolBar3: TToolBar
@@ -141,17 +144,17 @@ object Form1: TForm1
     Left = 0
     Top = 97
     Width = 460
-    Height = 376
-    Align = alClient
+    Height = 352
+    Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 1
     DesignSize = (
       460
-      376)
+      352)
     object Notebook1: TNotebook
       Left = -2
       Top = 0
       Width = 451
-      Height = 327
+      Height = 303
       Anchors = [akLeft, akTop, akRight, akBottom]
       TabOrder = 0
       object TPage
@@ -160,18 +163,18 @@ object Form1: TForm1
         Caption = 'Default'
         DesignSize = (
           451
-          327)
+          303)
         object GroupBox2: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 327
+          Height = 303
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Relay Server (Slave)'
           TabOrder = 0
           DesignSize = (
             435
-            327)
+            303)
           object Label1: TLabel
             Left = 8
             Top = 24
@@ -286,12 +289,12 @@ object Form1: TForm1
         Caption = 'Config DNS Master'
         DesignSize = (
           451
-          327)
+          303)
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 327
+          Height = 303
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Server (Master)'
           TabOrder = 0
@@ -344,7 +347,7 @@ object Form1: TForm1
             Left = 2
             Top = 44
             Width = 431
-            Height = 281
+            Height = 257
             Align = alClient
             ItemHeight = 13
             Items.Strings = (
@@ -360,12 +363,12 @@ object Form1: TForm1
         Caption = 'IP Clients'
         DesignSize = (
           451
-          327)
+          303)
         object GroupBox3: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 327
+          Height = 303
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'IP Clients'
           TabOrder = 0
@@ -373,7 +376,7 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 431
-            Height = 310
+            Height = 286
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
@@ -386,12 +389,12 @@ object Form1: TForm1
         Caption = 'DNS Domains'
         DesignSize = (
           451
-          327)
+          303)
         object GroupBox4: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 327
+          Height = 303
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Domains'
           TabOrder = 0
@@ -433,7 +436,7 @@ object Form1: TForm1
             Left = 2
             Top = 41
             Width = 431
-            Height = 284
+            Height = 260
             Align = alClient
             Columns = <>
             ReadOnly = True
@@ -450,12 +453,12 @@ object Form1: TForm1
         Caption = 'Logs'
         DesignSize = (
           451
-          327)
+          303)
         object GroupBox5: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 327
+          Height = 303
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Logs'
           TabOrder = 0
@@ -463,7 +466,7 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 431
-            Height = 310
+            Height = 286
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
@@ -474,7 +477,7 @@ object Form1: TForm1
     end
     object ButtonInstall: TButton
       Left = 6
-      Top = 335
+      Top = 311
       Width = 75
       Height = 25
       Anchors = [akLeft, akBottom]
@@ -484,7 +487,7 @@ object Form1: TForm1
     end
     object ButtonStart: TButton
       Left = 278
-      Top = 335
+      Top = 311
       Width = 75
       Height = 26
       Anchors = [akRight, akBottom]
@@ -494,7 +497,7 @@ object Form1: TForm1
     end
     object ButtonClose: TButton
       Left = 366
-      Top = 335
+      Top = 311
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
