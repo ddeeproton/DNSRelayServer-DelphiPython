@@ -53,12 +53,10 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    EditDNSServerSlaveIP: TEdit;
     EditPort: TEdit;
     EditFilehost: TEdit;
     CheckBoxStartWithWindows: TCheckBox;
     ButtonSelectFilehost: TButton;
-    CheckBoxToggleMenuTitle: TCheckBox;
     GroupBox1: TGroupBox;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
@@ -80,7 +78,7 @@ type
     ButtonInstall: TButton;
     ButtonStart: TButton;
     ButtonClose: TButton;
-    CheckBoxMenuPosition: TCheckBox;
+    CBoxDNSServerSlaveIP: TComboBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -382,8 +380,8 @@ end;
 
 procedure TForm1.onServerDNSStart();
 begin
-  setDNS('127.0.0.1');
-  MemoLogs.Lines.Add('set DNS 127.0.0.1');
+  setDNS(CBoxDNSServerSlaveIP.Text);
+  MemoLogs.Lines.Add('set DNS '+CBoxDNSServerSlaveIP.Text);
 end;
 
 procedure TForm1.onServerDNSStop();
@@ -392,11 +390,15 @@ begin
   MemoLogs.Lines.Add('set DNS 209.244.0.3 209.244.0.4');
 end;
 
+
+
 procedure createVBScript();
 var
   i: integer;
   script, dnsMaster: string;
 begin
+
+
   dnsMaster := '';
   for i := 0 to form1.ListBoxDNSMaster.Items.Count -1 do
   begin
@@ -815,7 +817,7 @@ begin
   i := Length(listThreads);
   SetLength(listThreads, i+1);
   listThreads[i] := Unit1.TSauvegarde.Create(True);
-  listThreads[i].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+EditDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'"';
+  listThreads[i].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'"';
   //MemoLogs.Lines.Add(listThreads[i].cmd);
   listThreads[i].EnMemo := MemoLogs;
   listThreads[i].indexThread := i;
@@ -999,6 +1001,7 @@ var
   keys, keys2: TStrings;
   idnetcard, IPAddress, DhcpIPAddress, NameServer, Description: string;
 begin
+
   ToolBar3.DoubleBuffered := True;
   ListView1.DoubleBuffered := True;
   MemoLogs.DoubleBuffered := True;
@@ -1045,73 +1048,16 @@ begin
   //result := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Python\PythonCore\2.7\InstallPath', '');
   //if (result = '') and FileExists('c:\Python27\python.exe') then result := 'c:\Python27\';
 
-
-
-  // Config Network card from Registry
-  keys := ListKeys(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards');
-  for i := 0 to keys.Count-1 do
-  begin
-    MemoLogs.Lines.Add ('');
-    idnetcard := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards\'+keys.Strings[i], 'ServiceName');
-    Description := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards\'+keys.Strings[i], 'Description');
-
-    if ReadStringExists(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'DhcpIPAddress') then
-    begin
-      DhcpIPAddress := ReadString(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'DhcpIPAddress');
-      //MemoLogs.Lines.Add (DhcpIPAddress);
-    end;
-    if ReadStringExists(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'NameServer') then
-    begin
-      MemoLogs.Lines.Add (Description);
-      NameServer := ReadString(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'NameServer');
-      MemoLogs.Lines.Add (NameServer);
-    end;
-
-
-    if ReadStringExists(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'IPAddress') then
-    begin
-
-    IPAddress := ReadBinaryData(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'IPAddress');
-    MemoLogs.Lines.Add (IPAddress);
-      //MemoLogs.Lines.Add (ReadType(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard, 'IPAddress'));
-      //MemoLogs.Lines.Add (IPAddress);
-    end;
-
-
-    {
-    keys2 := ListValues(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\'+idnetcard);
-    MemoLogs.Lines.Add ('');
-    for i2 := 0 to keys2.Count-1 do
-    begin
-      MemoLogs.Lines.Add ('  '+keys2.Strings[i2]);
-    end;
-     }
-  end;
-  //MemoLogs.Lines.Add (IntToStr(keys.Count));
-
-  //exit;
   If (GetNetworkInterfaces (net)) THen
   Begin
-    //MemoLogs.Clear;
-    MemoLogs.Lines.Add (DateTimeToStr (Now)+ ' : ');
-
     For i := 0 to High (net) do
     Begin
-      MemoLogs.Lines.Add ('');
-      MemoLogs.Lines.Add ('#                          : ' + IntToStr(i));
-      MemoLogs.Lines.Add ('Name                       : ' + net[i].ComputerName);
-      MemoLogs.Lines.Add ('IP-Address                 : ' + net[i].AddrIP);
-      MemoLogs.Lines.Add ('Subnet mask                : ' + net[i].SubnetMask);
-      MemoLogs.Lines.Add ('Net address                : ' + net[i].AddrNet);
-      MemoLogs.Lines.Add ('Limited broadcast address  : ' + net[i].AddrLimitedBroadcast);
-      MemoLogs.Lines.Add ('Directed Broadcast address : ' + net[i].AddrDirectedBroadcast);
-      MemoLogs.Lines.Add ('Interface up               : ' + BoolToStr (net[i].IsInterfaceUp, True));
-      MemoLogs.Lines.Add ('Broadcast supported        : ' + BoolToStr (net[i].BroadcastSupport, True));
-      MemoLogs.Lines.Add ('Loopback interface         : ' + BoolToStr (net[i].IsLoopback, True));
-      MemoLogs.Lines.Add ('');
+      if net[i].AddrIP <> '127.0.0.1' then
+        CBoxDNSServerSlaveIP.Items.Add(net[i].AddrIP);
     end;
   end;
- 
+  if CBoxDNSServerSlaveIP.Items.Count > 0 then
+    CBoxDNSServerSlaveIP.ItemIndex := 0;
 end;
 
 
@@ -1486,7 +1432,7 @@ procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   ecrireDansUnFichier(FilehostPathConfig, EditFilehost.Text);
-  ecrireDansUnFichier(SlaveDNSIPConfig, EditDNSServerSlaveIP.Text);
+  ecrireDansUnFichier(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
   ecrireDansUnFichier(SlaveDNSPortConfig, EditPort.Text);
 end;
 

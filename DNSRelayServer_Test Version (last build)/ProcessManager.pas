@@ -2,7 +2,7 @@ unit ProcessManager;
 
 interface
 
-uses Windows, SysUtils, Messages, 
+uses Windows, SysUtils, Messages,
   // Pour FProcessEntry32
   Tlhelp32,
   // Pour ShellExecute
@@ -17,17 +17,19 @@ function CloseTaskPID(ExeFileName: string; pid: Integer): Integer;
 procedure CloseProcessPID(pid: Integer);
 procedure KillProcess(hWindowHandle: HWND);
 
-
+function IsUserAnAdmin(): Boolean; external shell32;
 
 implementation
 
 
 function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
 var
-  ProcessInfo: TProcessInformation;
+  h: Cardinal;
+  operation: PChar;
 begin
-  ShellExecute(ProcessInfo.hProcess,'open',PChar(sExe), PChar(sFile), nil,wShowWin);
-  WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
+  if IsUserAnAdmin() then operation := 'open' else operation := 'runas';
+  ShellExecute(h, operation, PChar(sExe), PChar(sFile), nil,wShowWin);
+  WaitForSingleObject(h, INFINITE);
 end;
 
 

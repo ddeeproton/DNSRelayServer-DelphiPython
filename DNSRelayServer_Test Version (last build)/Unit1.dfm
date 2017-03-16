@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 159
-  Top = 148
+  Left = 294
+  Top = 157
   Width = 468
-  Height = 507
-  Caption = 'DNS Relay Server 0.4 beta'
+  Height = 452
+  Caption = 'DNS Relay Server 0.4'
   Color = clWhite
-  Constraints.MinHeight = 497
+  Constraints.MinHeight = 434
   Constraints.MinWidth = 464
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -64,7 +64,7 @@ object Form1: TForm1
   OnMouseMove = FormMouseMove
   DesignSize = (
     460
-    473)
+    418)
   PixelsPerInch = 96
   TextHeight = 13
   object ToolBar3: TToolBar
@@ -144,19 +144,18 @@ object Form1: TForm1
     Left = 0
     Top = 97
     Width = 460
-    Height = 352
+    Height = 297
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 1
     DesignSize = (
       460
-      352)
+      297)
     object Notebook1: TNotebook
       Left = -2
       Top = 0
       Width = 451
-      Height = 303
+      Height = 248
       Anchors = [akLeft, akTop, akRight, akBottom]
-      PageIndex = 4
       TabOrder = 0
       object TPage
         Left = 0
@@ -164,18 +163,18 @@ object Form1: TForm1
         Caption = 'Default'
         DesignSize = (
           451
-          303)
+          248)
         object GroupBox2: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 303
+          Height = 248
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Relay Server (Slave)'
           TabOrder = 0
           DesignSize = (
             435
-            303)
+            248)
           object Label1: TLabel
             Left = 8
             Top = 24
@@ -218,20 +217,12 @@ object Form1: TForm1
             Height = 13
             Caption = 'Exemple: host.txt'
           end
-          object EditDNSServerSlaveIP: TEdit
-            Left = 8
-            Top = 40
-            Width = 121
-            Height = 21
-            TabOrder = 0
-            Text = '0.0.0.0'
-          end
           object EditPort: TEdit
             Left = 8
             Top = 104
             Width = 121
             Height = 21
-            TabOrder = 1
+            TabOrder = 0
             Text = '53'
           end
           object EditFilehost: TEdit
@@ -240,7 +231,7 @@ object Form1: TForm1
             Width = 369
             Height = 21
             Anchors = [akLeft, akTop, akRight]
-            TabOrder = 2
+            TabOrder = 1
           end
           object CheckBoxStartWithWindows: TCheckBox
             Left = 8
@@ -248,7 +239,7 @@ object Form1: TForm1
             Width = 273
             Height = 17
             Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
-            TabOrder = 3
+            TabOrder = 2
           end
           object ButtonSelectFilehost: TButton
             Left = 384
@@ -257,30 +248,17 @@ object Form1: TForm1
             Height = 25
             Anchors = [akTop, akRight]
             Caption = '...'
-            TabOrder = 4
+            TabOrder = 3
             OnClick = ButtonSelectFilehostClick
           end
-          object CheckBoxToggleMenuTitle: TCheckBox
+          object CBoxDNSServerSlaveIP: TComboBox
             Left = 8
-            Top = 256
-            Width = 281
-            Height = 17
-            Caption = 'Afficher les titres sur les menus'
-            Checked = True
-            State = cbChecked
-            TabOrder = 5
-            OnClick = CheckBoxToggleMenuTitleClick
-          end
-          object CheckBoxMenuPosition: TCheckBox
-            Left = 8
-            Top = 288
-            Width = 241
-            Height = 17
-            Caption = 'Afficher le menu en haut (si non '#224' gauche)'
-            Checked = True
-            State = cbChecked
-            TabOrder = 6
-            OnClick = CheckBoxMenuPositionClick
+            Top = 40
+            Width = 145
+            Height = 21
+            ItemHeight = 13
+            TabOrder = 4
+            Text = 'CBoxDNSServerSlaveIP'
           end
         end
       end
@@ -290,12 +268,12 @@ object Form1: TForm1
         Caption = 'Config DNS Master'
         DesignSize = (
           451
-          303)
+          248)
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 303
+          Height = 248
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Server (Master)'
           TabOrder = 0
@@ -348,7 +326,7 @@ object Form1: TForm1
             Left = 2
             Top = 44
             Width = 431
-            Height = 257
+            Height = 202
             Align = alClient
             ItemHeight = 13
             Items.Strings = (
@@ -364,12 +342,12 @@ object Form1: TForm1
         Caption = 'IP Clients'
         DesignSize = (
           451
-          303)
+          248)
         object GroupBox3: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 303
+          Height = 248
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'IP Clients'
           TabOrder = 0
@@ -377,7 +355,7 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 431
-            Height = 286
+            Height = 231
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
@@ -390,12 +368,12 @@ object Form1: TForm1
         Caption = 'DNS Domains'
         DesignSize = (
           451
-          303)
+          248)
         object GroupBox4: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 303
+          Height = 248
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Domains'
           TabOrder = 0
@@ -437,7 +415,7 @@ object Form1: TForm1
             Left = 2
             Top = 41
             Width = 431
-            Height = 260
+            Height = 205
             Align = alClient
             Columns = <>
             ReadOnly = True
@@ -454,12 +432,12 @@ object Form1: TForm1
         Caption = 'Logs'
         DesignSize = (
           451
-          303)
+          248)
         object GroupBox5: TGroupBox
           Left = 8
           Top = 0
           Width = 435
-          Height = 303
+          Height = 248
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Logs'
           TabOrder = 0
@@ -467,7 +445,7 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 431
-            Height = 286
+            Height = 231
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
@@ -479,7 +457,7 @@ object Form1: TForm1
     end
     object ButtonInstall: TButton
       Left = 6
-      Top = 311
+      Top = 256
       Width = 75
       Height = 25
       Anchors = [akLeft, akBottom]
@@ -489,7 +467,7 @@ object Form1: TForm1
     end
     object ButtonStart: TButton
       Left = 278
-      Top = 311
+      Top = 256
       Width = 75
       Height = 26
       Anchors = [akRight, akBottom]
@@ -499,7 +477,7 @@ object Form1: TForm1
     end
     object ButtonClose: TButton
       Left = 366
-      Top = 311
+      Top = 256
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
