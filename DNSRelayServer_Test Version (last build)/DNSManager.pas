@@ -7,19 +7,25 @@ uses
   Classes,
   // for ecrireDansUnFichier
   FilesManager,
+  // For SW_SHOWNORMAL SW_HIDE
+  Windows,
   // for LaunchAndWait
-  ProcessManager;
-
+  ProcessManager,
+  // For ExtractFilePath
+  SysUtils,
+  // For Application
+  Forms;
   
   procedure setDNS(Servers: TStrings);
 
+var
+  installDirectoryPath: string = 'setup\';
 
 implementation
 
 procedure setDNS(Servers: TStrings);
 var
-  scriptVBS: string;
-  scriptBat: string;
+  scriptVBS, scriptBat, dirPath: string;
 begin
   scriptVBS :=     '''Example: '#13#10+
     ''' Set IP DNS'#13#10+
@@ -68,12 +74,13 @@ begin
     '  loop'#13#10+
     'end sub';
 
-
-    //ecrireDansUnFichier('setDNS.vbs', scriptVBS);
+    dirPath := ExtractFilePath(Application.ExeName)+installDirectoryPath;
+    ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
 
     scriptBat := 'wscript.exe this.vbs 127.0.0.1 192.168.0.1';
+    ecrireDansUnFichier(dirPath+'setDNS.vbs.bat', scriptBat);
 
-    //ecrireDansUnFichier('setDNS.vbs.bat', scriptBat);
+    //LaunchAndWait(dirPath+'setDNS.vbs.bat')
 end;
 
 
