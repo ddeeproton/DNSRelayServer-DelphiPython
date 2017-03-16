@@ -156,6 +156,7 @@ object Form1: TForm1
       Width = 451
       Height = 303
       Anchors = [akLeft, akTop, akRight, akBottom]
+      PageIndex = 4
       TabOrder = 0
       object TPage
         Left = 0
@@ -471,6 +472,7 @@ object Form1: TForm1
             ScrollBars = ssVertical
             TabOrder = 0
             WordWrap = False
+            OnChange = MemoLogsChange
           end
         end
       end
