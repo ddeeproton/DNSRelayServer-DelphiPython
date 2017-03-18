@@ -377,8 +377,6 @@ begin
   RunDosInMemo(cmd, EnMemo);
 end;
 
-
-
 procedure TForm1.onServerDNSStart();
 begin
   setDNS(CBoxDNSServerSlaveIP.Text);
@@ -390,7 +388,6 @@ begin
   setDNS('209.244.0.3 209.244.0.4');
   MemoLogs.Lines.Add('set DNS 209.244.0.3 209.244.0.4');
 end;
-
 
 
 procedure createVBScript();

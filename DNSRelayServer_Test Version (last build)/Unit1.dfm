@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = 294
-  Top = 157
+  Left = 195
+  Top = 150
   Width = 468
   Height = 452
-  Caption = 'DNS Relay Server 0.4'
+  Caption = 'DNS Relay Server 0.4.1'
   Color = clWhite
   Constraints.MinHeight = 434
   Constraints.MinWidth = 464
@@ -257,7 +257,7 @@ object Form1: TForm1
             Top = 40
             Width = 145
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 4
             Text = 'CBoxDNSServerSlaveIP'
           end
@@ -10661,8 +10661,8 @@ object Form1: TForm1
     Top = 312
   end
   object PopupMenuListView: TPopupMenu
-    Left = 216
-    Top = 273
+    Left = 176
+    Top = 313
     object Autoriser1: TMenuItem
       Caption = 'Autoriser'
       OnClick = Autoriser1Click
