@@ -156,6 +156,7 @@ object Form1: TForm1
       Width = 451
       Height = 248
       Anchors = [akLeft, akTop, akRight, akBottom]
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -256,7 +257,7 @@ object Form1: TForm1
             Top = 40
             Width = 145
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 4
             Text = 'CBoxDNSServerSlaveIP'
           end

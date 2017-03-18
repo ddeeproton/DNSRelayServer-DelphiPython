@@ -368,6 +368,7 @@ end;
 procedure TSauvegarde.Execute();
 begin
   //RunDosInMemo('ping.exe 127.0.0.1', Form1.Memo1MemoLogs);
+  Sleep(1000);
   RunDosInMemo(cmd, EnMemo);
 end;
 
@@ -804,8 +805,11 @@ var
   filepath: string;
 begin
   ToolButton3Click(ToolButton3);
+  ToolButton3.Down := True;
 
+  ButtonCloseClick(nil);
   closeProcessCreated;
+  
   filepath := ExtractFilePath(Application.ExeName)+ String(EditFilehost.Text);
   if FileExists(filepath) = False then
     ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
