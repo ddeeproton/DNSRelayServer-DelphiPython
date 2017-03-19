@@ -158,6 +158,7 @@ var
 
   PythonPath: string = '';
   DataDirectoryPath: string = '';
+  DNSMasterSerialized: string = '';
 implementation
 
 {$R *.dfm}
@@ -380,13 +381,13 @@ end;
 procedure TForm1.onServerDNSStart();
 begin
   setDNS(CBoxDNSServerSlaveIP.Text);
-  MemoLogs.Lines.Add('set DNS '+CBoxDNSServerSlaveIP.Text);
+  MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
 end;
 
 procedure TForm1.onServerDNSStop();
 begin
-  setDNS('209.244.0.3 209.244.0.4');
-  MemoLogs.Lines.Add('set DNS 209.244.0.3 209.244.0.4');
+  setDNS(DNSMasterSerialized);
+  MemoLogs.Lines.Add('Set DNS '+DNSMasterSerialized);
 end;
 
 
@@ -800,17 +801,53 @@ procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i: Integer;
   filepath: string;
+  dns: string;
 begin
   ToolButton3Click(ToolButton3);
   ToolButton3.Down := True;
 
   ButtonCloseClick(nil);
   closeProcessCreated;
-  
-  filepath := ExtractFilePath(Application.ExeName)+ String(EditFilehost.Text);
+
+  filepath := String(EditFilehost.Text);
   if FileExists(filepath) = False then
     ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
-    
+
+  if not FileExists(filepath) then
+  begin
+    MemoLogs.Lines.Add('Erreur: Lancement annulé.');
+    MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
+    MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "DNS relay"');
+    exit;
+  end;
+
+  MemoLogs.Lines.Add('Test DNS Master...');
+
+  DNSMasterSerialized := '';
+  for i := 0 to ListBoxDNSMaster.Items.Count -1 do
+  begin
+    dns := ListBoxDNSMaster.Items.Strings[i];
+    MemoLogs.Lines.Add('Master '+ dns +'... ');
+
+    if resolveDNS('google.com', dns) = '' then
+    begin
+      DNSMasterSerialized := '';
+      MemoLogs.Lines.Add('Erreur: Lancement annulé.');
+      MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
+      MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
+      MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
+      exit;
+    end;
+    if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
+    DNSMasterSerialized := DNSMasterSerialized + dns;
+    MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
+    MemoLogs.Lines.Add('Master '+ dns +'... OK');
+  end;
+
+
+  //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
+  //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
+
   createVBScript();
 
   
@@ -1059,6 +1096,9 @@ begin
   end;
   if CBoxDNSServerSlaveIP.Items.Count > 0 then
     CBoxDNSServerSlaveIP.ItemIndex := 0;
+
+  //MemoLogs.Lines.Add(resolveDNS('google.com', '127.0.0.1')); // 209.244.0.3
+  //MemoLogs.Lines.Add(resolveDNS('google.com', '209.244.0.3'));   
 end;
 
 

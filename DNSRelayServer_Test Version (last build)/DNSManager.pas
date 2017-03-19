@@ -16,17 +16,21 @@ uses
   // For Application
   Forms,
   // For AnsiReplaceStr
-  StrUtils;
+  StrUtils,
+  // Pour la function DNS Resolve
+  IdDNSResolver, IdStack,
+  IdException;
 
   procedure setDNS(Servers: string);
   procedure setDNSList(Servers: TStrings);
+  function resolveDNS(ADomain, AHost : string): string;
 
 implementation
 
 
 procedure setDNS(Servers: string);
 var
-  scriptVBS, scriptBat, dirPath: string;
+  scriptVBS, dirPath: string;
 begin
   dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
 
@@ -78,15 +82,8 @@ begin
     '    WScript.Quit'#13#10+
     '  loop'#13#10+
     'end sub';
-
-    scriptBat := '"%windir%\system32\wscript.exe" "'+dirPath+'setDNS.vbs" '+Servers; // + #13#10+'@pause';
-
     ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
     ExecAndWait('wscript.exe', ' "'+dirPath+'setDNS.vbs" '+Servers, SW_SHOWNORMAL);
-    //ExecAndWait('C:\WINDOWS2\System32\wscript.exe',' "'+dirPath+'setDNS.vbs" '+Servers, SW_SHOWNORMAL);
-    exit;
-    ecrireDansUnFichier(dirPath+'setDNS.vbs.bat', scriptBat);
-    LaunchAndWait(dirPath+'setDNS.vbs.bat', SW_HIDE);
 end;
 
 
@@ -102,5 +99,41 @@ begin
   end;
   setDNS(iplist);
 end;
+
+
+function resolveDNS(ADomain, AHost: string): string;
+var
+  i,x : integer;
+  LDomainPart : String;
+  DNSResolver: TIdDNSResolver;
+  LMXRecord : TMXRecord;
+  DnsResource : TResultRecord;
+  qtar : TARecord;
+begin
+  result := '';
+  try  
+  DNSResolver := TIdDNSResolver.Create(nil);
+  DNSResolver.QueryRecords := [qtA];
+  DNSResolver.Host := AHost;
+  DNSResolver.ReceiveTimeout := 5000; // 5 seconds timeout
+  DNSResolver.Resolve(ADomain);
+
+  for i := 0 to DNSResolver.QueryResult.Count - 1 do
+  begin
+    DnsResource := DNSResolver.QueryResult[i];
+    qtar := TARecord(DnsResource);
+    //result := result + #13#10 + DnsResource.Name+'->'+DnsResource.DisplayName+'->'+qtar.IPAddress;
+    result := qtar.IPAddress;
+    DNSResolver.Free;
+    exit;
+  end;
+
+  DNSResolver.Free;
+
+  except
+    on E: EIdSocketError do exit;
+  end;
+end;
+
 
 end.
