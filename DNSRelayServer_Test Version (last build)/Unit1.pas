@@ -821,14 +821,13 @@ begin
     exit;
   end;
 
-  MemoLogs.Lines.Add('Test DNS Master...');
 
+  MemoLogs.Lines.Add('Test DNS Master...');
   DNSMasterSerialized := '';
   for i := 0 to ListBoxDNSMaster.Items.Count -1 do
   begin
     dns := ListBoxDNSMaster.Items.Strings[i];
     MemoLogs.Lines.Add('Master '+ dns +'... ');
-
     if resolveDNS('google.com', dns) = '' then
     begin
       DNSMasterSerialized := '';
@@ -844,6 +843,13 @@ begin
     MemoLogs.Lines.Add('Master '+ dns +'... OK');
   end;
 
+  if DNSMasterSerialized = '' then
+  begin
+    MemoLogs.Lines.Add('Erreur: Lancement annulé');
+    MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
+    MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
+    exit;
+  end;
 
   //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
   //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
@@ -1038,6 +1044,7 @@ var
   net: tNetworkInterfaceList;
   keys, keys2: TStrings;
   idnetcard, IPAddress, DhcpIPAddress, NameServer, Description: string;
+  startedInBackground: Boolean;
 begin
 
   ToolBar3.DoubleBuffered := True;
@@ -1066,12 +1073,16 @@ begin
 
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 
+  startedInBackground := False;
   for i:=0 to ParamCount() do
     if ParamStr(i) = '/background' then
     begin
       Masquer1Click(nil);
       ButtonStartClick(ButtonStart);
+      startedInBackground := True;
     end;
+    if not startedInBackground then
+      ShowMessage('Attention ce programme peut vous casser votre connexion Internet si vous fermez le serveur brutalement.'+#13+'Si votre connexion Internet est cassé, lancez le serveur (bouton Start) puis arrêtez-le (bouton Stop).');
 
   ListViewCreate(ListView1);
   getDomains(EditFilehost.Text, ListView1);

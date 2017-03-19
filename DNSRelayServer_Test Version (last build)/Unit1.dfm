@@ -253,7 +253,7 @@ object Form1: TForm1
             Top = 40
             Width = 145
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 4
             Text = 'CBoxDNSServerSlaveIP'
           end
