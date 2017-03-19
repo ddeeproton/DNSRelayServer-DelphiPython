@@ -1,0 +1,3 @@
+Attention:
+Cette version du programme 0.4.1 peut casser votre connexion Internet.
+Veuillez utiliser une autre version du programme. ;)
