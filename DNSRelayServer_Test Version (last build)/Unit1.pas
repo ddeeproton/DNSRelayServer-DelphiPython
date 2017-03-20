@@ -386,8 +386,12 @@ end;
 
 procedure TForm1.onServerDNSStop();
 begin
-  setDNS(DNSMasterSerialized);
-  MemoLogs.Lines.Add('Set DNS '+DNSMasterSerialized);
+  MemoLogs.Lines.Add('Set IP to DHCP');
+  setDNS('');
+  setIPToDHCP();
+
+  //setDNS(DNSMasterSerialized);
+  //MemoLogs.Lines.Add('Set DNS '+DNSMasterSerialized);
 end;
 
 

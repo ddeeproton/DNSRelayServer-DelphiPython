@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = 197
-  Top = 437
+  Left = 540
+  Top = 324
   Width = 464
   Height = 452
-  Caption = 'DNS Relay Server 0.4.2'
+  Caption = 'DNS Relay Server 0.4.3'
   Color = clWhite
   Constraints.MinHeight = 434
   Constraints.MinWidth = 464
@@ -253,7 +253,7 @@ object Form1: TForm1
             Top = 40
             Width = 145
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 4
             Text = 'CBoxDNSServerSlaveIP'
           end

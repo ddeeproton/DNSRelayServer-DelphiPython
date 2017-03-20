@@ -24,6 +24,7 @@ uses
   procedure setDNS(Servers: string);
   procedure setDNSList(Servers: TStrings);
   function resolveDNS(ADomain, AHost : string): string;
+  procedure setIPToDHCP();
 
 implementation
 
@@ -133,6 +134,42 @@ begin
   except
     on E: EIdSocketError do exit;
   end;
+end;
+
+
+procedure setIPToDHCP();
+var
+  scriptVBS, dirPath: string;
+begin
+  dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
+  scriptVBS :=     'Option Explicit '#13#10+
+    ' '#13#10+
+    'Function EnableDHCP '#13#10+
+    '  Dim objWMIService, objNicConfig, colNicConfigs '#13#10+
+    '  Dim strComputer '#13#10+
+    '  Dim intReturn '#13#10+
+    '  Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2") '#13#10+
+    '  Set colNicConfigs = objWMIService.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True")  '#13#10+
+    '  For Each objNicConfig In colNicConfigs '#13#10+
+    '    If Not objNicConfig.DHCPEnabled Then '#13#10+
+    '      intReturn = objNicConfig.EnableDHCP '#13#10+
+    '      '#13#10+
+    '      ''If intReturn = 0 Then '#13#10+
+    '      ''  WScript.Echo VbCrLf & "DHCP enabled." '#13#10+
+    '      ''Else '#13#10+
+    '      ''  WScript.Echo VbCrLf & "Unable to set DHCP obtained address." '#13#10+
+    '      ''  WScript.Quit conExitCodeError '#13#10+
+    '      ''End If '#13#10+
+    '    ''Else '#13#10+
+    '      ''WScript.Echo "DHCP already enabled" & VbCrLf & "DHCP Server: " & objNicConfig.DHCPServer '#13#10+
+    '    End If '#13#10+
+    '  Next '#13#10+
+    'End Function '#13#10+
+    ''#13#10+
+    'EnableDHCP '#13#10+
+    '';
+    ecrireDansUnFichier(dirPath+'setDHCP.vbs', scriptVBS);
+    ExecAndWait('wscript.exe', ' "'+dirPath+'setDHCP.vbs"', SW_SHOWNORMAL);
 end;
 
 
