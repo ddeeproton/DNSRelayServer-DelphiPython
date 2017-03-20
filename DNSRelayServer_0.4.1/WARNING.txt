@@ -1,3 +1,0 @@
-Warning:
-The version 0.4.1 can break your internet connexion.
-Please use other version ;)
