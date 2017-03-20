@@ -195,7 +195,10 @@ var
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
   date, time, ipclient, ipdomain, domain, ip:string;
 begin
-  MemoLogs.Text := MemoLogs.Text + txt;
+  txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
+  if txt = '' then exit;
+  MemoLogs.Lines.Add(txt);
+  //MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
   //form1.MemoLogs.Lines.Add(sl.Text);
