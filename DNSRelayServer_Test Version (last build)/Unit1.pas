@@ -1098,6 +1098,14 @@ var
   idnetcard, IPAddress, DhcpIPAddress, NameServer, Description: string;
   startedInBackground: Boolean;
 begin
+  Memo1.Clear;
+  Memo1.Text := 'Si ce programme est fermé brutalement, vous n''avez plus d''Internet.'+#13#10#13#10+
+                'Si vous n''avez plus d''Internet, relancez ce programme (bouton Start) pour le fermer proprement.'+#13#10#13#10+
+                'Pour fermer proprement, bouton quitter, stop, ou la croix en haut de cette fenêtre.'+#13#10#13#10+
+                'Ce programme va congigurer votre carte réseau afin de pouvoir filtrer le web.'+#13#10#13#10+
+                'Au lancement, le serveur DNS sur vos carte réseau sont changés par l''IP de votre propre machine. A la fermeture votre carte réseau est configuré en mode automatique (mode DHCP). Si vous êtiez en mode manuel IP, alors vous perdrez votre configuration.'+#13#10#13#10+
+                'Il est de votre responsabilité de bien comprendre les risques d''utilisation. Aucun moyen de nous poursuivre en justice. Ce programme est gratuit, n''a pas de license et pas de virus. Vous faites ce que vous voulez ;)';
+
 
   ToolBar3.DoubleBuffered := True;
   ListView1.DoubleBuffered := True;

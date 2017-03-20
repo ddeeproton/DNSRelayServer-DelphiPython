@@ -503,13 +503,8 @@ object Form1: TForm1
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             Lines.Strings = (
-              'Attention, si ce programme est ferm'#233' brutalement, '
-              'vous n'#39'avez plus d'#39'Internet.'
-              ''
-              'Veuillez a toujours fermer proprement. :)'
-              ''
-              'Pour fermer proprement, bouton quitter, ou la croix en '
-              'haut de cette fen'#234'tre.')
+              'Memo1'
+              '')
             ParentFont = False
             ReadOnly = True
             ScrollBars = ssVertical
