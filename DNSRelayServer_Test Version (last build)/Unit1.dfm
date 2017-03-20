@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 324
   Width = 464
   Height = 452
-  Caption = 'DNS Relay Server 0.4.3'
+  Caption = 'DNS Relay Server 0.4.4'
   Color = clWhite
   Constraints.MinHeight = 434
   Constraints.MinWidth = 464
@@ -10653,7 +10653,7 @@ object Form1: TForm1
     Enabled = False
     Interval = 3000
     OnTimer = TimerSaveChangeTimer
-    Left = 416
+    Left = 136
     Top = 312
   end
   object PopupMenuListView: TPopupMenu
@@ -10671,5 +10671,11 @@ object Form1: TForm1
       Caption = 'Bloquer'
       OnClick = Bloquerledomaine1Click
     end
+  end
+  object Timer1: TTimer
+    Interval = 3000
+    OnTimer = Timer1Timer
+    Left = 94
+    Top = 313
   end
 end

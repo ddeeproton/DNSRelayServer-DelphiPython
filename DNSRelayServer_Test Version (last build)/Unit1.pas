@@ -79,6 +79,7 @@ type
     ButtonStart: TButton;
     ButtonClose: TButton;
     CBoxDNSServerSlaveIP: TComboBox;
+    Timer1: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -125,6 +126,8 @@ type
     procedure CheckBoxMenuPositionClick(Sender: TObject);
     procedure onServerDNSStart();
     procedure onServerDNSStop();
+    procedure Timer1Timer(Sender: TObject);
+    procedure OnOutput(txt:String);
   private
     { Private declarations }
   public
@@ -136,9 +139,11 @@ type
     EnMemo:TMemo;
     h: Cardinal;
     indexThread: Integer;
+    output: TStringList;
   protected
     procedure Execute(); override;
   public
+    procedure onCreate();
     procedure Execute2(cmd:String; EnMemo:TMemo);
     procedure RunDosInMemo(Que:String;EnMemo:TMemo);
   end;
@@ -182,7 +187,7 @@ begin
 end;
 
 
-procedure OnOutput(txt:String);
+procedure TForm1.OnOutput(txt:String);
 var
   i, imgIndex: integer;
   isNew: Boolean;
@@ -190,6 +195,7 @@ var
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
   date, time, ipclient, ipdomain, domain, ip:string;
 begin
+  MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
   //form1.MemoLogs.Lines.Add(sl.Text);
@@ -212,7 +218,7 @@ begin
     begin
       if form1.ListView1.Items[i].SubItems[0] =  domain then isNew := false;
     end;
-    
+
     if isNew then
     begin
 
@@ -244,7 +250,10 @@ begin
     sl.Free;
 end;
 
-
+procedure TSauvegarde.onCreate;
+begin
+  
+end;
 
 procedure TSauvegarde.RunDosInMemo(Que:String;EnMemo:TMemo);
 const
@@ -279,18 +288,26 @@ var
       OemToAnsi(Buffer,Buffer);
 
       txt := StringReplace(String(Buffer), ';EOL;', '', [rfReplaceAll, rfIgnoreCase]);
-      form1.MemoLogs.Lines.Text := form1.MemoLogs.Lines.Text + txt;
+      //form1.MemoLogs.Lines.Text := form1.MemoLogs.Lines.Text + txt;
 
+      {
+      if Pos(';EOL;', txt) = 0 then
+      begin
+        output.Add(txt);
+      end
+      else begin
+      }
       sl:=TStringList.Create;
       SplitStr(String(Buffer),';EOL;',sl);
       for i:=0 to sl.Count-1 do
       begin
         txt := String(sl.Strings[i]);
         txt := StringReplace(txt, #13#10, '', [rfReplaceAll, rfIgnoreCase]);
-        OnOutput(txt);
+        output.Add(txt);
+        //OnOut0put(txt);
       end;
+      //end;
 
-      //
 
       //EnMemo.Lines.Add(String(Buffer));
       //form1.Memo1MemoLogs.Lines.Add(String(Buffer));
@@ -860,13 +877,14 @@ begin
 
   createVBScript();
 
-  
+
 
   i := Length(listThreads);
   SetLength(listThreads, i+1);
   listThreads[i] := Unit1.TSauvegarde.Create(True);
   listThreads[i].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'"';
   //MemoLogs.Lines.Add(listThreads[i].cmd);
+  listThreads[i].output := TStringList.Create;
   listThreads[i].EnMemo := MemoLogs;
   listThreads[i].indexThread := i;
   listThreads[i].Suspended := False;
@@ -1595,6 +1613,18 @@ begin
     ToolBar3.Align := alTop
   else
     ToolBar3.Align := alLeft;
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+var i: Integer;
+begin
+  if listThreads = nil then exit;
+  if Length(listThreads) = 0 then exit;
+  for i := 0 to listThreads[0].output.Count -1 do
+  begin
+    OnOutput(listThreads[0].output[i]);
+  end;
+  listThreads[0].output := TStringList.Create;
 end;
 
 end.
