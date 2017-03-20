@@ -907,13 +907,13 @@ begin
 
   i := Length(listThreads);
   SetLength(listThreads, i+1);
-  listThreads[i] := Unit1.TSauvegarde.Create(True);
-  listThreads[i].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'"';
+  listThreads[0] := Unit1.TSauvegarde.Create(True);
+  listThreads[0].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'"';
   //MemoLogs.Lines.Add(listThreads[i].cmd);
-  listThreads[i].output := TStringList.Create;
-  listThreads[i].EnMemo := MemoLogs;
-  listThreads[i].indexThread := i;
-  listThreads[i].Suspended := False;
+  listThreads[0].output := TStringList.Create;
+  listThreads[0].EnMemo := MemoLogs;
+  listThreads[0].indexThread := i;
+  listThreads[0].Suspended := False;
 
   //MemoLogs.Lines.Add('Flushdns');
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);

@@ -3,7 +3,7 @@ object FormInstall: TFormInstall
   Top = 113
   BorderStyle = bsDialog
   Caption = 'DNS Server - Install'
-  ClientHeight = 257
+  ClientHeight = 217
   ClientWidth = 465
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +21,7 @@ object FormInstall: TFormInstall
     Left = 0
     Top = 0
     Width = 465
-    Height = 249
+    Height = 217
     Color = clBtnFace
     ParentColor = False
     TabOrder = 0
@@ -33,13 +33,10 @@ object FormInstall: TFormInstall
         Left = 8
         Top = 8
         Width = 449
-        Height = 241
+        Height = 201
         BevelInner = bvRaised
         BevelOuter = bvLowered
         TabOrder = 0
-        DesignSize = (
-          449
-          241)
         object Image2: TImage
           Left = 16
           Top = 16
@@ -709,20 +706,6 @@ object FormInstall: TFormInstall
           Font.Style = [fsBold]
           ParentFont = False
         end
-        object Label8: TLabel
-          Left = 21
-          Top = 208
-          Width = 285
-          Height = 13
-          Anchors = [akRight, akBottom]
-          Caption = 'Cliquez sur suivant pour installer les composants n'#233'cessaires'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-        end
         object Label13: TLabel
           Left = 112
           Top = 40
@@ -736,16 +719,6 @@ object FormInstall: TFormInstall
           Font.Style = []
           ParentFont = False
           WordWrap = True
-        end
-        object ButtonInstall: TButton
-          Left = 346
-          Top = 200
-          Width = 75
-          Height = 25
-          Anchors = [akRight, akBottom]
-          Caption = 'Suivant'
-          TabOrder = 0
-          OnClick = ButtonInstallClick
         end
       end
     end

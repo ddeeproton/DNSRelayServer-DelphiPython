@@ -32,8 +32,6 @@ type
     LabelSetuptools: TLabel;
     LabelWget: TLabel;
     Label3: TLabel;
-    Label8: TLabel;
-    ButtonInstall: TButton;
     Panel2: TPanel;
     Image1: TImage;
     Label5: TLabel;
@@ -175,18 +173,13 @@ end;
 
 procedure TFormInstall.ButtonInstallClick(Sender: TObject);
 begin
-
-
-  if ButtonInstall.Enabled = False then exit;
-  ButtonInstall.Enabled := False;
+  //if ButtonInstall.Enabled = False then exit;
+  //ButtonInstall.Enabled := False;
   TimerWatchThread.Enabled := True;
-  //LabelDNSResolver.Caption := PChar('a1');
   installThread := TInstall.Create(False);
 
-  //LabelDNSResolver.Caption := PChar('a2');
   if (installThread <> nil) and not installThread.Terminated then
   begin
-    //LabelDNSResolver.Caption := PChar('a3');
     installThread.LabelWget := LabelWget.Caption;
     installThread.LabelPython := LabelPython.Caption;
     installThread.LabelDNSResolver := LabelDNSResolver.Caption;
@@ -197,20 +190,12 @@ end;
 
 procedure TFormInstall.DoInstall();
 begin
-
-//LabelDNSResolver.Caption := PChar('1');
   if not isWgetInstalled then installWget();
-//LabelDNSResolver.Caption := PChar('2');
-  if not isWgetInstalled then begin ButtonInstall.Enabled := True; Application.ProcessMessages; exit; end;
-//LabelDNSResolver.Caption := PChar('3');
+  if not isWgetInstalled then begin Application.ProcessMessages; exit; end;
   if not isPythonInstalled then installPython();
-//LabelDNSResolver.Caption := PChar('4');
-  if not isPythonInstalled then begin ButtonInstall.Enabled := True; Application.ProcessMessages; exit; end;
-//LabelDNSResolver.Caption := PChar('5');
+  if not isPythonInstalled then begin Application.ProcessMessages; exit; end;
   if not isSetuptoolInstalled then installSetuptools();
-//LabelDNSResolver.Caption := PChar('6');
   if not isDNSInstalled then installDNS();
-//LabelDNSResolver.Caption := PChar('7');
 end;
 
 
@@ -476,7 +461,7 @@ procedure TFormInstall.TimerWatchThreadTimer(Sender: TObject);
 begin
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
     makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
-  ButtonInstall.Enabled := installThread.Terminated;
+  //ButtonInstall.Enabled := installThread.Terminated;
   if installThread.Terminated then TTimer(Sender).Enabled := False;
   if installThread.Terminated and (installThread.LabelWget = 'Error') then
   begin
