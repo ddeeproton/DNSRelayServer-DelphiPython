@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 270
   Top = 156
   Width = 422
-  Height = 320
-  Caption = 'DNS Relay Server 0.4.4'
+  Height = 342
+  Caption = 'DNS Relay Server 0.4.5'
   Color = clWhite
   Constraints.MinHeight = 290
   Constraints.MinWidth = 404
@@ -515,7 +515,8 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 152
+    Left = 128
+    Top = 272
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -1317,7 +1318,8 @@ object Form1: TForm1
       000000000000}
   end
   object PopupMenu1: TPopupMenu
-    Left = 120
+    Left = 96
+    Top = 272
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -1337,9 +1339,10 @@ object Form1: TForm1
   object ImageList2: TImageList
     Height = 40
     Width = 50
-    Left = 184
+    Left = 160
+    Top = 272
     Bitmap = {
-      494C010106000900040032002800FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010106000900040032002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000C80000007800000001002000000000000077
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4448,15 +4451,17 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFF000000}
+      FFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000000000
+      000000000000}
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 248
+    Left = 224
+    Top = 272
   end
   object ImageList3: TImageList
-    Left = 216
-    Top = 1
+    Left = 192
+    Top = 273
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -4865,11 +4870,12 @@ object Form1: TForm1
     Enabled = False
     Interval = 3000
     OnTimer = TimerSaveChangeTimer
-    Left = 56
+    Left = 32
+    Top = 272
   end
   object PopupMenuListView: TPopupMenu
-    Left = 88
-    Top = 1
+    Left = 64
+    Top = 273
     object Autoriser1: TMenuItem
       Caption = 'Autoriser'
       OnClick = Autoriser1Click
@@ -4887,7 +4893,7 @@ object Form1: TForm1
     Enabled = False
     Interval = 500
     OnTimer = Timer1Timer
-    Left = 30
-    Top = 1
+    Left = 6
+    Top = 273
   end
 end
