@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 261
-  Top = 261
+  Left = 296
+  Top = 293
   Width = 338
   Height = 325
   Caption = 'DNS Relay Server 0.4.4'
@@ -151,7 +151,6 @@ object Form1: TForm1
       Width = 331
       Height = 175
       Anchors = [akLeft, akTop, akRight, akBottom]
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -213,21 +212,13 @@ object Form1: TForm1
             Height = 13
             Caption = 'Exemple: host.txt'
           end
-          object EditPort: TEdit
-            Left = 176
-            Top = 40
-            Width = 81
-            Height = 21
-            TabOrder = 0
-            Text = '53'
-          end
           object EditFilehost: TEdit
             Left = 8
             Top = 104
             Width = 249
             Height = 21
             Anchors = [akLeft, akTop, akRight]
-            TabOrder = 1
+            TabOrder = 0
           end
           object CheckBoxStartWithWindows: TCheckBox
             Left = 8
@@ -235,7 +226,7 @@ object Form1: TForm1
             Width = 273
             Height = 17
             Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
-            TabOrder = 2
+            TabOrder = 1
           end
           object ButtonSelectFilehost: TButton
             Left = 264
@@ -244,7 +235,7 @@ object Form1: TForm1
             Height = 25
             Anchors = [akTop, akRight]
             Caption = '...'
-            TabOrder = 3
+            TabOrder = 2
             OnClick = ButtonSelectFilehostClick
           end
           object CBoxDNSServerSlaveIP: TComboBox
@@ -253,8 +244,18 @@ object Form1: TForm1
             Width = 145
             Height = 21
             ItemHeight = 13
-            TabOrder = 4
+            TabOrder = 3
             Text = 'CBoxDNSServerSlaveIP'
+          end
+          object SpinPort: TSpinEdit
+            Left = 176
+            Top = 40
+            Width = 97
+            Height = 22
+            MaxValue = 0
+            MinValue = 0
+            TabOrder = 4
+            Value = 53
           end
         end
       end
@@ -451,16 +452,6 @@ object Form1: TForm1
         end
       end
     end
-    object ButtonInstall: TButton
-      Left = 6
-      Top = 183
-      Width = 75
-      Height = 25
-      Anchors = [akLeft, akBottom]
-      Caption = 'Installer'
-      TabOrder = 1
-      OnClick = ButtonInstallClick
-    end
     object ButtonStart: TButton
       Left = 155
       Top = 183
@@ -468,7 +459,7 @@ object Form1: TForm1
       Height = 26
       Anchors = [akRight, akBottom]
       Caption = 'Start'
-      TabOrder = 2
+      TabOrder = 1
       OnClick = ButtonStartClick
     end
     object ButtonClose: TButton
@@ -478,7 +469,7 @@ object Form1: TForm1
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = 'Stop'
-      TabOrder = 3
+      TabOrder = 2
       OnClick = ButtonCloseClick
     end
   end
@@ -1307,7 +1298,7 @@ object Form1: TForm1
     Width = 50
     Left = 184
     Bitmap = {
-      494C010105000900040032002800FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010105000900040032002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000C80000007800000001002000000000000077
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4416,7 +4407,8 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFF000000}
+      FFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000000000
+      000000000000}
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]

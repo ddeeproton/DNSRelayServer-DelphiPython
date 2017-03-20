@@ -1,6 +1,6 @@
 object FormInstall: TFormInstall
-  Left = 488
-  Top = 133
+  Left = 437
+  Top = 113
   BorderStyle = bsDialog
   Caption = 'DNS Server - Install'
   ClientHeight = 257
@@ -737,7 +737,7 @@ object FormInstall: TFormInstall
           ParentFont = False
           WordWrap = True
         end
-        object ButtonStep1Next: TButton
+        object ButtonInstall: TButton
           Left = 346
           Top = 200
           Width = 75
@@ -745,7 +745,7 @@ object FormInstall: TFormInstall
           Anchors = [akRight, akBottom]
           Caption = 'Suivant'
           TabOrder = 0
-          OnClick = ButtonStep1NextClick
+          OnClick = ButtonInstallClick
         end
       end
     end

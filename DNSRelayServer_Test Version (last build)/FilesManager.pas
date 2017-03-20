@@ -5,11 +5,23 @@ interface
   function lireFichier(Filename: string):String;
   procedure ecrireDansUnFichier(Fichier: string; txt: string);
   function makeDir(path:string):Boolean; 
-
+  function FileSize(fileName : wideString) : Int64;
+  
 implementation
 
 uses SysUtils;
 
+function FileSize(fileName : wideString) : Int64;
+ var
+   sr : TSearchRec;
+ begin
+   if FindFirst(fileName, faAnyFile, sr ) = 0 then
+      result := Int64(sr.FindData.nFileSizeHigh) shl Int64(32) + Int64(sr.FindData.nFileSizeLow)
+   else
+      result := -1;
+ 
+   FindClose(sr) ;
+ end;
 
 function LireFichier(Filename: string):String;
 var

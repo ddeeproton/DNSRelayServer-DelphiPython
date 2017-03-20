@@ -20,7 +20,7 @@ uses
   // Pour AnsiReplaceStr
   StrUtils,
   // Pour LaunchAndWait
-  ProcessManager;
+  ProcessManager, Spin;
 
 type
   TForm1 = class(TForm)
@@ -53,7 +53,6 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    EditPort: TEdit;
     EditFilehost: TEdit;
     CheckBoxStartWithWindows: TCheckBox;
     ButtonSelectFilehost: TButton;
@@ -75,11 +74,11 @@ type
     ListView1: TListView;
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
-    ButtonInstall: TButton;
     ButtonStart: TButton;
     ButtonClose: TButton;
     CBoxDNSServerSlaveIP: TComboBox;
     Timer1: TTimer;
+    SpinPort: TSpinEdit;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -499,7 +498,7 @@ begin
   '		if len(sys.argv) > 2:'#13#10+
   '			hostfile = sys.argv[4]'#13#10+
   ''#13#10+
-  'config_dnsport = '+form1.EditPort.Text+#13#10+
+  'config_dnsport = '+IntToStr(Form1.SpinPort.Value)+#13#10+
   'config_delayerror = 1'#13#10+
   ''#13#10+
   'config_display = True'#13#10+
@@ -834,6 +833,26 @@ begin
   ToolButton3Click(ToolButton3);
   ToolButton3.Down := True;
 
+  if FormInstall = nil then
+  begin
+    FormInstall := TFormInstall.Create(Self);
+  end;
+
+  FormInstall.CheckInstallation;
+  
+  if not FormInstall.isPythonInstalled
+  or not FormInstall.isDNSInstalled
+  or not FormInstall.isSetuptoolInstalled
+  then begin
+    FormInstall.Show;
+    FormInstall.ButtonInstallClick(nil);
+    exit;
+  end
+  else begin
+    FormInstall.Close;
+  end;
+
+
   ButtonCloseClick(nil);
   closeProcessCreated;
 
@@ -897,7 +916,7 @@ begin
   listThreads[i].Suspended := False;
 
   //MemoLogs.Lines.Add('Flushdns');
-  LaunchAndWait('ipconfig.exe /flushdns', SW_HIDE);
+  LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
   {
   listThreads[1] := Unit1.TSauvegarde.Create(True);
   listThreads[1].cmd := 'ipconfig.exe /flushdns';
@@ -1514,7 +1533,7 @@ begin
   TTimer(Sender).Enabled := False;
   ecrireDansUnFichier(FilehostPathConfig, EditFilehost.Text);
   ecrireDansUnFichier(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
-  ecrireDansUnFichier(SlaveDNSPortConfig, EditPort.Text);
+  ecrireDansUnFichier(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
 end;
 
 procedure TForm1.ToolButton10Click(Sender: TObject);

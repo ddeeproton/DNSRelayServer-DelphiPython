@@ -8,7 +8,7 @@ procedure createVBScript();
 
 implementation
 
-uses Unit1;
+uses Unit1, SysUtils;
 
 
 procedure createVBScript();
@@ -89,7 +89,7 @@ begin
   '		if len(sys.argv) > 2:'#13#10+
   '			hostfile = sys.argv[4]'#13#10+
   ''#13#10+
-  'config_dnsport = '+form1.EditPort.Text+#13#10+
+  'config_dnsport = '+IntToStr(Form1.SpinPort.Value)+#13#10+
   'config_delayerror = 1'#13#10+
   ''#13#10+
   'config_display = True'#13#10+

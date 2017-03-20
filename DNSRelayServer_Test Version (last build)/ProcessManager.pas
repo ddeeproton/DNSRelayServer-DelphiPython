@@ -10,7 +10,7 @@ uses Windows, SysUtils, Messages,
   ShellAPI;
 
 function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
-function LaunchAndWait(sFile: String; wShowWin: Word): Boolean;  //wShowWin => SW_SHOWNORMAL | SW_HIDE
+function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean; //wShowWin => SW_SHOWNORMAL | SW_HIDE
 
 function KillTask(ExeFileName: string): Integer;
 function CloseTaskPID(ExeFileName: string; pid: Integer): Integer;
@@ -33,28 +33,21 @@ begin
 end;
 
 
-function LaunchAndWait(sFile: String; wShowWin: Word): Boolean;
+function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
 var
   cExe: array [0..255] of Char;
-  sExe: string;
   pcFile: PChar;
   StartInfo: TStartupInfo;
   ProcessInfo: TProcessInformation;
 begin
   Result:=True;
-
-  FindExecutable(PChar(ExtractFileName(sFile)), PChar(ExtractFilePath(sFile)), cExe);
-  sExe:= string(cExe);
-  if UpperCase(ExtractFileName(sExe))<>UpperCase(ExtractFileName(sFile))
-  then pcFile:=PChar(sFile)
-  else pcFile:=nil;
   ZeroMemory(@StartInfo, SizeOf(StartInfo));
   with StartInfo do begin
     cb:=SizeOf(StartInfo);
     dwFlags:=STARTF_USESHOWWINDOW;
     wShowWindow:=wShowWin;
   end;
-  if CreateProcess(PChar(sExe), pcFile, nil, nil, True, 0, nil, nil, StartInfo, ProcessInfo)
+  if CreateProcess(PChar(sExe), PChar(sFile), nil, nil, True, 0, nil, nil, StartInfo, ProcessInfo)
   then WaitForSingleObject(ProcessInfo.hProcess, INFINITE)
   else Result:=False;
 end;
