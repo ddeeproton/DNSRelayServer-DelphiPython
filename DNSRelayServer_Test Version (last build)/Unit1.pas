@@ -196,6 +196,7 @@ var
   date, time, ipclient, ipdomain, domain, ip:string;
 begin
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
+  txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
   MemoLogs.Lines.Add(txt);
   //MemoLogs.Text := MemoLogs.Text + txt;
