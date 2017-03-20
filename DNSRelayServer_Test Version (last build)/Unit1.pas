@@ -868,7 +868,7 @@ begin
   begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé.');
     MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
-    MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "DNS relay"');
+    MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
     exit;
   end;
 

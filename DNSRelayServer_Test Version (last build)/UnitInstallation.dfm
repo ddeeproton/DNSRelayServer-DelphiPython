@@ -1403,7 +1403,7 @@ object FormInstall: TFormInstall
   object TimerWatchThread: TTimer
     Enabled = False
     OnTimer = TimerWatchThreadTimer
-    Left = 312
-    Top = 200
+    Left = 120
+    Top = 48
   end
 end
