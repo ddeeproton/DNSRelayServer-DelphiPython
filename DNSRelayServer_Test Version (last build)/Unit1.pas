@@ -211,6 +211,8 @@ begin
     ipclient := sl.Strings[2];
     ipdomain := sl.Strings[3];
     domain := sl.Strings[4];
+    SetLength(domain, Length(domain)-1);
+
 
     if form1.ListBoxIpClients.Items.IndexOf(ipclient) = -1 then
     begin
@@ -310,6 +312,7 @@ var
         output.Add(txt);
         //OnOut0put(txt);
       end;
+      form1.Timer1.Enabled := True;
       //end;
 
 
@@ -528,13 +531,13 @@ begin
   '			answer = self.res.query(domain, "A")'#13#10+
   '			res = "%s" % answer[0]'#13#10+
   '		except dns.resolver.NoAnswer:'#13#10+
-  '			print "Error: No AAAA record for", dnss.domain," ", data'#13#10+
+  '			#print "Error: No AAAA record for", dnss.domain," ", data'#13#10+
   '			sys.stdout.flush()'#13#10+
   '		except dns.resolver.NXDOMAIN:'#13#10+
-  '			print "Error: The name ", dnss.domain, " does not exist"'#13#10+
+  '			#print "Error: The name ", dnss.domain, " does not exist"'#13#10+
   '			sys.stdout.flush()'#13#10+
   '		except DNSException:'#13#10+
-  '			print ''Error: DNS Exception: '', dnss.domain'#13#10+
+  '			#print ''Error: DNS Exception: '', dnss.domain'#13#10+
   '			sys.stdout.flush()'#13#10+
   '		return res'#13#10+
   ''#13#10+
@@ -553,7 +556,7 @@ begin
   '		try:'#13#10+
   '			return self.udps.recvfrom(1024)'#13#10+
   '		except:'#13#10+
-  '			print "Error: recieving data on UDP server"'#13#10+
+  '			#print "Error: recieving data on UDP server"'#13#10+
   '			sys.stdout.flush()'#13#10+
   ''#13#10+
   '	def sendQuery(self, answer, addr):'#13#10+
@@ -1622,8 +1625,10 @@ end;
 procedure TForm1.Timer1Timer(Sender: TObject);
 var i: Integer;
 begin
+  Timer1.Enabled := False;
   if listThreads = nil then exit;
   if Length(listThreads) = 0 then exit;
+  if listThreads[0].output.Count = 0 then exit;
   for i := 0 to listThreads[0].output.Count -1 do
   begin
     OnOutput(listThreads[0].output[i]);

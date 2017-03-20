@@ -4851,7 +4851,8 @@ object Form1: TForm1
     end
   end
   object Timer1: TTimer
-    Interval = 3000
+    Enabled = False
+    Interval = 500
     OnTimer = Timer1Timer
     Left = 30
     Top = 1
