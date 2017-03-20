@@ -1574,7 +1574,7 @@ begin
   if ToolBar3.Align = alTop then
   begin
     LeftOffset := 20;
-    TopOffset := 172
+    TopOffset := 142
   end
   else begin
     LeftOffset := 115;
