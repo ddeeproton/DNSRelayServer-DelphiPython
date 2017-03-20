@@ -74,11 +74,14 @@ type
     ListView1: TListView;
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
-    ButtonStart: TButton;
-    ButtonClose: TButton;
     CBoxDNSServerSlaveIP: TComboBox;
     Timer1: TTimer;
     SpinPort: TSpinEdit;
+    ToolButton8: TToolButton;
+    GroupBox6: TGroupBox;
+    ButtonStart: TButton;
+    ButtonClose: TButton;
+    Memo1: TMemo;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -127,6 +130,7 @@ type
     procedure onServerDNSStop();
     procedure Timer1Timer(Sender: TObject);
     procedure OnOutput(txt:String);
+    procedure ToolButton8Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -947,7 +951,7 @@ end;
 
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  onServerDNSStop();
+  if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();
   ButtonCloseClick(Sender);
   KillTask(ExtractFileName(Application.ExeName));
@@ -1099,6 +1103,14 @@ begin
   ListView1.DoubleBuffered := True;
   MemoLogs.DoubleBuffered := True;
   Panel1.Align := alClient;
+  GroupBox1.Align := alClient;
+  GroupBox2.Align := alClient;
+  GroupBox3.Align := alClient;
+  GroupBox4.Align := alClient;
+  GroupBox5.Align := alClient;
+  GroupBox6.Align := alClient;
+  Notebook1.Align := alClient;
+
   ToolButton7.Click;
   ToolButton7.Down := True;
 
@@ -1130,7 +1142,7 @@ begin
       startedInBackground := True;
     end;
     if not startedInBackground then
-      ShowMessage('Attention ce programme peut vous casser votre connexion Internet si vous fermez le serveur brutalement.'+#13+'Si votre connexion Internet est cassé, lancez le serveur (bouton Start) puis arrêtez-le (bouton Stop).');
+
 
   ListViewCreate(ListView1);
   getDomains(EditFilehost.Text, ListView1);
@@ -1412,6 +1424,11 @@ end;
 
 procedure TForm1.ToolButton7Click(Sender: TObject);
 begin
+  Notebook1.PageIndex := 5;
+end;
+
+procedure TForm1.ToolButton8Click(Sender: TObject);
+begin
   Notebook1.PageIndex := 0;
   refreshCheckBox(CheckBoxStartWithWindows);
 end;
@@ -1654,5 +1671,7 @@ begin
   end;
   listThreads[0].output := TStringList.Create;
 end;
+
+
 
 end.
