@@ -49,12 +49,17 @@ begin
     '  i = 0'#13#10+
     '  redim res(WScript.Arguments.Count-1)'#13#10+
     '  For Each arg in WScript.Arguments'#13#10+
-    '    if Replace(arg," ","") <> "" Then'#13#10+
+    '    arg = Replace(arg," ","")'#13#10+
+    '    if arg <> "" and arg <> "uac" Then'#13#10+
     '      res(i) = arg'#13#10+
     '      i = i + 1'#13#10+
     '    End If'#13#10+
     '  Next'#13#10+
-    '  ArgumentsToArray = res'#13#10+
+    '  if i = 0 then'#13#10+
+    '    ArgumentsToArray = Array()'#13#10+
+    '  else'#13#10+
+    '    ArgumentsToArray = res'#13#10+ 
+    '  end if'#13#10+
     'End function'#13#10+
     ''#13#10+
     'function setDNS(listIP)'#13#10+

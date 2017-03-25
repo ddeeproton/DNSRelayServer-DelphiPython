@@ -82,6 +82,11 @@ type
     ButtonStart: TButton;
     ButtonClose: TButton;
     Memo1: TMemo;
+    N2: TMenuItem;
+    StartDNS1: TMenuItem;
+    StopDNS1: TMenuItem;
+    ImageList4: TImageList;
+    Button1: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -131,6 +136,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure OnOutput(txt:String);
     procedure ToolButton8Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -409,6 +415,10 @@ procedure TForm1.onServerDNSStart();
 begin
   setDNS(CBoxDNSServerSlaveIP.Text);
   MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
+  
+  ImageList4.GetIcon(2, Application.Icon);
+  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+  ToolButton7.ImageIndex := 7;
 end;
 
 procedure TForm1.onServerDNSStop();
@@ -417,6 +427,9 @@ begin
   setDNS('');
   setIPToDHCP();
 
+  ImageList4.GetIcon(1, Application.Icon);
+  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+  ToolButton7.ImageIndex := 6;
   //setDNS(DNSMasterSerialized);
   //MemoLogs.Lines.Add('Set DNS '+DNSMasterSerialized);
 end;
@@ -830,6 +843,8 @@ end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
+  img: TBitmap;
+  ico: TIcon;
   i: Integer;
   filepath: string;
   dns: string;
@@ -843,7 +858,7 @@ begin
   end;
 
   FormInstall.CheckInstallation;
-  
+
   if not FormInstall.isPythonInstalled
   or not FormInstall.isDNSInstalled
   or not FormInstall.isSetuptoolInstalled
@@ -921,6 +936,8 @@ begin
 
   //MemoLogs.Lines.Add('Flushdns');
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
+
+
   {
   listThreads[1] := Unit1.TSauvegarde.Create(True);
   listThreads[1].cmd := 'ipconfig.exe /flushdns';
@@ -1140,7 +1157,7 @@ begin
     EditFilehost.Text := lireFichier(FilehostPathConfig);
 
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
-
+ 
   startedInBackground := False;
   for i:=0 to ParamCount() do
     if ParamStr(i) = '/background' then
@@ -1681,5 +1698,10 @@ begin
 end;
 
 
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  KillTask('python.exe')
+end;
 
 end.
