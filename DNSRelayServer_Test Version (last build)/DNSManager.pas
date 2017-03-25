@@ -89,7 +89,8 @@ begin
     '  loop'#13#10+
     'end sub';
     ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
-    ExecAndWait('wscript.exe', ' "'+dirPath+'setDNS.vbs" '+Servers, SW_SHOWNORMAL);
+
+    ProcessManager.LaunchAndWait('wscript.exe', ' "'+dirPath+'setDNS.vbs" '+Servers, SW_SHOWNORMAL);
 end;
 
 
@@ -174,7 +175,7 @@ begin
     'EnableDHCP '#13#10+
     '';
     ecrireDansUnFichier(dirPath+'setDHCP.vbs', scriptVBS);
-    ExecAndWait('wscript.exe', ' "'+dirPath+'setDHCP.vbs"', SW_SHOWNORMAL);
+    LaunchAndWait('wscript.exe', ' "'+dirPath+'setDHCP.vbs"', SW_SHOWNORMAL);
 end;
 
 

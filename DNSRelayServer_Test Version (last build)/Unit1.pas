@@ -36,7 +36,6 @@ type
     ToolButton4: TToolButton;
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
-    ToolButton7: TToolButton;
     SaveDialog1: TSaveDialog;
     ImageList3: TImageList;
     TimerSaveChange: TTimer;
@@ -79,14 +78,12 @@ type
     SpinPort: TSpinEdit;
     ToolButton8: TToolButton;
     GroupBox6: TGroupBox;
-    ButtonStart: TButton;
-    ButtonClose: TButton;
     Memo1: TMemo;
     N2: TMenuItem;
     StartDNS1: TMenuItem;
     StopDNS1: TMenuItem;
     ImageList4: TImageList;
-    ButtonForceStart: TButton;
+    ToolButton11: TToolButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -137,6 +134,7 @@ type
     procedure OnOutput(txt:String);
     procedure ToolButton8Click(Sender: TObject);
     procedure ButtonForceStartClick(Sender: TObject);
+    procedure ToolButton11Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -173,6 +171,7 @@ var
   PythonPath: string = '';
   DataDirectoryPath: string = '';
   DNSMasterSerialized: string = '';
+  isServerStarted: boolean = True;
 implementation
 
 {$R *.dfm}
@@ -418,7 +417,12 @@ begin
   
   ImageList4.GetIcon(2, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  ToolButton7.ImageIndex := 7;
+  //ToolButton7.ImageIndex := 7;
+  ToolButton11.ImageIndex := 8;
+  ToolButton11.Caption := 'DNS Démarré';
+  isServerStarted := True;
+
+  ToolButton11.Enabled := True;
 end;
 
 procedure TForm1.onServerDNSStop();
@@ -429,9 +433,16 @@ begin
 
   ImageList4.GetIcon(1, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  ToolButton7.ImageIndex := 6;
+  //ToolButton7.ImageIndex := 6;
+
+  ToolButton11.ImageIndex := 7;
   //setDNS(DNSMasterSerialized);
   //MemoLogs.Lines.Add('Set DNS '+DNSMasterSerialized);
+
+  ToolButton11.Caption := 'DNS Arrêté';
+  isServerStarted := False;
+
+  ToolButton11.Enabled := True;
 end;
 
 
@@ -843,12 +854,11 @@ end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
-  img: TBitmap;
-  ico: TIcon;
   i: Integer;
   filepath: string;
   dns: string;
 begin
+  ToolButton11.Enabled := False;
   ToolButton3Click(ToolButton3);
   ToolButton3.Down := True;
 
@@ -865,6 +875,7 @@ begin
   then begin
     FormInstall.Show;
     FormInstall.ButtonInstallClick(nil);
+    ToolButton11.Enabled := True;
     exit;
   end
   else begin
@@ -884,6 +895,7 @@ begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé.');
     MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
     MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
+    ToolButton11.Enabled := True;
     exit;
   end;
 
@@ -901,6 +913,7 @@ begin
       MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
       MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
       MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
+      ToolButton11.Enabled := True;
       exit;
     end;
     if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
@@ -914,6 +927,7 @@ begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé');
     MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
     MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
+    ToolButton11.Enabled := True;
     exit;
   end;
 
@@ -937,7 +951,7 @@ begin
   //MemoLogs.Lines.Add('Flushdns');
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
 
-
+  
   {
   listThreads[1] := Unit1.TSauvegarde.Create(True);
   listThreads[1].cmd := 'ipconfig.exe /flushdns';
@@ -1109,12 +1123,12 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-  i,i2: Integer;
+  i: Integer;
   net: tNetworkInterfaceList;
-  keys, keys2: TStrings;
-  idnetcard, IPAddress, DhcpIPAddress, NameServer, Description: string;
+
   startedInBackground: Boolean;
 begin
+  isServerStarted := False;
   Memo1.Clear;
   Memo1.Text := 'Si ce programme est fermé brutalement, vous n''avez plus d''Internet.'+#13#10#13#10+
                 'Si vous n''avez plus d''Internet, relancez ce programme (bouton Start) pour le fermer proprement.'+#13#10#13#10+
@@ -1136,8 +1150,9 @@ begin
   GroupBox6.Align := alClient;
   Notebook1.Align := alClient;
 
-  ToolButton7.Click;
-  ToolButton7.Down := True;
+  Notebook1.PageIndex := 5;
+  //ToolButton7.Click;
+  //ToolButton7.Down := True;
 
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
   FilehostPathConfig := DataDirectoryPath + FilehostPathConfig ;
@@ -1163,7 +1178,7 @@ begin
     if ParamStr(i) = '/background' then
     begin
       Masquer1Click(nil);
-      ButtonStartClick(ButtonStart);
+      ButtonStartClick(nil);
       startedInBackground := True;
     end;
     if not startedInBackground then
@@ -1533,11 +1548,6 @@ end;
 
 procedure TForm1.ListView1Change(Sender: TObject; Item: TListItem;
   Change: TItemChange);
-var
-  ListItem:TListItem;
-  CurPos:TPoint;
-  i:integer;
-  ip:string;
 begin
   if not ListView1.IsEditing then exit;
   if (Item.Caption <> '') and (Item.SubItems.Count > 0) then
@@ -1604,8 +1614,7 @@ end;
 
 procedure TForm1.Modifier1Click(Sender: TObject);
 var
-  i:integer;
-  txt, ip:string;
+  txt:string;
 begin
   if not Assigned(SelectedListItem) then exit;
   txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.Caption);
@@ -1620,8 +1629,7 @@ procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
 var
   ListItem:TListItem;
   CurPos:TPoint;
-  i, TopOffset, LeftOffset:integer;
-  ip:string;
+  TopOffset, LeftOffset:integer;
 begin
 
   // Si on clique dans la case à cocher, on séléctionne la ligne
@@ -1703,6 +1711,15 @@ procedure TForm1.ButtonForceStartClick(Sender: TObject);
 begin
   KillTask('python.exe');
   ButtonStartClick(nil);
+end;
+
+procedure TForm1.ToolButton11Click(Sender: TObject);
+begin
+  ToolButton11.Enabled := False;
+  if isServerStarted then
+    ButtonCloseClick(nil)
+  else
+    ButtonStartClick(nil);
 end;
 
 end.
