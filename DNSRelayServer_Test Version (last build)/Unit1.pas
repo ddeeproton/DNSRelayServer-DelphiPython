@@ -86,7 +86,7 @@ type
     StartDNS1: TMenuItem;
     StopDNS1: TMenuItem;
     ImageList4: TImageList;
-    Button1: TButton;
+    ButtonForceStart: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -136,7 +136,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure OnOutput(txt:String);
     procedure ToolButton8Click(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure ButtonForceStartClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1699,9 +1699,10 @@ end;
 
 
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.ButtonForceStartClick(Sender: TObject);
 begin
-  KillTask('python.exe')
+  KillTask('python.exe');
+  ButtonStartClick(nil);
 end;
 
 end.

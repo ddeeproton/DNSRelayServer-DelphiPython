@@ -472,7 +472,7 @@ object Form1: TForm1
             369
             185)
           object ButtonStart: TButton
-            Left = 24
+            Left = 48
             Top = 146
             Width = 75
             Height = 25
@@ -482,7 +482,7 @@ object Form1: TForm1
             OnClick = ButtonStartClick
           end
           object ButtonClose: TButton
-            Left = 111
+            Left = 127
             Top = 146
             Width = 75
             Height = 25
@@ -510,15 +510,15 @@ object Form1: TForm1
             ScrollBars = ssVertical
             TabOrder = 2
           end
-          object Button1: TButton
-            Left = 208
-            Top = 144
+          object ButtonForceStart: TButton
+            Left = 206
+            Top = 146
             Width = 75
             Height = 25
-            Anchors = [akRight, akBottom]
-            Caption = 'Button1'
+            Anchors = [akBottom]
+            Caption = 'Force'
             TabOrder = 3
-            OnClick = Button1Click
+            OnClick = ButtonForceStartClick
           end
         end
       end
