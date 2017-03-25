@@ -84,6 +84,8 @@ type
     StopDNS1: TMenuItem;
     ImageList4: TImageList;
     ToolButton11: TToolButton;
+    CheckBoxUpdate: TCheckBox;
+    ButtonUpdate: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -135,6 +137,7 @@ type
     procedure ToolButton8Click(Sender: TObject);
     procedure ButtonForceStartClick(Sender: TObject);
     procedure ToolButton11Click(Sender: TObject);
+    procedure ButtonUpdateClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1732,6 +1735,12 @@ begin
       ButtonStartClick(nil);
     end;
   end;
+end;
+
+procedure TForm1.ButtonUpdateClick(Sender: TObject);
+begin
+  //
+  
 end;
 
 end.

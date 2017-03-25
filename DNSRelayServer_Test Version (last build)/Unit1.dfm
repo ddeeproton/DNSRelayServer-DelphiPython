@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 187
   Top = 309
   Width = 450
-  Height = 349
+  Height = 371
   Caption = 'DNS Relay Server 0.4.5'
   Color = clWhite
   Constraints.MinHeight = 290
@@ -150,14 +150,13 @@ object Form1: TForm1
     Left = 0
     Top = 65
     Width = 385
-    Height = 200
+    Height = 224
     TabOrder = 1
     object Notebook1: TNotebook
       Left = 1
       Top = 1
       Width = 384
-      Height = 184
-      PageIndex = 5
+      Height = 216
       TabOrder = 0
       object TPage
         Left = 0
@@ -165,18 +164,18 @@ object Form1: TForm1
         Caption = 'Default'
         DesignSize = (
           384
-          184)
+          216)
         object GroupBox2: TGroupBox
           Left = 8
           Top = 0
           Width = 368
-          Height = 184
+          Height = 209
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Config'
           TabOrder = 0
           DesignSize = (
             368
-            184)
+            209)
           object Label1: TLabel
             Left = 8
             Top = 24
@@ -264,6 +263,23 @@ object Form1: TForm1
             TabOrder = 4
             Value = 53
           end
+          object CheckBoxUpdate: TCheckBox
+            Left = 8
+            Top = 176
+            Width = 273
+            Height = 17
+            Caption = 'Mise '#224' jour au d'#233'marrage'
+            TabOrder = 5
+          end
+          object ButtonUpdate: TButton
+            Left = 288
+            Top = 176
+            Width = 75
+            Height = 25
+            Caption = 'V'#233'rifier'
+            TabOrder = 6
+            OnClick = ButtonUpdateClick
+          end
         end
       end
       object TPage
@@ -272,12 +288,12 @@ object Form1: TForm1
         Caption = 'Config DNS Master'
         DesignSize = (
           384
-          184)
+          216)
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
           Width = 368
-          Height = 184
+          Height = 216
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Master'
           TabOrder = 0
@@ -330,7 +346,7 @@ object Form1: TForm1
             Left = 2
             Top = 44
             Width = 364
-            Height = 138
+            Height = 170
             Align = alClient
             ItemHeight = 13
             Items.Strings = (
@@ -346,12 +362,12 @@ object Form1: TForm1
         Caption = 'IP Clients'
         DesignSize = (
           384
-          184)
+          216)
         object GroupBox3: TGroupBox
           Left = 8
           Top = 0
           Width = 368
-          Height = 184
+          Height = 216
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Clients'
           TabOrder = 0
@@ -359,7 +375,7 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 364
-            Height = 167
+            Height = 199
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
@@ -372,12 +388,12 @@ object Form1: TForm1
         Caption = 'DNS Domains'
         DesignSize = (
           384
-          184)
+          216)
         object GroupBox4: TGroupBox
           Left = 8
           Top = 0
           Width = 368
-          Height = 184
+          Height = 216
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Web Filter'
           TabOrder = 0
@@ -419,7 +435,7 @@ object Form1: TForm1
             Left = 2
             Top = 41
             Width = 364
-            Height = 141
+            Height = 173
             Align = alClient
             Columns = <>
             ReadOnly = True
@@ -436,12 +452,12 @@ object Form1: TForm1
         Caption = 'Logs'
         DesignSize = (
           384
-          184)
+          216)
         object GroupBox5: TGroupBox
           Left = 8
           Top = 0
           Width = 368
-          Height = 184
+          Height = 216
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Logs'
           TabOrder = 0
@@ -466,17 +482,17 @@ object Form1: TForm1
           Left = 8
           Top = 8
           Width = 369
-          Height = 185
+          Height = 175
           Caption = 'DNS Relay'
           TabOrder = 0
           DesignSize = (
             369
-            185)
+            175)
           object Memo1: TMemo
             Left = 8
             Top = 16
             Width = 353
-            Height = 153
+            Height = 151
             Anchors = [akLeft, akTop, akRight, akBottom]
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -497,7 +513,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 128
-    Top = 272
+    Top = 296
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -1300,7 +1316,7 @@ object Form1: TForm1
   end
   object PopupMenu1: TPopupMenu
     Left = 96
-    Top = 272
+    Top = 296
     object StartDNS1: TMenuItem
       Caption = 'Start DNS'
       OnClick = ButtonStartClick
@@ -1332,7 +1348,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 160
-    Top = 272
+    Top = 296
     Bitmap = {
       494C010109000E00040028002800FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000A000000001002000000000000090
@@ -4643,11 +4659,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 256
-    Top = 272
+    Top = 296
   end
   object ImageList3: TImageList
     Left = 192
-    Top = 273
+    Top = 297
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -5057,11 +5073,11 @@ object Form1: TForm1
     Interval = 3000
     OnTimer = TimerSaveChangeTimer
     Left = 32
-    Top = 272
+    Top = 296
   end
   object PopupMenuListView: TPopupMenu
     Left = 64
-    Top = 273
+    Top = 297
     object Autoriser1: TMenuItem
       Caption = 'Autoriser'
       OnClick = Autoriser1Click
@@ -5080,13 +5096,13 @@ object Form1: TForm1
     Interval = 500
     OnTimer = Timer1Timer
     Left = 6
-    Top = 273
+    Top = 297
   end
   object ImageList4: TImageList
     Height = 80
     Width = 71
     Left = 224
-    Top = 272
+    Top = 296
     Bitmap = {
       494C010103000400040047005000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C0100005000000001002000000000000063
