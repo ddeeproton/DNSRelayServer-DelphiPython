@@ -423,6 +423,7 @@ begin
   isServerStarted := True;
 
   ToolButton11.Enabled := True;
+  ToolButton11.Hint := 'Click pour arrêter';
 end;
 
 procedure TForm1.onServerDNSStop();
@@ -443,6 +444,7 @@ begin
   isServerStarted := False;
 
   ToolButton11.Enabled := True;
+  ToolButton11.Hint := 'Click pour démarrer';
 end;
 
 
@@ -1715,11 +1717,21 @@ end;
 
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
-  ToolButton11.Enabled := False;
   if isServerStarted then
-    ButtonCloseClick(nil)
-  else
-    ButtonStartClick(nil);
+  begin
+    if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    begin
+      ToolButton11.Enabled := False;
+      ButtonCloseClick(nil);
+    end;
+  end
+  else begin
+    if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    begin
+      ToolButton11.Enabled := False;
+      ButtonStartClick(nil);
+    end;
+  end;
 end;
 
 end.

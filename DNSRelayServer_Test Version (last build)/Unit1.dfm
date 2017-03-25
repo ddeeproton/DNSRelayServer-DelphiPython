@@ -90,8 +90,11 @@ object Form1: TForm1
     object ToolButton11: TToolButton
       Left = 0
       Top = 2
+      Hint = 'Click pour d'#233'marrer'
       Caption = 'DNS Arr'#234't'#233
       ImageIndex = 7
+      ParentShowHint = False
+      ShowHint = True
       OnClick = ToolButton11Click
     end
     object ToolButton8: TToolButton
