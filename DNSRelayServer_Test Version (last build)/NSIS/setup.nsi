@@ -14,8 +14,10 @@ Name "Example1"
 OutFile "DNSRelayServerSetup.exe"
 
 ; The default installation directory
-InstallDir $DESKTOP\DNSRelay
+InstallDir "$PROGRAMFILES\DNSRelayServer"
 ShowInstDetails show
+; Set to silent mode
+;SilentInstall silent
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
 
@@ -36,6 +38,10 @@ Section "" ;No components page, name is not important
   
   ; Put file there
   File "..\DNSRelayServer_TestVersion.exe"
-  nsExec::Exec '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
-	Pop $0 # return value/error/timeout
+  
+  #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
+  #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
+  #Exec '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
+  Exec '"$PROGRAMFILES\DNSRelayServer\DNSRelayServer_TestVersion.exe"'
+
 SectionEnd ; end the section
