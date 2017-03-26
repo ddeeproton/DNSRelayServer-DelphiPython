@@ -1759,10 +1759,20 @@ begin
   wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
   if not FileExists(wget) then exit;
   LaunchAndWait(wget, ' -O "'+lastverFile+'" "'+url+'" --no-check-certificate', launchAndWWindow);
-  if not FileExists(lastverFile) then exit;
+  if not FileExists(lastverFile) then
+  begin
+    ShowMessage('Problème de connexion Internet ou alors votre version est trop ancienne.');
+    exit;
+  end;
   lastversion := lireFichier(lastverFile);
-  if lastversion = '0.4.5' then exit;
-  
+  if lastversion = '0.4.5' then
+    ShowMessage('Vous êtes à jour')
+  else
+    if MessageDlg('Mise à jour version '+lastversion+' disponible :)'+#13+'Mettre à jour?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    begin
+
+      
+    end;
 
   TButton(Sender).Enabled := True;
 
