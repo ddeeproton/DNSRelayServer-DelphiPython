@@ -904,7 +904,7 @@ begin
     exit;
   end;
 
-
+  ToolButton11.Enabled := True;
   MemoLogs.Lines.Add('Test DNS Master...');
   DNSMasterSerialized := '';
   for i := 0 to ListBoxDNSMaster.Items.Count -1 do
@@ -918,7 +918,6 @@ begin
       MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
       MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
       MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
-      ToolButton11.Enabled := True;
       exit;
     end;
     if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
@@ -926,6 +925,7 @@ begin
     MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
     MemoLogs.Lines.Add('Master '+ dns +'... OK');
   end;
+  ToolButton11.Enabled := False;
 
   if DNSMasterSerialized = '' then
   begin
@@ -1739,7 +1739,7 @@ end;
 
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
 var
-  exePath, url, wget: string;
+  lastversion, lastverFile, url, wget: string;
 begin
   TButton(Sender).Enabled := False;
   if FormInstall = nil then
@@ -1754,17 +1754,15 @@ begin
     exit;
   end;
 
-  url := 'https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi';
-  exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
+  url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt';
+  lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
+  wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
+  if not FileExists(wget) then exit;
+  LaunchAndWait(wget, ' -O "'+lastverFile+'" "'+url+'" --no-check-certificate', launchAndWWindow);
+  if not FileExists(lastverFile) then exit;
+  lastversion := lireFichier(lastverFile);
+  if lastversion = '0.4.5' then exit;
   
-  if not FileExists(exePath) then
-  begin
-    installThread.LabelPython := PChar('Downloading...');
-    wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
-    if not FileExists(wget) then begin FormInstall.CheckInstallation(); exit; end;
-    ExecAndWait(wget, ' -O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
-  end;
-
 
   TButton(Sender).Enabled := True;
 
