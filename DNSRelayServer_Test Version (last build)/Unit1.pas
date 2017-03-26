@@ -1738,9 +1738,36 @@ begin
 end;
 
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
+var
+  exePath, url, wget: string;
 begin
-  //
+  TButton(Sender).Enabled := False;
+  if FormInstall = nil then
+  begin
+    FormInstall := TFormInstall.Create(Self);
+  end;
+  FormInstall.CheckInstallation;
+  if not FormInstall.isWgetInstalled
+  then begin
+    FormInstall.ButtonInstallClick(Self);
+    TButton(Sender).Enabled := True;
+    exit;
+  end;
+
+  url := 'https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi';
+  exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
   
+  if not FileExists(exePath) then
+  begin
+    installThread.LabelPython := PChar('Downloading...');
+    wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
+    if not FileExists(wget) then begin FormInstall.CheckInstallation(); exit; end;
+    ExecAndWait(wget, ' -O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
+  end;
+
+
+  TButton(Sender).Enabled := True;
+
 end;
 
 end.

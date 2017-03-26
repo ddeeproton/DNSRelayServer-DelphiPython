@@ -47,7 +47,6 @@ type
     Label13: TLabel;
     TimerWatchThread: TTimer;
     procedure ButtonInstallClick(Sender: TObject);
-    procedure CheckInstallation();
     function getPythonPath():string;
     procedure installPython();
     procedure installDNS();
@@ -66,6 +65,7 @@ type
     isDNSInstalled: bool;
     isSetuptoolInstalled: bool;
     isWgetInstalled: bool;
+    procedure CheckInstallation();    
   end;
 
   TInstall = class(TThread)
@@ -225,7 +225,7 @@ begin
     installThread.LabelPython := PChar('Downloading...');
     wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
     if not FileExists(wget) then begin CheckInstallation(); exit; end;
-    ExecAndWait(wget, ' -O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
+    LaunchAndWait(wget, ' -O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
     //'"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate'
     //ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadPython.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
     //LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadPython.bat',  launchAndWWindow);
@@ -479,3 +479,4 @@ begin
 end;
 
 end.
+
