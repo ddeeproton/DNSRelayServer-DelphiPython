@@ -139,6 +139,7 @@ begin
 
   except
     on E: EIdSocketError do exit;
+    on E: EIdDnsResolverError do exit;
   end;
 end;
 
