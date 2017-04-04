@@ -1770,8 +1770,8 @@ begin
   else
     if MessageDlg('Mise à jour version '+lastversion+' disponible :)'+#13+'Mettre à jour?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     begin
-
-      
+      //url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/DNSRelayServer_0.4.4/DNSRelayServer_v0_4_4.exe';
+      //LaunchAndWait(wget, ' -O "'+lastverFile+'" "'+url+'" --no-check-certificate', launchAndWWindow);
     end;
 
   TButton(Sender).Enabled := True;
