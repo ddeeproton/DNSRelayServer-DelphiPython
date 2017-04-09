@@ -881,6 +881,7 @@ begin
     FormInstall.Show;
     FormInstall.ButtonInstallClick(nil);
     ToolButton11.Enabled := True;
+    FormInstall.TimerWatchThread.Enabled := True;
     exit;
   end
   else begin

@@ -190,12 +190,15 @@ end;
 
 procedure TFormInstall.DoInstall();
 begin
-  if not isWgetInstalled then installWget();
-  if not isWgetInstalled then begin Application.ProcessMessages; exit; end;
-  if not isPythonInstalled then installPython();
-  if not isPythonInstalled then begin Application.ProcessMessages; exit; end;
+  TimerWatchThread.Enabled := True;
+  CheckInstallation();
+  if not isWgetInstalled      then installWget();
+  if not isWgetInstalled      then begin installThread.LabelWget := Pchar('Err DoInstall() 1'); Application.ProcessMessages; exit; end;
+  if not isPythonInstalled    then installPython();
+  if not isPythonInstalled    then begin installThread.LabelWget := Pchar('Err DoInstall() 2'); Application.ProcessMessages; exit; end;
   if not isSetuptoolInstalled then installSetuptools();
-  if not isDNSInstalled then installDNS();
+  if not isDNSInstalled       then installDNS();
+  TimerWatchThread.Enabled := False;
 end;
 
 
@@ -205,14 +208,16 @@ var
 begin
   installThread.LabelWget := PChar('Downloading...');
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
-  begin
     makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
-  end;
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
   url := 'http://eternallybored.org/misc/wget/current/wget.exe';
   if URLDownloadToFile(nil, PChar(url), PChar(exePath), 0 , nil) <> 0 then
     if not FileExists(exePath) then
       installThread.LabelWget := 'Error';
+  Sleep(2000);
+  Application.ProcessMessages;
+  CheckInstallation();
+  DoInstall();
       //Notebook1.PageIndex := 1;
 end;
 
@@ -223,7 +228,8 @@ var
 begin
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'python-2.7.13.msi';
   url := 'https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi';
-
+  if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
+    makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
   if not FileExists(exePath) then
   begin
     installThread.LabelPython := PChar('Downloading...');
@@ -254,7 +260,8 @@ begin
   /qn+ - Like /qn, but display "Completed" dialog at the end
   /qb+ - Like /qb, but display "Completed" dialog at the end
   }
-
+  CheckInstallation();
+  DoInstall();
 end;
 
 
@@ -270,7 +277,8 @@ begin
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'setuptools-20.0.zip';
   outdir :=  ExtractFilePath(Application.ExeName)+installDirectoryPath+'setuptools-20.0';
   url := 'https://github.com/pypa/setuptools/archive/20.0.zip';
-
+  if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
+    makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath+'setuptools-20.0\setuptools-20.0') then begin
 
   wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
@@ -284,7 +292,10 @@ begin
 
     //LaunchAndWait(wget, '-O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
 
-    ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadsetuptools.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
+    ecrireDansUnFichier(
+      ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadsetuptools.bat',
+      '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate'
+    );
     LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadsetuptools.bat','', launchAndWWindow);
   end;
 
@@ -342,7 +353,8 @@ begin
     LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installst.bat','', launchAndWWindow);
 
   end;
-
+  CheckInstallation();
+  DoInstall();
 end;
 
 
@@ -352,37 +364,41 @@ procedure TFormInstall.installDNS();
 var
   exePath, url, wget, vbs, outdir, bat: string;
 begin
-  LabelDNSResolver.Caption := PChar('cheking...');
+
+  installThread.LabelDNSResolver := PChar('cheking...');
   Application.ProcessMessages;
 
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0.zip';
   outdir :=  ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0';
   url := 'http://www.dnspython.org/kits/1.15.0/dnspython-1.15.0.zip';
-
-  if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0') then begin
-  
-  wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
-  if not FileExists(wget) or (FileSize(wget) = 0) then begin
-    CheckInstallation();
-    LabelDNSResolver.Caption := PChar('wget.exe not found');
-    exit;
-  end;
-
-  if not FileExists(exePath) or (FileSize(exePath) = 0) then
+  if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
+    makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
+  if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0') then
   begin
-    if FileExists(exePath) then DeleteFile(exePath);
-    installThread.LabelDNSResolver := PChar('Downloading...');
-    Application.ProcessMessages;
-    //LaunchAndWait(wget, '-O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
-    ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloaddns.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
-    LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloaddns.bat','', launchAndWWindow);
-  end;
 
-  if FileExists(exePath) and (FileSize(exePath) = 0) then DeleteFile(exePath);
-  if not FileExists(exePath) or (FileSize(exePath) = 0) then exit;
+    wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
+    if not FileExists(wget) or (FileSize(wget) = 0) then begin
+      CheckInstallation();
+      installThread.LabelDNSResolver := PChar('wget.exe not found');
+      exit;
+    end;
 
-  installThread.LabelDNSResolver := PChar('Unzipping...');
-  vbs := 'Sub UnZip(ZipFile, ExtractTo)'#13#10+
+    if not FileExists(exePath) or (FileSize(exePath) = 0) then
+    begin
+      if FileExists(exePath) then DeleteFile(exePath);
+      installThread.LabelDNSResolver := PChar('Downloading...');
+      Application.ProcessMessages;
+      //LaunchAndWait(wget, '-O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
+      ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloaddns.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
+      LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloaddns.bat','', launchAndWWindow);
+    end;
+
+    if FileExists(exePath) and (FileSize(exePath) = 0) then DeleteFile(exePath);
+    if not FileExists(exePath) or (FileSize(exePath) = 0) then exit;
+
+    Sleep(2000);
+    installThread.LabelDNSResolver := PChar('Unzipping... 1');
+    vbs := 'Sub UnZip(ZipFile, ExtractTo)'#13#10+
     '	Set fso = CreateObject("Scripting.FileSystemObject")'#13#10+
     '	If NOT fso.FolderExists(ExtractTo) Then'#13#10+
     '		fso.CreateFolder(ExtractTo)'#13#10+
@@ -394,24 +410,28 @@ begin
     '	Set objShell = Nothing'#13#10+
     'End Sub'#13#10+
     'UnZip WScript.Arguments(0), WScript.Arguments(1)'#13#10;
-  ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs', vbs);
+    ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs', vbs);
+    ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', 'wscript.exe "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs" "'+exePath+'" "'+outdir+'"'+#13#10+'@rem pause');
+    installThread.LabelDNSResolver := PChar('Unzipping... 2');
+    LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', '', launchAndWWindow);
+    installThread.LabelDNSResolver := PChar('Unzipping... 3');
+    //LaunchAndWait('wscript.exe', '"'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs" "'+exePath+'" "'+outdir+'"', launchAndWWindow);
 
-  //LaunchAndWait('wscript.exe', '"'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs" "'+exePath+'" "'+outdir+'"', launchAndWWindow);
-
-  {
-  if DirectoryExists(outdir) then RemoveDir(outdir);
-  if DirectoryExists(outdir) then begin
-    exit;
-  end;
-  }
-  ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', 'wscript.exe "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs" "'+exePath+'" "'+outdir+'"'+#13#10+'@pause');
-  LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', '', launchAndWWindow);
-
+    {
+    if DirectoryExists(outdir) then RemoveDir(outdir);
+    if DirectoryExists(outdir) then begin
+      exit;
+    end;
+    }
+    installThread.LabelDNSResolver := PChar('Unzip done...');
+    Sleep(2000);
   end;
 
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0') then begin
     if FileExists(exePath) then DeleteFile(exePath);
       installDNS();
+    installThread.LabelDNSResolver := PChar('error not found lib dir "dnspython"');
+    ShowMessage(PChar('error not found lib dir "dnspython"'));
     exit;
   end;
 
@@ -427,12 +447,11 @@ begin
     if isDebug then bat := bat + #13#10 + '@pause';
     ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installDNS.bat', bat);
     LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installDNS.bat','', launchAndWWindow);
-    
+    Sleep(2000);
   end;
 
-
+  CheckInstallation;
   Form1.ButtonStartClick(nil);
-
 
 end;
 
