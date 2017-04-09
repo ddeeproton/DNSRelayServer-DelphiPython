@@ -204,6 +204,10 @@ var
   exePath, url: string;
 begin
   installThread.LabelWget := PChar('Downloading...');
+  if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
+  begin
+    makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
+  end;
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
   url := 'http://eternallybored.org/misc/wget/current/wget.exe';
   if URLDownloadToFile(nil, PChar(url), PChar(exePath), 0 , nil) <> 0 then
