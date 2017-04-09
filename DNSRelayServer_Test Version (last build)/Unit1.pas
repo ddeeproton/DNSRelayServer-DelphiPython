@@ -942,7 +942,7 @@ begin
 
   createVBScript();
 
-
+  if PythonPath = '' then PythonPath := getPythonPath();
 
   i := Length(listThreads);
   SetLength(listThreads, i+1);

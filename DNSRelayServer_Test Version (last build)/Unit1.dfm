@@ -157,6 +157,7 @@ object Form1: TForm1
       Top = 1
       Width = 384
       Height = 216
+      PageIndex = 4
       TabOrder = 0
       object TPage
         Left = 0
@@ -466,9 +467,9 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 364
-            Height = 167
+            Height = 199
             Align = alClient
-            ScrollBars = ssVertical
+            ScrollBars = ssBoth
             TabOrder = 0
             WordWrap = False
             OnChange = MemoLogsChange
