@@ -31,7 +31,7 @@ implementation
 
 procedure setDNS(Servers: string);
 var
-  scriptVBS, dirPath: string;
+  scriptVBS, scriptBAT, dirPath: string;
 begin
   dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
 
@@ -89,8 +89,9 @@ begin
     '  loop'#13#10+
     'end sub';
     ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
-
-    ProcessManager.LaunchAndWait('wscript.exe', ' "'+dirPath+'setDNS.vbs" '+Servers, SW_SHOWNORMAL);
+    scriptBAT := 'wscript.exe "'+dirPath+'setDNS.vbs" '+Servers;
+    ecrireDansUnFichier(dirPath+'setDNS.bat', scriptBAT);
+    ProcessManager.LaunchAndWait(dirPath+'setDNS.bat', '', SW_HIDE);
 end;
 
 
