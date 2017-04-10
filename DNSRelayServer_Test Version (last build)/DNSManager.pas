@@ -44,6 +44,7 @@ begin
     ''#13#10+
     'setDNS(ArgumentsToArray())'#13#10+
     ''#13#10+
+    'On Error Resume Next'#13#10+
     'function ArgumentsToArray()'#13#10+
     '  Dim i, res()'#13#10+
     '  i = 0'#13#10+
@@ -153,6 +154,7 @@ begin
   dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
   scriptVBS :=     'Option Explicit '#13#10+
     ' '#13#10+
+    'On Error Resume Next'#13#10+
     'Function EnableDHCP '#13#10+
     '  Dim objWMIService, objNicConfig, colNicConfigs '#13#10+
     '  Dim strComputer '#13#10+

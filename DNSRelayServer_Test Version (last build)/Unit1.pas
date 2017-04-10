@@ -1905,7 +1905,7 @@ begin
 
   url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt';
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
-
+  if FileExists(lastverFile) then DeleteFile(lastverFile);
   downloadFile(url, lastverFile);
 
   if not FileExists(lastverFile) then
