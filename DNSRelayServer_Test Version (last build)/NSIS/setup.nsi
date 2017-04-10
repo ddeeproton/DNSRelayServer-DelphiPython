@@ -39,6 +39,7 @@ Section "" ;No components page, name is not important
   
   ; Put file there
   File "..\DNSRelayServer.exe"
+  File "DNSRelayServer_0.4.5_Source.zip"
   
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
