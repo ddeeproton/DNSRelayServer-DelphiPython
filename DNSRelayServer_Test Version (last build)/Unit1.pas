@@ -394,10 +394,12 @@ begin
         exit
     end;
 
+    Form1.onServerDNSStop();
+
+
     if EnMemo <> nil then
       EnMemo.Lines.Add(String('Stoped'));
 
-    Form1.onServerDNSStop();
   end;
 end;
 
@@ -431,9 +433,9 @@ end;
 
 procedure TForm1.onServerDNSStop();
 begin
-  MemoLogs.Lines.Add('Set IP to DHCP');
+  MemoLogs.Lines.Add('Go to DHCP');
   setDNS('');
-  //setIPToDHCP();
+  setIPToDHCP();
 
   ImageList4.GetIcon(1, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
@@ -1731,18 +1733,18 @@ procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
   if isServerStarted then
   begin
-    if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
-    begin
+    //if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    //begin
       ToolButton11.Enabled := False;
       ButtonCloseClick(nil);
-    end;
+    //end;
   end
   else begin
-    if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
-    begin
+    //if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    //begin
       ToolButton11.Enabled := False;
       ButtonStartClick(nil);
-    end;
+    //end;
   end;
 end;
 
