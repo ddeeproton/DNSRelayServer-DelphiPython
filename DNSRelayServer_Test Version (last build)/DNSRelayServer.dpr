@@ -1,4 +1,4 @@
-program DNSRelayServer_TestVersion;
+program DNSRelayServer;
 
 uses
   Forms,
