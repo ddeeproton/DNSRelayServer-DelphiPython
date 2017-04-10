@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 478
-  Top = 153
+  Left = 333
+  Top = 125
   Width = 450
   Height = 371
   Caption = 'DNS Relay Server 0.4.5'
@@ -67,7 +67,7 @@ object Form1: TForm1
   object ToolBar3: TToolBar
     Left = 0
     Top = 0
-    Width = 434
+    Width = 442
     Height = 65
     ButtonHeight = 60
     ButtonWidth = 65
