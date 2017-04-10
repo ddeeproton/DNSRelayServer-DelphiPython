@@ -38,11 +38,11 @@ Section "" ;No components page, name is not important
   SetOutPath $INSTDIR
   
   ; Put file there
-  File "..\DNSRelayServer_TestVersion.exe"
+  File "..\DNSRelayServer.exe"
   
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #Exec '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
-  Exec '"C:\DNSRelayServer\DNSRelayServer_TestVersion.exe"'
+  Exec 'DNSRelayServer.exe'
   Quit
 SectionEnd ; end the section
