@@ -88,10 +88,11 @@ begin
     '    WScript.Quit'#13#10+
     '  loop'#13#10+
     'end sub';
-    ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
-    scriptBAT := 'wscript.exe "'+dirPath+'setDNS.vbs" '+Servers;
-    ecrireDansUnFichier(dirPath+'setDNS.bat', scriptBAT);
-    ProcessManager.LaunchAndWait(dirPath+'setDNS.bat', '', SW_HIDE);
+    if not FileExists(dirPath+'setDNS.vbs') or (FileSize(dirPath+'setDNS.vbs') = 0) then ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
+    ProcessManager.ExecAndWait('wscript.exe', ' "'+dirPath+'setDNS.vbs" '+Servers, SW_HIDE);
+    //scriptBAT := 'wscript.exe "'+dirPath+'setDNS.vbs" '+Servers;
+    //ecrireDansUnFichier(dirPath+'setDNS.bat', scriptBAT);
+    //ProcessManager.LaunchAndWait(dirPath+'setDNS.bat', '', SW_HIDE);
 end;
 
 
@@ -191,10 +192,13 @@ begin
     ''#13#10+
     'EnableDHCP '#13#10+
     '';
-    ecrireDansUnFichier(dirPath+'setDHCP.vbs', scriptVBS);
+    if not FileExists(dirPath+'setDHCP.vbs') or (FileSize(dirPath+'setDHCP.vbs') = 0) then ecrireDansUnFichier(dirPath+'setDHCP.vbs', scriptVBS);
     scriptBAT := 'wscript.exe "'+dirPath+'setDHCP.vbs"';
-    ecrireDansUnFichier(dirPath+'setDHCP.bat', scriptBAT);
-    ProcessManager.ExecAndWait(dirPath+'setDHCP.bat', '', SW_HIDE);
+
+    ProcessManager.ExecAndWait('wscript.exe', ' "'+dirPath+'setDHCP.vbs"', SW_HIDE);
+
+    //ecrireDansUnFichier(dirPath+'setDHCP.bat', scriptBAT);
+    //ProcessManager.ExecAndWait(dirPath+'setDHCP.bat', '', SW_HIDE);
 end;
 
 
