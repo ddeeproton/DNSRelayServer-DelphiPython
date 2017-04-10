@@ -8,7 +8,7 @@
 ;--------------------------------
 
 ; The name of the installer
-Name "Example1"
+Name "DNSRelayServerSetup 0.4.5"
 
 ; The file to write
 OutFile "DNSRelayServerSetup_0.4.5.exe"
