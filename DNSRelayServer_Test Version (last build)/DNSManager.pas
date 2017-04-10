@@ -194,7 +194,7 @@ begin
     ecrireDansUnFichier(dirPath+'setDHCP.vbs', scriptVBS);
     scriptBAT := 'wscript.exe "'+dirPath+'setDHCP.vbs"';
     ecrireDansUnFichier(dirPath+'setDHCP.bat', scriptBAT);
-    ProcessManager.LaunchAndWait(dirPath+'setDHCP.bat', '', SW_SHOWNORMAL);
+    ProcessManager.ExecAndWait(dirPath+'setDHCP.bat', '', SW_HIDE);
 end;
 
 

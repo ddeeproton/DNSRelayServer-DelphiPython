@@ -67,7 +67,7 @@ object Form1: TForm1
   object ToolBar3: TToolBar
     Left = 0
     Top = 0
-    Width = 442
+    Width = 434
     Height = 65
     ButtonHeight = 60
     ButtonWidth = 65
@@ -250,7 +250,7 @@ object Form1: TForm1
             Top = 40
             Width = 145
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 3
             Text = 'CBoxDNSServerSlaveIP'
           end

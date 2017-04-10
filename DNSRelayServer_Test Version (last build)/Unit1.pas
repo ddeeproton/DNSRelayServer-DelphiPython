@@ -433,7 +433,7 @@ procedure TForm1.onServerDNSStop();
 begin
   MemoLogs.Lines.Add('Set IP to DHCP');
   setDNS('');
-  setIPToDHCP();
+  //setIPToDHCP();
 
   ImageList4.GetIcon(1, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
@@ -1131,9 +1131,17 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
   net: tNetworkInterfaceList;
-
+  canClose: Boolean;
   startedInBackground: Boolean;
 begin
+  //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
+  if not IsUserAnAdmin() then
+  begin
+    ExecAndWait(Application.ExeName, '', SW_SHOWNORMAL);
+    canClose := True;
+    FormCloseQuery(nil, canClose);
+    Application.Terminate;
+  end;
   isServerStarted := False;
   Memo1.Clear;
   Memo1.Text := 'Si ce programme est fermé brutalement, vous n''avez plus d''Internet.'+#13#10#13#10+
