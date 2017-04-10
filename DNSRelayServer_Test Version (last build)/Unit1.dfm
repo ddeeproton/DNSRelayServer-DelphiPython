@@ -157,7 +157,6 @@ object Form1: TForm1
       Top = 1
       Width = 384
       Height = 216
-      PageIndex = 4
       TabOrder = 0
       object TPage
         Left = 0
@@ -234,6 +233,7 @@ object Form1: TForm1
             Height = 17
             Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
             TabOrder = 1
+            OnClick = CheckBoxStartWithWindowsClick
           end
           object ButtonSelectFilehost: TButton
             Left = 317
