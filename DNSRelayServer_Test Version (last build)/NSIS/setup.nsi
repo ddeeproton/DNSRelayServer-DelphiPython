@@ -14,7 +14,8 @@ Name "Example1"
 OutFile "DNSRelayServerSetup_0.4.5.exe"
 
 ; The default installation directory
-InstallDir "$PROGRAMFILES\DNSRelayServer"
+;InstallDir "$PROGRAMFILES\DNSRelayServer"
+InstallDir "C:\DNSRelayServer"
 ShowInstDetails show
 ; Set to silent mode
 ;SilentInstall silent
@@ -42,6 +43,6 @@ Section "" ;No components page, name is not important
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #Exec '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
-  Exec '"$PROGRAMFILES\DNSRelayServer\DNSRelayServer_TestVersion.exe"'
-
+  Exec '"C:\DNSRelayServer\DNSRelayServer_TestVersion.exe"'
+  Quit
 SectionEnd ; end the section
