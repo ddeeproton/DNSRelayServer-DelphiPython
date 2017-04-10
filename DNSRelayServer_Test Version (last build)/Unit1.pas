@@ -139,6 +139,7 @@ type
     procedure ToolButton11Click(Sender: TObject);
     procedure ButtonUpdateClick(Sender: TObject);
     procedure CheckBoxUpdateClick(Sender: TObject);
+    procedure DoUpdate(isSilent: Boolean);
   private
     { Private declarations }
   public
@@ -1231,7 +1232,7 @@ begin
   if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
   begin
     CheckBoxUpdate.Checked := true;
-    ButtonUpdateClick(ButtonUpdate);
+    DoUpdate(True);
   end;
 end;
 
@@ -1756,11 +1757,18 @@ begin
 end;
 
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
+begin
+  TButton(Sender).Enabled := False;
+  DoUpdate(False);
+  TButton(Sender).Enabled := True;
+end;
+
+procedure TForm1.DoUpdate(isSilent: Boolean);
 var
   lastversion, lastverFile, url, wget: string;
   canClose: Boolean;
 begin
-  TButton(Sender).Enabled := False;
+
   if FormInstall = nil then
   begin
     FormInstall := TFormInstall.Create(Self);
@@ -1769,7 +1777,6 @@ begin
   if not FormInstall.isWgetInstalled
   then begin
     FormInstall.ButtonInstallClick(Self);
-    TButton(Sender).Enabled := True;
     exit;
   end;
 
@@ -1780,14 +1787,20 @@ begin
 
   if not FileExists(lastverFile) then
   begin
-    ShowMessage('Problème de connexion Internet ou alors votre version est trop ancienne.');
+    if not isSilent then ShowMessage('Problème de connexion Internet ou alors votre version est trop ancienne.');
     exit;
   end;
   lastversion := lireFichier(lastverFile);
-  if lastversion = '0.4.5' then
-    ShowMessage('Vous êtes à jour')
-  else
-    if MessageDlg('Mise à jour version '+lastversion+' disponible :)'+#13+'Mettre à jour?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+  if Pos('0.4.5', lastversion) = 1 then
+  begin
+    if not isSilent then ShowMessage('Vous êtes à jour')
+  end
+  else begin
+    if lastversion = '' then
+    begin
+      if not isSilent then ShowMessage('Le téléchargement a échoué.'+#13+url);
+    end;
+    if MessageDlg('Mise à jour version "'+lastversion+'" disponible :)'+#13+'Mettre à jour?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     begin
       url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup installation/DNSRelayServerSetup_'+lastversion+'.exe';
       lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'DNSRelayServerSetup_'+lastversion+'.exe';
@@ -1805,12 +1818,10 @@ begin
         end;
       end
       else begin
-        ShowMessage('La mise à jour à échouée. '+#13+url);
+        if not isSilent then ShowMessage('La mise à jour à échouée. '+#13+url);
       end;
     end;
-
-  TButton(Sender).Enabled := True;
-
+  end;
 end;
 
 procedure TForm1.CheckBoxUpdateClick(Sender: TObject);
