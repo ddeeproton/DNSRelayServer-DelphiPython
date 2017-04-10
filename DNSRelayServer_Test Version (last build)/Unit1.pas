@@ -138,6 +138,7 @@ type
     procedure ButtonForceStartClick(Sender: TObject);
     procedure ToolButton11Click(Sender: TObject);
     procedure ButtonUpdateClick(Sender: TObject);
+    procedure CheckBoxUpdateClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1225,7 +1226,13 @@ begin
     CBoxDNSServerSlaveIP.ItemIndex := 0;
 
   //MemoLogs.Lines.Add(resolveDNS('google.com', '127.0.0.1')); // 209.244.0.3
-  //MemoLogs.Lines.Add(resolveDNS('google.com', '209.244.0.3'));   
+  //MemoLogs.Lines.Add(resolveDNS('google.com', '209.244.0.3'));
+
+  if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
+  begin
+    CheckBoxUpdate.Checked := true;
+    ButtonUpdateClick(ButtonUpdate);
+  end;
 end;
 
 
@@ -1804,6 +1811,14 @@ begin
 
   TButton(Sender).Enabled := True;
 
+end;
+
+procedure TForm1.CheckBoxUpdateClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkupdate.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
 end;
 
 end.

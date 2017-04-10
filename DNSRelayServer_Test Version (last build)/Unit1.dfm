@@ -271,6 +271,7 @@ object Form1: TForm1
             Height = 17
             Caption = 'Mise '#224' jour au d'#233'marrage'
             TabOrder = 5
+            OnClick = CheckBoxUpdateClick
           end
           object ButtonUpdate: TButton
             Left = 280
