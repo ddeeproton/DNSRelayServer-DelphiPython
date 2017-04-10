@@ -7,7 +7,9 @@ uses Windows, SysUtils, Messages,
   Tlhelp32,
   // Pour ShellExecute
   // Pour FindExecutable
-  ShellAPI;
+  ShellAPI,
+  Forms,
+  FilesManager;
 
 function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean; //wShowWin => SW_SHOWNORMAL | SW_HIDE
@@ -19,8 +21,11 @@ procedure KillProcess(hWindowHandle: HWND);
 
 function IsUserAnAdmin(): Boolean; external shell32;
 
+procedure downloadFile(url, filepath: string);
+
 implementation
 
+uses UnitInstallation;
 
 function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
 var
@@ -177,5 +182,26 @@ begin
   end;
 end;
 
+procedure downloadFile(url, filepath: string);
+var
+  wget, scriptBAT: string;
+begin
+  if FormInstall = nil then
+  begin
+    FormInstall := TFormInstall.Create(nil);
+  end;
+  FormInstall.CheckInstallation;
+  if not FormInstall.isWgetInstalled
+  then begin
+    FormInstall.ButtonInstallClick(nil);
+    exit;
+  end;
+
+  wget := ExtractFilePath(Application.ExeName)+'setup/wget.exe';
+  if not FileExists(wget) then exit;
+  scriptBAT := '"'+wget+'" -O "'+filepath+'" "'+url+'" --no-check-certificate';
+  ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+'setup/download.bat', scriptBAT);
+  LaunchAndWait(ExtractFilePath(Application.ExeName)+'setup/download.bat', '', launchAndWWindow);
+end;
 
 end.

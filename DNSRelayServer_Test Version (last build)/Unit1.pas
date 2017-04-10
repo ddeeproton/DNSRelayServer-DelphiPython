@@ -1751,6 +1751,7 @@ end;
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
 var
   lastversion, lastverFile, url, wget: string;
+  canClose: Boolean;
 begin
   TButton(Sender).Enabled := False;
   if FormInstall = nil then
@@ -1767,9 +1768,9 @@ begin
 
   url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt';
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
-  wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
-  if not FileExists(wget) then exit;
-  LaunchAndWait(wget, ' -O "'+lastverFile+'" "'+url+'" --no-check-certificate', launchAndWWindow);
+
+  downloadFile(url, lastverFile);
+
   if not FileExists(lastverFile) then
   begin
     ShowMessage('Problème de connexion Internet ou alors votre version est trop ancienne.');
@@ -1781,8 +1782,24 @@ begin
   else
     if MessageDlg('Mise à jour version '+lastversion+' disponible :)'+#13+'Mettre à jour?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     begin
-      //url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/DNSRelayServer_0.4.4/DNSRelayServer_v0_4_4.exe';
-      //LaunchAndWait(wget, ' -O "'+lastverFile+'" "'+url+'" --no-check-certificate', launchAndWWindow);
+      url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup installation/DNSRelayServerSetup_'+lastversion+'.exe';
+      lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'DNSRelayServerSetup_'+lastversion+'.exe';
+      downloadFile(url, lastverFile);
+      if FileExists(lastverFile) and (FileSize(lastverFile) > 0) then
+      begin
+        if MessageDlg('La mise à jour est prête à être installé. Le serveur va s''arrêter et lancer le setup d''installation. Continuer?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+        begin
+          ExecAndWait(lastverFile, '', SW_SHOWNORMAL);
+
+          canClose := True;
+          FormCloseQuery(nil, canClose);
+          Application.Terminate;
+
+        end;
+      end
+      else begin
+        ShowMessage('La mise à jour à échouée. '+#13+url);
+      end;
     end;
 
   TButton(Sender).Enabled := True;
