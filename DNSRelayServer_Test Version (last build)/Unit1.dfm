@@ -1,12 +1,12 @@
 object Form1: TForm1
   Left = 333
   Top = 125
-  Width = 450
+  Width = 467
   Height = 371
   Caption = 'DNS Relay Server 0.4.5'
   Color = clWhite
   Constraints.MinHeight = 320
-  Constraints.MinWidth = 450
+  Constraints.MinWidth = 465
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -67,7 +67,7 @@ object Form1: TForm1
   object ToolBar3: TToolBar
     Left = 0
     Top = 0
-    Width = 434
+    Width = 451
     Height = 65
     ButtonHeight = 60
     ButtonWidth = 65
@@ -250,7 +250,7 @@ object Form1: TForm1
             Top = 40
             Width = 145
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 3
             Text = 'CBoxDNSServerSlaveIP'
           end
