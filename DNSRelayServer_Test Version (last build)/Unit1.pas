@@ -1134,6 +1134,7 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
+  param: string;
   net: tNetworkInterfaceList;
   canClose: Boolean;
   startedInBackground: Boolean;
@@ -1141,7 +1142,11 @@ begin
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
   if not IsUserAnAdmin() then
   begin
-    ExecAndWait(Application.ExeName, '', SW_SHOWNORMAL);
+    param := '';
+    for i:=0 to ParamCount() do
+      param := param +' '+ParamStr(i);
+
+    ExecAndWait(Application.ExeName, param, SW_SHOWNORMAL);
     canClose := True;
     FormCloseQuery(nil, canClose);
     Application.Terminate;
@@ -1799,6 +1804,7 @@ begin
     if lastversion = '' then
     begin
       if not isSilent then ShowMessage('Le téléchargement a échoué.'+#13+url);
+      exit;
     end;
     if MessageDlg('Mise à jour version "'+lastversion+'" disponible :)'+#13+'Mettre à jour?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     begin
