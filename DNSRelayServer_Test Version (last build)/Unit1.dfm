@@ -225,6 +225,7 @@ object Form1: TForm1
             Height = 21
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
+            OnChange = EditFilehostChange
           end
           object CheckBoxStartWithWindows: TCheckBox
             Left = 8
