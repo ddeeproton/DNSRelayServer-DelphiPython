@@ -11,7 +11,7 @@
 Name "Example1"
 
 ; The file to write
-OutFile "DNSRelayServerSetup.exe"
+OutFile "DNSRelayServerSetup_0.4.5.exe"
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES\DNSRelayServer"
