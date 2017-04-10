@@ -147,7 +147,7 @@ end;
 
 procedure setIPToDHCP();
 var
-  scriptVBS, dirPath: string;
+  scriptVBS, scriptBAT, dirPath: string;
 begin
   dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
   scriptVBS :=     'Option Explicit '#13#10+
@@ -156,6 +156,7 @@ begin
     '  Dim objWMIService, objNicConfig, colNicConfigs '#13#10+
     '  Dim strComputer '#13#10+
     '  Dim intReturn '#13#10+
+    '  Call GetAdminPrivilege()'#13#10+
     '  Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2") '#13#10+
     '  Set colNicConfigs = objWMIService.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True")  '#13#10+
     '  For Each objNicConfig In colNicConfigs '#13#10+
@@ -174,10 +175,26 @@ begin
     '  Next '#13#10+
     'End Function '#13#10+
     ''#13#10+
+    'sub GetAdminPrivilege()'#13#10+
+    '  Dim WMI, OS, Value, Shell'#13#10+
+    '  do while WScript.Arguments.Count = 0 and WScript.Version >= 5.7'#13#10+
+    '    Set WMI = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
+    '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
+    '    For Each Value in OS'#13#10+
+    '      if left(Value.Version, 3) < 6.0 then exit do'#13#10+
+    '    Next'#13#10+
+    '    Set Shell = CreateObject("Shell.Application")'#13#10+
+    '    Shell.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ uac", "", "runas"'#13#10+
+    '    WScript.Quit'#13#10+
+    '  loop'#13#10+
+    'end sub'#13#10+
+    ''#13#10+
     'EnableDHCP '#13#10+
     '';
     ecrireDansUnFichier(dirPath+'setDHCP.vbs', scriptVBS);
-    LaunchAndWait('wscript.exe', ' "'+dirPath+'setDHCP.vbs"', SW_SHOWNORMAL);
+    scriptBAT := 'wscript.exe "'+dirPath+'setDHCP.vbs"';
+    ecrireDansUnFichier(dirPath+'setDHCP.bat', scriptBAT);
+    ProcessManager.LaunchAndWait(dirPath+'setDHCP.bat', '', SW_SHOWNORMAL);
 end;
 
 
