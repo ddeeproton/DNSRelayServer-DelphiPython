@@ -1195,21 +1195,13 @@ begin
     EditFilehost.Text := lireFichier(FilehostPathConfig);
 
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
- 
-  startedInBackground := False;
-  for i:=0 to ParamCount() do
-    if ParamStr(i) = '/background' then
-    begin
-      Masquer1Click(nil);
-      ButtonStartClick(nil);
-      startedInBackground := True;
-    end;
-    if not startedInBackground then
+
+  //if not startedInBackground then
 
 
-  ListViewCreate(ListView1);
-  getDomains(EditFilehost.Text, ListView1);
-  ListView1.OnChange := ListView1Change;
+    ListViewCreate(ListView1);
+    getDomains(EditFilehost.Text, ListView1);
+    ListView1.OnChange := ListView1Change;
   {
   // Add at the end
   EditerLigne2(ListView1, ListView1.Items.Count, 3, 'yes','nice');
@@ -1239,6 +1231,16 @@ begin
     CheckBoxUpdate.Checked := true;
     DoUpdate(True);
   end;
+
+
+  for i:=0 to ParamCount() do
+  begin
+    if ParamStr(i) = '/background' then
+    begin
+      Masquer1Click(nil);
+      ButtonStartClick(nil);
+    end;
+  end;  
 end;
 
 
