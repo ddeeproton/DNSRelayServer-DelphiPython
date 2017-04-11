@@ -32,8 +32,12 @@ XPStyle on
 ;--------------------------------
 ;Interface Settings
 
-  !define MUI_ABORTWARNING
+!define MUI_ABORTWARNING
 
+!define MUI_ICON "..\images\server3.ico"
+!define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_BITMAP "..\images\NSISBanner.bmp"
+!define MUI_HEADERIMAGE_LEFT
 ;--------------------------------
 
 ; Pages
