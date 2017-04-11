@@ -21,9 +21,9 @@ uses
   // Pour AnsiReplaceStr
   StrUtils,
   // Pour LaunchAndWait
-  ProcessManager, Spin;
+  ProcessManager, Spin, Buttons;
 
-var CurrentApplicationVersion: string = '0.4.9';
+var CurrentApplicationVersion: string = '0.4.10';
 
 type
   TForm1 = class(TForm)
@@ -90,6 +90,7 @@ type
     CheckBoxUpdate: TCheckBox;
     ButtonUpdate: TButton;
     TimerUpdate: TTimer;
+    ButtonRefreshNetCard: TBitBtn;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -145,6 +146,7 @@ type
     procedure CheckBoxUpdateClick(Sender: TObject);
     procedure setDNSOnBoot(enabled: Boolean);
     procedure TimerUpdateTimer(Sender: TObject);
+    procedure ButtonRefreshNetCardClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1365,21 +1367,10 @@ begin
   //result := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Python\PythonCore\2.7\InstallPath', '');
   //if (result = '') and FileExists('c:\Python27\python.exe') then result := 'c:\Python27\';
 
-  If (GetNetworkInterfaces (net)) THen
-  Begin
-    For i := 0 to High (net) do
-    Begin
-      if net[i].AddrIP <> '127.0.0.1' then
-        CBoxDNSServerSlaveIP.Items.Add(net[i].AddrIP);
-    end;
-  end;
-  if CBoxDNSServerSlaveIP.Items.Count > 0 then
-    CBoxDNSServerSlaveIP.ItemIndex := 0;
-
   //MemoLogs.Lines.Add(resolveDNS('google.com', '127.0.0.1')); // 209.244.0.3
   //MemoLogs.Lines.Add(resolveDNS('google.com', '209.244.0.3'));
 
-
+  ButtonRefreshNetCardClick(nil);
 
 
   for i:=0 to ParamCount() do
@@ -2050,6 +2041,25 @@ begin
   end;
 
   ThreadUpdate := TUpdate.Create(false);
+end;
+
+procedure TForm1.ButtonRefreshNetCardClick(Sender: TObject);
+var
+  i: Integer;
+  net: tNetworkInterfaceList;
+begin
+  CBoxDNSServerSlaveIP.Clear;
+  if GetNetworkInterfaces(net) then
+  begin
+    for i := 0 to High (net) do
+    begin
+      if net[i].AddrIP <> '127.0.0.1' then
+        CBoxDNSServerSlaveIP.Items.Add(net[i].AddrIP);
+    end;
+  end;
+  if CBoxDNSServerSlaveIP.Items.Count > 0 then
+    CBoxDNSServerSlaveIP.ItemIndex := 0;
+
 end;
 
 end.

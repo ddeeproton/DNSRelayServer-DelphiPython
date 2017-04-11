@@ -184,7 +184,7 @@ object Form1: TForm1
             Caption = 'Adresse IP'
           end
           object Label2: TLabel
-            Left = 176
+            Left = 192
             Top = 24
             Width = 19
             Height = 13
@@ -198,7 +198,7 @@ object Form1: TForm1
             Caption = 'Exemple: 0.0.0.0'
           end
           object Label4: TLabel
-            Left = 176
+            Left = 192
             Top = 64
             Width = 58
             Height = 13
@@ -224,7 +224,7 @@ object Form1: TForm1
             Width = 302
             Height = 21
             Anchors = [akLeft, akTop, akRight]
-            TabOrder = 0
+            TabOrder = 3
             OnChange = EditFilehostChange
           end
           object CheckBoxStartWithWindows: TCheckBox
@@ -233,7 +233,7 @@ object Form1: TForm1
             Width = 273
             Height = 17
             Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
-            TabOrder = 1
+            TabOrder = 5
             OnClick = CheckBoxStartWithWindowsClick
           end
           object ButtonSelectFilehost: TButton
@@ -243,7 +243,7 @@ object Form1: TForm1
             Height = 25
             Anchors = [akTop, akRight]
             Caption = '...'
-            TabOrder = 2
+            TabOrder = 4
             OnClick = ButtonSelectFilehostClick
           end
           object CBoxDNSServerSlaveIP: TComboBox
@@ -252,17 +252,17 @@ object Form1: TForm1
             Width = 145
             Height = 21
             ItemHeight = 13
-            TabOrder = 3
+            TabOrder = 0
             Text = 'CBoxDNSServerSlaveIP'
           end
           object SpinPort: TSpinEdit
-            Left = 176
+            Left = 192
             Top = 40
             Width = 97
             Height = 22
             MaxValue = 0
             MinValue = 0
-            TabOrder = 4
+            TabOrder = 2
             Value = 53
           end
           object CheckBoxUpdate: TCheckBox
@@ -271,7 +271,7 @@ object Form1: TForm1
             Width = 273
             Height = 17
             Caption = 'Mise '#224' jour au d'#233'marrage'
-            TabOrder = 5
+            TabOrder = 6
             OnClick = CheckBoxUpdateClick
           end
           object ButtonUpdate: TButton
@@ -281,8 +281,45 @@ object Form1: TForm1
             Height = 25
             Anchors = [akTop, akRight]
             Caption = 'V'#233'rifier'
-            TabOrder = 6
+            TabOrder = 7
             OnClick = ButtonUpdateClick
+          end
+          object ButtonRefreshNetCard: TBitBtn
+            Left = 161
+            Top = 39
+            Width = 23
+            Height = 23
+            Hint = 'Rafraichir la liste des Adresses IP'
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 1
+            OnClick = ButtonRefreshNetCardClick
+            Glyph.Data = {
+              06030000424D06030000000000003600000028000000100000000F0000000100
+              180000000000D002000000000000000000000000000000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
+              FEA02FBF90FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFF1AB27700DE8C00E0B400F0CB00FFC14CB122FFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200D76000D18C00D4A400
+              DCAD00E8C800E2A700CC01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFF00CF4100C17803D15200DD0000D58F00E3B300D93CFFFFFFFFFFFF4CB1
+              22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200BC5401DC5214CB3DFFFFFF00
+              E58C00F686FFFFFFFFFFFFFFFFFF00FDAD4CB122FFFFFFFFFFFFFFFFFFFFFFFF
+              00B63A00D2640FC456FFFFFFFFFFFF41A39BFFFFFFFFFFFFFFFFFFFFFFFF00FF
+              9A1F8845FFFFFFFFFFFFFFFFFFFFFFFF00BB2000F97CFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFF1AC77C00D35F5A6575FFFFFFFFFFFFFFFFFFFFFFFF
+              00E25B3FB693FFFFFFFFFFFFFFFFFF35A497FFFFFFFFFFFF677D8300EE7000BA
+              2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF96FFFFFFFFFFFFFFFFFF16B56F00
+              FFAEFFFFFF697E7C00EB4600BE6000BA3CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFF14AB4800E38C00E0BF00D31802DC3B00C47500C85D4CB1
+              22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0AAC2400D25800EBD200
+              DFB200D9AC00D29A00D77A07BF4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFF4CB12200E9A500FECD00E3BA00DBA400D4794CB122FFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
+              F79200EB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFF}
           end
         end
       end
