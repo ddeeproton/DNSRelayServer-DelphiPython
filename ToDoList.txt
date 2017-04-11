@@ -1,0 +1,2 @@
+-Rafraichir l'ip de la carte réseau au lancement du serveur
+-Placer la fonction setDNSOnBoot sur l'évent du checkbox "Lancer au démarrage Windows"
