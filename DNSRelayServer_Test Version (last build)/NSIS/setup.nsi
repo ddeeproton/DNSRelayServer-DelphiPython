@@ -23,8 +23,8 @@ ShowInstDetails show
 RequestExecutionLevel admin
 
 
-BGGradient 000000 800000 FFFFFF 
-InstallColors FF8080 000030 
+BGGradient 000000 000080 FFFFFF 
+InstallColors 8080FF 000030 
 XPStyle on
 
 ;--------------------------------
@@ -49,6 +49,7 @@ Section "" ;No components page, name is not important
   CreateDirectory "$SMPROGRAMS\DNS Relay Server"
   #CreateShortCut "$SMPROGRAMS\DNSRelayServer\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\DNS Relay Server\DNS Relay Server.lnk" "$INSTDIR\DNSRelayServer.exe" "" "$INSTDIR\DNSRelayServer.exe" 0
+  CreateShortCut "$DESKTOP\DNS Relay Server.lnk" "$INSTDIR\DNSRelayServer.exe" "" "$INSTDIR\DNSRelayServer.exe" 0
 
   
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
