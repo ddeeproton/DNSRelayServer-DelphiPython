@@ -12,6 +12,7 @@ object Form1: TForm1
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsStayOnTop
   Icon.Data = {
     0000010001001010000001000800680500001600000028000000100000002000
     0000010008000000000040010000000000000000000000000000000000000000
@@ -252,7 +253,7 @@ object Form1: TForm1
             Top = 40
             Width = 145
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             Text = 'CBoxDNSServerSlaveIP'
           end
@@ -554,7 +555,7 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 160
+    Left = 192
     Top = 296
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -1357,7 +1358,7 @@ object Form1: TForm1
       000000000000}
   end
   object PopupMenu1: TPopupMenu
-    Left = 128
+    Left = 160
     Top = 296
     object StartDNS1: TMenuItem
       Caption = 'Start DNS'
@@ -1389,7 +1390,7 @@ object Form1: TForm1
   object ImageList2: TImageList
     Height = 40
     Width = 40
-    Left = 192
+    Left = 224
     Top = 296
     Bitmap = {
       494C010109000E00040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -4701,11 +4702,11 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 288
+    Left = 320
     Top = 296
   end
   object ImageList3: TImageList
-    Left = 224
+    Left = 256
     Top = 297
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -5119,7 +5120,7 @@ object Form1: TForm1
     Top = 297
   end
   object PopupMenuListView: TPopupMenu
-    Left = 96
+    Left = 128
     Top = 297
     object Autoriser1: TMenuItem
       Caption = 'Autoriser'
@@ -5144,7 +5145,7 @@ object Form1: TForm1
   object ImageList4: TImageList
     Height = 80
     Width = 71
-    Left = 256
+    Left = 288
     Top = 296
     Bitmap = {
       494C010103000400040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -8090,5 +8091,11 @@ object Form1: TForm1
     OnTimer = TimerUpdateTimer
     Left = 65
     Top = 297
+  end
+  object TimerAfterFormCreate: TTimer
+    Enabled = False
+    OnTimer = TimerAfterFormCreateTimer
+    Left = 96
+    Top = 296
   end
 end

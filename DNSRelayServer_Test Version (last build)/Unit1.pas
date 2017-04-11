@@ -91,6 +91,7 @@ type
     ButtonUpdate: TButton;
     TimerUpdate: TTimer;
     ButtonRefreshNetCard: TBitBtn;
+    TimerAfterFormCreate: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -147,6 +148,7 @@ type
     procedure setDNSOnBoot(enabled: Boolean);
     procedure TimerUpdateTimer(Sender: TObject);
     procedure ButtonRefreshNetCardClick(Sender: TObject);
+    procedure TimerAfterFormCreateTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1405,10 +1407,7 @@ begin
 
   if not startedInBackground then
   begin
-    Self.Show;
-    FlashWindow(Application.Handle, true);
-    ShowWindow(Application.Handle, SW_SHOW);
-    Application.ShowMainForm := true;
+    TimerAfterFormCreate.Enabled := True;
   end;
 
   if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
@@ -2089,6 +2088,20 @@ begin
   if CBoxDNSServerSlaveIP.Items.Count > 0 then
     CBoxDNSServerSlaveIP.ItemIndex := 0;
 
+end;
+
+procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+    Application.ShowMainForm := true;
+    Form1.BringToFront;
+    Application.BringToFront;
+    Application.ModalFinished;
+    Self.Show;
+    BringToFront;
+    SetFocus;
+    FlashWindow(Application.Handle, true);
+    ShowWindow(Application.Handle, SW_SHOW);
 end;
 
 end.
