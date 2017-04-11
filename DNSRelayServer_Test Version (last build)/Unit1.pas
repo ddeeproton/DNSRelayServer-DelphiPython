@@ -280,6 +280,7 @@ begin
       begin
         Form1.MemoLogs.Lines.Add('Close all python.exe process');
         Form1.KillTask('python.exe');
+        Form1.ButtonRefreshNetCardClick(nil);
         Form1.ButtonStartClick(nil);
       end;
     end;

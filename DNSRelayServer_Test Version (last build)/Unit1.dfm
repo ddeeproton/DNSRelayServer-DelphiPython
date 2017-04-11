@@ -8085,7 +8085,7 @@ object Form1: TForm1
   end
   object TimerUpdate: TTimer
     Enabled = False
-    Interval = 50000
+    Interval = 5000
     OnTimer = TimerUpdateTimer
     Left = 65
     Top = 297
