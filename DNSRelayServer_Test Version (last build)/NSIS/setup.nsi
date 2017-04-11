@@ -5,13 +5,14 @@
 ; prompts the user asking them where to install, and drops a copy of example1.nsi
 ; there. 
 
+!define VERSION "0.4.8"
 ;--------------------------------
 
 ; The name of the installer
-Name "DNSRelayServerSetup 0.4.8"
+Name "DNSRelayServerSetup ${VERSION}"
 
 ; The file to write
-OutFile "..\..\Setup installation\DNSRelayServerSetup_0.4.8.exe"
+OutFile "..\..\Setup installation\DNSRelayServerSetup_${VERSION}.exe"
 
 ; The default installation directory
 ;InstallDir "$PROGRAMFILES\DNSRelayServer"
@@ -44,7 +45,7 @@ Section "" ;No components page, name is not important
   
   ; Put file there
   File "..\DNSRelayServer.exe"
-  File "..\DNSRelayServer_0.4.8_Source.zip"
+  File "..\DNSRelayServer_${VERSION}_Source.zip"
   
   CreateDirectory "$SMPROGRAMS\DNS Relay Server"
   #CreateShortCut "$SMPROGRAMS\DNSRelayServer\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
