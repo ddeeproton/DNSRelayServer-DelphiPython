@@ -1,11 +1,12 @@
-; example1.nsi
-;
-; This script is perhaps one of the simplest NSIs you can make. All of the
-; optional settings are left to their default settings. The installer simply 
-; prompts the user asking them where to install, and drops a copy of example1.nsi
-; there. 
+; Setup DNS Relay Server
 
 !define VERSION "0.4.8"
+
+;--------------------------------
+;Include Modern UI
+
+  !include "MUI2.nsh"
+
 ;--------------------------------
 
 ; The name of the installer
@@ -29,11 +30,31 @@ InstallColors 8080FF 000030
 XPStyle on
 
 ;--------------------------------
+;Interface Settings
+
+  !define MUI_ABORTWARNING
+
+;--------------------------------
 
 ; Pages
 
-Page directory
-Page instfiles
+#Page directory
+#Page instfiles
+
+;--------------------------------
+;Pages
+  !insertmacro MUI_LANGUAGE "French"
+  #!insertmacro MUI_PAGE_WELCOME
+  #!insertmacro MUI_PAGE_LICENSE "${NSISDIR}\Docs\Modern UI\License.txt"
+  #!insertmacro MUI_PAGE_COMPONENTS
+  !insertmacro MUI_PAGE_DIRECTORY
+  !insertmacro MUI_PAGE_INSTFILES
+  !insertmacro MUI_PAGE_FINISH
+
+  !insertmacro MUI_UNPAGE_WELCOME
+  !insertmacro MUI_UNPAGE_CONFIRM
+  !insertmacro MUI_UNPAGE_INSTFILES
+  !insertmacro MUI_UNPAGE_FINISH
 
 ;--------------------------------
 
@@ -57,5 +78,5 @@ Section "" ;No components page, name is not important
   #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #Exec '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   Exec 'DNSRelayServer.exe'
-  Quit
+  #Quit
 SectionEnd ; end the section
