@@ -8,10 +8,10 @@
 ;--------------------------------
 
 ; The name of the installer
-Name "DNSRelayServerSetup 0.4.5"
+Name "DNSRelayServerSetup 0.4.7"
 
 ; The file to write
-OutFile "..\..\Setup installation\DNSRelayServerSetup_0.4.6.exe"
+OutFile "..\..\Setup installation\DNSRelayServerSetup_0.4.7.exe"
 
 ; The default installation directory
 ;InstallDir "$PROGRAMFILES\DNSRelayServer"
@@ -39,7 +39,7 @@ Section "" ;No components page, name is not important
   
   ; Put file there
   File "..\DNSRelayServer.exe"
-  File "..\DNSRelayServer_0.4.6_Source.zip"
+  File "..\DNSRelayServer_0.4.7_Source.zip"
   
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'

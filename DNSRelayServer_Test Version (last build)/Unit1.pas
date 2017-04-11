@@ -86,6 +86,7 @@ type
     ToolButton11: TToolButton;
     CheckBoxUpdate: TCheckBox;
     ButtonUpdate: TButton;
+    TimerUpdate: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -139,8 +140,8 @@ type
     procedure ToolButton11Click(Sender: TObject);
     procedure ButtonUpdateClick(Sender: TObject);
     procedure CheckBoxUpdateClick(Sender: TObject);
-    procedure DoUpdate(isSilent: Boolean);
     procedure setDNSOnBoot(enabled: Boolean);
+    procedure TimerUpdateTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -162,12 +163,21 @@ type
   end;
 
 
+  TUpdate = class(TThread)
+  private
+  protected
+    procedure Execute; override;
+  public
+    procedure DoUpdate(isSilent: Boolean);
+  end;
+
 var
   Form1: TForm1;
   FormHost: TFormHost;
   FormInstall:  TFormInstall = nil;
   SelectedListItem:TListItem;
   listThreads: array of TSauvegarde;
+  ThreadUpdate: TUpdate;
   MasterDNSFile: string = 'MasterDNSFile.cfg';
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
   FilehostPathConfig: string = 'FileHostPath.cfg';
@@ -1342,11 +1352,7 @@ begin
   //MemoLogs.Lines.Add(resolveDNS('google.com', '127.0.0.1')); // 209.244.0.3
   //MemoLogs.Lines.Add(resolveDNS('google.com', '209.244.0.3'));
 
-  if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
-  begin
-    CheckBoxUpdate.Checked := true;
-    DoUpdate(True);
-  end;
+
 
 
   for i:=0 to ParamCount() do
@@ -1356,9 +1362,24 @@ begin
       Masquer1Click(nil);
       ButtonStartClick(nil);
     end;
-  end;  
+  end;
+
+  if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
+  begin
+    Form1.CheckBoxUpdate.Checked := true;
+  end;
+  // Do Update
+  //TUpdate.Create(false);
+  TimerUpdate.Enabled := True;
 end;
 
+procedure TUpdate.Execute;
+begin
+  if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
+  begin
+    DoUpdate(True);
+  end;
+end;
 
 function TForm1.getPythonPath():string;
 begin
@@ -1882,19 +1903,10 @@ end;
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
 begin
   TButton(Sender).Enabled := False;
-  DoUpdate(False);
-  TButton(Sender).Enabled := True;
-end;
-
-procedure TForm1.DoUpdate(isSilent: Boolean);
-var
-  lastversion, lastverFile, url, wget: string;
-  canClose: Boolean;
-begin
 
   if FormInstall = nil then
   begin
-    FormInstall := TFormInstall.Create(Self);
+    FormInstall := TFormInstall.Create(Form1);
   end;
   FormInstall.CheckInstallation;
   if not FormInstall.isWgetInstalled
@@ -1903,6 +1915,30 @@ begin
     exit;
   end;
 
+  if ThreadUpdate = nil then ThreadUpdate := TUpdate.Create(True);
+  ThreadUpdate.DoUpdate(False);
+  TButton(Sender).Enabled := True;
+end;
+
+procedure TUpdate.DoUpdate(isSilent: Boolean);
+var
+  lastversion, lastverFile, url, wget: string;
+  canClose: Boolean;
+begin
+ {
+  if FormInstall = nil then
+  begin
+    FormInstall := TFormInstall.Create(Form1);
+  end;
+  FormInstall.CheckInstallation;
+  if not FormInstall.isWgetInstalled
+  then begin
+    FormInstall.ButtonInstallClick(Self);
+    exit;
+  end;
+   }
+  if isSilent then Form1.MemoLogs.Lines.Add('Recherche de Mise à jour...');
+
   url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt';
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
   if FileExists(lastverFile) then DeleteFile(lastverFile);
@@ -1910,18 +1946,28 @@ begin
 
   if not FileExists(lastverFile) then
   begin
-    if not isSilent then ShowMessage('Problème de connexion Internet ou alors votre version est trop ancienne.');
+    if isSilent then
+      Form1.MemoLogs.Lines.Add('Error Update: Problème de connexion au serveur de mise à jour.')
+    else
+      ShowMessage('Error Update: Problème de connexion au serveur de mise à jour.');
     exit;
   end;
   lastversion := lireFichier(lastverFile);
-  if Pos('0.4.6', lastversion) = 1 then
+  if Pos('0.4.7', lastversion) = 1 then
   begin
-    if not isSilent then ShowMessage('Vous êtes à jour')
+    if isSilent then
+      Form1.MemoLogs.Lines.Add('Vous êtes à jour')
+    else
+      ShowMessage('Vous êtes à jour')
   end
   else begin
     if lastversion = '' then
     begin
-      if not isSilent then ShowMessage('Le téléchargement a échoué.'+#13+url);
+      if isSilent then
+        Form1.MemoLogs.Lines.Add('Le téléchargement a échoué.')
+      else
+        ShowMessage('Le téléchargement a échoué.'+#13+url);
+
       exit;
     end;
     if MessageDlg('Mise à jour version "'+lastversion+'" disponible :)'+#13+'Mettre à jour?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
@@ -1936,13 +1982,16 @@ begin
           ExecAndWait(lastverFile, '', SW_SHOWNORMAL);
 
           canClose := True;
-          FormCloseQuery(nil, canClose);
+          Form1.FormCloseQuery(nil, canClose);
           Application.Terminate;
 
         end;
       end
       else begin
-        if not isSilent then ShowMessage('La mise à jour à échouée. '+#13+url);
+        if isSilent then
+          Form1.MemoLogs.Lines.Add('La mise à jour à échoué.')
+        else
+          ShowMessage('La mise à jour à échoué. '+#13+url);
       end;
     end;
   end;
@@ -1954,6 +2003,26 @@ begin
     ecrireDansUnFichier(DataDirectoryPath + 'checkupdate.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
+
+  setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+end;
+
+procedure TForm1.TimerUpdateTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+
+  if FormInstall = nil then
+  begin
+    FormInstall := TFormInstall.Create(Form1);
+  end;
+  FormInstall.CheckInstallation;
+  if not FormInstall.isWgetInstalled
+  then begin
+    FormInstall.ButtonInstallClick(Self);
+    exit;
+  end;
+
+  ThreadUpdate := TUpdate.Create(false);
 end;
 
 end.
