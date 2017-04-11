@@ -46,12 +46,14 @@ XPStyle on
 
   #!insertmacro MUI_LANGUAGE "English" ;first language is the default language
   !insertmacro MUI_LANGUAGE "French"
+  !define MUI_LANGDLL_ALLLANGUAGES
 ;--------------------------------
 ;Pages
   #!insertmacro MUI_PAGE_WELCOME
   #!insertmacro MUI_PAGE_LICENSE "${NSISDIR}\Docs\Modern UI\License.txt"
+  !insertmacro MUI_PAGE_LICENSE "License.txt"
   #!insertmacro MUI_PAGE_COMPONENTS
-  !define MUI_LANGDLL_ALLLANGUAGES
+  
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
   #!insertmacro MUI_PAGE_FINISH
@@ -82,8 +84,8 @@ Section "" ;No components page, name is not important
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #Exec '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
-  Exec 'DNSRelayServer.exe'
-  #Quit
+  Exec 'DNSRelayServer.exe /autostart'
+  Quit
 SectionEnd ; end the section
 
 Function .onInit

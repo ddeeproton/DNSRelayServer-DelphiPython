@@ -1,0 +1,44 @@
+Veuillez lire les modalités et les conditions suivantes avant l'utilisation de ces logiciels.  L'utilisation de ce logiciel indique l'acceptation des termes et conditions de la licence. 
+
+1. Déni de garantie
+
+"DNS Relay Server" est fourni "tel-que", et aucune garantie de quelque sorte n'est exprimée ou impliquée, incluant sans limitation, toute garantie de valeur marchande ou format physique pour un but particulier. 
+
+Dans aucun cas, l'auteur de ce logiciel ne sera jugé responsable de la perte de données, des dommages, du manque à gagner ou de n'importe quel autre genre de perte par l'utilisation correcte ou non de ce logiciel. 
+
+Le logiciel peut être modifié. Le code source est fourni dans le setup d'installation.
+
+2. Licence
+
+"DNS Relay Server" est fourni en tant que logiciel open source. 
+
+Dans ce cas, Vous avez le droit d'utiliser, de le modifier et de le distribuer comme vous voulez. 
+
+L'installation et l'utilisation de ce logiciel signifie l'acceptation des termes et conditions de la license.
+
+3. Fonctionnement
+
+"DNS Relay Server" modifie la configuration de vos cartes réseau afin de pouvoir filtrer Internet au niveau des noms de domaines (DNS). 
+
+Au lancement du serveur, l'adresse des serveurs DNS seront modifiés sur vos cartes réseau par l'IP de votre propre machine. 
+
+A la fermeture du serveur, vos cartes réseau repassent en mode automatique (mode DHCP). 
+
+Si vous êtiez en configuration IP manuelle, vous risquez de perdre votre IP.  
+
+Donc si vous lancez ce programme sur un serveur distant, vous risquez de perdre la connexion. 
+
+Soyez conscient des risques.
+
+Par mesure de sécurité, un script VBS est placé au lancement de Windows afin de réparer la connexion Internet en cas de plantage du PC. 
+
+Nous nous efforçons de fournir un programme le plus sûr possible pour l'utilisateur. 
+
+Vous êtes en version beta-test, ce qui signifie que ce programme n'a pas été encore testé partout. Il peut y avoir encore des bugs non-répertoriés.
+
+Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.
+
+A la fin de l'installation, le serveur sera lancé automatiquement. 
+
+L'installation et l'utilisation de ce logiciel signifie l'acceptation des termes et conditions de la license.  
+
