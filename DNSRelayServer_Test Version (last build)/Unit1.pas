@@ -172,12 +172,15 @@ type
   end;
 
 var
+  CurrentApplicationVersion: string = '0.4.8';
+
   Form1: TForm1;
   FormHost: TFormHost;
   FormInstall:  TFormInstall = nil;
   SelectedListItem:TListItem;
   listThreads: array of TSauvegarde;
   ThreadUpdate: TUpdate;
+
   MasterDNSFile: string = 'MasterDNSFile.cfg';
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
   FilehostPathConfig: string = 'FileHostPath.cfg';
@@ -563,20 +566,38 @@ begin
     'end sub';
     if enabled then ecrireDansUnFichier(dirPath+'setDNSOnBoot.vbs', scriptVBS);
 
+  // For versions equal or less than <= 0.4.7 
   Reg := TRegistry.Create;
   Reg.RootKey := HKEY_CURRENT_USER;
   try
   if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
   begin
-    if enabled then
-      Reg.WriteString(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName), dirPath+'setDNSOnBoot.vbs')
-    else
+    if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName)) then
       Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName));
     Reg.CloseKey;
   end;
   finally
     Reg.Free;
   end;
+
+
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  try
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+    if enabled then
+      Reg.WriteString(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName), dirPath+'setDNSOnBoot.vbs')
+    else begin
+      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName)) then
+        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName));
+    end;
+    Reg.CloseKey;
+  end;
+  finally
+    Reg.Free;
+  end;
+
 
 end;
 
@@ -1277,6 +1298,9 @@ begin
     FormCloseQuery(nil, canClose);
     Application.Terminate;
   end;
+
+  Form1.Caption := PChar('DNS Relay Server '+CurrentApplicationVersion);
+
   isServerStarted := False;
   Memo1.Clear;
   Memo1.Text := 'Si ce programme est fermé brutalement, vous n''avez plus d''Internet.'+#13#10#13#10+
@@ -1953,7 +1977,7 @@ begin
     exit;
   end;
   lastversion := lireFichier(lastverFile);
-  if Pos('0.4.7', lastversion) = 1 then
+  if Pos(CurrentApplicationVersion, lastversion) = 1 then
   begin
     if isSilent then
       //Form1.MemoLogs.Lines.Add('Vous êtes à jour')
