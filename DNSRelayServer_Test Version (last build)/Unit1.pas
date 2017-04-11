@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons;
 
-var CurrentApplicationVersion: string = '0.4.10';
+var CurrentApplicationVersion: string = '0.4.11';
 
 type
   TForm1 = class(TForm)
@@ -1296,10 +1296,9 @@ begin
   if not IsUserAnAdmin() then
   begin
     param := '';
-    for i:=0 to ParamCount() do
+    for i:=1 to ParamCount() do
       param := param +' '+ParamStr(i);
-
-    ExecAndWait(Application.ExeName, param, SW_SHOWNORMAL);
+    ExecAndBringToFront(Application.ExeName, param);
     canClose := True;
     FormCloseQuery(nil, canClose);
     Application.Terminate;

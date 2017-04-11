@@ -12,6 +12,7 @@ uses Windows, SysUtils, Messages,
   FilesManager;
 
 function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
+function ExecAndBringToFront(sExe, sFile: String): Boolean;
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean; //wShowWin => SW_SHOWNORMAL | SW_HIDE
 
 function KillTask(ExeFileName: string): Integer;
@@ -37,6 +38,18 @@ begin
   WaitForSingleObject(h, INFINITE);
 end;
 
+function ExecAndBringToFront(sExe, sFile: String): Boolean;
+var
+  h: Cardinal;
+  operation: PChar;
+begin
+  if IsUserAnAdmin() then operation := 'open' else operation := 'runas';
+  ShellExecute(h, operation, PChar(sExe), PChar(sFile), nil, SW_SHOW);
+  FlashWindow(findwindow(nil,PChar(sExe)),true);
+  ShowWindow(findwindow(nil,PChar(sExe)), SW_SHOW);
+  WaitForSingleObject(h, INFINITE);
+end;
+
 
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
 var
@@ -47,11 +60,10 @@ var
 begin
   Result:=True;
   ZeroMemory(@StartInfo, SizeOf(StartInfo));
-  with StartInfo do begin
-    cb:=SizeOf(StartInfo);
-    dwFlags:=STARTF_USESHOWWINDOW;
-    wShowWindow:=wShowWin;
-  end;
+  StartInfo.cb := SizeOf(StartInfo);
+  StartInfo.dwFlags :=  STARTF_USESHOWWINDOW; 
+  StartInfo.wShowWindow := wShowWin;
+
   if CreateProcess(PChar(sExe), PChar(sFile), nil, nil, True, 0, nil, nil, StartInfo, ProcessInfo)
   then WaitForSingleObject(ProcessInfo.hProcess, INFINITE)
   else Result:=False;
