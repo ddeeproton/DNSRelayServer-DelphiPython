@@ -22,6 +22,11 @@ ShowInstDetails show
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
 
+
+BGGradient 000000 800000 FFFFFF 
+InstallColors FF8080 000030 
+XPStyle on
+
 ;--------------------------------
 
 ; Pages
@@ -40,6 +45,11 @@ Section "" ;No components page, name is not important
   ; Put file there
   File "..\DNSRelayServer.exe"
   File "..\DNSRelayServer_0.4.8_Source.zip"
+  
+  CreateDirectory "$SMPROGRAMS\DNS Relay Server"
+  #CreateShortCut "$SMPROGRAMS\DNSRelayServer\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+  CreateShortCut "$SMPROGRAMS\DNS Relay Server\DNS Relay Server.lnk" "$INSTDIR\DNSRelayServer.exe" "" "$INSTDIR\DNSRelayServer.exe" 0
+
   
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
