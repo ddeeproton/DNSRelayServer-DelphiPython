@@ -42,19 +42,24 @@ XPStyle on
 #Page instfiles
 
 ;--------------------------------
-;Pages
+;Languages
+
+  #!insertmacro MUI_LANGUAGE "English" ;first language is the default language
   !insertmacro MUI_LANGUAGE "French"
+;--------------------------------
+;Pages
   #!insertmacro MUI_PAGE_WELCOME
   #!insertmacro MUI_PAGE_LICENSE "${NSISDIR}\Docs\Modern UI\License.txt"
   #!insertmacro MUI_PAGE_COMPONENTS
+  !define MUI_LANGDLL_ALLLANGUAGES
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
-  !insertmacro MUI_PAGE_FINISH
+  #!insertmacro MUI_PAGE_FINISH
 
   !insertmacro MUI_UNPAGE_WELCOME
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
-  !insertmacro MUI_UNPAGE_FINISH
+  #!insertmacro MUI_UNPAGE_FINISH
 
 ;--------------------------------
 
@@ -80,3 +85,9 @@ Section "" ;No components page, name is not important
   Exec 'DNSRelayServer.exe'
   #Quit
 SectionEnd ; end the section
+
+Function .onInit
+
+  !insertmacro MUI_LANGDLL_DISPLAY
+
+FunctionEnd
