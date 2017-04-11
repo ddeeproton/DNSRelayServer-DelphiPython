@@ -1937,7 +1937,7 @@ begin
     exit;
   end;
    }
-  if isSilent then Form1.MemoLogs.Lines.Add('Recherche de Mise à jour...');
+  //if isSilent then Form1.MemoLogs.Lines.Add('Recherche de Mise à jour...');
 
   url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt';
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
@@ -1947,7 +1947,7 @@ begin
   if not FileExists(lastverFile) then
   begin
     if isSilent then
-      Form1.MemoLogs.Lines.Add('Error Update: Problème de connexion au serveur de mise à jour.')
+      //Form1.MemoLogs.Lines.Add('Error Update: Problème de connexion au serveur de mise à jour.')
     else
       ShowMessage('Error Update: Problème de connexion au serveur de mise à jour.');
     exit;
@@ -1956,7 +1956,7 @@ begin
   if Pos('0.4.7', lastversion) = 1 then
   begin
     if isSilent then
-      Form1.MemoLogs.Lines.Add('Vous êtes à jour')
+      //Form1.MemoLogs.Lines.Add('Vous êtes à jour')
     else
       ShowMessage('Vous êtes à jour')
   end
@@ -1964,7 +1964,7 @@ begin
     if lastversion = '' then
     begin
       if isSilent then
-        Form1.MemoLogs.Lines.Add('Le téléchargement a échoué.')
+        //Form1.MemoLogs.Lines.Add('Le téléchargement a échoué.')
       else
         ShowMessage('Le téléchargement a échoué.'+#13+url);
 
@@ -1989,7 +1989,7 @@ begin
       end
       else begin
         if isSilent then
-          Form1.MemoLogs.Lines.Add('La mise à jour à échoué.')
+          //Form1.MemoLogs.Lines.Add('La mise à jour à échoué.')
         else
           ShowMessage('La mise à jour à échoué. '+#13+url);
       end;
