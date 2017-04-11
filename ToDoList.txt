@@ -1,2 +1,3 @@
 -Rafraichir l'ip de la carte réseau au lancement du serveur (pour résoudre le bug si on change d'ip entre temps)
--
+-Remplacer les tests des DNS par python. Celui de Pascal pose des problèmes de compatibilité lors du chaînage de plusieurs serveurs relais.
+
