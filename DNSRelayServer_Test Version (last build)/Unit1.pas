@@ -1388,18 +1388,27 @@ begin
 
   ButtonRefreshNetCardClick(nil);
 
-
+  startedInBackground := False;
   for i:=0 to ParamCount() do
   begin
     if ParamStr(i) = '/background' then
     begin
       Masquer1Click(nil);
       ButtonStartClick(nil);
+      startedInBackground := True;
     end;
     if ParamStr(i) = '/autostart' then
     begin
       ButtonStartClick(nil);
     end;
+  end;
+
+  if not startedInBackground then
+  begin
+    Self.Show;
+    FlashWindow(Application.Handle, true);
+    ShowWindow(Application.Handle, SW_SHOW);
+    Application.ShowMainForm := true;
   end;
 
   if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
