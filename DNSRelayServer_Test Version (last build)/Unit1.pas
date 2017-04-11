@@ -1329,9 +1329,7 @@ begin
                 'Par mesure de sécurité, un script VBS est placé au lancement de Windows afin de réparer la connexion Internet en cas de plantage du PC.'+#13#10#13#10+
                 'Nous nous efforçons de fournir un programme le plus sûr possible pour l''utilisateur.'+#13#10#13#10+
                 'Vous êtes en version beta-test, ce qui signifie que ce programme n''a pas été encore testé partout. Il peut y avoir encore des bugs non-répertoriés.'+#13#10#13#10+
-                'Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.'+#13#10#13#10+
-                'A la fin de l''installation, le serveur sera lancé automatiquement.'+#13#10#13#10+
-                'L''installation et l''utilisation de ce logiciel signifie l''acceptation des termes et conditions de la license.';
+                'Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.';
 
 
   ToolBar3.DoubleBuffered := True;

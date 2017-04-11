@@ -47,7 +47,7 @@ begin
   ShellExecute(h, operation, PChar(sExe), PChar(sFile), nil, SW_SHOW);
   FlashWindow(findwindow(nil,PChar(sExe)),true);
   ShowWindow(findwindow(nil,PChar(sExe)), SW_SHOW);
-  WaitForSingleObject(h, INFINITE);
+  //WaitForSingleObject(h, INFINITE);
 end;
 
 
