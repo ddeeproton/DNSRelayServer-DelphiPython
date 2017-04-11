@@ -1,5 +1,6 @@
 unit Unit1;
 
+
 interface
 
 uses
@@ -21,6 +22,8 @@ uses
   StrUtils,
   // Pour LaunchAndWait
   ProcessManager, Spin;
+
+var CurrentApplicationVersion: string = '0.4.9';
 
 type
   TForm1 = class(TForm)
@@ -172,8 +175,6 @@ type
   end;
 
 var
-  CurrentApplicationVersion: string = '0.4.8';
-
   Form1: TForm1;
   FormHost: TFormHost;
   FormInstall:  TFormInstall = nil;
@@ -225,7 +226,9 @@ begin
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
-  MemoLogs.Lines.Add(txt);
+
+  if Pos(txt, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0 then
+    MemoLogs.Lines.Add(txt);
   //MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
