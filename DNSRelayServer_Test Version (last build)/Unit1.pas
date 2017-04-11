@@ -1309,12 +1309,30 @@ begin
 
   isServerStarted := False;
   Memo1.Clear;
-  Memo1.Text := 'Si ce programme est fermé brutalement, vous n''avez plus d''Internet.'+#13#10#13#10+
-                'Si vous n''avez plus d''Internet, relancez ce programme (bouton Start) pour le fermer proprement.'+#13#10#13#10+
-                'Pour fermer proprement, bouton quitter, stop, ou la croix en haut de cette fenêtre.'+#13#10#13#10+
-                'Ce programme va configurer votre carte réseau afin de pouvoir filtrer le web.'+#13#10#13#10+
-                'Au lancement, le serveur DNS sur vos carte réseau sont changés par l''IP de votre propre machine. A la fermeture votre carte réseau est configuré en mode automatique (mode DHCP). Si vous êtiez en mode manuel IP, alors vous perdrez votre configuration.'+#13#10#13#10+
-                'Il est de votre responsabilité de bien comprendre les risques d''utilisation. Aucun moyen de nous poursuivre en justice. Ce programme est gratuit, n''a pas de license et pas de virus. Vous faites ce que vous voulez ;)';
+  Memo1.Text := 'Veuillez lire les modalités et les conditions suivantes avant l''utilisation de ces logiciels.  L''utilisation de ce logiciel indique l''acceptation des termes et conditions de la licence.'+#13#10#13#10+
+                '1. Déni de garantie'+#13#10#13#10+
+                '"DNS Relay Server" est fourni "tel-que", et aucune garantie de quelque sorte n''est exprimée ou impliquée, incluant sans limitation, toute garantie de valeur marchande ou format physique pour un but particulier.'+#13#10#13#10+
+                'Dans aucun cas, l''auteur de ce logiciel ne sera jugé responsable de la perte de données, des dommages, du manque à gagner ou de n''importe quel autre genre de perte par l''utilisation correcte ou non de ce logiciel.'+#13#10#13#10+
+                'Le logiciel peut être modifié. Le code source est fourni dans le setup d''installation.'+#13#10#13#10+
+                ''+#13#10#13#10+
+                '2. Licence'+#13#10#13#10+
+                '"DNS Relay Server" est fourni en tant que logiciel open source.'+#13#10#13#10+
+                'Dans ce cas, Vous avez le droit d''utiliser, de le modifier et de le distribuer comme vous voulez.'+#13#10#13#10+
+                'L''installation et l''utilisation de ce logiciel signifie l''acceptation des termes et conditions de la license.'+#13#10#13#10+
+                ''+#13#10#13#10+
+                '3. Fonctionnement'+#13#10#13#10+
+                '"DNS Relay Server" modifie la configuration de vos cartes réseau afin de pouvoir filtrer Internet au niveau des noms de domaines (DNS).'+#13#10#13#10+
+                'Au lancement du serveur, l''adresse des serveurs DNS seront modifiés sur vos cartes réseau par l''IP de votre propre machine.'+#13#10#13#10+
+                'A la fermeture du serveur, vos cartes réseau repassent en mode automatique (mode DHCP).'+#13#10#13#10+
+                'Si vous êtiez en configuration IP manuelle, vous risquez de perdre votre IP.'+#13#10#13#10+
+                'Donc si vous lancez ce programme sur un serveur distant, vous risquez de perdre la connexion.'+#13#10#13#10+
+                'Soyez conscient des risques.'+#13#10#13#10+
+                'Par mesure de sécurité, un script VBS est placé au lancement de Windows afin de réparer la connexion Internet en cas de plantage du PC.'+#13#10#13#10+
+                'Nous nous efforçons de fournir un programme le plus sûr possible pour l''utilisateur.'+#13#10#13#10+
+                'Vous êtes en version beta-test, ce qui signifie que ce programme n''a pas été encore testé partout. Il peut y avoir encore des bugs non-répertoriés.'+#13#10#13#10+
+                'Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.'+#13#10#13#10+
+                'A la fin de l''installation, le serveur sera lancé automatiquement.'+#13#10#13#10+
+                'L''installation et l''utilisation de ce logiciel signifie l''acceptation des termes et conditions de la license.';
 
 
   ToolBar3.DoubleBuffered := True;
@@ -1379,6 +1397,10 @@ begin
     if ParamStr(i) = '/background' then
     begin
       Masquer1Click(nil);
+      ButtonStartClick(nil);
+    end;
+    if ParamStr(i) = '/autostart' then
+    begin
       ButtonStartClick(nil);
     end;
   end;

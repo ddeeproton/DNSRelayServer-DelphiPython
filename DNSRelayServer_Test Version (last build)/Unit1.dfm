@@ -157,6 +157,7 @@ object Form1: TForm1
       Top = 1
       Width = 384
       Height = 216
+      PageIndex = 5
       TabOrder = 0
       object TPage
         Left = 0
