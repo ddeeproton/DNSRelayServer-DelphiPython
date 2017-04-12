@@ -135,11 +135,11 @@ begin
     '			answer = self.res.query(domain, "A")'#13#10+
     '			res = "%s" % answer[0]'#13#10+
     '		except dns.resolver.NoAnswer:'#13#10+
-    '			sys.stdout.write("Error")'#13#10+
+    '			sys.stdout.write("")'#13#10+
     '		except dns.resolver.NXDOMAIN:'#13#10+
-    '			sys.stdout.write("Error")'#13#10+
+    '			sys.stdout.write("")'#13#10+
     '		except DNSException:'#13#10+
-    '			sys.stdout.write(''Error'')'#13#10+
+    '			sys.stdout.write('''')'#13#10+
     '		return res'#13#10+
     ''#13#10+
     'if __name__ == ''__main__'':'#13#10+
