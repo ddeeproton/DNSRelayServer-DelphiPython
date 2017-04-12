@@ -24,10 +24,11 @@ uses
   procedure setDNS(Servers: string);
   procedure setDNSList(Servers: TStrings);
   function resolveDNS(ADomain, AHost : string): string;
+  function resolveDNSByPython(domain, dns:String):string;
   procedure setIPToDHCP();
 
 implementation
-
+uses Unit1;
 
 procedure setDNS(Servers: string);
 var
@@ -111,6 +112,60 @@ begin
 end;
 
 
+
+
+function resolveDNSByPython(domain, dns:String):string;
+var scriptPython: String;
+begin
+  scriptPython :=     '#!/usr/bin/env python'#13#10+
+    'import sys, subprocess'#13#10+
+    'import dns.resolver'#13#10+
+    'from dns.exception import DNSException'#13#10+
+    ''#13#10+
+    'class DNSClient:'#13#10+
+    '	def __init__(self, nameservers, timeout):'#13#10+
+    '		self.res = dns.resolver.Resolver()'#13#10+
+    '		self.res.nameservers = nameservers'#13#10+
+    '		self.res.timeout = timeout'#13#10+
+    '		self.res.lifetime = timeout'#13#10+
+    ''#13#10+
+    '	def dnsResolve(self, domain):'#13#10+
+    '		res = 0'#13#10+
+    '		try:'#13#10+
+    '			answer = self.res.query(domain, "A")'#13#10+
+    '			res = "%s" % answer[0]'#13#10+
+    '		except dns.resolver.NoAnswer:'#13#10+
+    '			sys.stdout.write("Error")'#13#10+
+    '		except dns.resolver.NXDOMAIN:'#13#10+
+    '			sys.stdout.write("Error")'#13#10+
+    '		except DNSException:'#13#10+
+    '			sys.stdout.write(''Error'')'#13#10+
+    '		return res'#13#10+
+    ''#13#10+
+    'if __name__ == ''__main__'':'#13#10+
+    ''#13#10+
+    '	config_server = ''209.244.0.3'''#13#10+
+    '	if len(sys.argv) > 1:'#13#10+
+    '		if sys.argv[1] == ''server'':'#13#10+
+    '			if len(sys.argv) > 2:'#13#10+
+    '				config_server = sys.argv[2]'#13#10+
+    '				'#13#10+
+    '	config_domain = ''www.github.com'''#13#10+
+    '	if len(sys.argv) > 3:'#13#10+
+    '		if sys.argv[3] == ''domain'':'#13#10+
+    '			if len(sys.argv) > 4:'#13#10+
+    '				config_domain = sys.argv[4]'#13#10+
+    ''#13#10+
+    '	dnsc = DNSClient([config_server], 1)'#13#10+
+    '	ip = dnsc.dnsResolve(config_domain)'#13#10+
+    '	if ip <> 0:'#13#10+
+    '		sys.stdout.write(ip)';
+  ecrireDansUnFichier(Form1.DataDirectoryPath + 'checkDNS.py', scriptPython);
+  if Form1.PythonPath = '' then Form1.PythonPath := Form1.getPythonPath();
+  result := ExecAndRead('"'+Form1.PythonPath+'python.exe" "'+Form1.DataDirectoryPath + 'checkDNS.py" server "'+dns+'" domain "'+domain+'"');
+end;
+
+
 function resolveDNS(ADomain, AHost: string): string;
 var
   i,x : integer;
@@ -145,7 +200,6 @@ begin
     on E: EIdDnsResolverError do exit;
   end;
 end;
-
 
 procedure setIPToDHCP();
 var

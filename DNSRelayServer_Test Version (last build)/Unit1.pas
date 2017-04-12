@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons;
 
-var CurrentApplicationVersion: string = '0.4.11';
+var CurrentApplicationVersion: string = '0.4.12';
 
 type
   TForm1 = class(TForm)
@@ -153,6 +153,8 @@ type
     { Private declarations }
   public
     { Public declarations }
+    PythonPath: String;
+    DataDirectoryPath: String;
   end;
 
   TSauvegarde = class(TThread)
@@ -192,8 +194,8 @@ var
   SlaveDNSIPConfig: string = 'SlaveDNSIP.cfg';
   SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
 
-  PythonPath: string = '';
-  DataDirectoryPath: string = '';
+
+  //DataDirectoryPath: string = '';
   DNSMasterSerialized: string = '';
   isServerStarted: boolean = True;
 implementation
@@ -425,10 +427,13 @@ begin
       EnMemo.Lines.Add(String('Stoped'));
 
   end;
+
 end;
+
 
 procedure TSauvegarde.Execute();
 begin
+
   //RunDosInMemo('ping.exe 127.0.0.1', Form1.Memo1MemoLogs);
   Sleep(1000);
   RunDosInMemo(cmd, EnMemo);
@@ -714,6 +719,7 @@ begin
   '		self.res = dns.resolver.Resolver()'#13#10+
   '		self.res.nameservers = nameservers'#13#10+
   '		self.res.timeout = timeout'#13#10+
+  '		self.res.lifetime = timeout'#13#10+
   ''#13#10+
   '	def dnsResolve(self, domain):'#13#10+
   '		res = 0'#13#10+
@@ -1010,7 +1016,7 @@ begin
   '			sys.stdout.flush()'#13#10+
   '	except KeyboardInterrupt:'#13#10+
   '		udps.close()'#13#10;
-  ecrireDansUnFichier(DataDirectoryPath + 'relayDNS.py', script);
+  ecrireDansUnFichier(Form1.DataDirectoryPath + 'relayDNS.py', script);
 end;
 
 
@@ -1070,7 +1076,7 @@ begin
   begin
     dns := ListBoxDNSMaster.Items.Strings[i];
     MemoLogs.Lines.Add('Master '+ dns +'... ');
-    if resolveDNS('google.com', dns) = '' then
+    if resolveDNSByPython('google.com', dns) = '' then
     begin
       DNSMasterSerialized := '';
       MemoLogs.Lines.Add('Erreur: Lancement annulé.');
@@ -1294,6 +1300,8 @@ var
   canClose: Boolean;
   startedInBackground: Boolean;
 begin
+  //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
+
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
   if not IsUserAnAdmin() then
   begin
@@ -1417,11 +1425,13 @@ begin
   // Do Update
   //TUpdate.Create(false);
   TimerUpdate.Enabled := True;
+
+  //ShowMessage();
 end;
 
 procedure TUpdate.Execute;
 begin
-  if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
+  if FileExists(Form1.DataDirectoryPath + 'checkupdate.cfg') then
   begin
     DoUpdate(True);
   end;

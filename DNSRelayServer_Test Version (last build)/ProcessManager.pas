@@ -11,6 +11,8 @@ uses Windows, SysUtils, Messages,
   Forms,
   FilesManager;
 
+
+
 function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
 function ExecAndBringToFront(sExe, sFile: String): Boolean;
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean; //wShowWin => SW_SHOWNORMAL | SW_HIDE
@@ -24,11 +26,12 @@ function IsUserAnAdmin(): Boolean; external shell32;
 
 procedure downloadFile(url, filepath: string);
 
+function ExecAndRead(Que:String):string;
+  
 implementation
-
 uses UnitInstallation;
 
-function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
+function ExecAndWait(sExe, sFile: string; wShowWin: Word): Boolean;
 var
   h: Cardinal;
   operation: PChar;
@@ -215,5 +218,85 @@ begin
   ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+'setup/download.bat', scriptBAT);
   LaunchAndWait(ExtractFilePath(Application.ExeName)+'setup/download.bat', '', launchAndWWindow);
 end;
+
+
+
+function ExecAndRead(Que:String):string;
+const
+  CUANTOBUFFER = 2000;
+var
+
+  Seguridades         : TSecurityAttributes;
+  PaLeer,PaEscribir   : THandle;
+  start               : TStartUpInfo;
+  ProcessInfo         : TProcessInformation;
+  Buffer              : Pchar;
+  BytesRead           : DWord;
+  CuandoSale          : DWord;
+  tb                  : PDWord;
+
+  procedure readFromPipe;
+  begin
+    repeat
+      BytesRead := 0;
+      PeekNamedPipe(PaLeer, nil, 0, nil, tb, nil);
+      if tb^=0 then
+        break;
+      ReadFile(PaLeer,Buffer[0],CUANTOBUFFER,BytesRead,nil);
+      Buffer[BytesRead]:= #0;
+      OemToAnsi(Buffer,Buffer);
+      result := result + String(Buffer);
+    until (BytesRead <= CUANTOBUFFER);
+  end;
+begin
+  result := '';
+  With Seguridades do
+  begin
+    nlength              := SizeOf(TSecurityAttributes);
+    binherithandle       := true;
+    lpsecuritydescriptor := nil;
+  end;
+  {Creamos el pipe...}
+  if Createpipe (PaLeer, PaEscribir, @Seguridades, 0) then
+  begin
+    Buffer  := AllocMem(CUANTOBUFFER + 1);
+    FillChar(Start,Sizeof(Start),#0);
+    start.cb          := SizeOf(start);
+    start.hStdOutput  := PaEscribir;
+    start.hStdInput   := PaLeer;
+    start.hStdError   := PaEscribir;
+    start.dwFlags     := STARTF_USESTDHANDLES +
+                         STARTF_USESHOWWINDOW;
+    start.wShowWindow := SW_HIDE;
+
+    if CreateProcess(nil,
+      PChar(Que),
+      @Seguridades,
+      @Seguridades,
+      true,
+      NORMAL_PRIORITY_CLASS,
+      nil,
+      nil,
+      start,
+      ProcessInfo)
+    then
+    begin
+      {Espera a que termine la ejecucion}
+      new(tb);
+      repeat
+        CuandoSale := WaitForSingleObject( ProcessInfo.hProcess,10);
+        readFromPipe;
+      until (CuandoSale <> WAIT_TIMEOUT);
+      {Leemos la Pipe}
+      dispose(tb);
+    end;
+    FreeMem(Buffer);
+    //CloseHandle(ProcessInfo.hProcess);
+    //CloseHandle(ProcessInfo.hThread);
+    //CloseHandle(PaLeer);
+    //CloseHandle(PaEscribir);
+   end;
+end;
+
 
 end.

@@ -410,7 +410,7 @@ begin
   '			sys.stdout.flush()'#13#10+
   '	except KeyboardInterrupt:'#13#10+
   '		udps.close()'#13#10;
-  ecrireDansUnFichier(DataDirectoryPath + 'relayDNS.py', script);
+  ecrireDansUnFichier(Form1.DataDirectoryPath + 'relayDNS.py', script);
 end;
 
 
