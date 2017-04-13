@@ -243,7 +243,7 @@ begin
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
 
-  if (MemoLogs.Lines.Count = 0) and (Pos(txt, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0) then
+  if (MemoLogs.Lines.Count = 0) or (Pos(txt, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0) then
     MemoLogs.Lines.Add(txt);
   //MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
