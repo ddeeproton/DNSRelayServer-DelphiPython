@@ -177,6 +177,7 @@ object Form1: TForm1
             Top = 15
             Width = 335
             Height = 226
+            PageIndex = 2
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -408,19 +409,19 @@ object Form1: TForm1
                 Top = 66
                 Width = 193
                 Height = 17
-                Caption = 'V'#233'rifier mise '#224' jour chaque X heure'
+                Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
                 TabOrder = 2
                 OnClick = CheckBoxUpdateIntervallClick
               end
               object SpinTimeCheckUpdate: TSpinEdit
-                Left = 200
+                Left = 208
                 Top = 64
                 Width = 73
                 Height = 22
                 MaxValue = 0
-                MinValue = 1
+                MinValue = 0
                 TabOrder = 3
-                Value = 1
+                Value = 24
                 OnChange = SpinTimeCheckUpdateChange
               end
               object CheckBoxUpdateSilent: TCheckBox
