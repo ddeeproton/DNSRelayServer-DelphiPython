@@ -16,14 +16,14 @@ uses
   // For Application
   Forms,
   // For AnsiReplaceStr
-  StrUtils,
+  StrUtils;
   // Pour la function DNS Resolve
-  IdDNSResolver, IdStack,
-  IdException;
+  //IdDNSResolver, IdStack,
+  //IdException;
 
   procedure setDNS(Servers: string);
   procedure setDNSList(Servers: TStrings);
-  function resolveDNS(ADomain, AHost : string): string;
+  //function resolveDNS(ADomain, AHost : string): string;
   function resolveDNSByPython(domain, dns:String):string;
   procedure setIPToDHCP();
 
@@ -165,7 +165,7 @@ begin
   result := ExecAndRead('"'+Form1.PythonPath+'python.exe" "'+Form1.DataDirectoryPath + 'checkDNS.py" server "'+dns+'" domain "'+domain+'"');
 end;
 
-
+{
 function resolveDNS(ADomain, AHost: string): string;
 var
   i,x : integer;
@@ -200,7 +200,7 @@ begin
     on E: EIdDnsResolverError do exit;
   end;
 end;
-
+}
 procedure setIPToDHCP();
 var
   scriptVBS, scriptBAT, dirPath: string;

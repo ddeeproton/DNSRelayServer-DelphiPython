@@ -21,9 +21,9 @@ uses
   // Pour AnsiReplaceStr
   StrUtils,
   // Pour LaunchAndWait
-  ProcessManager, Spin, Buttons;
+  ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.12';
+var CurrentApplicationVersion: string = '0.4.14';
 
 type
   TForm1 = class(TForm)
@@ -49,23 +49,7 @@ type
     Panel1: TPanel;
     Notebook1: TNotebook;
     GroupBox2: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    EditFilehost: TEdit;
-    CheckBoxStartWithWindows: TCheckBox;
-    ButtonSelectFilehost: TButton;
     GroupBox1: TGroupBox;
-    ToolBar1: TToolBar;
-    ToolButton1: TToolButton;
-    ToolButtonUpdateDNSMaster: TToolButton;
-    ToolButton2: TToolButton;
-    ToolButtonDownDNSMaster: TToolButton;
-    ToolButtonUpDNSMaster: TToolButton;
-    ListBoxDNSMaster: TListBox;
     GroupBox3: TGroupBox;
     ListBoxIpClients: TListBox;
     GroupBox4: TGroupBox;
@@ -76,9 +60,7 @@ type
     ListView1: TListView;
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
-    CBoxDNSServerSlaveIP: TComboBox;
     Timer1: TTimer;
-    SpinPort: TSpinEdit;
     ToolButton8: TToolButton;
     GroupBox6: TGroupBox;
     Memo1: TMemo;
@@ -87,11 +69,36 @@ type
     StopDNS1: TMenuItem;
     ImageList4: TImageList;
     ToolButton11: TToolButton;
+    TimerUpdate: TTimer;
+    TimerAfterFormCreate: TTimer;
+    Mettrejour1: TMenuItem;
+    N3: TMenuItem;
+    TimerCheckUpdate: TTimer;
+    TabbedNotebook1: TTabbedNotebook;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label4: TLabel;
+    Label3: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    CBoxDNSServerSlaveIP: TComboBox;
+    ButtonRefreshNetCard: TBitBtn;
+    SpinPort: TSpinEdit;
+    EditFilehost: TEdit;
+    ButtonSelectFilehost: TButton;
+    CheckBoxStartWithWindows: TCheckBox;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButtonUpdateDNSMaster: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButtonDownDNSMaster: TToolButton;
+    ToolButtonUpDNSMaster: TToolButton;
+    ListBoxDNSMaster: TListBox;
     CheckBoxUpdate: TCheckBox;
     ButtonUpdate: TButton;
-    TimerUpdate: TTimer;
-    ButtonRefreshNetCard: TBitBtn;
-    TimerAfterFormCreate: TTimer;
+    CheckBoxUpdateIntervall: TCheckBox;
+    SpinTimeCheckUpdate: TSpinEdit;
+    CheckBoxUpdateSilent: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -149,6 +156,9 @@ type
     procedure TimerUpdateTimer(Sender: TObject);
     procedure ButtonRefreshNetCardClick(Sender: TObject);
     procedure TimerAfterFormCreateTimer(Sender: TObject);
+    procedure CheckBoxUpdateIntervallClick(Sender: TObject);
+    procedure CheckBoxUpdateSilentClick(Sender: TObject);
+    procedure SpinTimeCheckUpdateChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -193,7 +203,7 @@ var
   FilehostPathConfig: string = 'FileHostPath.cfg';
   SlaveDNSIPConfig: string = 'SlaveDNSIP.cfg';
   SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
-
+  TimeCheckUpdateFile: string = 'TimeCheckUpdate.cfg';
 
   //DataDirectoryPath: string = '';
   DNSMasterSerialized: string = '';
@@ -233,7 +243,7 @@ begin
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
 
-  if Pos(txt, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0 then
+  if (MemoLogs.Lines.Count = 0) and (Pos(txt, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0) then
     MemoLogs.Lines.Add(txt);
   //MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
@@ -280,7 +290,7 @@ begin
   else begin
     if Pos('Error: Port  53  already used', txt) > 0 then
     begin
-      if MessageDlg('Le port 53 est déjà utilisé. Désirez-vous forcer la fermerture des processus python et essayer à nouveau?'#13#13'(si ce message persiste, soit le port 53 est utilisé par un autre processus, soit vous avez indiqué une mauvaise adresse IP.',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+      if MessageDlg(PChar('Le port 53 est déjà utilisé. Désirez-vous forcer la fermerture des processus python et essayer à nouveau?'#13#13'(si ce message persiste, soit le port 53 est utilisé par un autre processus, soit vous avez indiqué une mauvaise adresse IP.'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
       begin
         Form1.MemoLogs.Lines.Add('Close all python.exe process');
         Form1.KillTask('python.exe');
@@ -1218,7 +1228,7 @@ begin
   end;
   txt := ListBoxDNSMaster.Items.Strings[i];
   MessageBeep(MB_OK);
-  if MessageDlg('Effacer "' + txt + '"?',mtConfirmation, mbOKCancel, 0)  = mrOK then
+  if MessageDlg(Pchar('Effacer "' + txt + '"?'),mtConfirmation, mbOKCancel, 0)  = mrOK then
   begin
     ListBoxDNSMaster.DeleteSelected;
     ListBoxDNSMaster.ItemIndex := 1 - 1;
@@ -1353,6 +1363,7 @@ begin
   GroupBox5.Align := alClient;
   GroupBox6.Align := alClient;
   Notebook1.Align := alClient;
+  TabbedNotebook1.Align := alClient;
 
   Notebook1.PageIndex := 5;
   //ToolButton7.Click;
@@ -1374,6 +1385,17 @@ begin
 
   if FileExists(FilehostPathConfig) then
     EditFilehost.Text := lireFichier(FilehostPathConfig);
+
+  if FileExists(SlaveDNSIPConfig) then
+    CBoxDNSServerSlaveIP.Text := lireFichier(SlaveDNSIPConfig);
+
+  if FileExists(SlaveDNSPortConfig) then
+    SpinPort.Value := StrToInt(lireFichier(SlaveDNSPortConfig));
+
+  if FileExists(TimeCheckUpdateFile) then
+    SpinTimeCheckUpdate.Value := StrToInt(lireFichier(TimeCheckUpdateFile));
+
+
 
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 
@@ -1413,15 +1435,13 @@ begin
     end;
   end;
 
-  if not startedInBackground then
-  begin
-    TimerAfterFormCreate.Enabled := True;
-  end;
 
-  if FileExists(DataDirectoryPath + 'checkupdate.cfg') then
-  begin
-    Form1.CheckBoxUpdate.Checked := true;
-  end;
+  TimerAfterFormCreate.Enabled := not startedInBackground;
+  Form1.CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
+  Form1.CheckBoxUpdateIntervall.Checked := FileExists(DataDirectoryPath + 'checkupdateIntervall.cfg');
+  Form1.CheckBoxUpdateSilent.Checked := FileExists(DataDirectoryPath + 'checkupdateSilent.cfg');
+  Form1.TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
+  Form1.TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   // Do Update
   //TUpdate.Create(false);
   TimerUpdate.Enabled := True;
@@ -1699,7 +1719,7 @@ end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);
 begin
-  Notebook1.PageIndex := 1;
+  //Notebook1.PageIndex := 1;
 end;
 
 procedure TForm1.ToolButton4Click(Sender: TObject);
@@ -1784,9 +1804,9 @@ end;
 
 procedure TForm1.ToolButton9Click(Sender: TObject);
 begin
-  if MessageDlg('Ce bouton est un bouton d''aide. Vous allez voir quelques messages qui vont vous expliquer les boutons qui se trouvent à côté de celui que vous venez de cliquer. Voulez-vous continuer?',  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
-    ShowMessage('Cliquez sur le premier bouton pour effacer les domaines inconnus (boule noire) et ne garder que ceux qui sont connus.');
-    ShowMessage('Cliquez sur le deuxième bouton pour éditer manuellement le fichier host'#13#13
+  if MessageDlg(PChar('Ce bouton est un bouton d''aide. Vous allez voir quelques messages qui vont vous expliquer les boutons qui se trouvent à côté de celui que vous venez de cliquer. Voulez-vous continuer?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+    ShowMessage(PChar('Cliquez sur le premier bouton pour effacer les domaines inconnus (boule noire) et ne garder que ceux qui sont connus.'));
+    ShowMessage(PChar('Cliquez sur le deuxième bouton pour éditer manuellement le fichier host'#13#13
     +'Edition du fichier host'#13#13
     +'Exemple:'#13
     +'127.0.0.1  localhost'#13#13
@@ -1794,8 +1814,8 @@ begin
     +'Un ligne par domaine et ip.'#13
     +'D''abord l''ip ensuite le domaine.'#13
     +'L''ip et le domaine doivent être séparé par une tabulation (touche TAB).'#13#13
-    +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.');
-    ShowMessage('Cliquer bouton droit sur une IP de la liste (colone gauche) pour afficher le menu.');
+    +'Une fois les changements terminés, redémarrez le serveur (avec le bouton Start) pour appliquer les modifications.'));
+    ShowMessage(PChar('Cliquer bouton droit sur une IP de la liste (colone gauche) pour afficher le menu.'));
 end;
 
 procedure TForm1.EditFilehostChange(Sender: TObject);
@@ -1810,11 +1830,12 @@ begin
   ecrireDansUnFichier(FilehostPathConfig, EditFilehost.Text);
   ecrireDansUnFichier(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
   ecrireDansUnFichier(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
+  ecrireDansUnFichier(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
 end;
 
 procedure TForm1.ToolButton10Click(Sender: TObject);
 begin
-  if MessageDlg('Effacer les domaines inconnus (ceux avec une boule noir) ?',  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+  if MessageDlg(PChar('Effacer les domaines inconnus (ceux avec une boule noir) ?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   ListView1.OnChange := nil;
   ListView1.Clear;
   getDomains(EditFilehost.Text, ListView1);
@@ -1978,7 +1999,7 @@ end;
 
 procedure TUpdate.DoUpdate(isSilent: Boolean);
 var
-  lastversion, lastverFile, url, wget: string;
+  lastversion, lastverFile, url, wget, msg: string;
   canClose: Boolean;
 begin
  {
@@ -1998,6 +2019,14 @@ begin
   url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt';
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
   if FileExists(lastverFile) then DeleteFile(lastverFile);
+  if FileExists(lastverFile) then
+  begin
+    if isSilent then
+      //Form1.MemoLogs.Lines.Add('Error Update: Problème de connexion au serveur de mise à jour.')
+    else
+      ShowMessage('Error Update: Impossible d''effacer le fichier temporaire suivant:'+#13#13+lastverFile);
+    exit;
+  end;
   downloadFile(url, lastverFile);
 
   if not FileExists(lastverFile) then
@@ -2026,16 +2055,20 @@ begin
 
       exit;
     end;
-    if MessageDlg('Mise à jour version "'+lastversion+'" disponible :)'+#13+'Mettre à jour?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    msg := 'Mise à jour version "'+lastversion+'" disponible :)'+#13+'Mettre à jour?';
+    if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar(msg),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
     begin
       url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup installation/DNSRelayServerSetup_'+lastversion+'.exe';
       lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'DNSRelayServerSetup_'+lastversion+'.exe';
       downloadFile(url, lastverFile);
       if FileExists(lastverFile) and (FileSize(lastverFile) > 0) then
       begin
-        if MessageDlg('La mise à jour est prête à être installé. Le serveur va s''arrêter et lancer le setup d''installation. Continuer?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+        if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar('La mise à jour est prête à être installé. Le serveur va s''arrêter et lancer le setup d''installation. Continuer?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
         begin
-          ExecAndWait(lastverFile, '', SW_SHOWNORMAL);
+          if Form1.CheckBoxUpdateSilent.Checked then
+            ExecAndWait(lastverFile, '/S', SW_HIDE)
+          else
+            ExecAndWait(lastverFile, '', SW_SHOWNORMAL);
 
           canClose := True;
           Form1.FormCloseQuery(nil, canClose);
@@ -2112,6 +2145,33 @@ begin
     SetFocus;
     FlashWindow(Application.Handle, true);
     ShowWindow(Application.Handle, SW_SHOW);
+end;
+
+procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
+  else DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
+
+  TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
+  TimerCheckUpdate.Enabled := TCheckBox(Sender).Checked;
+
+end;
+
+procedure TForm1.CheckBoxUpdateSilentClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkupdateSilent.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkupdateSilent.cfg');
+end;
+
+procedure TForm1.SpinTimeCheckUpdateChange(Sender: TObject);
+begin
+  TimerCheckUpdate.Enabled := False;
+  TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
+  TimerCheckUpdate.Enabled := True;
+  EditFilehostChange(nil);
 end;
 
 end.
