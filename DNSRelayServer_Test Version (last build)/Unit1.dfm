@@ -179,7 +179,6 @@ object Form1: TForm1
             Top = 15
             Width = 335
             Height = 226
-            PageIndex = 2
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -336,30 +335,35 @@ object Form1: TForm1
                   Top = 2
                   Caption = 'ToolButtonAddDNSMaster'
                   ImageIndex = 0
+                  OnClick = ToolButton1Click
                 end
                 object ToolButtonUpdateDNSMaster: TToolButton
                   Left = 23
                   Top = 2
                   Caption = 'ToolButtonUpdateDNSMaster'
                   ImageIndex = 19
+                  OnClick = ToolButtonUpdateDNSMasterClick
                 end
                 object ToolButton2: TToolButton
                   Left = 46
                   Top = 2
                   Caption = 'ToolButtonEraseDNSMaster'
                   ImageIndex = 1
+                  OnClick = ToolButton2Click
                 end
                 object ToolButtonDownDNSMaster: TToolButton
                   Left = 69
                   Top = 2
                   Caption = 'ToolButtonDownDNSMaster'
                   ImageIndex = 2
+                  OnClick = ToolButtonDownDNSMasterClick
                 end
                 object ToolButtonUpDNSMaster: TToolButton
                   Left = 92
                   Top = 2
                   Caption = 'ToolButtonDownDNSMaster'
                   ImageIndex = 3
+                  OnClick = ToolButtonUpDNSMasterClick
                 end
               end
               object ListBoxDNSMaster: TListBox
