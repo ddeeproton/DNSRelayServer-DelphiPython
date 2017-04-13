@@ -102,9 +102,7 @@ object Form1: TForm1
       Left = 61
       Top = 2
       Caption = 'Masquer'
-      Grouped = True
       ImageIndex = 2
-      Style = tbsCheck
       OnClick = Masquer1Click
     end
     object ToolButton8: TToolButton
@@ -422,7 +420,7 @@ object Form1: TForm1
                 MaxValue = 0
                 MinValue = 1
                 TabOrder = 3
-                Value = 0
+                Value = 1
                 OnChange = SpinTimeCheckUpdateChange
               end
               object CheckBoxUpdateSilent: TCheckBox
@@ -1456,7 +1454,7 @@ object Form1: TForm1
     Left = 388
     Top = 296
     Bitmap = {
-      494C010109000E00040028002800FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010109000E00040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000A000000001002000000000000090
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4760,7 +4758,8 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
