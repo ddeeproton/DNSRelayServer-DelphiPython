@@ -2029,7 +2029,7 @@ begin
    }
   //if isSilent then Form1.MemoLogs.Lines.Add('Recherche de Mise à jour...');
 
-  url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt';
+  url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt?'+DateTimeToStr(Now);
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
   if FileExists(lastverFile) then DeleteFile(lastverFile);
   if FileExists(lastverFile) then
