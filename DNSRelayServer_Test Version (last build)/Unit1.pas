@@ -1391,8 +1391,14 @@ begin
 
   if not DirectoryExists(DataDirectoryPath) then makeDir(DataDirectoryPath);
   if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
-  MasterDNSFile := DataDirectoryPath+MasterDNSFile;
-  SlaveDNSProcesslist := DataDirectoryPath+SlaveDNSProcesslist;
+
+  MasterDNSFile := DataDirectoryPath + MasterDNSFile;
+  SlaveDNSProcesslist := DataDirectoryPath + SlaveDNSProcesslist;
+  FilehostPathConfig :=  DataDirectoryPath + FilehostPathConfig;
+  SlaveDNSIPConfig :=  DataDirectoryPath + SlaveDNSIPConfig;
+  SlaveDNSPortConfig :=  DataDirectoryPath + SlaveDNSPortConfig;
+  TimeCheckUpdateFile :=  DataDirectoryPath + TimeCheckUpdateFile;
+
   PythonPath := getPythonPath();
   if FileExists(MasterDNSFile) then
     ListBoxDNSMaster.Items.LoadFromFile(MasterDNSFile);
