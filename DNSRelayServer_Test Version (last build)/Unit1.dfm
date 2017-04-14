@@ -177,7 +177,6 @@ object Form1: TForm1
             Top = 15
             Width = 335
             Height = 226
-            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -232,6 +231,14 @@ object Form1: TForm1
                 Width = 80
                 Height = 13
                 Caption = 'Exemple: host.txt'
+                Color = clBtnFace
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentColor = False
+                ParentFont = False
               end
               object CBoxDNSServerSlaveIP: TComboBox
                 Left = 8
@@ -4839,8 +4846,8 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 418
-    Top = 231
+    Left = 386
+    Top = 167
   end
   object ImageList3: TImageList
     Left = 420
@@ -5257,8 +5264,8 @@ object Form1: TForm1
     Top = 105
   end
   object PopupMenuListView: TPopupMenu
-    Left = 388
-    Top = 201
+    Left = 420
+    Top = 233
     object Autoriser1: TMenuItem
       Caption = 'Autoriser'
       OnClick = Autoriser1Click
@@ -8222,18 +8229,18 @@ object Form1: TForm1
       FFFFFFFFFFFFF800000000000000000000000000000000000000000000000000
       000000000000}
   end
-  object TimerUpdate: TTimer
+  object TimerUpdateOnLoad: TTimer
     Enabled = False
     Interval = 5000
-    OnTimer = TimerUpdateTimer
-    Left = 388
-    Top = 137
+    OnTimer = TimerUpdateOnLoadTimer
+    Left = 416
+    Top = 105
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
     OnTimer = TimerAfterFormCreateTimer
-    Left = 388
-    Top = 168
+    Left = 387
+    Top = 136
   end
   object TimerCheckUpdate: TTimer
     Enabled = False

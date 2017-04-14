@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.17';
+var CurrentApplicationVersion: string = '0.4.18';
 
 type
   TForm1 = class(TForm)
@@ -69,7 +69,7 @@ type
     StopDNS1: TMenuItem;
     ImageList4: TImageList;
     ToolButton11: TToolButton;
-    TimerUpdate: TTimer;
+    TimerUpdateOnLoad: TTimer;
     TimerAfterFormCreate: TTimer;
     Mettrejour1: TMenuItem;
     N3: TMenuItem;
@@ -160,7 +160,7 @@ type
     procedure ButtonUpdateClick(Sender: TObject);
     procedure CheckBoxUpdateClick(Sender: TObject);
     procedure setDNSOnBoot(enabled: Boolean);
-    procedure TimerUpdateTimer(Sender: TObject);
+    procedure TimerUpdateOnLoadTimer(Sender: TObject);
     procedure ButtonRefreshNetCardClick(Sender: TObject);
     procedure TimerAfterFormCreateTimer(Sender: TObject);
     procedure CheckBoxUpdateIntervallClick(Sender: TObject);
@@ -1369,6 +1369,8 @@ begin
   ToolBar3.DoubleBuffered := True;
   ListView1.DoubleBuffered := True;
   MemoLogs.DoubleBuffered := True;
+  TabbedNotebook1.DoubleBuffered := True;
+  
   Panel1.Align := alClient;
   GroupBox1.Align := alClient;
   GroupBox2.Align := alClient;
@@ -1468,7 +1470,7 @@ begin
 
   // Do Update
   //TUpdate.Create(false);
-  TimerUpdate.Enabled := True;
+  TimerUpdateOnLoad.Enabled := True;
 
   //ShowMessage();
 end;
@@ -2120,7 +2122,7 @@ begin
   setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 end;
 
-procedure TForm1.TimerUpdateTimer(Sender: TObject);
+procedure TForm1.TimerUpdateOnLoadTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
 
@@ -2236,7 +2238,19 @@ end;
 
 procedure TForm1.TimerCheckUpdateTimer(Sender: TObject);
 begin
-  ButtonUpdateClick(ButtonUpdate);
+  if FormInstall = nil then
+  begin
+    FormInstall := TFormInstall.Create(Form1);
+  end;
+  FormInstall.CheckInstallation;
+  if not FormInstall.isWgetInstalled
+  then begin
+    FormInstall.ButtonInstallClick(Self);
+    exit;
+  end;
+
+  if ThreadUpdate = nil then ThreadUpdate := TUpdate.Create(True);
+  ThreadUpdate.DoUpdate(True);
 end;
 
 end.
