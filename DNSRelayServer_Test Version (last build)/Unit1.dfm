@@ -1,12 +1,12 @@
 object Form1: TForm1
-  Left = 189
-  Top = 119
-  Width = 476
+  Left = 270
+  Top = 127
+  Width = 426
   Height = 366
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 355
-  Constraints.MinWidth = 465
+  Constraints.MinWidth = 370
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -67,11 +67,11 @@ object Form1: TForm1
   object ToolBar3: TToolBar
     Left = 0
     Top = 0
-    Width = 460
-    Height = 69
+    Width = 410
+    Height = 70
     BorderWidth = 2
     ButtonHeight = 60
-    ButtonWidth = 61
+    ButtonWidth = 55
     Caption = 'ToolBar3'
     Color = clWhite
     EdgeInner = esNone
@@ -92,21 +92,14 @@ object Form1: TForm1
       Left = 0
       Top = 2
       Hint = 'Click pour d'#233'marrer'
-      Caption = 'DNS Arr'#234't'#233
+      Caption = 'D'#233'marrer'
       ImageIndex = 7
       ParentShowHint = False
       ShowHint = True
       OnClick = ToolButton11Click
     end
-    object ToolButton5: TToolButton
-      Left = 61
-      Top = 2
-      Caption = 'Masquer'
-      ImageIndex = 2
-      OnClick = Masquer1Click
-    end
     object ToolButton8: TToolButton
-      Left = 122
+      Left = 55
       Top = 2
       Caption = 'Config'
       Grouped = True
@@ -115,7 +108,7 @@ object Form1: TForm1
       OnClick = ToolButton8Click
     end
     object ToolButton4: TToolButton
-      Left = 183
+      Left = 110
       Top = 2
       Caption = 'Clients'
       Grouped = True
@@ -124,7 +117,7 @@ object Form1: TForm1
       OnClick = ToolButton4Click
     end
     object ToolButton6: TToolButton
-      Left = 244
+      Left = 165
       Top = 2
       Hint = 'Web Filter'
       Caption = 'Web Filter'
@@ -136,7 +129,7 @@ object Form1: TForm1
       OnClick = ToolButton6Click
     end
     object ToolButton3: TToolButton
-      Left = 305
+      Left = 220
       Top = 2
       Caption = 'Logs'
       Grouped = True
@@ -144,17 +137,24 @@ object Form1: TForm1
       Style = tbsCheck
       OnClick = ToolButton3Click
     end
+    object ToolButton5: TToolButton
+      Left = 275
+      Top = 2
+      Caption = 'Masquer'
+      ImageIndex = 2
+      OnClick = Masquer1Click
+    end
   end
   object Panel1: TPanel
     Left = 0
     Top = 65
-    Width = 385
+    Width = 345
     Height = 264
     TabOrder = 1
     object Notebook1: TNotebook
       Left = 1
       Top = 1
-      Width = 384
+      Width = 336
       Height = 256
       TabOrder = 0
       object TPage
@@ -162,21 +162,22 @@ object Form1: TForm1
         Top = 0
         Caption = 'Default'
         DesignSize = (
-          384
+          336
           256)
         object GroupBox2: TGroupBox
           Left = 8
           Top = 0
-          Width = 368
+          Width = 321
           Height = 249
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Config'
           TabOrder = 0
           object TabbedNotebook1: TTabbedNotebook
-            Left = 18
+            Left = 2
             Top = 15
-            Width = 335
+            Width = 311
             Height = 226
+            PageIndex = 2
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -188,7 +189,7 @@ object Form1: TForm1
               Top = 24
               Caption = 'Serveur DNS'
               DesignSize = (
-                327
+                303
                 198)
               object Label1: TLabel
                 Left = 8
@@ -300,13 +301,13 @@ object Form1: TForm1
               object EditFilehost: TEdit
                 Left = 8
                 Top = 88
-                Width = 196
+                Width = 172
                 Height = 21
                 Anchors = [akLeft, akTop, akRight]
                 TabOrder = 3
               end
               object ButtonSelectFilehost: TButton
-                Left = 211
+                Left = 187
                 Top = 85
                 Width = 35
                 Height = 25
@@ -330,7 +331,7 @@ object Form1: TForm1
               object ToolBar1: TToolBar
                 Left = 0
                 Top = 0
-                Width = 327
+                Width = 303
                 Height = 29
                 Caption = 'ToolBar1'
                 EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
@@ -375,7 +376,7 @@ object Form1: TForm1
               object ListBoxDNSMaster: TListBox
                 Left = 0
                 Top = 29
-                Width = 327
+                Width = 303
                 Height = 169
                 Align = alClient
                 ItemHeight = 13
@@ -390,7 +391,7 @@ object Form1: TForm1
               Top = 24
               Caption = 'Mise '#224' jour'
               DesignSize = (
-                327
+                303
                 198)
               object CheckBoxUpdate: TCheckBox
                 Left = 8
@@ -402,8 +403,8 @@ object Form1: TForm1
                 OnClick = CheckBoxUpdateClick
               end
               object ButtonUpdate: TButton
-                Left = 264
-                Top = 20
+                Left = 232
+                Top = 140
                 Width = 57
                 Height = 25
                 Anchors = [akTop, akRight]
@@ -445,29 +446,18 @@ object Form1: TForm1
               Left = 4
               Top = 24
               Caption = 'Carte R'#233'seau'
-              object CheckBoxAllowModifyNetCard: TCheckBox
-                Left = 8
-                Top = 10
-                Width = 313
-                Height = 17
-                Caption = 'Modifier la carte r'#233'seau au lancement et '#224' la fermeture'
-                Checked = True
-                State = cbChecked
-                TabOrder = 0
-                OnClick = CheckBoxAllowModifyNetCardClick
-              end
               object GroupBox7: TGroupBox
                 Left = 0
-                Top = 32
-                Width = 327
+                Top = 33
+                Width = 303
                 Height = 90
-                Align = alBottom
+                Align = alTop
                 Caption = 'Installation'
-                TabOrder = 1
+                TabOrder = 0
                 object Label7: TLabel
                   Left = 2
                   Top = 15
-                  Width = 323
+                  Width = 299
                   Height = 39
                   Align = alTop
                   Caption = 
@@ -488,16 +478,16 @@ object Form1: TForm1
               end
               object GroupBox8: TGroupBox
                 Left = 0
-                Top = 122
-                Width = 327
+                Top = 123
+                Width = 303
                 Height = 76
-                Align = alBottom
+                Align = alTop
                 Caption = 'D'#233'sinstallation'
-                TabOrder = 2
+                TabOrder = 1
                 object Label8: TLabel
                   Left = 2
                   Top = 15
-                  Width = 323
+                  Width = 299
                   Height = 26
                   Align = alTop
                   Caption = 
@@ -515,6 +505,26 @@ object Form1: TForm1
                   OnClick = ButtonNetCardDesintegrationClick
                 end
               end
+              object Panel2: TPanel
+                Left = 0
+                Top = 0
+                Width = 303
+                Height = 33
+                Align = alTop
+                BevelOuter = bvNone
+                TabOrder = 2
+                object CheckBoxAllowModifyNetCard: TCheckBox
+                  Left = 8
+                  Top = 10
+                  Width = 313
+                  Height = 17
+                  Caption = 'Modifier la carte r'#233'seau au lancement et '#224' la fermeture'
+                  Checked = True
+                  State = cbChecked
+                  TabOrder = 0
+                  OnClick = CheckBoxAllowModifyNetCardClick
+                end
+              end
             end
           end
         end
@@ -524,12 +534,12 @@ object Form1: TForm1
         Top = 0
         Caption = 'Config DNS Master'
         DesignSize = (
-          384
+          336
           256)
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
-          Width = 368
+          Width = 320
           Height = 256
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Master'
@@ -541,12 +551,12 @@ object Form1: TForm1
         Top = 0
         Caption = 'IP Clients'
         DesignSize = (
-          384
+          336
           256)
         object GroupBox3: TGroupBox
           Left = 8
           Top = 0
-          Width = 368
+          Width = 320
           Height = 256
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Clients'
@@ -554,7 +564,7 @@ object Form1: TForm1
           object ListBoxIpClients: TListBox
             Left = 2
             Top = 15
-            Width = 364
+            Width = 316
             Height = 239
             Align = alClient
             ItemHeight = 13
@@ -567,12 +577,12 @@ object Form1: TForm1
         Top = 0
         Caption = 'DNS Domains'
         DesignSize = (
-          384
+          336
           256)
         object GroupBox4: TGroupBox
           Left = 8
           Top = 0
-          Width = 368
+          Width = 320
           Height = 256
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Web Filter'
@@ -580,7 +590,7 @@ object Form1: TForm1
           object ToolBar2: TToolBar
             Left = 2
             Top = 15
-            Width = 364
+            Width = 316
             Height = 26
             Caption = 'ToolBar1'
             EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
@@ -614,7 +624,7 @@ object Form1: TForm1
           object ListView1: TListView
             Left = 2
             Top = 41
-            Width = 364
+            Width = 316
             Height = 213
             Align = alClient
             Columns = <>
@@ -631,12 +641,12 @@ object Form1: TForm1
         Top = 0
         Caption = 'Logs'
         DesignSize = (
-          384
+          336
           256)
         object GroupBox5: TGroupBox
           Left = 8
           Top = 0
-          Width = 368
+          Width = 320
           Height = 256
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Logs'
@@ -644,7 +654,7 @@ object Form1: TForm1
           object MemoLogs: TMemo
             Left = 2
             Top = 15
-            Width = 364
+            Width = 316
             Height = 239
             Align = alClient
             ScrollBars = ssBoth
@@ -692,7 +702,7 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 388
+    Left = 372
     Top = 264
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -1495,7 +1505,7 @@ object Form1: TForm1
       000000000000}
   end
   object PopupMenu1: TPopupMenu
-    Left = 388
+    Left = 372
     Top = 232
     object StartDNS1: TMenuItem
       Caption = 'Start DNS'
@@ -1534,7 +1544,7 @@ object Form1: TForm1
   object ImageList2: TImageList
     Height = 40
     Width = 40
-    Left = 388
+    Left = 372
     Top = 296
     Bitmap = {
       494C010109000E00040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -4846,11 +4856,11 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 386
-    Top = 167
+    Left = 370
+    Top = 135
   end
   object ImageList3: TImageList
-    Left = 420
+    Left = 348
     Top = 297
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -5260,11 +5270,11 @@ object Form1: TForm1
     Enabled = False
     Interval = 3000
     OnTimer = TimerSaveChangeTimer
-    Left = 387
+    Left = 371
     Top = 105
   end
   object PopupMenuListView: TPopupMenu
-    Left = 420
+    Left = 348
     Top = 233
     object Autoriser1: TMenuItem
       Caption = 'Autoriser'
@@ -5283,13 +5293,13 @@ object Form1: TForm1
     Enabled = False
     Interval = 500
     OnTimer = Timer1Timer
-    Left = 387
+    Left = 371
     Top = 73
   end
   object ImageList4: TImageList
     Height = 80
     Width = 71
-    Left = 419
+    Left = 347
     Top = 264
     Bitmap = {
       494C010103000400040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -8233,20 +8243,20 @@ object Form1: TForm1
     Enabled = False
     Interval = 5000
     OnTimer = TimerUpdateOnLoadTimer
-    Left = 416
+    Left = 344
     Top = 105
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
     OnTimer = TimerAfterFormCreateTimer
-    Left = 387
+    Left = 347
     Top = 136
   end
   object TimerCheckUpdate: TTimer
     Enabled = False
     Interval = 120000
     OnTimer = TimerCheckUpdateTimer
-    Left = 416
+    Left = 344
     Top = 72
   end
 end

@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.18';
+var CurrentApplicationVersion: string = '0.4.19';
 
 type
   TForm1 = class(TForm)
@@ -99,13 +99,14 @@ type
     CheckBoxUpdateIntervall: TCheckBox;
     SpinTimeCheckUpdate: TSpinEdit;
     CheckBoxUpdateSilent: TCheckBox;
-    CheckBoxAllowModifyNetCard: TCheckBox;
     GroupBox7: TGroupBox;
     Label7: TLabel;
     ButtonNetCardIntegration: TButton;
     GroupBox8: TGroupBox;
     Label8: TLabel;
     ButtonNetCardDesintegration: TButton;
+    Panel2: TPanel;
+    CheckBoxAllowModifyNetCard: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -478,7 +479,7 @@ begin
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   //ToolButton7.ImageIndex := 7;
   ToolButton11.ImageIndex := 8;
-  ToolButton11.Caption := 'DNS Démarré';
+  ToolButton11.Caption := 'Arrêter';
   isServerStarted := True;
 
   ToolButton11.Enabled := True;
@@ -500,11 +501,11 @@ begin
   //setDNS(DNSMasterSerialized);
   //MemoLogs.Lines.Add('Set DNS '+DNSMasterSerialized);
 
-  ToolButton11.Caption := 'DNS Arrêté';
+  ToolButton11.Caption := 'Démarrer';
   isServerStarted := False;
 
   ToolButton11.Enabled := True;
-  ToolButton11.Hint := 'Click pour démarrer';
+  ToolButton11.Hint := 'Démarrer le serveur DNS';
 
   setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 end;
@@ -1324,6 +1325,7 @@ var
   canClose: Boolean;
   startedInBackground: Boolean;
 begin
+  Form1.Width := Form1.Constraints.MinWidth;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
