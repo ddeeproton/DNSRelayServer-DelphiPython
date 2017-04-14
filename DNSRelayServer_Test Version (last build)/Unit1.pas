@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.15';
+var CurrentApplicationVersion: string = '0.4.16';
 
 type
   TForm1 = class(TForm)
@@ -100,6 +100,12 @@ type
     SpinTimeCheckUpdate: TSpinEdit;
     CheckBoxUpdateSilent: TCheckBox;
     CheckBoxAllowModifyNetCard: TCheckBox;
+    GroupBox7: TGroupBox;
+    Label7: TLabel;
+    ButtonNetCardIntegration: TButton;
+    GroupBox8: TGroupBox;
+    Label8: TLabel;
+    ButtonNetCardDesintegration: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -161,6 +167,8 @@ type
     procedure CheckBoxUpdateSilentClick(Sender: TObject);
     procedure SpinTimeCheckUpdateChange(Sender: TObject);
     procedure CheckBoxAllowModifyNetCardClick(Sender: TObject);
+    procedure ButtonNetCardIntegrationClick(Sender: TObject);
+    procedure ButtonNetCardDesintegrationClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -461,9 +469,7 @@ begin
 
   if CheckBoxAllowModifyNetCard.Checked then
   begin
-    setIPToDHCP();
-    MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
-    setDNS(CBoxDNSServerSlaveIP.Text);
+    ButtonNetCardIntegrationClick(nil);
   end;
 
 
@@ -483,9 +489,7 @@ procedure TForm1.onServerDNSStop();
 begin
   if CheckBoxAllowModifyNetCard.Checked then
   begin
-    MemoLogs.Lines.Add('Go to DHCP');
-    setDNS('');
-    setIPToDHCP();
+    ButtonNetCardDesintegrationClick(nil);
   end;
   ImageList4.GetIcon(1, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
@@ -2193,6 +2197,34 @@ begin
     ecrireDansUnFichier(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
+end;
+
+procedure TForm1.ButtonNetCardIntegrationClick(Sender: TObject);
+begin
+  if Sender <> nil then
+  begin
+    ToolButton8.Down := False;
+    ToolButton3.Down := True;
+    ToolButton3Click(nil);
+  end;
+  setIPToDHCP();
+  MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
+  setDNS(CBoxDNSServerSlaveIP.Text);
+
+end;
+
+procedure TForm1.ButtonNetCardDesintegrationClick(Sender: TObject);
+begin
+  if Sender <> nil then
+  begin
+    ToolButton8.Down := False;
+    ToolButton3.Down := True;
+    ToolButton3Click(nil);
+  end;
+  MemoLogs.Lines.Add('Go to DHCP');
+  setDNS('');
+  setIPToDHCP();
+
 end;
 
 end.

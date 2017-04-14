@@ -177,6 +177,7 @@ object Form1: TForm1
             Top = 15
             Width = 335
             Height = 226
+            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -439,14 +440,81 @@ object Form1: TForm1
               Caption = 'Carte R'#233'seau'
               object CheckBoxAllowModifyNetCard: TCheckBox
                 Left = 8
-                Top = 16
+                Top = 10
                 Width = 313
                 Height = 17
-                Caption = 'Modifier la carte r'#233'seau afin d'#39'int'#233'grer le programme'
+                Caption = 'Modifier la carte r'#233'seau au lancement et '#224' la fermeture'
                 Checked = True
                 State = cbChecked
                 TabOrder = 0
                 OnClick = CheckBoxAllowModifyNetCardClick
+              end
+              object GroupBox7: TGroupBox
+                Left = 0
+                Top = 32
+                Width = 327
+                Height = 90
+                Align = alBottom
+                Caption = 'Installation'
+                TabOrder = 1
+                DesignSize = (
+                  327
+                  90)
+                object Label7: TLabel
+                  Left = 2
+                  Top = 15
+                  Width = 323
+                  Height = 39
+                  Align = alTop
+                  Caption = 
+                    'Change la configuration de la carte r'#233'seau afin d'#39'utiliser ce pr' +
+                    'ogramme comme serveur DNS. Attention! Si ce programme est ferm'#233' ' +
+                    'brutalement vous perdez Internet. '
+                  WordWrap = True
+                end
+                object ButtonNetCardIntegration: TButton
+                  Left = 241
+                  Top = 57
+                  Width = 75
+                  Height = 25
+                  Anchors = [akRight, akBottom]
+                  Caption = 'Installer'
+                  TabOrder = 0
+                  OnClick = ButtonNetCardIntegrationClick
+                end
+              end
+              object GroupBox8: TGroupBox
+                Left = 0
+                Top = 122
+                Width = 327
+                Height = 76
+                Align = alBottom
+                Caption = 'D'#233'sinstallation'
+                TabOrder = 2
+                DesignSize = (
+                  327
+                  76)
+                object Label8: TLabel
+                  Left = 2
+                  Top = 15
+                  Width = 323
+                  Height = 26
+                  Align = alTop
+                  Caption = 
+                    'Restaure la configuration de la carte r'#233'seau en mode automatique' +
+                    ' (DHCP)'
+                  WordWrap = True
+                end
+                object ButtonNetCardDesintegration: TButton
+                  Left = 240
+                  Top = 43
+                  Width = 75
+                  Height = 25
+                  Anchors = [akRight, akBottom]
+                  Caption = 'D'#233'sinstaller'
+                  TabOrder = 0
+                  OnClick = ButtonNetCardDesintegrationClick
+                end
               end
             end
           end
