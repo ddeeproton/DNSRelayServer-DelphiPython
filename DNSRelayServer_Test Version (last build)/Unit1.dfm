@@ -433,6 +433,22 @@ object Form1: TForm1
                 OnClick = CheckBoxUpdateSilentClick
               end
             end
+            object TTabPage
+              Left = 4
+              Top = 24
+              Caption = 'Carte R'#233'seau'
+              object CheckBoxAllowModifyNetCard: TCheckBox
+                Left = 8
+                Top = 16
+                Width = 313
+                Height = 17
+                Caption = 'Modifier la carte r'#233'seau afin d'#39'int'#233'grer le programme'
+                Checked = True
+                State = cbChecked
+                TabOrder = 0
+                OnClick = CheckBoxAllowModifyNetCardClick
+              end
+            end
           end
         end
       end

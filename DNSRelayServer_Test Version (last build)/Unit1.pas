@@ -99,6 +99,7 @@ type
     CheckBoxUpdateIntervall: TCheckBox;
     SpinTimeCheckUpdate: TSpinEdit;
     CheckBoxUpdateSilent: TCheckBox;
+    CheckBoxAllowModifyNetCard: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -159,6 +160,7 @@ type
     procedure CheckBoxUpdateIntervallClick(Sender: TObject);
     procedure CheckBoxUpdateSilentClick(Sender: TObject);
     procedure SpinTimeCheckUpdateChange(Sender: TObject);
+    procedure CheckBoxAllowModifyNetCardClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -456,10 +458,15 @@ end;
 
 procedure TForm1.onServerDNSStart();
 begin
-  setIPToDHCP();
-  setDNS(CBoxDNSServerSlaveIP.Text);
-  MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
-  
+
+  if CheckBoxAllowModifyNetCard.Checked then
+  begin
+    setIPToDHCP();
+    MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
+    setDNS(CBoxDNSServerSlaveIP.Text);
+  end;
+
+
   ImageList4.GetIcon(2, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   //ToolButton7.ImageIndex := 7;
@@ -474,10 +481,12 @@ end;
 
 procedure TForm1.onServerDNSStop();
 begin
-  MemoLogs.Lines.Add('Go to DHCP');
-  setDNS('');
-  setIPToDHCP();
-
+  if CheckBoxAllowModifyNetCard.Checked then
+  begin
+    MemoLogs.Lines.Add('Go to DHCP');
+    setDNS('');
+    setIPToDHCP();
+  end;
   ImageList4.GetIcon(1, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   //ToolButton7.ImageIndex := 6;
@@ -1365,6 +1374,7 @@ begin
   Notebook1.Align := alClient;
   TabbedNotebook1.Align := alClient;
 
+  TabbedNotebook1.PageIndex := 0;
   Notebook1.PageIndex := 5;
   //ToolButton7.Click;
   //ToolButton7.Down := True;
@@ -1442,6 +1452,9 @@ begin
   Form1.CheckBoxUpdateSilent.Checked := FileExists(DataDirectoryPath + 'checkupdateSilent.cfg');
   Form1.TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
   Form1.TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
+  Form1.CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
+
+
   // Do Update
   //TUpdate.Create(false);
   TimerUpdate.Enabled := True;
@@ -2172,6 +2185,14 @@ begin
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   TimerCheckUpdate.Enabled := True;
   EditFilehostChange(nil);
+end;
+
+procedure TForm1.CheckBoxAllowModifyNetCardClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
 end;
 
 end.
