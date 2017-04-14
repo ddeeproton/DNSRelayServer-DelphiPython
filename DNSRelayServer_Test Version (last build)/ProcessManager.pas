@@ -214,7 +214,7 @@ begin
 
   wget := ExtractFilePath(Application.ExeName)+'setup/wget.exe';
   if not FileExists(wget) then exit;
-  scriptBAT := '"'+wget+'" -O "'+filepath+'" "'+url+'" --no-check-certificate';
+  scriptBAT := '"'+wget+'" --no-cache -O "'+filepath+'" "'+url+'" --no-check-certificate';
   ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+'setup/download.bat', scriptBAT);
   LaunchAndWait(ExtractFilePath(Application.ExeName)+'setup/download.bat', '', launchAndWWindow);
 end;
