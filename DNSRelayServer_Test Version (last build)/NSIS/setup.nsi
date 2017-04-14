@@ -71,7 +71,13 @@ XPStyle on
 
 ; The stuff to install
 Section "" ;No components page, name is not important
-
+  Call IsSilent
+  Pop $0
+  StrCmp $0 1 goSilent1 goNotSilent1
+  goSilent1:
+	Sleep 5000
+  goNotSilent1:
+  
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
   
@@ -90,12 +96,13 @@ Section "" ;No components page, name is not important
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #ExecWait '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
   #Exec '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
-  Call IsSilent
-  Pop $0
-  StrCmp $0 1 0 +3
+
+  StrCmp $0 1 goSilent2 goNotSilent2
+  goSilent2:
 	  Exec 'DNSRelayServer.exe /background' # equivaut à IF is silent /S
 	  Quit
-
+	  
+  goNotSilent2:
   Exec 'DNSRelayServer.exe /autostart'
   Quit
 SectionEnd ; end the section
