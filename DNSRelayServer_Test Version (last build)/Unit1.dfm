@@ -8238,7 +8238,7 @@ object Form1: TForm1
   object TimerCheckUpdate: TTimer
     Enabled = False
     Interval = 120000
-    OnTimer = ButtonUpdateClick
+    OnTimer = TimerCheckUpdateTimer
     Left = 416
     Top = 72
   end

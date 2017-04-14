@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.16';
+var CurrentApplicationVersion: string = '0.4.17';
 
 type
   TForm1 = class(TForm)
@@ -169,6 +169,7 @@ type
     procedure CheckBoxAllowModifyNetCardClick(Sender: TObject);
     procedure ButtonNetCardIntegrationClick(Sender: TObject);
     procedure ButtonNetCardDesintegrationClick(Sender: TObject);
+    procedure TimerCheckUpdateTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2231,6 +2232,11 @@ begin
   setDNS('');
   setIPToDHCP();
 
+end;
+
+procedure TForm1.TimerCheckUpdateTimer(Sender: TObject);
+begin
+  ButtonUpdateClick(ButtonUpdate);
 end;
 
 end.
