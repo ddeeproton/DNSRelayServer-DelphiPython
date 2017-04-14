@@ -177,7 +177,7 @@ object Form1: TForm1
             Top = 15
             Width = 335
             Height = 226
-            PageIndex = 2
+            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -457,9 +457,6 @@ object Form1: TForm1
                 Align = alBottom
                 Caption = 'Installation'
                 TabOrder = 1
-                DesignSize = (
-                  327
-                  90)
                 object Label7: TLabel
                   Left = 2
                   Top = 15
@@ -473,11 +470,10 @@ object Form1: TForm1
                   WordWrap = True
                 end
                 object ButtonNetCardIntegration: TButton
-                  Left = 241
+                  Left = 9
                   Top = 57
                   Width = 75
                   Height = 25
-                  Anchors = [akRight, akBottom]
                   Caption = 'Installer'
                   TabOrder = 0
                   OnClick = ButtonNetCardIntegrationClick
@@ -491,9 +487,6 @@ object Form1: TForm1
                 Align = alBottom
                 Caption = 'D'#233'sinstallation'
                 TabOrder = 2
-                DesignSize = (
-                  327
-                  76)
                 object Label8: TLabel
                   Left = 2
                   Top = 15
@@ -506,11 +499,10 @@ object Form1: TForm1
                   WordWrap = True
                 end
                 object ButtonNetCardDesintegration: TButton
-                  Left = 240
+                  Left = 8
                   Top = 43
                   Width = 75
                   Height = 25
-                  Anchors = [akRight, akBottom]
                   Caption = 'D'#233'sinstaller'
                   TabOrder = 0
                   OnClick = ButtonNetCardDesintegrationClick
