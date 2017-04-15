@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 270
-  Top = 127
-  Width = 426
+  Left = 289
+  Top = 139
+  Width = 423
   Height = 366
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object ToolBar3: TToolBar
     Left = 0
     Top = 0
-    Width = 410
+    Width = 407
     Height = 70
     BorderWidth = 2
     ButtonHeight = 60
@@ -177,7 +177,7 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 226
-            PageIndex = 2
+            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -188,140 +188,153 @@ object Form1: TForm1
               Left = 4
               Top = 24
               Caption = 'Serveur DNS'
-              DesignSize = (
-                303
-                198)
-              object Label1: TLabel
-                Left = 8
-                Top = 8
-                Width = 51
-                Height = 13
-                Caption = 'Adresse IP'
-              end
-              object Label2: TLabel
-                Left = 192
-                Top = 8
-                Width = 19
-                Height = 13
-                Caption = 'Port'
-              end
-              object Label4: TLabel
-                Left = 192
-                Top = 48
-                Width = 58
-                Height = 13
-                Caption = 'Exemple: 53'
-              end
-              object Label3: TLabel
-                Left = 8
-                Top = 48
-                Width = 79
-                Height = 13
-                Caption = 'Exemple: 0.0.0.0'
-              end
-              object Label5: TLabel
-                Left = 8
-                Top = 72
-                Width = 56
-                Height = 13
-                Caption = 'Fichier Host'
-              end
-              object Label6: TLabel
-                Left = 8
-                Top = 112
-                Width = 80
-                Height = 13
-                Caption = 'Exemple: host.txt'
-                Color = clBtnFace
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -11
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentColor = False
-                ParentFont = False
-              end
-              object CBoxDNSServerSlaveIP: TComboBox
-                Left = 8
-                Top = 24
-                Width = 145
-                Height = 21
-                ItemHeight = 13
+              object Panel3: TPanel
+                Left = 0
+                Top = 0
+                Width = 303
+                Height = 198
+                Align = alClient
+                BevelOuter = bvNone
                 TabOrder = 0
-                Text = 'CBoxDNSServerSlaveIP'
-                OnChange = EditFilehostChange
-              end
-              object ButtonRefreshNetCard: TBitBtn
-                Left = 161
-                Top = 23
-                Width = 23
-                Height = 23
-                Hint = 'Rafraichir la liste des Adresses IP'
-                ParentShowHint = False
-                ShowHint = True
-                TabOrder = 1
-                Glyph.Data = {
-                  06030000424D06030000000000003600000028000000100000000F0000000100
-                  180000000000D002000000000000000000000000000000000000FFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
-                  FEA02FBF90FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFF1AB27700DE8C00E0B400F0CB00FFC14CB122FFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200D76000D18C00D4A400
-                  DCAD00E8C800E2A700CC01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFF00CF4100C17803D15200DD0000D58F00E3B300D93CFFFFFFFFFFFF4CB1
-                  22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200BC5401DC5214CB3DFFFFFF00
-                  E58C00F686FFFFFFFFFFFFFFFFFF00FDAD4CB122FFFFFFFFFFFFFFFFFFFFFFFF
-                  00B63A00D2640FC456FFFFFFFFFFFF41A39BFFFFFFFFFFFFFFFFFFFFFFFF00FF
-                  9A1F8845FFFFFFFFFFFFFFFFFFFFFFFF00BB2000F97CFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFF1AC77C00D35F5A6575FFFFFFFFFFFFFFFFFFFFFFFF
-                  00E25B3FB693FFFFFFFFFFFFFFFFFF35A497FFFFFFFFFFFF677D8300EE7000BA
-                  2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF96FFFFFFFFFFFFFFFFFF16B56F00
-                  FFAEFFFFFF697E7C00EB4600BE6000BA3CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFF14AB4800E38C00E0BF00D31802DC3B00C47500C85D4CB1
-                  22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0AAC2400D25800EBD200
-                  DFB200D9AC00D29A00D77A07BF4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFF4CB12200E9A500FECD00E3BA00DBA400D4794CB122FFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
-                  F79200EB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFF}
-              end
-              object SpinPort: TSpinEdit
-                Left = 192
-                Top = 24
-                Width = 97
-                Height = 22
-                MaxValue = 0
-                MinValue = 0
-                TabOrder = 2
-                Value = 53
-                OnChange = EditFilehostChange
-              end
-              object EditFilehost: TEdit
-                Left = 8
-                Top = 88
-                Width = 172
-                Height = 21
-                Anchors = [akLeft, akTop, akRight]
-                TabOrder = 3
-              end
-              object ButtonSelectFilehost: TButton
-                Left = 187
-                Top = 85
-                Width = 35
-                Height = 25
-                Anchors = [akTop, akRight]
-                Caption = '...'
-                TabOrder = 4
-              end
-              object CheckBoxStartWithWindows: TCheckBox
-                Left = 8
-                Top = 136
-                Width = 273
-                Height = 17
-                Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
-                TabOrder = 5
+                DesignSize = (
+                  303
+                  198)
+                object Label1: TLabel
+                  Left = 8
+                  Top = 8
+                  Width = 51
+                  Height = 13
+                  Caption = 'Adresse IP'
+                end
+                object Label2: TLabel
+                  Left = 192
+                  Top = 8
+                  Width = 19
+                  Height = 13
+                  Caption = 'Port'
+                end
+                object Label4: TLabel
+                  Left = 192
+                  Top = 48
+                  Width = 58
+                  Height = 13
+                  Caption = 'Exemple: 53'
+                end
+                object Label3: TLabel
+                  Left = 8
+                  Top = 48
+                  Width = 79
+                  Height = 13
+                  Caption = 'Exemple: 0.0.0.0'
+                end
+                object Label5: TLabel
+                  Left = 8
+                  Top = 72
+                  Width = 56
+                  Height = 13
+                  Caption = 'Fichier Host'
+                end
+                object Label6: TLabel
+                  Left = 8
+                  Top = 112
+                  Width = 80
+                  Height = 13
+                  Caption = 'Exemple: host.txt'
+                  Color = clBtnFace
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -11
+                  Font.Name = 'MS Sans Serif'
+                  Font.Style = []
+                  ParentColor = False
+                  ParentFont = False
+                end
+                object CBoxDNSServerSlaveIP: TComboBox
+                  Left = 8
+                  Top = 24
+                  Width = 145
+                  Height = 21
+                  ItemHeight = 13
+                  TabOrder = 0
+                  Text = 'CBoxDNSServerSlaveIP'
+                  OnChange = EditFilehostChange
+                end
+                object ButtonRefreshNetCard: TBitBtn
+                  Left = 161
+                  Top = 23
+                  Width = 23
+                  Height = 23
+                  Hint = 'Rafraichir la liste des Adresses IP'
+                  ParentShowHint = False
+                  ShowHint = True
+                  TabOrder = 1
+                  OnClick = ButtonRefreshNetCardClick
+                  Glyph.Data = {
+                    06030000424D06030000000000003600000028000000100000000F0000000100
+                    180000000000D002000000000000000000000000000000000000FFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
+                    FEA02FBF90FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFF1AB27700DE8C00E0B400F0CB00FFC14CB122FFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200D76000D18C00D4A400
+                    DCAD00E8C800E2A700CC01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFF00CF4100C17803D15200DD0000D58F00E3B300D93CFFFFFFFFFFFF4CB1
+                    22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200BC5401DC5214CB3DFFFFFF00
+                    E58C00F686FFFFFFFFFFFFFFFFFF00FDAD4CB122FFFFFFFFFFFFFFFFFFFFFFFF
+                    00B63A00D2640FC456FFFFFFFFFFFF41A39BFFFFFFFFFFFFFFFFFFFFFFFF00FF
+                    9A1F8845FFFFFFFFFFFFFFFFFFFFFFFF00BB2000F97CFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFF1AC77C00D35F5A6575FFFFFFFFFFFFFFFFFFFFFFFF
+                    00E25B3FB693FFFFFFFFFFFFFFFFFF35A497FFFFFFFFFFFF677D8300EE7000BA
+                    2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF96FFFFFFFFFFFFFFFFFF16B56F00
+                    FFAEFFFFFF697E7C00EB4600BE6000BA3CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFF14AB4800E38C00E0BF00D31802DC3B00C47500C85D4CB1
+                    22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0AAC2400D25800EBD200
+                    DFB200D9AC00D29A00D77A07BF4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFF4CB12200E9A500FECD00E3BA00DBA400D4794CB122FFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
+                    F79200EB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFF}
+                end
+                object SpinPort: TSpinEdit
+                  Left = 192
+                  Top = 24
+                  Width = 97
+                  Height = 22
+                  MaxValue = 0
+                  MinValue = 0
+                  TabOrder = 2
+                  Value = 53
+                  OnChange = EditFilehostChange
+                end
+                object EditFilehost: TEdit
+                  Left = 8
+                  Top = 88
+                  Width = 184
+                  Height = 21
+                  Anchors = [akLeft, akTop, akRight]
+                  TabOrder = 3
+                  OnChange = EditFilehostChange
+                end
+                object ButtonSelectFilehost: TButton
+                  Left = 199
+                  Top = 85
+                  Width = 35
+                  Height = 25
+                  Anchors = [akTop, akRight]
+                  Caption = '...'
+                  TabOrder = 4
+                  OnClick = ButtonSelectFilehostClick
+                end
+                object CheckBoxStartWithWindows: TCheckBox
+                  Left = 8
+                  Top = 136
+                  Width = 273
+                  Height = 17
+                  Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
+                  TabOrder = 5
+                  OnClick = CheckBoxStartWithWindowsClick
+                end
               end
             end
             object TTabPage
@@ -390,9 +403,6 @@ object Form1: TForm1
               Left = 4
               Top = 24
               Caption = 'Mise '#224' jour'
-              DesignSize = (
-                303
-                198)
               object CheckBoxUpdate: TCheckBox
                 Left = 8
                 Top = 24
@@ -403,11 +413,10 @@ object Form1: TForm1
                 OnClick = CheckBoxUpdateClick
               end
               object ButtonUpdate: TButton
-                Left = 232
+                Left = 8
                 Top = 140
                 Width = 57
                 Height = 25
-                Anchors = [akTop, akRight]
                 Caption = 'V'#233'rifier'
                 TabOrder = 1
                 OnClick = ButtonUpdateClick
@@ -448,29 +457,34 @@ object Form1: TForm1
               Caption = 'Carte R'#233'seau'
               object GroupBox7: TGroupBox
                 Left = 0
-                Top = 33
+                Top = 40
                 Width = 303
-                Height = 90
+                Height = 97
                 Align = alTop
                 Caption = 'Installation'
                 TabOrder = 0
+                DesignSize = (
+                  303
+                  97)
                 object Label7: TLabel
                   Left = 2
                   Top = 15
                   Width = 299
-                  Height = 39
+                  Height = 52
                   Align = alTop
                   Caption = 
                     'Change la configuration de la carte r'#233'seau afin d'#39'utiliser ce pr' +
                     'ogramme comme serveur DNS. Attention! Si ce programme est ferm'#233' ' +
-                    'brutalement vous perdez Internet. '
+                    'brutalement vous perdez Internet. Pour r'#233'parer une connexion cas' +
+                    's'#233'e cliquez sur D'#233'sintaller'
                   WordWrap = True
                 end
                 object ButtonNetCardIntegration: TButton
-                  Left = 9
-                  Top = 57
+                  Left = 121
+                  Top = 67
                   Width = 75
                   Height = 25
+                  Anchors = [akTop]
                   Caption = 'Installer'
                   TabOrder = 0
                   OnClick = ButtonNetCardIntegrationClick
@@ -478,12 +492,15 @@ object Form1: TForm1
               end
               object GroupBox8: TGroupBox
                 Left = 0
-                Top = 123
+                Top = 137
                 Width = 303
                 Height = 76
                 Align = alTop
                 Caption = 'D'#233'sinstallation'
                 TabOrder = 1
+                DesignSize = (
+                  303
+                  76)
                 object Label8: TLabel
                   Left = 2
                   Top = 15
@@ -496,10 +513,11 @@ object Form1: TForm1
                   WordWrap = True
                 end
                 object ButtonNetCardDesintegration: TButton
-                  Left = 8
+                  Left = 120
                   Top = 43
                   Width = 75
                   Height = 25
+                  Anchors = [akTop]
                   Caption = 'D'#233'sinstaller'
                   TabOrder = 0
                   OnClick = ButtonNetCardDesintegrationClick
@@ -509,14 +527,22 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 33
+                Height = 40
                 Align = alTop
                 BevelOuter = bvNone
+                BevelWidth = 4
                 TabOrder = 2
+                object Label9: TLabel
+                  Left = 11
+                  Top = 20
+                  Width = 286
+                  Height = 13
+                  Caption = '(Executera un script de r'#233'paration au red'#233'marrage Windows)'
+                end
                 object CheckBoxAllowModifyNetCard: TCheckBox
                   Left = 8
-                  Top = 10
-                  Width = 313
+                  Top = 2
+                  Width = 281
                   Height = 17
                   Caption = 'Modifier la carte r'#233'seau au lancement et '#224' la fermeture'
                   Checked = True
@@ -702,7 +728,7 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 372
+    Left = 373
     Top = 264
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -1505,8 +1531,8 @@ object Form1: TForm1
       000000000000}
   end
   object PopupMenu1: TPopupMenu
-    Left = 372
-    Top = 232
+    Left = 373
+    Top = 233
     object StartDNS1: TMenuItem
       Caption = 'Start DNS'
       OnClick = ButtonStartClick
@@ -4860,8 +4886,8 @@ object Form1: TForm1
     Top = 135
   end
   object ImageList3: TImageList
-    Left = 348
-    Top = 297
+    Left = 347
+    Top = 296
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -8249,8 +8275,8 @@ object Form1: TForm1
   object TimerAfterFormCreate: TTimer
     Enabled = False
     OnTimer = TimerAfterFormCreateTimer
-    Left = 347
-    Top = 136
+    Left = 344
+    Top = 135
   end
   object TimerCheckUpdate: TTimer
     Enabled = False

@@ -1,6 +1,6 @@
 ; Setup DNS Relay Server
 
-!define VERSION "0.4.19"
+!define VERSION "0.4.20"
 
 ;--------------------------------
 ;Include Modern UI

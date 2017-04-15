@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.19';
+var CurrentApplicationVersion: string = '0.4.20';
 
 type
   TForm1 = class(TForm)
@@ -75,18 +75,6 @@ type
     N3: TMenuItem;
     TimerCheckUpdate: TTimer;
     TabbedNotebook1: TTabbedNotebook;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label4: TLabel;
-    Label3: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    CBoxDNSServerSlaveIP: TComboBox;
-    ButtonRefreshNetCard: TBitBtn;
-    SpinPort: TSpinEdit;
-    EditFilehost: TEdit;
-    ButtonSelectFilehost: TButton;
-    CheckBoxStartWithWindows: TCheckBox;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButtonUpdateDNSMaster: TToolButton;
@@ -107,6 +95,20 @@ type
     ButtonNetCardDesintegration: TButton;
     Panel2: TPanel;
     CheckBoxAllowModifyNetCard: TCheckBox;
+    Label9: TLabel;
+    Panel3: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label4: TLabel;
+    Label3: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    CBoxDNSServerSlaveIP: TComboBox;
+    ButtonRefreshNetCard: TBitBtn;
+    SpinPort: TSpinEdit;
+    EditFilehost: TEdit;
+    ButtonSelectFilehost: TButton;
+    CheckBoxStartWithWindows: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -484,7 +486,7 @@ begin
 
   ToolButton11.Enabled := True;
   ToolButton11.Hint := 'Click pour arrêter';
-  setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+
 end;
 
 procedure TForm1.onServerDNSStop();
@@ -507,7 +509,6 @@ begin
   ToolButton11.Enabled := True;
   ToolButton11.Hint := 'Démarrer le serveur DNS';
 
-  setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 end;
 
 
@@ -1146,7 +1147,7 @@ begin
   //MemoLogs.Lines.Add('Flushdns');
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
 
-  
+
   {
   listThreads[1] := Unit1.TSauvegarde.Create(True);
   listThreads[1].cmd := 'ipconfig.exe /flushdns';
@@ -2221,7 +2222,7 @@ begin
   setIPToDHCP();
   MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
   setDNS(CBoxDNSServerSlaveIP.Text);
-
+  setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 end;
 
 procedure TForm1.ButtonNetCardDesintegrationClick(Sender: TObject);
@@ -2234,8 +2235,8 @@ begin
   end;
   MemoLogs.Lines.Add('Go to DHCP');
   setDNS('');
+  setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
   setIPToDHCP();
-
 end;
 
 procedure TForm1.TimerCheckUpdateTimer(Sender: TObject);
