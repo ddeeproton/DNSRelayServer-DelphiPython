@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.21';
+var CurrentApplicationVersion: string = '0.4.22';
 
 type
   TForm1 = class(TForm)
@@ -109,6 +109,7 @@ type
     EditFilehost: TEdit;
     ButtonSelectFilehost: TButton;
     CheckBoxStartWithWindows: TCheckBox;
+    CheckBoxAutostartDNSOnBoot: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -173,6 +174,7 @@ type
     procedure ButtonNetCardIntegrationClick(Sender: TObject);
     procedure ButtonNetCardDesintegrationClick(Sender: TObject);
     procedure TimerCheckUpdateTimer(Sender: TObject);
+    procedure CheckBoxAutostartDNSOnBootClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1325,6 +1327,7 @@ var
   net: tNetworkInterfaceList;
   canClose: Boolean;
   startedInBackground: Boolean;
+  autostarted: Boolean;
 begin
   Form1.Width := Form1.Constraints.MinWidth;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
@@ -1345,11 +1348,11 @@ begin
 
   isServerStarted := False;
   Memo1.Clear;
-  Memo1.Text := 'Veuillez lire les modalités et les conditions suivantes avant l''utilisation de ces logiciels.  L''utilisation de ce logiciel indique l''acceptation des termes et conditions de la licence.'+#13#10#13#10+
+  Memo1.Text := 'Veuillez lire les modalités et les conditions suivantes avant l''utilisation de ce logiciel.  L''utilisation de ce logiciel indique l''acceptation des termes et conditions de la licence.'+#13#10#13#10+
                 '1. Déni de garantie'+#13#10#13#10+
                 '"DNS Relay Server" est fourni "tel-que", et aucune garantie de quelque sorte n''est exprimée ou impliquée, incluant sans limitation, toute garantie de valeur marchande ou format physique pour un but particulier.'+#13#10#13#10+
                 'Dans aucun cas, l''auteur de ce logiciel ne sera jugé responsable de la perte de données, des dommages, du manque à gagner ou de n''importe quel autre genre de perte par l''utilisation correcte ou non de ce logiciel.'+#13#10#13#10+
-                'Le logiciel peut être modifié. Le code source est fourni dans le setup d''installation.'+#13#10#13#10+
+                'Le logiciel peut-être modifié. Le code source est fourni dans le setup d''installation.'+#13#10#13#10+
                 ''+#13#10#13#10+
                 '2. Licence'+#13#10#13#10+
                 '"DNS Relay Server" est fourni en tant que logiciel open source.'+#13#10#13#10+
@@ -1357,14 +1360,15 @@ begin
                 'L''installation et l''utilisation de ce logiciel signifie l''acceptation des termes et conditions de la license.'+#13#10#13#10+
                 ''+#13#10#13#10+
                 '3. Fonctionnement'+#13#10#13#10+
-                '"DNS Relay Server" modifie la configuration de vos cartes réseau afin de pouvoir filtrer Internet au niveau des noms de domaines (DNS).'+#13#10#13#10+
-                'Au lancement du serveur, l''adresse des serveurs DNS seront modifiés sur vos cartes réseau par l''IP de votre propre machine.'+#13#10#13#10+
+                '"DNS Relay Server" peut modifier la configuration de vos cartes réseau afin de pouvoir faciliter son intégration dans le système et filtrer Internet au niveau des noms de domaines (DNS).'+#13#10#13#10+
+                'Au lancement du serveur, l''adresse des serveurs DNS sont modifiés par l''IP de votre propre machine.'+#13#10#13#10+
                 'A la fermeture du serveur, vos cartes réseau repassent en mode automatique (mode DHCP).'+#13#10#13#10+
-                'Si vous êtiez en configuration IP manuelle, vous risquez de perdre votre IP.'+#13#10#13#10+
-                'Donc si vous lancez ce programme sur un serveur distant, vous risquez de perdre la connexion.'+#13#10#13#10+
-                'Soyez conscient des risques.'+#13#10#13#10+
-                'Par mesure de sécurité, un script VBS est placé au lancement de Windows afin de réparer la connexion Internet en cas de plantage du PC.'+#13#10#13#10+
-                'Nous nous efforçons de fournir un programme le plus sûr possible pour l''utilisateur.'+#13#10#13#10+
+                'Si vous êtiez en configuration IP manuelle, vous risquez de changer d''IP.'+#13#10#13#10+
+                'Donc si vous lancez ce programme sur un serveur distant, vous risquez de perdre la connexion avec celui-ci.'+#13#10#13#10+
+                'Soyez conscient de ce risque.'+#13#10#13#10+
+                'Par mesure de sécurité, un script VBS est placé au lancement de Windows afin de réparer la connexion Internet en cas de plantage ou redémarrage du PC.'+#13#10#13#10+
+                'Ce script ne se lance pas si vous avez déjà configuré ce serveur pour qu''il redémarre avec Windows. Ce script ne réparera pas la connexion qui a été cassé par un autre programme.'+#13#10#13#10+
+                'Pour la détection d''une connexion cassé par cette application, le script va vérifier au redémarrage du PC si l''addresse IP est indentique à celle du serveur DNS, si oui, alors il restaure la carte réseau en DHCP. Si non, il ne fait rien.'+#13#10#13#10+
                 'Vous êtes en version beta-test, ce qui signifie que ce programme n''a pas été encore testé partout. Il peut y avoir encore des bugs non-répertoriés.'+#13#10#13#10+
                 'Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.';
 
@@ -1373,7 +1377,7 @@ begin
   ListView1.DoubleBuffered := True;
   MemoLogs.DoubleBuffered := True;
   TabbedNotebook1.DoubleBuffered := True;
-  
+
   Panel1.Align := alClient;
   GroupBox1.Align := alClient;
   GroupBox2.Align := alClient;
@@ -1390,20 +1394,19 @@ begin
   //ToolButton7.Down := True;
 
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
+  if not DirectoryExists(DataDirectoryPath) then makeDir(DataDirectoryPath);
+
   FilehostPathConfig := DataDirectoryPath + FilehostPathConfig ;
   SlaveDNSIPConfig := DataDirectoryPath + SlaveDNSIPConfig;
   SlaveDNSPortConfig := DataDirectoryPath + SlaveDNSPortConfig;
-
-
-  if not DirectoryExists(DataDirectoryPath) then makeDir(DataDirectoryPath);
-  if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
-
   MasterDNSFile := DataDirectoryPath + MasterDNSFile;
   SlaveDNSProcesslist := DataDirectoryPath + SlaveDNSProcesslist;
-  FilehostPathConfig :=  DataDirectoryPath + FilehostPathConfig;
-  SlaveDNSIPConfig :=  DataDirectoryPath + SlaveDNSIPConfig;
-  SlaveDNSPortConfig :=  DataDirectoryPath + SlaveDNSPortConfig;
   TimeCheckUpdateFile :=  DataDirectoryPath + TimeCheckUpdateFile;
+
+
+  if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
+
+  //CheckBoxAutostartDNSOnBoot
 
   PythonPath := getPythonPath();
   if FileExists(MasterDNSFile) then
@@ -1423,39 +1426,21 @@ begin
 
 
 
+
+  CheckBoxAutostartDNSOnBoot.Checked := FileExists(DataDirectoryPath + 'checkAutostartDNS.cfg');
+  CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
+  CheckBoxUpdateIntervall.Checked := FileExists(DataDirectoryPath + 'checkupdateIntervall.cfg');
+  CheckBoxUpdateSilent.Checked := FileExists(DataDirectoryPath + 'checkupdateSilent.cfg');
+  TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
+  TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
+  CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
+
+
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
-
-  //if not startedInBackground then
-
-
-    ListViewCreate(ListView1);
-    getDomains(EditFilehost.Text, ListView1);
-    ListView1.OnChange := ListView1Change;
-  {
-  // Add at the end
-  EditerLigne2(ListView1, ListView1.Items.Count, 3, 'yes','nice');
-  // Add at the begining
-  EditerLigne2(ListView1, -1, 0, 'cool','nice');
-  ShowMessage(getDomain(EditFilehost.Text, 'localhost'));
-  }
-  //result := ReadString(HKEY_LOCAL_MACHINE, 'SOFTWARE\Python\PythonCore\2.7\InstallPath', '');
-  //if (result = '') and FileExists('c:\Python27\python.exe') then result := 'c:\Python27\';
-
-  //MemoLogs.Lines.Add(resolveDNS('google.com', '127.0.0.1')); // 209.244.0.3
-  //MemoLogs.Lines.Add(resolveDNS('google.com', '209.244.0.3'));
-
   ButtonRefreshNetCardClick(nil);
 
-
-  Form1.CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
-  Form1.CheckBoxUpdateIntervall.Checked := FileExists(DataDirectoryPath + 'checkupdateIntervall.cfg');
-  Form1.CheckBoxUpdateSilent.Checked := FileExists(DataDirectoryPath + 'checkupdateSilent.cfg');
-  Form1.TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
-  Form1.TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
-  Form1.CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-
-
   startedInBackground := False;
+  autostarted := False;
   for i:=0 to ParamCount() do
   begin
     if ParamStr(i) = '/background' then
@@ -1463,13 +1448,17 @@ begin
       Masquer1Click(nil);
       ButtonStartClick(nil);
       startedInBackground := True;
+      autostarted := True;
     end;
     if ParamStr(i) = '/autostart' then
     begin
       ButtonStartClick(nil);
+      autostarted := True;
     end;
   end;
 
+  if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
+    ButtonStartClick(nil);
 
   TimerAfterFormCreate.Enabled := not startedInBackground;
 
@@ -2212,6 +2201,16 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
 end;
+
+
+procedure TForm1.CheckBoxAutostartDNSOnBootClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkAutostartDNS.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkAutostartDNS.cfg');
+end;
+
 
 procedure TForm1.ButtonNetCardIntegrationClick(Sender: TObject);
 begin

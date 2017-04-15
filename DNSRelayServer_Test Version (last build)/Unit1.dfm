@@ -177,7 +177,6 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 226
-            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -334,6 +333,15 @@ object Form1: TForm1
                   Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
                   TabOrder = 5
                   OnClick = CheckBoxStartWithWindowsClick
+                end
+                object CheckBoxAutostartDNSOnBoot: TCheckBox
+                  Left = 8
+                  Top = 160
+                  Width = 273
+                  Height = 17
+                  Caption = 'Lancer le serveur DNS au lancement de l'#39'application'
+                  TabOrder = 6
+                  OnClick = CheckBoxAutostartDNSOnBootClick
                 end
               end
             end
