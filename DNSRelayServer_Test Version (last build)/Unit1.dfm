@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 289
-  Top = 139
-  Width = 423
+  Left = 255
+  Top = 124
+  Width = 967
   Height = 366
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object ToolBar3: TToolBar
     Left = 0
     Top = 0
-    Width = 407
+    Width = 951
     Height = 70
     BorderWidth = 2
     ButtonHeight = 60
@@ -177,7 +177,7 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 226
-            PageIndex = 3
+            PageIndex = 2
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -662,11 +662,13 @@ object Form1: TForm1
             Width = 316
             Height = 213
             Align = alClient
+            BevelWidth = 10
             Columns = <>
             ReadOnly = True
             SmallImages = ImageList3
             TabOrder = 1
             ViewStyle = vsReport
+            OnChange = ListView1Change
             OnContextPopup = ListView1ContextPopup
           end
         end
@@ -706,17 +708,17 @@ object Form1: TForm1
         object GroupBox6: TGroupBox
           Left = 8
           Top = 8
-          Width = 369
+          Width = 323
           Height = 175
           Caption = 'DNS Relay'
           TabOrder = 0
           DesignSize = (
-            369
+            323
             175)
           object Memo1: TMemo
             Left = 8
             Top = 16
-            Width = 353
+            Width = 305
             Height = 151
             Anchors = [akLeft, akTop, akRight, akBottom]
             Font.Charset = DEFAULT_CHARSET

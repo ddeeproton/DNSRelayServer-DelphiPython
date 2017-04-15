@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.26';
+var CurrentApplicationVersion: string = '0.4.27';
 
 type
   TForm1 = class(TForm)
@@ -472,23 +472,17 @@ end;
 
 procedure TForm1.onServerDNSStart();
 begin
-
   if CheckBoxAllowModifyNetCard.Checked then
   begin
     ButtonNetCardIntegrationClick(nil);
   end;
-
-
   ImageList4.GetIcon(2, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  //ToolButton7.ImageIndex := 7;
   ToolButton11.ImageIndex := 8;
   ToolButton11.Caption := 'Arrêter';
   isServerStarted := True;
-
   ToolButton11.Enabled := True;
-  ToolButton11.Hint := 'Click pour arrêter';
-
+  ToolButton11.Hint := 'Arrêter le serveur DNS';
 end;
 
 procedure TForm1.onServerDNSStop();
@@ -499,18 +493,11 @@ begin
   end;
   ImageList4.GetIcon(1, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  //ToolButton7.ImageIndex := 6;
-
   ToolButton11.ImageIndex := 7;
-  //setDNS(DNSMasterSerialized);
-  //MemoLogs.Lines.Add('Set DNS '+DNSMasterSerialized);
-
   ToolButton11.Caption := 'Démarrer';
   isServerStarted := False;
-
   ToolButton11.Enabled := True;
   ToolButton11.Hint := 'Démarrer le serveur DNS';
-
 end;
 
 
@@ -522,7 +509,7 @@ var
 begin
   dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
 
-  scriptVBS :=     '''Example: '#13#10+
+  scriptVBS := '''Example: '#13#10+
     ''' Set IP DNS'#13#10+
     '''   wscript.exe this.vbs 127.0.0.1 192.168.0.1'#13#10+
     ''''#13#10+
@@ -1329,6 +1316,9 @@ var
   startedInBackground: Boolean;
   autostarted: Boolean;
 begin
+
+
+
   Form1.Width := Form1.Constraints.MinWidth;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
@@ -1388,6 +1378,8 @@ begin
   Notebook1.Align := alClient;
   TabbedNotebook1.Align := alClient;
 
+
+
   TabbedNotebook1.PageIndex := 0;
   Notebook1.PageIndex := 5;
   //ToolButton7.Click;
@@ -1439,6 +1431,7 @@ begin
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   ButtonRefreshNetCardClick(nil);
 
+
   startedInBackground := False;
   autostarted := False;
   for i:=0 to ParamCount() do
@@ -1457,6 +1450,10 @@ begin
     end;
   end;
 
+  ListViewCreate(ListView1);
+  ListView1.Clear;
+  getDomains(EditFilehost.Text, ListView1);
+
   if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
     ButtonStartClick(nil);
 
@@ -1464,7 +1461,7 @@ begin
 
   // Do Update
   //TUpdate.Create(false);
-  TimerUpdateOnLoad.Enabled := True;
+  TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
 
   //ShowMessage();
 end;
@@ -1804,9 +1801,9 @@ begin
   if SaveDialog1.Execute then
   begin
     EditFilehost.Text := SaveDialog1.FileName;
-    //ListView1.OnChange := nil;
+    ListView1.OnChange := nil;
     getDomains(EditFilehost.Text, ListView1);
-    //ListView1.OnChange := ListView1Change;
+    ListView1.OnChange := ListView1Change;
   end;
 end;
 
