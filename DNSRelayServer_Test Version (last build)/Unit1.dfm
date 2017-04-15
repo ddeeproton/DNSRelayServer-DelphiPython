@@ -1,11 +1,11 @@
 object Form1: TForm1
   Left = 255
   Top = 124
-  Width = 967
-  Height = 366
+  Width = 432
+  Height = 408
   Caption = 'DNS Relay Server'
   Color = clWhite
-  Constraints.MinHeight = 355
+  Constraints.MinHeight = 345
   Constraints.MinWidth = 370
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -67,7 +67,7 @@ object Form1: TForm1
   object ToolBar3: TToolBar
     Left = 0
     Top = 0
-    Width = 951
+    Width = 416
     Height = 70
     BorderWidth = 2
     ButtonHeight = 60
@@ -149,13 +149,13 @@ object Form1: TForm1
     Left = 0
     Top = 65
     Width = 345
-    Height = 264
+    Height = 304
     TabOrder = 1
     object Notebook1: TNotebook
       Left = 1
       Top = 1
       Width = 336
-      Height = 256
+      Height = 296
       TabOrder = 0
       object TPage
         Left = 0
@@ -163,12 +163,12 @@ object Form1: TForm1
         Caption = 'Default'
         DesignSize = (
           336
-          256)
+          296)
         object GroupBox2: TGroupBox
           Left = 8
           Top = 0
           Width = 321
-          Height = 249
+          Height = 289
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Config'
           TabOrder = 0
@@ -176,8 +176,8 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 311
-            Height = 226
-            PageIndex = 2
+            Height = 258
+            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -192,13 +192,13 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 198
+                Height = 230
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 0
                 DesignSize = (
                   303
-                  198)
+                  230)
                 object Label1: TLabel
                   Left = 8
                   Top = 8
@@ -399,7 +399,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 29
                 Width = 303
-                Height = 169
+                Height = 201
                 Align = alClient
                 ItemHeight = 13
                 Items.Strings = (
@@ -466,91 +466,76 @@ object Form1: TForm1
               Caption = 'Carte R'#233'seau'
               object GroupBox7: TGroupBox
                 Left = 0
-                Top = 40
+                Top = 0
                 Width = 303
-                Height = 97
+                Height = 137
                 Align = alTop
-                Caption = 'Installation'
+                Caption = 'Int'#233'gration du serveur'
                 TabOrder = 0
                 DesignSize = (
                   303
-                  97)
+                  137)
                 object Label7: TLabel
-                  Left = 2
+                  Left = 8
                   Top = 15
-                  Width = 299
-                  Height = 52
-                  Align = alTop
+                  Width = 281
+                  Height = 78
+                  Anchors = [akLeft, akTop, akRight]
                   Caption = 
                     'Change la configuration de la carte r'#233'seau afin d'#39'utiliser ce pr' +
                     'ogramme comme serveur DNS. Attention! Si ce programme est ferm'#233' ' +
                     'brutalement vous perdez Internet. Pour r'#233'parer une connexion cas' +
-                    's'#233'e cliquez sur D'#233'sintaller'
+                    's'#233'e cliquez sur D'#233'sintaller. Le bouton d'#233'sintaller, restaure la ' +
+                    'configuration de la carte r'#233'seau en mode automatique (DHCP)'
                   WordWrap = True
                 end
-                object ButtonNetCardIntegration: TButton
-                  Left = 120
-                  Top = 67
-                  Width = 75
-                  Height = 25
-                  Anchors = [akLeft, akRight, akBottom]
-                  Caption = 'Installer'
+                object Panel4: TPanel
+                  Left = 54
+                  Top = 96
+                  Width = 193
+                  Height = 33
+                  Anchors = [akTop]
+                  BevelOuter = bvNone
                   TabOrder = 0
-                  OnClick = ButtonNetCardIntegrationClick
-                end
-              end
-              object GroupBox8: TGroupBox
-                Left = 0
-                Top = 137
-                Width = 303
-                Height = 76
-                Align = alTop
-                Caption = 'D'#233'sinstallation'
-                TabOrder = 1
-                DesignSize = (
-                  303
-                  76)
-                object Label8: TLabel
-                  Left = 2
-                  Top = 15
-                  Width = 299
-                  Height = 26
-                  Align = alTop
-                  Caption = 
-                    'Restaure la configuration de la carte r'#233'seau en mode automatique' +
-                    ' (DHCP)'
-                  WordWrap = True
-                end
-                object ButtonNetCardDesintegration: TButton
-                  Left = 120
-                  Top = 43
-                  Width = 75
-                  Height = 25
-                  Anchors = [akLeft, akRight, akBottom]
-                  Caption = 'D'#233'sinstaller'
-                  TabOrder = 0
-                  OnClick = ButtonNetCardDesintegrationClick
+                  object ButtonNetCardDesintegration: TButton
+                    Left = 102
+                    Top = 3
+                    Width = 75
+                    Height = 25
+                    Caption = 'D'#233'sinstaller'
+                    TabOrder = 0
+                    OnClick = ButtonNetCardDesintegrationClick
+                  end
+                  object ButtonNetCardIntegration: TButton
+                    Left = 16
+                    Top = 3
+                    Width = 75
+                    Height = 25
+                    Caption = 'Installer'
+                    TabOrder = 1
+                    OnClick = ButtonNetCardIntegrationClick
+                  end
                 end
               end
               object Panel2: TPanel
                 Left = 0
-                Top = 0
+                Top = 137
                 Width = 303
-                Height = 40
+                Height = 53
                 Align = alTop
                 BevelOuter = bvNone
                 BevelWidth = 4
-                TabOrder = 2
+                TabOrder = 1
                 object Label9: TLabel
-                  Left = 11
-                  Top = 20
+                  Left = 27
+                  Top = 28
                   Width = 286
                   Height = 13
                   Caption = '(Executera un script de r'#233'paration au red'#233'marrage Windows)'
                 end
                 object CheckBoxAllowModifyNetCard: TCheckBox
                   Left = 8
-                  Top = 2
+                  Top = 10
                   Width = 281
                   Height = 17
                   Caption = 'Modifier la carte r'#233'seau au lancement et '#224' la fermeture'
@@ -570,12 +555,12 @@ object Form1: TForm1
         Caption = 'Config DNS Master'
         DesignSize = (
           336
-          256)
+          296)
         object GroupBox1: TGroupBox
           Left = 8
           Top = 0
           Width = 320
-          Height = 256
+          Height = 296
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Master'
           TabOrder = 0
@@ -587,12 +572,12 @@ object Form1: TForm1
         Caption = 'IP Clients'
         DesignSize = (
           336
-          256)
+          296)
         object GroupBox3: TGroupBox
           Left = 8
           Top = 0
           Width = 320
-          Height = 256
+          Height = 296
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Clients'
           TabOrder = 0
@@ -600,7 +585,7 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 316
-            Height = 239
+            Height = 279
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
@@ -613,12 +598,12 @@ object Form1: TForm1
         Caption = 'DNS Domains'
         DesignSize = (
           336
-          256)
+          296)
         object GroupBox4: TGroupBox
           Left = 8
           Top = 0
           Width = 320
-          Height = 256
+          Height = 296
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Web Filter'
           TabOrder = 0
@@ -660,7 +645,7 @@ object Form1: TForm1
             Left = 2
             Top = 41
             Width = 316
-            Height = 213
+            Height = 253
             Align = alClient
             BevelWidth = 10
             Columns = <>
@@ -679,12 +664,12 @@ object Form1: TForm1
         Caption = 'Logs'
         DesignSize = (
           336
-          256)
+          296)
         object GroupBox5: TGroupBox
           Left = 8
           Top = 0
           Width = 320
-          Height = 256
+          Height = 296
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Logs'
           TabOrder = 0

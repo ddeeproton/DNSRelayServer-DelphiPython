@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.27';
+var CurrentApplicationVersion: string = '0.4.28';
 
 type
   TForm1 = class(TForm)
@@ -88,11 +88,6 @@ type
     SpinTimeCheckUpdate: TSpinEdit;
     CheckBoxUpdateSilent: TCheckBox;
     GroupBox7: TGroupBox;
-    Label7: TLabel;
-    ButtonNetCardIntegration: TButton;
-    GroupBox8: TGroupBox;
-    Label8: TLabel;
-    ButtonNetCardDesintegration: TButton;
     Panel2: TPanel;
     CheckBoxAllowModifyNetCard: TCheckBox;
     Label9: TLabel;
@@ -110,6 +105,10 @@ type
     ButtonSelectFilehost: TButton;
     CheckBoxStartWithWindows: TCheckBox;
     CheckBoxAutostartDNSOnBoot: TCheckBox;
+    Label7: TLabel;
+    Panel4: TPanel;
+    ButtonNetCardDesintegration: TButton;
+    ButtonNetCardIntegration: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1320,6 +1319,7 @@ begin
 
 
   Form1.Width := Form1.Constraints.MinWidth;
+  Form1.Height := Form1.Constraints.MinHeight;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
