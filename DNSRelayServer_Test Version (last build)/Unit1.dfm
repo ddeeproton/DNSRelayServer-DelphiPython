@@ -177,7 +177,7 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 258
-            PageIndex = 3
+            PageIndex = 1
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -331,16 +331,16 @@ object Form1: TForm1
                   Top = 136
                   Width = 273
                   Height = 17
-                  Caption = 'Lancer en t'#226'che de fond au d'#233'marrage de Windows'
+                  Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
                   TabOrder = 5
                   OnClick = CheckBoxStartWithWindowsClick
                 end
                 object CheckBoxAutostartDNSOnBoot: TCheckBox
                   Left = 8
                   Top = 160
-                  Width = 273
+                  Width = 347
                   Height = 17
-                  Caption = 'Lancer le serveur DNS au lancement de l'#39'application'
+                  Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
                   TabOrder = 6
                   OnClick = CheckBoxAutostartDNSOnBootClick
                 end
@@ -406,6 +406,7 @@ object Form1: TForm1
                   '209.244.0.3'
                   '209.244.0.4')
                 TabOrder = 1
+                OnDblClick = ToolButtonUpdateDNSMasterClick
               end
             end
             object TTabPage
@@ -468,17 +469,17 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 137
+                Height = 185
                 Align = alTop
                 Caption = 'Int'#233'gration du serveur'
                 TabOrder = 0
                 DesignSize = (
                   303
-                  137)
+                  185)
                 object Label7: TLabel
                   Left = 8
-                  Top = 15
-                  Width = 281
+                  Top = 63
+                  Width = 279
                   Height = 78
                   Anchors = [akLeft, akTop, akRight]
                   Caption = 
@@ -490,8 +491,8 @@ object Form1: TForm1
                   WordWrap = True
                 end
                 object Panel4: TPanel
-                  Left = 54
-                  Top = 96
+                  Left = 56
+                  Top = 144
                   Width = 193
                   Height = 33
                   Anchors = [akTop]
@@ -516,33 +517,35 @@ object Form1: TForm1
                     OnClick = ButtonNetCardIntegrationClick
                   end
                 end
-              end
-              object Panel2: TPanel
-                Left = 0
-                Top = 137
-                Width = 303
-                Height = 53
-                Align = alTop
-                BevelOuter = bvNone
-                BevelWidth = 4
-                TabOrder = 1
-                object Label9: TLabel
-                  Left = 27
-                  Top = 28
-                  Width = 286
-                  Height = 13
-                  Caption = '(Executera un script de r'#233'paration au red'#233'marrage Windows)'
-                end
-                object CheckBoxAllowModifyNetCard: TCheckBox
-                  Left = 8
-                  Top = 10
-                  Width = 281
-                  Height = 17
-                  Caption = 'Modifier la carte r'#233'seau au lancement et '#224' la fermeture'
-                  Checked = True
-                  State = cbChecked
-                  TabOrder = 0
-                  OnClick = CheckBoxAllowModifyNetCardClick
+                object Panel2: TPanel
+                  Left = 2
+                  Top = 15
+                  Width = 299
+                  Height = 45
+                  Align = alTop
+                  BevelOuter = bvNone
+                  BevelWidth = 4
+                  TabOrder = 1
+                  object Label9: TLabel
+                    Left = 27
+                    Top = 28
+                    Width = 286
+                    Height = 13
+                    Caption = '(Executera un script de r'#233'paration au red'#233'marrage Windows)'
+                  end
+                  object CheckBoxAllowModifyNetCard: TCheckBox
+                    Left = 8
+                    Top = 10
+                    Width = 327
+                    Height = 17
+                    Caption = 
+                      'Modifier la carte r'#233'seau au lancement et '#224' la fermeture du serve' +
+                      'ur'
+                    Checked = True
+                    State = cbChecked
+                    TabOrder = 0
+                    OnClick = CheckBoxAllowModifyNetCardClick
+                  end
                 end
               end
             end

@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.28';
+var CurrentApplicationVersion: string = '0.4.29';
 
 type
   TForm1 = class(TForm)
@@ -88,9 +88,6 @@ type
     SpinTimeCheckUpdate: TSpinEdit;
     CheckBoxUpdateSilent: TCheckBox;
     GroupBox7: TGroupBox;
-    Panel2: TPanel;
-    CheckBoxAllowModifyNetCard: TCheckBox;
-    Label9: TLabel;
     Panel3: TPanel;
     Label1: TLabel;
     Label2: TLabel;
@@ -109,6 +106,9 @@ type
     Panel4: TPanel;
     ButtonNetCardDesintegration: TButton;
     ButtonNetCardIntegration: TButton;
+    Panel2: TPanel;
+    Label9: TLabel;
+    CheckBoxAllowModifyNetCard: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
