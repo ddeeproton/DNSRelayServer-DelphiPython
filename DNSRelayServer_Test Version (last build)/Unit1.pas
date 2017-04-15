@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.24';
+var CurrentApplicationVersion: string = '0.4.25';
 
 type
   TForm1 = class(TForm)
@@ -1804,9 +1804,9 @@ begin
   if SaveDialog1.Execute then
   begin
     EditFilehost.Text := SaveDialog1.FileName;
-    ListView1.OnChange := nil;
+    //ListView1.OnChange := nil;
     getDomains(EditFilehost.Text, ListView1);
-    ListView1.OnChange := ListView1Change;
+    //ListView1.OnChange := ListView1Change;
   end;
 end;
 
