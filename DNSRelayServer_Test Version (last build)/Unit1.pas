@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.20';
+var CurrentApplicationVersion: string = '0.4.21';
 
 type
   TForm1 = class(TForm)
@@ -1446,6 +1446,15 @@ begin
 
   ButtonRefreshNetCardClick(nil);
 
+
+  Form1.CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
+  Form1.CheckBoxUpdateIntervall.Checked := FileExists(DataDirectoryPath + 'checkupdateIntervall.cfg');
+  Form1.CheckBoxUpdateSilent.Checked := FileExists(DataDirectoryPath + 'checkupdateSilent.cfg');
+  Form1.TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
+  Form1.TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
+  Form1.CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
+
+
   startedInBackground := False;
   for i:=0 to ParamCount() do
   begin
@@ -1463,13 +1472,6 @@ begin
 
 
   TimerAfterFormCreate.Enabled := not startedInBackground;
-  Form1.CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
-  Form1.CheckBoxUpdateIntervall.Checked := FileExists(DataDirectoryPath + 'checkupdateIntervall.cfg');
-  Form1.CheckBoxUpdateSilent.Checked := FileExists(DataDirectoryPath + 'checkupdateSilent.cfg');
-  Form1.TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
-  Form1.TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
-  Form1.CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-
 
   // Do Update
   //TUpdate.Create(false);
