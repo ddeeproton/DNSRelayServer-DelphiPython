@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 255
-  Top = 124
-  Width = 432
-  Height = 408
+  Left = 240
+  Top = 154
+  Width = 588
+  Height = 560
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 345
@@ -64,98 +64,28 @@ object Form1: TForm1
   OnMouseMove = FormMouseMove
   PixelsPerInch = 96
   TextHeight = 13
-  object ToolBar3: TToolBar
+  object Splitter1: TSplitter
     Left = 0
-    Top = 0
-    Width = 416
-    Height = 70
-    BorderWidth = 2
-    ButtonHeight = 60
-    ButtonWidth = 55
-    Caption = 'ToolBar3'
-    Color = clWhite
-    EdgeInner = esNone
-    EdgeOuter = esNone
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBtnText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    Images = ImageList2
-    ParentColor = False
-    ParentFont = False
-    ParentShowHint = False
-    ShowCaptions = True
-    ShowHint = False
-    TabOrder = 0
-    object ToolButton11: TToolButton
-      Left = 0
-      Top = 2
-      Hint = 'Click pour d'#233'marrer'
-      Caption = 'D'#233'marrer'
-      ImageIndex = 7
-      ParentShowHint = False
-      ShowHint = True
-      OnClick = ToolButton11Click
-    end
-    object ToolButton8: TToolButton
-      Left = 55
-      Top = 2
-      Caption = 'Config'
-      Grouped = True
-      ImageIndex = 6
-      Style = tbsCheck
-      OnClick = ToolButton8Click
-    end
-    object ToolButton4: TToolButton
-      Left = 110
-      Top = 2
-      Caption = 'Clients'
-      Grouped = True
-      ImageIndex = 0
-      Style = tbsCheck
-      OnClick = ToolButton4Click
-    end
-    object ToolButton6: TToolButton
-      Left = 165
-      Top = 2
-      Hint = 'Web Filter'
-      Caption = 'Web Filter'
-      Grouped = True
-      ImageIndex = 1
-      ParentShowHint = False
-      ShowHint = False
-      Style = tbsCheck
-      OnClick = ToolButton6Click
-    end
-    object ToolButton3: TToolButton
-      Left = 220
-      Top = 2
-      Caption = 'Logs'
-      Grouped = True
-      ImageIndex = 5
-      Style = tbsCheck
-      OnClick = ToolButton3Click
-    end
-    object ToolButton5: TToolButton
-      Left = 275
-      Top = 2
-      Caption = 'Masquer'
-      ImageIndex = 2
-      OnClick = Masquer1Click
-    end
+    Top = 433
+    Width = 572
+    Height = 10
+    Cursor = crVSplit
+    Align = alBottom
+    Visible = False
   end
   object Panel1: TPanel
     Left = 0
-    Top = 65
+    Top = 81
     Width = 345
     Height = 304
-    TabOrder = 1
+    BevelOuter = bvNone
+    TabOrder = 0
     object Notebook1: TNotebook
       Left = 1
       Top = 1
       Width = 336
       Height = 296
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -177,7 +107,6 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 258
-            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -563,7 +492,7 @@ object Form1: TForm1
           Left = 8
           Top = 0
           Width = 320
-          Height = 296
+          Height = 265
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'DNS Master'
           TabOrder = 0
@@ -580,7 +509,7 @@ object Form1: TForm1
           Left = 8
           Top = 0
           Width = 320
-          Height = 296
+          Height = 257
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Clients'
           TabOrder = 0
@@ -588,7 +517,7 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 316
-            Height = 279
+            Height = 240
             Align = alClient
             ItemHeight = 13
             TabOrder = 0
@@ -665,29 +594,6 @@ object Form1: TForm1
         Left = 0
         Top = 0
         Caption = 'Logs'
-        DesignSize = (
-          336
-          296)
-        object GroupBox5: TGroupBox
-          Left = 8
-          Top = 0
-          Width = 320
-          Height = 296
-          Anchors = [akLeft, akTop, akRight, akBottom]
-          Caption = 'Logs'
-          TabOrder = 0
-          object MemoLogs: TMemo
-            Left = 2
-            Top = 15
-            Width = 316
-            Height = 239
-            Align = alClient
-            ScrollBars = ssBoth
-            TabOrder = 0
-            WordWrap = False
-            OnChange = MemoLogsChange
-          end
-        end
       end
       object TPage
         Left = 0
@@ -724,6 +630,109 @@ object Form1: TForm1
           end
         end
       end
+    end
+  end
+  object Panel5: TPanel
+    Left = 0
+    Top = 0
+    Width = 572
+    Height = 73
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 1
+    object ToolBar3: TToolBar
+      Left = 0
+      Top = 0
+      Width = 297
+      Height = 70
+      Align = alNone
+      BorderWidth = 2
+      ButtonHeight = 60
+      ButtonWidth = 55
+      Caption = 'ToolBar3'
+      Color = clWhite
+      EdgeInner = esNone
+      EdgeOuter = esNone
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBtnText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Images = ImageList2
+      ParentColor = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowCaptions = True
+      ShowHint = False
+      TabOrder = 0
+      object ToolButton11: TToolButton
+        Left = 0
+        Top = 2
+        Hint = 'Click pour d'#233'marrer'
+        Caption = 'D'#233'marrer'
+        ImageIndex = 7
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = ToolButton11Click
+      end
+      object ToolButton8: TToolButton
+        Left = 55
+        Top = 2
+        Caption = 'Config'
+        Grouped = True
+        ImageIndex = 6
+        Style = tbsCheck
+        OnClick = ToolButton8Click
+      end
+      object ToolButton4: TToolButton
+        Left = 110
+        Top = 2
+        Caption = 'Clients'
+        Grouped = True
+        ImageIndex = 0
+        Style = tbsCheck
+        OnClick = ToolButton4Click
+      end
+      object ToolButton6: TToolButton
+        Left = 165
+        Top = 2
+        Hint = 'Web Filter'
+        Caption = 'Web Filter'
+        Grouped = True
+        ImageIndex = 1
+        ParentShowHint = False
+        ShowHint = False
+        Style = tbsCheck
+        OnClick = ToolButton6Click
+      end
+      object ToolButton5: TToolButton
+        Left = 220
+        Top = 2
+        Caption = 'Masquer'
+        ImageIndex = 2
+        OnClick = Masquer1Click
+      end
+    end
+  end
+  object GroupBox5: TGroupBox
+    Left = 0
+    Top = 443
+    Width = 572
+    Height = 82
+    Align = alBottom
+    Caption = 'Logs'
+    TabOrder = 2
+    Visible = False
+    object MemoLogs: TMemo
+      Left = 2
+      Top = 15
+      Width = 568
+      Height = 65
+      Align = alClient
+      ScrollBars = ssBoth
+      TabOrder = 0
+      WordWrap = False
+      OnChange = MemoLogsChange
     end
   end
   object ImageList1: TImageList

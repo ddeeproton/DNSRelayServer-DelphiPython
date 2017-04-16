@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.29';
+var CurrentApplicationVersion: string = '0.4.30';
 
 type
   TForm1 = class(TForm)
@@ -33,12 +33,7 @@ type
     N1: TMenuItem;
     Masquer1: TMenuItem;
     Afficher1: TMenuItem;
-    ToolBar3: TToolBar;
-    ToolButton3: TToolButton;
     ImageList2: TImageList;
-    ToolButton4: TToolButton;
-    ToolButton5: TToolButton;
-    ToolButton6: TToolButton;
     SaveDialog1: TSaveDialog;
     ImageList3: TImageList;
     TimerSaveChange: TTimer;
@@ -58,17 +53,13 @@ type
     ToolButtonEditHost: TToolButton;
     ToolButton9: TToolButton;
     ListView1: TListView;
-    GroupBox5: TGroupBox;
-    MemoLogs: TMemo;
     Timer1: TTimer;
-    ToolButton8: TToolButton;
     GroupBox6: TGroupBox;
     Memo1: TMemo;
     N2: TMenuItem;
     StartDNS1: TMenuItem;
     StopDNS1: TMenuItem;
     ImageList4: TImageList;
-    ToolButton11: TToolButton;
     TimerUpdateOnLoad: TTimer;
     TimerAfterFormCreate: TTimer;
     Mettrejour1: TMenuItem;
@@ -109,6 +100,16 @@ type
     Panel2: TPanel;
     Label9: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
+    Panel5: TPanel;
+    ToolBar3: TToolBar;
+    ToolButton11: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton5: TToolButton;
+    GroupBox5: TGroupBox;
+    MemoLogs: TMemo;
+    Splitter1: TSplitter;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1041,14 +1042,13 @@ var
   filepath: string;
   dns: string;
 begin
-  ToolButton11.Enabled := False;
-  ToolButton3Click(ToolButton3);
-  ToolButton3.Down := True;
+
 
   if FormInstall = nil then
   begin
     FormInstall := TFormInstall.Create(Self);
   end;
+
 
   FormInstall.CheckInstallation;
 
@@ -1065,6 +1065,7 @@ begin
   else begin
     FormInstall.Close;
   end;
+
 
 
   ButtonCloseClick(nil);
@@ -1134,6 +1135,10 @@ begin
 
   //MemoLogs.Lines.Add('Flushdns');
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
+
+  ToolButton11.Enabled := False;
+  Notebook1.PageIndex := 3;
+  ToolButton6.Down := True;
 
 
   {
@@ -1373,7 +1378,7 @@ begin
   GroupBox2.Align := alClient;
   GroupBox3.Align := alClient;
   GroupBox4.Align := alClient;
-  GroupBox5.Align := alClient;
+  //GroupBox5.Align := alClient;
   GroupBox6.Align := alClient;
   Notebook1.Align := alClient;
   TabbedNotebook1.Align := alClient;
@@ -1977,6 +1982,9 @@ end;
 
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
+
+  Splitter1.Visible := True;
+  GroupBox5.Visible := True;
   if isServerStarted then
   begin
     //if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
@@ -2214,7 +2222,7 @@ begin
   if Sender <> nil then
   begin
     ToolButton8.Down := False;
-    ToolButton3.Down := True;
+    //ToolButton3.Down := True;
     ToolButton3Click(nil);
   end;
   setIPToDHCP();
@@ -2228,7 +2236,7 @@ begin
   if Sender <> nil then
   begin
     ToolButton8.Down := False;
-    ToolButton3.Down := True;
+    //ToolButton3.Down := True;
     ToolButton3Click(nil);
   end;
   MemoLogs.Lines.Add('Go to DHCP');
