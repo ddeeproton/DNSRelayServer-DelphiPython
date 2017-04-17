@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.35';
+var CurrentApplicationVersion: string = '0.4.36';
 
 type
   TForm1 = class(TForm)
@@ -1886,6 +1886,7 @@ begin
   if not Assigned(SelectedListItem) then exit;
   setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
   refreshListView1Click();
+  if isServerStarted then ButtonStartClick(nil);
 end;
 
 procedure TForm1.Autoriser1Click(Sender: TObject);
@@ -1894,6 +1895,7 @@ begin
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
   delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
   refreshListView1Click();
+  if isServerStarted then ButtonStartClick(nil);
 end;
 
 procedure TForm1.Modifier1Click(Sender: TObject);
@@ -1906,6 +1908,7 @@ begin
   setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], txt);
   SelectedListItem.Caption := txt;
   refreshListView1Click();
+  if isServerStarted then ButtonStartClick(nil);
 end;
 
 procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
