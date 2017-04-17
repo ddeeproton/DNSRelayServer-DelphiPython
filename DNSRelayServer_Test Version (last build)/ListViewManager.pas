@@ -29,7 +29,7 @@ begin
   // On créer la seconde colone dans ListView1
   AjouterUneColone(ListView.Columns.Add,
                    'IP',
-                   ListView.Width - 200);   //ListView.Width div 2 - 50
+                   ListView.Width - 220);   //ListView.Width div 2 - 50
 
   // On charge la liste des proxy dans ListView1
   ChargerProxies(ListView);
