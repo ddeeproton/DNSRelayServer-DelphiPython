@@ -148,8 +148,8 @@ begin
       if (ip <> '') and (domain <> '') then
       begin
         ListItem := ListView.Items.Add;
-        ListItem.Caption := ip;
-        ListItem.SubItems.Add(domain);
+        ListItem.Caption := domain;
+        ListItem.SubItems.Add(ip);
         if ip = '127.0.0.1' then
           ListItem.ImageIndex := 3
         else
