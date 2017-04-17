@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 240
   Top = 154
-  Width = 377
+  Width = 471
   Height = 522
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 395
-    Width = 361
+    Width = 455
     Height = 10
     Cursor = crVSplit
     Align = alBottom
@@ -304,12 +304,12 @@ object Form1: TForm1
                   ImageIndex = 19
                   OnClick = ToolButtonUpdateDNSMasterClick
                 end
-                object ToolButton2: TToolButton
+                object ToolButtonEraseDNSMaster: TToolButton
                   Left = 46
                   Top = 2
                   Caption = 'ToolButtonEraseDNSMaster'
                   ImageIndex = 1
-                  OnClick = ToolButton2Click
+                  OnClick = ToolButtonEraseDNSMasterClick
                 end
                 object ToolButtonDownDNSMaster: TToolButton
                   Left = 69
@@ -336,7 +336,9 @@ object Form1: TForm1
                 Items.Strings = (
                   '209.244.0.3'
                   '209.244.0.4')
+                PopupMenu = PopupMenuDNSMaster
                 TabOrder = 1
+                OnContextPopup = ListBoxDNSMasterContextPopup
                 OnDblClick = ToolButtonUpdateDNSMasterClick
               end
             end
@@ -637,7 +639,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 361
+    Width = 455
     Height = 73
     Align = alTop
     BevelOuter = bvNone
@@ -719,7 +721,7 @@ object Form1: TForm1
   object GroupBox5: TGroupBox
     Left = 0
     Top = 405
-    Width = 361
+    Width = 455
     Height = 82
     Align = alBottom
     Caption = 'Logs'
@@ -728,7 +730,7 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 15
-      Width = 357
+      Width = 451
       Height = 65
       Align = alClient
       ScrollBars = ssBoth
@@ -8294,5 +8296,32 @@ object Form1: TForm1
     OnTimer = TimerCheckUpdateTimer
     Left = 344
     Top = 72
+  end
+  object PopupMenuDNSMaster: TPopupMenu
+    Left = 348
+    Top = 206
+    object Ajouter1: TMenuItem
+      Caption = 'Ajouter'
+      OnClick = ToolButton1Click
+    end
+    object Modifier2: TMenuItem
+      Caption = 'Modifier'
+      OnClick = ToolButtonUpdateDNSMasterClick
+    end
+    object Supprimer1: TMenuItem
+      Caption = 'Supprimer'
+      OnClick = ToolButtonEraseDNSMasterClick
+    end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object Monter1: TMenuItem
+      Caption = 'Monter'
+      OnClick = ToolButtonUpDNSMasterClick
+    end
+    object Descendre1: TMenuItem
+      Caption = 'Descendre'
+      OnClick = ToolButtonDownDNSMasterClick
+    end
   end
 end

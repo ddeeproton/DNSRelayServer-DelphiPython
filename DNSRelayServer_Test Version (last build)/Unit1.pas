@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.30';
+var CurrentApplicationVersion: string = '0.4.31';
 
 type
   TForm1 = class(TForm)
@@ -69,7 +69,7 @@ type
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButtonUpdateDNSMaster: TToolButton;
-    ToolButton2: TToolButton;
+    ToolButtonEraseDNSMaster: TToolButton;
     ToolButtonDownDNSMaster: TToolButton;
     ToolButtonUpDNSMaster: TToolButton;
     ListBoxDNSMaster: TListBox;
@@ -110,11 +110,18 @@ type
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
     Splitter1: TSplitter;
+    PopupMenuDNSMaster: TPopupMenu;
+    Ajouter1: TMenuItem;
+    Modifier2: TMenuItem;
+    Supprimer1: TMenuItem;
+    N4: TMenuItem;
+    Monter1: TMenuItem;
+    Descendre1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
-    procedure ToolButton2Click(Sender: TObject);
+    procedure ToolButtonEraseDNSMasterClick(Sender: TObject);
     procedure ToolButtonDownDNSMasterClick(Sender: TObject);
     procedure ToolButtonUpDNSMasterClick(Sender: TObject);
     procedure ToolButtonUpdateDNSMasterClick(Sender: TObject);
@@ -175,6 +182,8 @@ type
     procedure ButtonNetCardDesintegrationClick(Sender: TObject);
     procedure TimerCheckUpdateTimer(Sender: TObject);
     procedure CheckBoxAutostartDNSOnBootClick(Sender: TObject);
+    procedure ListBoxDNSMasterContextPopup(Sender: TObject;
+      MousePos: TPoint; var Handled: Boolean);
   private
     { Private declarations }
   public
@@ -1225,7 +1234,7 @@ begin
 end;
 
 // Erase  DNS MASTER
-procedure TForm1.ToolButton2Click(Sender: TObject);
+procedure TForm1.ToolButtonEraseDNSMasterClick(Sender: TObject);
 var
   i:integer;
   txt:string;
@@ -1908,28 +1917,38 @@ var
   TopOffset, LeftOffset:integer;
 begin
 
+
   // Si on clique dans la case à cocher, on séléctionne la ligne
   // Donc on récupère la position de la souris sur l'écran
   GetcursorPos(MousePos);
   // on indique sa position en fonction du ListView
   CurPos:=TListView(Sender).ScreenToClient(MousePos);
+
+
+
   // On récupère la ligne du listView où se trouve la souris
   ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
+
+
   // Si on récupère bien une ligne et pas un espace blanc
-  if ToolBar3.Align = alTop then
-  begin
+  {if ToolBar3.Align = alTop then
+  begin}
     LeftOffset := 20;
-    TopOffset := 142
-  end
+    TopOffset := 142;
+  {end
   else begin
     LeftOffset := 115;
     TopOffset := 78;
   end;
+  }
+
   if Assigned(ListItem) then
   begin
     SelectedListItem := ListItem;
     PopupMenuListView.Popup(Left+CurPos.x+Notebook1.Left+LeftOffset,Top+CurPos.y+Notebook1.Top+TopOffset);
   end;
+
+
 end;
 
 
@@ -2267,6 +2286,22 @@ begin
 
   if ThreadUpdate = nil then ThreadUpdate := TUpdate.Create(True);
   ThreadUpdate.DoUpdate(True);
+end;
+
+procedure TForm1.ListBoxDNSMasterContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+var
+  Point : TPoint;
+begin
+  //On prend les coordonnées du curseur de souris...
+  GetCursorPos(Point);
+
+  //Cette ensemble de procédure permet de simuler le click.
+  //Un click gauche est constitué de deux clicks : quand le
+  //bouton est en haut, et quand le bouton est en bas.
+  Mouse_Event(MOUSEEVENTF_LEFTDOWN, Point.X, Point.Y, 0, 0);
+  Mouse_Event(MOUSEEVENTF_LEFTUP, Point.X, Point.Y, 0, 0);
+  Application.ProcessMessages;
 end;
 
 end.
