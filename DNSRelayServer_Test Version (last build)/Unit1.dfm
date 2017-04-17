@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 251
-  Top = 192
+  Left = 208
+  Top = 171
   Width = 471
   Height = 522
   Caption = 'DNS Relay Server'
@@ -186,7 +186,7 @@ object Form1: TForm1
                   Top = 24
                   Width = 145
                   Height = 21
-                  ItemHeight = 13
+                  ItemHeight = 0
                   TabOrder = 0
                   Text = 'CBoxDNSServerSlaveIP'
                   OnChange = EditFilehostChange
@@ -1560,6 +1560,13 @@ object Form1: TForm1
     object N2: TMenuItem
       Caption = '-'
     end
+    object Mettrejour1: TMenuItem
+      Caption = 'Mettre '#224' jour'
+      OnClick = Mettrejour1Click
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -1567,13 +1574,6 @@ object Form1: TForm1
     object Masquer1: TMenuItem
       Caption = 'Masquer'
       OnClick = Masquer1Click
-    end
-    object N3: TMenuItem
-      Caption = '-'
-    end
-    object Mettrejour1: TMenuItem
-      Caption = 'Mettre '#224' jour'
-      OnClick = ButtonUpdateClick
     end
     object N1: TMenuItem
       Caption = '-'

@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.36';
+var CurrentApplicationVersion: string = '0.4.37';
 
 type
   TForm1 = class(TForm)
@@ -184,6 +184,7 @@ type
     procedure CheckBoxAutostartDNSOnBootClick(Sender: TObject);
     procedure ListBoxDNSMasterContextPopup(Sender: TObject;
       MousePos: TPoint; var Handled: Boolean);
+    procedure Mettrejour1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2304,6 +2305,11 @@ begin
   Mouse_Event(MOUSEEVENTF_LEFTDOWN, Point.X, Point.Y, 0, 0);
   Mouse_Event(MOUSEEVENTF_LEFTUP, Point.X, Point.Y, 0, 0);
   Application.ProcessMessages;
+end;
+
+procedure TForm1.Mettrejour1Click(Sender: TObject);
+begin
+  ButtonUpdateClick(ButtonUpdate);
 end;
 
 end.
