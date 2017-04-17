@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.42';
+var CurrentApplicationVersion: string = '0.4.43';
 
 type
   TForm1 = class(TForm)
@@ -1720,8 +1720,8 @@ begin
   //action kan on clique
   GetCursorPos(Pos);//positon de la souris;
   case X of
-    WM_LBUTTONDBLCLK: Show; //Double klik gauche
-    WM_LBUTTONDOWN:  Show;    //Bouton gauche pousse
+    WM_LBUTTONDBLCLK: Afficher1Click(nil); //Double klik gauche
+    WM_LBUTTONDOWN:  Afficher1Click(nil);    //Bouton gauche pousse
     WM_LBUTTONUP: ; //PopupMenu1.Popup(Pos.X,Pos.Y); //Bouton gauche lève
     WM_RBUTTONDBLCLK:; //Double klik droit
     WM_RBUTTONDOWN:;    //Bouton droit pousse
@@ -1738,9 +1738,11 @@ end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
+
   Self.Show;
   ShowWindow(Application.Handle, SW_SHOW);
-  Application.ShowMainForm := true; 
+  Application.ShowMainForm := true;
+  Application.BringToFront;   
 end;
 
 procedure TForm1.Quitter1Click(Sender: TObject);
@@ -1762,7 +1764,11 @@ begin
   if Form1.Width < 370 then Form1.Width := 370;
   if Splitter1.Visible then
   begin
-    if Form1.Height < 440 then Form1.Height := 440;
+    if Form1.Height < 440 then
+    begin
+      GroupBox5.Height := 80;
+      Form1.Height := 440;
+    end;
   end else begin
     if Form1.Height < 350 then Form1.Height := 350;
   end;

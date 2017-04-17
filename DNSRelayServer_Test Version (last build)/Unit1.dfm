@@ -87,7 +87,6 @@ object Form1: TForm1
       Top = 1
       Width = 336
       Height = 296
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -359,9 +358,9 @@ object Form1: TForm1
               object ButtonUpdate: TButton
                 Left = 8
                 Top = 140
-                Width = 57
+                Width = 89
                 Height = 25
-                Caption = 'V'#233'rifier'
+                Caption = 'Mettre '#224' jour'
                 TabOrder = 1
                 OnClick = ButtonUpdateClick
               end
