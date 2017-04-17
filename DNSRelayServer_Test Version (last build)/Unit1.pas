@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.45';
+var CurrentApplicationVersion: string = '0.4.46';
 
 type
   TForm1 = class(TForm)
@@ -119,6 +119,7 @@ type
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
     TimerStartInBackground: TTimer;
+    toujoursenavant1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -188,6 +189,7 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure Mettrejour1Click(Sender: TObject);
     procedure TimerStartInBackgroundTimer(Sender: TObject);
+    procedure toujoursenavant1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1059,6 +1061,8 @@ var
 begin
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
+  if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
+    Form1.Top := Screen.WorkAreaHeight - Form1.Height;
 
   if FormInstall = nil then
   begin
@@ -1153,8 +1157,8 @@ begin
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
 
   ToolButton11.Enabled := False;
-  Notebook1.PageIndex := 3;
-  ToolButton6.Down := True;
+  //Notebook1.PageIndex := 3;
+  //ToolButton6.Down := True;
 
 
   {
@@ -1198,7 +1202,7 @@ procedure TForm1.ButtonCloseClick(Sender: TObject);
 var
   i, max: Integer;
 begin
-  Notebook1.PageIndex := 4;
+  //Notebook1.PageIndex := 4;
   max := Length(listThreads)-1;
   for i:=0 to max do
   begin
@@ -1338,9 +1342,13 @@ var
 begin
 
 
-
+  
   Form1.Width := Form1.Constraints.MinWidth + 50;
   Form1.Height := Form1.Constraints.MinHeight + 50;
+
+  Form1.Top := Screen.WorkAreaHeight - Form1.Height;
+  Form1.Left := Screen.WorkAreaWidth - Form1.Width;
+
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -1771,11 +1779,13 @@ begin
     begin
       GroupBox5.Height := 80;
       Form1.Height := 440;
+      
     end;
   end else begin
     if Form1.Height < 350 then Form1.Height := 350;
   end;
-
+  if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
+    Form1.Top := Screen.WorkAreaHeight - Form1.Height;
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);
@@ -2342,6 +2352,15 @@ procedure TForm1.TimerStartInBackgroundTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   Masquer1Click(nil);
+end;
+
+procedure TForm1.toujoursenavant1Click(Sender: TObject);
+begin
+  toujoursenavant1.Checked := not toujoursenavant1.Checked;
+  if toujoursenavant1.Checked then Form1.FormStyle := fsStayOnTop
+  else Form1.FormStyle := fsNormal;
+  Systray.EnleveIconeTray;
+  Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 end;
 
 end.

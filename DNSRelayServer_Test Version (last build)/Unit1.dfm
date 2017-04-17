@@ -58,7 +58,6 @@ object Form1: TForm1
     0000FE0F0000F8030000E0000000800000000000000000000000000000000000
     000000000000000000000000000000010000000F0000C07F0000FFFF0000}
   OldCreateOrder = False
-  Position = poDesktopCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnMouseMove = FormMouseMove
@@ -1676,6 +1675,10 @@ object Form1: TForm1
     object Masquer1: TMenuItem
       Caption = 'Masquer'
       OnClick = Masquer1Click
+    end
+    object toujoursenavant1: TMenuItem
+      Caption = 'Toujours en avant'
+      OnClick = toujoursenavant1Click
     end
     object N1: TMenuItem
       Caption = '-'
