@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.43';
+var CurrentApplicationVersion: string = '0.4.44';
 
 type
   TForm1 = class(TForm)
@@ -281,11 +281,11 @@ begin
   //form1.MemoLogs.Lines.Add(IntToStr(sl.Count));
   if sl.Count >= 5 then
   begin
-    date := sl.Strings[0];
-    time := sl.Strings[1];
-    ipclient := sl.Strings[2];
-    ipdomain := sl.Strings[3];
-    domain := sl.Strings[4];
+    date := onlyChars(sl.Strings[0]);
+    time := onlyChars(sl.Strings[1]);
+    ipclient := onlyChars(sl.Strings[2]);
+    ipdomain := onlyChars(sl.Strings[3]);
+    domain := onlyChars(sl.Strings[4]);
     SetLength(domain, Length(domain)-1);
 
 
@@ -305,6 +305,7 @@ begin
     begin
 
       ip := getDomain(Form1.EditFilehost.Text, domain);
+      ip := onlyChars(ip);
       if ip = '' then imgIndex := 0
       else if ip = '127.0.0.1' then imgIndex := 3
       else if ipdomain = '127.0.0.1' then imgIndex := 3
@@ -1905,7 +1906,8 @@ end;
 procedure TForm1.Bloquerledomaine1Click(Sender: TObject);
 begin
   if not Assigned(SelectedListItem) then exit;
-  setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
+  //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
+  setDomain( EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
   refreshListView1Click();
   if isServerStarted then ButtonStartClick(nil);
 end;
@@ -1914,7 +1916,8 @@ procedure TForm1.Autoriser1Click(Sender: TObject);
 begin
   if not Assigned(SelectedListItem) then exit;
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
-  delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
+  //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
+  delDomain(EditFilehost.Text, SelectedListItem.Caption);
   refreshListView1Click();
   if isServerStarted then ButtonStartClick(nil);
 end;
@@ -1924,10 +1927,11 @@ var
   txt:string;
 begin
   if not Assigned(SelectedListItem) then exit;
-  txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.Caption);
-  if txt = '' then exit;
-  setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], txt);
-  SelectedListItem.Caption := txt;
+  txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]);
+  if (txt = '') or  (SelectedListItem.SubItems.Strings[0] = txt) then exit;
+  //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], txt);
+  setDomain( EditFilehost.Text, SelectedListItem.Caption, txt);
+  SelectedListItem.SubItems.Strings[0] := txt;
   refreshListView1Click();
   if isServerStarted then ButtonStartClick(nil);
 end;

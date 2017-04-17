@@ -8432,7 +8432,7 @@ object Form1: TForm1
   end
   object TimerStartInBackground: TTimer
     Enabled = False
-    Interval = 50
+    Interval = 1
     OnTimer = TimerStartInBackgroundTimer
     Left = 371
     Top = 136
