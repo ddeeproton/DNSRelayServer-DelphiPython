@@ -1,6 +1,6 @@
 @echo off
 
-set v=0.4.31
+set v=0.4.32
 
 echo Version %v%
 
