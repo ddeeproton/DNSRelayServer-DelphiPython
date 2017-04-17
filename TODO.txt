@@ -1,0 +1,1 @@
+-bug graphique lorsque démarré en mode /background
