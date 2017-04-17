@@ -1,8 +1,8 @@
 object Form1: TForm1
   Left = 208
-  Top = 171
+  Top = 172
   Width = 471
-  Height = 522
+  Height = 521
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -66,7 +66,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 395
+    Top = 394
     Width = 455
     Height = 10
     Cursor = crVSplit
@@ -826,7 +826,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 405
+    Top = 404
     Width = 455
     Height = 82
     Align = alBottom

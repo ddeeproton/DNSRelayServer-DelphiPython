@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.44';
+var CurrentApplicationVersion: string = '0.4.45';
 
 type
   TForm1 = class(TForm)
@@ -1907,7 +1907,8 @@ procedure TForm1.Bloquerledomaine1Click(Sender: TObject);
 begin
   if not Assigned(SelectedListItem) then exit;
   //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
-  setDomain( EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
+  setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
+  SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
   refreshListView1Click();
   if isServerStarted then ButtonStartClick(nil);
 end;
@@ -1918,6 +1919,7 @@ begin
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
   //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
   delDomain(EditFilehost.Text, SelectedListItem.Caption);
+  //SelectedListItem.Delete;
   refreshListView1Click();
   if isServerStarted then ButtonStartClick(nil);
 end;
