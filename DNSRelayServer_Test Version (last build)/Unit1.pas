@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.41';
+var CurrentApplicationVersion: string = '0.4.42';
 
 type
   TForm1 = class(TForm)
@@ -2129,7 +2129,7 @@ begin
       downloadFile(url, lastverFile);
       if FileExists(lastverFile) and (FileSize(lastverFile) > 0) then
       begin
-        if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar('La mise à jour est prête à être installé. Le serveur va s''arrêter et lancer le setup d''installation. Continuer?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
+        if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar('Le serveur va redémarrer. Continuer?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
         begin
           if Form1.CheckBoxUpdateSilent.Checked then
             ExecAndWait(lastverFile, '/S', SW_HIDE)
