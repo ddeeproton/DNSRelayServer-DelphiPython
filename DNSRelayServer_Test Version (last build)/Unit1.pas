@@ -118,6 +118,7 @@ type
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
+    TimerStartInBackground: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -186,6 +187,7 @@ type
     procedure ListBoxDNSMasterContextPopup(Sender: TObject;
       MousePos: TPoint; var Handled: Boolean);
     procedure Mettrejour1Click(Sender: TObject);
+    procedure TimerStartInBackgroundTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1451,10 +1453,10 @@ begin
   begin
     if ParamStr(i) = '/background' then
     begin
-      Masquer1Click(nil);
       ButtonStartClick(nil);
       startedInBackground := True;
       autostarted := True;
+      TimerStartInBackground.Enabled := True;
     end;
     if ParamStr(i) = '/autostart' then
     begin
@@ -2328,6 +2330,12 @@ end;
 procedure TForm1.Mettrejour1Click(Sender: TObject);
 begin
   ButtonUpdateClick(ButtonUpdate);
+end;
+
+procedure TForm1.TimerStartInBackgroundTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+  Masquer1Click(nil);
 end;
 
 end.

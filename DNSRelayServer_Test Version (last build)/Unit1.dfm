@@ -5000,8 +5000,8 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 370
-    Top = 135
+    Left = 344
+    Top = 161
   end
   object ImageList3: TImageList
     Left = 347
@@ -8429,5 +8429,12 @@ object Form1: TForm1
       Caption = 'Descendre'
       OnClick = ToolButtonDownDNSMasterClick
     end
+  end
+  object TimerStartInBackground: TTimer
+    Enabled = False
+    Interval = 50
+    OnTimer = TimerStartInBackgroundTimer
+    Left = 371
+    Top = 136
   end
 end
