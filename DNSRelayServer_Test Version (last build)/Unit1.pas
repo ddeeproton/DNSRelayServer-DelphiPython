@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.32';
+var CurrentApplicationVersion: string = '0.4.33';
 
 type
   TForm1 = class(TForm)
@@ -1378,6 +1378,8 @@ begin
                 'Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.';
 
 
+  ToolBar1.DoubleBuffered := True;
+  ToolBar2.DoubleBuffered := True;
   ToolBar3.DoubleBuffered := True;
   ListView1.DoubleBuffered := True;
   MemoLogs.DoubleBuffered := True;
