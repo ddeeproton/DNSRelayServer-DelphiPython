@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.31';
+var CurrentApplicationVersion: string = '0.4.32';
 
 type
   TForm1 = class(TForm)

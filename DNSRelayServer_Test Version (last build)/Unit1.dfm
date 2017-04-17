@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 240
-  Top = 154
+  Left = 251
+  Top = 192
   Width = 471
   Height = 522
   Caption = 'DNS Relay Server'
@@ -87,6 +87,7 @@ object Form1: TForm1
       Top = 1
       Width = 336
       Height = 296
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -585,8 +586,11 @@ object Form1: TForm1
             Align = alClient
             BevelWidth = 10
             Columns = <>
+            GridLines = True
             ReadOnly = True
+            RowSelect = True
             SmallImages = ImageList3
+            SortType = stText
             TabOrder = 1
             ViewStyle = vsReport
             OnChange = ListView1Change
