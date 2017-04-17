@@ -1,12 +1,12 @@
 object Form1: TForm1
   Left = 240
   Top = 154
-  Width = 588
-  Height = 560
+  Width = 377
+  Height = 522
   Caption = 'DNS Relay Server'
   Color = clWhite
-  Constraints.MinHeight = 345
-  Constraints.MinWidth = 370
+  Constraints.MinHeight = 300
+  Constraints.MinWidth = 300
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -66,11 +66,13 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 433
-    Width = 572
+    Top = 395
+    Width = 361
     Height = 10
     Cursor = crVSplit
     Align = alBottom
+    Color = clWhite
+    ParentColor = False
     Visible = False
   end
   object Panel1: TPanel
@@ -85,7 +87,6 @@ object Form1: TForm1
       Top = 1
       Width = 336
       Height = 296
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -107,6 +108,7 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 258
+            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clBtnText
             TabFont.Height = -11
@@ -635,7 +637,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 572
+    Width = 361
     Height = 73
     Align = alTop
     BevelOuter = bvNone
@@ -716,8 +718,8 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 443
-    Width = 572
+    Top = 405
+    Width = 361
     Height = 82
     Align = alBottom
     Caption = 'Logs'
@@ -726,7 +728,7 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 15
-      Width = 568
+      Width = 357
       Height = 65
       Align = alClient
       ScrollBars = ssBoth

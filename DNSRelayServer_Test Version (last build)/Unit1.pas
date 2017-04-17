@@ -586,7 +586,7 @@ begin
     '    For Each Value in OS'#13#10+
     '      if left(Value.Version, 3) < 6.0 then exit do'#13#10+
     '    Next'#13#10+
-    '    WScript.Echo "Veuillez répondre oui au dialogue suivant afin de réparer votre connexion Internet."'#13#10+
+    '    WScript.Echo "Script de réparation de connexion réseau. Veuillez répondre oui au dialogue suivant afin de réparer votre connexion Internet. Et non, si le serveur DNS Relai s''est déjà lancé et que vous voulez continuer à l''utiliser."'#13#10+
     '    Set Shell = CreateObject("Shell.Application")'#13#10+
     '    Shell.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ uac", "", "runas"'#13#10+
     '    WScript.Quit'#13#10+
@@ -1042,7 +1042,8 @@ var
   filepath: string;
   dns: string;
 begin
-
+  Splitter1.Visible := True;
+  GroupBox5.Visible := True;
 
   if FormInstall = nil then
   begin
@@ -1737,6 +1738,14 @@ procedure TForm1.ToolButton8Click(Sender: TObject);
 begin
   Notebook1.PageIndex := 0;
   refreshCheckBox(CheckBoxStartWithWindows);
+  if Form1.Width < 370 then Form1.Width := 370;
+  if Splitter1.Visible then
+  begin
+    if Form1.Height < 440 then Form1.Height := 440;
+  end else begin
+    if Form1.Height < 350 then Form1.Height := 350;
+  end;
+
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);
@@ -1983,8 +1992,6 @@ end;
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
 
-  Splitter1.Visible := True;
-  GroupBox5.Visible := True;
   if isServerStarted then
   begin
     //if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
@@ -2223,7 +2230,7 @@ begin
   begin
     ToolButton8.Down := False;
     //ToolButton3.Down := True;
-    ToolButton3Click(nil);
+    ToolButton6Click(nil);
   end;
   setIPToDHCP();
   MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
@@ -2237,7 +2244,7 @@ begin
   begin
     ToolButton8.Down := False;
     //ToolButton3.Down := True;
-    ToolButton3Click(nil);
+    ToolButton6Click(nil);
   end;
   MemoLogs.Lines.Add('Go to DHCP');
   setDNS('');
