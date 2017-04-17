@@ -24,11 +24,11 @@ var HauteurMinimum, HauteurMaximum: integer;
 begin
   // On créer la première colone dans ListView1
   AjouterUneColone(ListView.Columns.Add,
-                   'IP',
+                   'Domain',
                    150); //ListView.Width div 2 + 30
   // On créer la seconde colone dans ListView1
   AjouterUneColone(ListView.Columns.Add,
-                   'Domain',
+                   'IP',
                    ListView.Width - 180);   //ListView.Width div 2 - 50
 
   // On charge la liste des proxy dans ListView1

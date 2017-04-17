@@ -1,6 +1,8 @@
-set v=0.4.39
-
 @echo off
+
+@rem set v=0.4.39
+set /p v=<version.txt
+
 
 
 
