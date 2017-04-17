@@ -1378,9 +1378,6 @@ begin
                 'Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.';
 
 
-  ToolBar1.DoubleBuffered := True;
-  ToolBar2.DoubleBuffered := True;
-  ToolBar3.DoubleBuffered := True;
   ListView1.DoubleBuffered := True;
   MemoLogs.DoubleBuffered := True;
   TabbedNotebook1.DoubleBuffered := True;
