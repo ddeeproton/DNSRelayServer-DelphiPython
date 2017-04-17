@@ -1,0 +1,1 @@
+-Faire trois essais au démarrage du serveur avant d'échouer (au lieu d'un)
