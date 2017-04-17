@@ -1,1 +1,0 @@
-"C:\!Share\Programmation\Delphi\DNS 2\trunk\DNSRelayServer_Test Version (last build)\setup/wget.exe" --no-cache -O "C:\!Share\Programmation\Delphi\DNS 2\trunk\DNSRelayServer_Test Version (last build)\setup\lastversion.txt" "https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt?16.04.2017 21:40:10" --no-check-certificate
