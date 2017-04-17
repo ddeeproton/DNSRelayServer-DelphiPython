@@ -23,7 +23,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, Spin, Buttons, TabNotBk;
 
-var CurrentApplicationVersion: string = '0.4.37';
+var CurrentApplicationVersion: string = '0.4.38';
 
 type
   TForm1 = class(TForm)
@@ -294,7 +294,8 @@ begin
     isNew := true;
     for i := 0 to form1.ListView1.Items.Count-1 do
     begin
-      if form1.ListView1.Items[i].SubItems[0] =  domain then isNew := false;
+      //if form1.ListView1.Items[i].SubItems[0] =  domain then isNew := false;
+      if form1.ListView1.Items[i].Caption =  domain then isNew := false;
     end;
 
     if isNew then
@@ -306,7 +307,7 @@ begin
       else if ipdomain = '127.0.0.1' then imgIndex := 3
       else imgIndex := 1;
 
-      EditerLigne2(form1.ListView1, -1, imgIndex, ipdomain, domain, imgIndex = 3);
+      EditerLigne2(form1.ListView1, -1, imgIndex, domain, ipdomain, imgIndex = 3);
       //i := form1.ListView1.Items.Count;
       //EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
       Form1.refreshListView1Click();
