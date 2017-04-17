@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.46';
+var CurrentApplicationVersion: string = '0.4.47';
 
 type
   TForm1 = class(TForm)
@@ -1786,6 +1786,9 @@ begin
   end;
   if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
     Form1.Top := Screen.WorkAreaHeight - Form1.Height;
+
+  if Form1.Left > Screen.WorkAreaWidth - Form1.Width then
+    Form1.Left := Screen.WorkAreaWidth - Form1.Width;
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);
