@@ -1,1 +1,2 @@
 -bug graphique lorsque démarré en mode /background
+-bug graphique quand on bloque un domaine (le menu disparaît)
