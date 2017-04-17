@@ -6,7 +6,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost, XPMan, Systray, Registry, md5, ListViewManager, HostParser,
+  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, XPMan,
+  Spin, Buttons, TabNotBk,
   NetworkManager, DNSManager,
   // url Download
   UrlMon,
@@ -21,9 +22,9 @@ uses
   // Pour AnsiReplaceStr
   StrUtils,
   // Pour LaunchAndWait
-  ProcessManager, Spin, Buttons, TabNotBk;
+  ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.40';
+var CurrentApplicationVersion: string = '0.4.41';
 
 type
   TForm1 = class(TForm)
@@ -48,10 +49,6 @@ type
     GroupBox3: TGroupBox;
     ListBoxIpClients: TListBox;
     GroupBox4: TGroupBox;
-    ToolBar2: TToolBar;
-    ToolButton10: TToolButton;
-    ToolButtonEditHost: TToolButton;
-    ToolButton9: TToolButton;
     ListView1: TListView;
     Timer1: TTimer;
     GroupBox6: TGroupBox;
@@ -117,6 +114,10 @@ type
     N4: TMenuItem;
     Monter1: TMenuItem;
     Descendre1: TMenuItem;
+    Panel6: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1335,8 +1336,8 @@ begin
 
 
 
-  Form1.Width := Form1.Constraints.MinWidth;
-  Form1.Height := Form1.Constraints.MinHeight;
+  Form1.Width := Form1.Constraints.MinWidth + 50;
+  Form1.Height := Form1.Constraints.MinHeight + 50;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -1379,12 +1380,7 @@ begin
                 'Vous êtes en version beta-test, ce qui signifie que ce programme n''a pas été encore testé partout. Il peut y avoir encore des bugs non-répertoriés.'+#13#10#13#10+
                 'Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.';
 
-{
-  ListView1.DoubleBuffered := True;
-  MemoLogs.DoubleBuffered := True;
-  TabbedNotebook1.DoubleBuffered := True;
- }
- 
+
   Panel1.Align := alClient;
   GroupBox1.Align := alClient;
   GroupBox2.Align := alClient;
@@ -1479,6 +1475,20 @@ begin
   // Do Update
   //TUpdate.Create(false);
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
+
+  {
+  Panel6.DoubleBuffered := True;
+  ListView1.DoubleBuffered := True;
+  Panel1.DoubleBuffered := True;
+  TabbedNotebook1.DoubleBuffered := True;
+  }
+{
+  ListView1.DoubleBuffered := True;
+  MemoLogs.DoubleBuffered := True;
+
+ }
+  //ToolBar3.DoubleBuffered := True;
+  //Form1.DoubleBuffered := True;
 
   //ShowMessage();
 end;
