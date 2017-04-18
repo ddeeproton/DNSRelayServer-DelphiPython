@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.49';
+var CurrentApplicationVersion: string = '0.4.50';
 
 type
   TForm1 = class(TForm)
@@ -1944,7 +1944,7 @@ begin
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
   //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
   delDomain(EditFilehost.Text, SelectedListItem.Caption);
-  //SelectedListItem.Delete;
+  SelectedListItem.Delete;
   refreshListView1Click();
   if isServerStarted then ButtonStartClick(nil);
 end;
