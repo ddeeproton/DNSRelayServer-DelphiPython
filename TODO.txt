@@ -1,7 +1,8 @@
 -Faire trois essais au démarrage du serveur avant d'échouer (au lieu d'un)
--Proposer une listBox des IP affectés à la machine afin d'offrir la possibilité de lancer plusieurs serveurs DNS en une seule interface
--Proposer d'effacer le cache au bout de X temps
+-Proposer une listBox des IP affectés à la machine afin d'offrir la possibilité de lancer plusieurs serveurs DNS en une seule interface GUI
+-Proposer d'effacer le cache DNS au bout de X temps
 -Pouvoir choisir d'afficher que certaines boules
 -Trouver un moyen de ban et débanir en un click (au lieu de deux)
 -Proposer un système d'alerte à la manière d'un antivirus
 -Pouvoir créer des règles de bann pour tous les alias d'un domaine
+-Proposer une liste de domaines pré-blacklistés
