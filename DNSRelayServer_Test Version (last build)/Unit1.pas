@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.48';
+var CurrentApplicationVersion: string = '0.4.49';
 
 type
   TForm1 = class(TForm)
@@ -1759,17 +1759,13 @@ end;
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin
   Self.Hide;
-  ShowWindow(Application.Handle, SW_HIDE);
-  Application.ShowMainForm := false;
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
-
   Self.Show;
-  ShowWindow(Application.Handle, SW_SHOW);
-  Application.ShowMainForm := true;
-  Application.BringToFront;   
+  Application.Restore;
+  Application.BringToFront;
 end;
 
 procedure TForm1.Quitter1Click(Sender: TObject);
