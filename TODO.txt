@@ -3,3 +3,5 @@
 -Proposer d'effacer le cache au bout de X temps
 -Pouvoir choisir d'afficher que certaines boules
 -Trouver un moyen de ban et débanir en un click (au lieu de deux)
+-Proposer un système d'alerte à la manière d'un antivirus
+-Pouvoir créer des règles de bann pour tous les alias d'un domaine
