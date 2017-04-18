@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.49';
+var CurrentApplicationVersion: string = '0.4.50';
 
 type
   TForm1 = class(TForm)

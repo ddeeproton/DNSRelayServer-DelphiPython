@@ -1,3 +1,4 @@
+-Mémoriser le chemin de l'installation (pour les mises à jour et désinstallation)
 -Faire trois essais au démarrage du serveur avant d'échouer (au lieu d'un)
 -Proposer une listBox des IP affectés à la machine afin d'offrir la possibilité de lancer plusieurs serveurs DNS en une seule interface GUI
 -Proposer d'effacer le cache DNS au bout de X temps
