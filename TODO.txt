@@ -5,4 +5,4 @@
 -Trouver un moyen de ban et débanir en un click (au lieu de deux)
 -Proposer un système d'alerte à la manière d'un antivirus
 -Pouvoir créer des règles de bann pour tous les alias d'un domaine
--Proposer une liste de domaines pré-blacklistés
+-Proposer une liste de domaines pré-blacklistés par moi (ou pouvoir partager sa blacklist à tous)... à voir
