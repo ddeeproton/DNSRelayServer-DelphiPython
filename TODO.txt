@@ -1,14 +1,14 @@
--Mémoriser le chemin de l'installation (pour les mises à jour et désinstallation)
--Faire trois essais au démarrage du serveur avant d'échouer (au lieu d'un)
--Proposer une listBox des IP affectés à la machine afin d'offrir la possibilité de lancer plusieurs serveurs DNS en une seule interface GUI
--Proposer d'effacer le cache DNS au bout de X temps
--Pouvoir choisir d'afficher que certaines boules
--Trouver un moyen de ban et débanir en un click (au lieu de deux)
--Proposer un système d'alerte à la manière d'un antivirus
--Pouvoir créer des règles de bann pour tous les alias d'un domaine
--Proposer une liste de domaines pré-blacklistés par moi (ou pouvoir partager sa blacklist à tous)... à voir
--Faire que le programme propose de fermer ou continuer lorsqu'on ferme la fenêtre depuis la croix
--Détecter dans le script de réparation de connexion si le serveur DNS tourne déjà, et si oui, alors ne rien faire.
+-Setup: Mémoriser le chemin de l'installation (pour les mises à jour et désinstallation)
+-Serveur: Faire trois essais au démarrage du serveur avant d'échouer (au lieu d'un)
+-Config: Proposer une listBox des IP affectés à la machine afin d'offrir la possibilité de lancer plusieurs serveurs DNS en une seule interface GUI
+-Config: Proposer d'effacer le cache DNS au bout de X temps
+-Web Filter: Pouvoir choisir d'afficher que certaines boules
+-Web Filter: Trouver un moyen de ban et débanir en un click (au lieu de deux)
+-Web Filter: Proposer un système d'alerte à la manière d'un antivirus
+-Web Filter: Pouvoir créer des règles de bann pour tous les alias d'un domaine
+-Web Filter: Proposer une liste de domaines pré-blacklistés par moi (ou pouvoir partager sa blacklist à tous)... à voir
+-Application: Faire que le programme propose de fermer ou continuer lorsqu'on ferme la fenêtre depuis la croix
+-VBS: Détecter dans le script de réparation de connexion si le serveur DNS tourne déjà, et si oui, alors ne rien faire.
 
 -proposer des versions spécialiés du programme
 	-une version simplifié de ce programme qui filtre le contenu des adultes (pour les parents qui n'y connaissent rien et laissent leurs enfants sur le PC)
