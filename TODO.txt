@@ -6,7 +6,10 @@
 -Proposer un système d'alerte à la manière d'un antivirus
 -Pouvoir créer des règles de bann pour tous les alias d'un domaine
 -Proposer une liste de domaines pré-blacklistés par moi (ou pouvoir partager sa blacklist à tous)... à voir
--proposer une version simplifié de ce programme qui filtre le contenu des adultes (pour les parents qui n'y connaissent rien et laissent leurs enfants sur le PC)
 -Faire que le programme propose de fermer ou continuer lorsqu'on ferme la fenêtre depuis la croix
 
-
+-proposer des versions spécialiés du programme
+	-une version simplifié de ce programme qui filtre le contenu des adultes (pour les parents qui n'y connaissent rien et laissent leurs enfants sur le PC)
+	-une version cybercafé (ou partage de wifi au publique)
+	-une version zéro publicités style ad-block
+	-une version network admin, tu customizes tout
