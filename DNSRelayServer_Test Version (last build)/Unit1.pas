@@ -611,7 +611,7 @@ begin
     'end sub';
     if enabled then ecrireDansUnFichier(dirPath+'setDNSOnBoot.vbs', scriptVBS);
 
-  // For versions equal or less than <= 0.4.7 
+  // For versions equal or less than <= 0.4.7
   Reg := TRegistry.Create;
   Reg.RootKey := HKEY_CURRENT_USER;
   try
@@ -625,17 +625,33 @@ begin
     Reg.Free;
   end;
 
+  // For versions equal or less than <= 0.4.47
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  try
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName)) then
+        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName));
+    Reg.CloseKey;
+  end;
+  finally
+    Reg.Free;
+  end;
 
+
+
+  // New version
   Reg := TRegistry.Create;
   Reg.RootKey := HKEY_LOCAL_MACHINE;
   try
   if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
   begin
     if enabled then
-      Reg.WriteString(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName), dirPath+'setDNSOnBoot.vbs')
+      Reg.WriteString(ExtractFileName(Application.ExeName)+'_restoreNet', dirPath+'setDNSOnBoot.vbs')
     else begin
-      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName)) then
-        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName));
+      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet') then
+        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet');
     end;
     Reg.CloseKey;
   end;
@@ -2309,7 +2325,7 @@ begin
   end;
   MemoLogs.Lines.Add('Go to DHCP');
   setDNS('');
-  setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+  setDNSOnBoot(False);
   setIPToDHCP();
 end;
 

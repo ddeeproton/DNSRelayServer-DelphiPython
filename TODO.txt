@@ -7,6 +7,7 @@
 -Pouvoir créer des règles de bann pour tous les alias d'un domaine
 -Proposer une liste de domaines pré-blacklistés par moi (ou pouvoir partager sa blacklist à tous)... à voir
 -Faire que le programme propose de fermer ou continuer lorsqu'on ferme la fenêtre depuis la croix
+-Détecter dans le script de réparation de connexion si le serveur DNS tourne déjà, et si oui, alors ne rien faire.
 
 -proposer des versions spécialiés du programme
 	-une version simplifié de ce programme qui filtre le contenu des adultes (pour les parents qui n'y connaissent rien et laissent leurs enfants sur le PC)
