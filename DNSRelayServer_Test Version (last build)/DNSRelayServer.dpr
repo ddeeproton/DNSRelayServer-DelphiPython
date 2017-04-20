@@ -12,7 +12,8 @@ uses
   NetworkManager in 'NetworkManager.pas',
   ProcessManager in 'ProcessManager.pas',
   PythonDNS in 'PythonDNS.pas',
-  DNSManager in 'DNSManager.pas';
+  DNSManager in 'DNSManager.pas',
+  UnitAlert in 'UnitAlert.pas' {FormAlert};
 
 {$R *.res}
 
@@ -22,5 +23,6 @@ begin
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TFormHost, FormHost);
   Application.CreateForm(TFormInstall, FormInstall);
+  Application.CreateForm(TFormAlert, FormAlert);
   Application.Run;
 end.

@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 381
-  Top = 215
+  Left = 196
+  Top = 211
   Width = 419
   Height = 519
   Caption = 'DNS Relay Server'
@@ -114,7 +114,12 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 258
-            PageIndex = 3
+            PageIndex = 4
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clWhite
             TabFont.Height = -11
@@ -523,6 +528,33 @@ object Form1: TForm1
                 Caption = 'Afficher un th'#232'me sombre'
                 TabOrder = 0
                 OnClick = CheckBoxSwitchThemeClick
+              end
+              object CheckBoxAlertEventsKnown: TCheckBox
+                Left = 8
+                Top = 32
+                Width = 273
+                Height = 17
+                Caption = 'Afficher des alertes pour les domaines inconnus'
+                TabOrder = 1
+                OnClick = CheckBoxAlertEventsKnownClick
+              end
+              object CheckBoxAlertEventDisallowed: TCheckBox
+                Left = 8
+                Top = 80
+                Width = 273
+                Height = 17
+                Caption = 'Afficher des alertes pour les domaines bloqu'#233's'
+                TabOrder = 2
+                OnClick = CheckBoxAlertEventDisallowedClick
+              end
+              object CheckBoxAlertEventsUnknown: TCheckBox
+                Left = 8
+                Top = 56
+                Width = 257
+                Height = 17
+                Caption = 'Afficher des alertes pour les domaines connus'
+                TabOrder = 3
+                OnClick = CheckBoxAlertEventsUnknownClick
               end
             end
           end

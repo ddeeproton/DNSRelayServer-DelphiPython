@@ -8,7 +8,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, //XPMan,
   Spin, Buttons, TabNotBk,
-  NetworkManager, DNSManager,
+  NetworkManager, DNSManager, UnitAlert,
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.51';
+var CurrentApplicationVersion: string = '0.4.52';
 
 type
   TForm1 = class(TForm)
@@ -120,6 +120,9 @@ type
     ToolButton6: TToolButton;
     ToolButton5: TToolButton;
     CheckBoxSwitchTheme: TCheckBox;
+    CheckBoxAlertEventsKnown: TCheckBox;
+    CheckBoxAlertEventDisallowed: TCheckBox;
+    CheckBoxAlertEventsUnknown: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -192,12 +195,16 @@ type
     procedure toujoursenavant1Click(Sender: TObject);
     procedure setTheme(color, bg:TColor);
     procedure CheckBoxSwitchThemeClick(Sender: TObject);
+    procedure CheckBoxAlertEventsKnownClick(Sender: TObject);
+    procedure CheckBoxAlertEventsUnknownClick(Sender: TObject);
+    procedure CheckBoxAlertEventDisallowedClick(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     PythonPath: String;
-    DataDirectoryPath: String;
+    DataDirectoryPath: String;      
+    isServerStarted: boolean;
   end;
 
   TSauvegarde = class(TThread)
@@ -240,7 +247,6 @@ var
 
   //DataDirectoryPath: string = '';
   DNSMasterSerialized: string = '';
-  isServerStarted: boolean = True;
 implementation
 
 {$R *.dfm}
@@ -271,6 +277,7 @@ var
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
   date, time, ipclient, ipdomain, domain, ip:string;
+  FormAlert: TFormAlert;
 begin
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
@@ -319,6 +326,34 @@ begin
       //i := form1.ListView1.Items.Count;
       //EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
       Form1.refreshListView1Click();
+
+        if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
+        begin
+          FormAlert := TFormAlert.Create(nil);
+          FormAlert.PanelDisallowed.Visible := False;
+          FormAlert.Label1.Caption := domain;
+          FormAlert.Label2.Caption := domain;
+          FormAlert.FormCreate(nil);
+          FormAlert.Show;
+        end;
+        if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
+        begin        
+          FormAlert := TFormAlert.Create(nil);
+          FormAlert.PanelDisallowed.Visible := False;
+          FormAlert.Label1.Caption := domain;
+          FormAlert.Label2.Caption := domain; 
+          FormAlert.FormCreate(nil);
+          FormAlert.Show;
+        end;
+        if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
+        begin
+          FormAlert := TFormAlert.Create(nil);
+          FormAlert.PanelAllowed.Visible := False;
+          FormAlert.Label1.Caption := domain;
+          FormAlert.Label2.Caption := domain;  
+          FormAlert.FormCreate(nil);
+          FormAlert.Show;
+        end;
     end;
 
   end
@@ -1472,7 +1507,9 @@ begin
   CheckBoxSwitchThemeClick(CheckBoxSwitchTheme);
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   ButtonRefreshNetCardClick(nil);
-
+  CheckBoxAlertEventsKnown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
+  CheckBoxAlertEventsUnknown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
+  CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
 
   startedInBackground := False;
   autostarted := False;
@@ -2459,5 +2496,32 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'checkSwitchTheme.cfg');
 end;
+
+
+
+procedure TForm1.CheckBoxAlertEventsKnownClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventsKnow.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
+end;
+
+procedure TForm1.CheckBoxAlertEventsUnknownClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventsUnknown.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
+end;
+
+procedure TForm1.CheckBoxAlertEventDisallowedClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventDisallowed.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
+end;
+
 
 end.
