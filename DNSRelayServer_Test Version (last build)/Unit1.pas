@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.54';
+var CurrentApplicationVersion: string = '0.4.55';
 
 type
   TForm1 = class(TForm)
@@ -342,7 +342,7 @@ begin
           FormAlert.Label2.Caption := domain;
           FormAlert.FormCreate(nil);
           TimerResetAlertPosition.Enabled := False;
-          TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
+          TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1;
           TimerResetAlertPosition.Enabled := True;
           FormAlert.Show;        
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
@@ -1423,7 +1423,8 @@ var
   startedInBackground: Boolean;
   autostarted: Boolean;
 begin
-
+  // Masque la fenêtre de la taskbar
+  SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
   
   Form1.Width := Form1.Constraints.MinWidth + 50;

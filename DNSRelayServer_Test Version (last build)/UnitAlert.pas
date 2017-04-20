@@ -104,7 +104,7 @@ begin
   PanelAllowed.Top := 0;
   PanelDisallowed.Top := 0;
   Self.Height := PanelAllowed.Height;
-  Self.Width := Label1.Width + ButtonAllowDomain.Width + 70;
+  Self.Width := Label1.Width + ButtonAllowDomain.Width + 20;
   Self.Left := Screen.WorkAreaWidth - Self.Width;
   //Self.Top := Screen.WorkAreaHeight - Self.Height;
   //Self.SendToBack;
