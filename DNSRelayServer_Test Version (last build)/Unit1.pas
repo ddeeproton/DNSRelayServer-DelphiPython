@@ -6,7 +6,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, XPMan,
+  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, //XPMan,
   Spin, Buttons, TabNotBk,
   NetworkManager, DNSManager,
   // url Download
@@ -22,9 +22,9 @@ uses
   // Pour AnsiReplaceStr
   StrUtils,
   // Pour LaunchAndWait
-  ProcessManager;
+  ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.50';
+var CurrentApplicationVersion: string = '0.4.51';
 
 type
   TForm1 = class(TForm)
@@ -45,7 +45,6 @@ type
     Panel1: TPanel;
     Notebook1: TNotebook;
     GroupBox2: TGroupBox;
-    GroupBox1: TGroupBox;
     GroupBox3: TGroupBox;
     ListBoxIpClients: TListBox;
     GroupBox4: TGroupBox;
@@ -97,13 +96,6 @@ type
     Panel2: TPanel;
     Label9: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
-    Panel5: TPanel;
-    ToolBar3: TToolBar;
-    ToolButton11: TToolButton;
-    ToolButton8: TToolButton;
-    ToolButton4: TToolButton;
-    ToolButton6: TToolButton;
-    ToolButton5: TToolButton;
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
     Splitter1: TSplitter;
@@ -115,11 +107,19 @@ type
     Monter1: TMenuItem;
     Descendre1: TMenuItem;
     Panel6: TPanel;
-    BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
-    BitBtn3: TBitBtn;
     TimerStartInBackground: TTimer;
     toujoursenavant1: TMenuItem;
+    ToolBar2: TToolBar;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton7: TToolButton;
+    ToolBar3: TToolBar;
+    ToolButton11: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton5: TToolButton;
+    CheckBoxSwitchTheme: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -190,6 +190,8 @@ type
     procedure Mettrejour1Click(Sender: TObject);
     procedure TimerStartInBackgroundTimer(Sender: TObject);
     procedure toujoursenavant1Click(Sender: TObject);
+    procedure setTheme(color, bg:TColor);
+    procedure CheckBoxSwitchThemeClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1409,7 +1411,6 @@ begin
 
 
   Panel1.Align := alClient;
-  GroupBox1.Align := alClient;
   GroupBox2.Align := alClient;
   GroupBox3.Align := alClient;
   GroupBox4.Align := alClient;
@@ -1417,6 +1418,7 @@ begin
   GroupBox6.Align := alClient;
   Notebook1.Align := alClient;
   TabbedNotebook1.Align := alClient;
+
 
 
 
@@ -1518,6 +1520,74 @@ begin
   //Form1.DoubleBuffered := True;
 
   //ShowMessage();
+
+
+
+  setTheme(clBlack, clWhite);
+  //setTheme(RGB(10,30,40), RGB(220,155,220));
+end;
+
+procedure TForm1.setTheme(color, bg:TColor);
+begin
+
+  Form1.Color := bg;
+  ToolBar3.Color := bg;
+  GroupBox3.Color := bg;
+  GroupBox4.Color := bg;
+  ToolBar2.Color := bg;
+  ListView1.Color := bg;
+  Splitter1.Color := bg;
+  GroupBox5.Color := bg;
+  GroupBox6.Color := bg;
+  Memo1.Color := bg;
+  MemoLogs.Color := bg;
+  ListBoxIpClients.Color := bg;
+  GroupBox2.Color := bg;
+  Panel2.Color := bg;
+  Panel3.Color := bg;
+  Panel4.Color := bg;
+  Panel6.Color := bg;
+  ToolBar1.Color := bg;
+  ListBoxDNSMaster.Color := bg;
+  CBoxDNSServerSlaveIP.Color := bg;
+  SpinPort.Color := bg;
+  EditFilehost.Color := bg;
+  CheckBoxStartWithWindows.Color := bg;
+  CheckBoxAutostartDNSOnBoot.Color := bg;
+
+
+  Form1.Font.Color := color;
+  ListView1.Font.Color := color;
+  Memo1.Font.Color := color;
+  MemoLogs.Font.Color := color;
+  ListBoxIpClients.Font.Color := color;
+  ListBoxDNSMaster.Font.Color := color;
+  CBoxDNSServerSlaveIP.Font.Color := color;
+  SpinPort.Font.Color := color;
+  EditFilehost.Font.Color := color;
+  GroupBox2.Font.Color := color;
+  GroupBox3.Font.Color := color;
+  GroupBox4.Font.Color := color;
+  GroupBox5.Font.Color := color;
+  GroupBox6.Font.Color := color;
+  GroupBox7.Font.Color := color;
+  Label1.Font.Color := color;
+  Label2.Font.Color := color;
+  Label3.Font.Color := color;
+  Label4.Font.Color := color;
+  Label5.Font.Color := color;
+  Label6.Font.Color := color;
+  Label7.Font.Color := color;
+  CheckBoxStartWithWindows.Font.Color := color;
+  CheckBoxAutostartDNSOnBoot.Font.Color := color;
+  CheckBoxUpdate.Font.Color := color;
+  CheckBoxUpdateIntervall.Font.Color := color;
+  SpinTimeCheckUpdate.Font.Color := color;
+  CheckBoxUpdateSilent.Font.Color := color;
+  CheckBoxAllowModifyNetCard.Font.Color := color;
+  Label9.Font.Color := color;
+  Label7.Font.Color := color;
+
 end;
 
 procedure TUpdate.Execute;
@@ -2121,7 +2191,8 @@ begin
    }
   //if isSilent then Form1.MemoLogs.Lines.Add('Recherche de Mise à jour...');
 
-  url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt?'+DateTimeToStr(Now);
+  url := 'https://raw.githubusercontent.com/ddeeproton/DNSRelayServer-DelphiPython/master/Special version/BlackEdition/lastversion.txt';
+  //url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt?'+DateTimeToStr(Now);
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
   if FileExists(lastverFile) then DeleteFile(lastverFile);
   if FileExists(lastverFile) then
@@ -2376,6 +2447,14 @@ begin
   else Form1.FormStyle := fsNormal;
   Systray.EnleveIconeTray;
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+end;
+
+procedure TForm1.CheckBoxSwitchThemeClick(Sender: TObject);
+begin
+  if TCheckbox(Sender).Checked then
+    setTheme(clWhite, clBlack)
+  else
+    setTheme(clBlack, clWhite);
 end;
 
 end.
