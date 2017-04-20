@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.52';
+var CurrentApplicationVersion: string = '0.4.53';
 
 type
   TForm1 = class(TForm)
@@ -247,6 +247,7 @@ var
 
   //DataDirectoryPath: string = '';
   DNSMasterSerialized: string = '';
+  LastPositionFormAlertTop: integer = 0;
 implementation
 
 {$R *.dfm}
@@ -330,13 +331,17 @@ begin
 
         if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
         begin
-          FormAlert := TFormAlert.Create(nil);    
+          FormAlert := TFormAlert.Create(nil);
           FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain;
           FormAlert.FormCreate(nil);
-          FormAlert.Show;
+          FormAlert.Show;        
+          LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
+          if LastPositionFormAlertTop <= 0 then
+            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
+          FormAlert.Top := LastPositionFormAlertTop;
         end;
         if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
         begin        
@@ -346,7 +351,12 @@ begin
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain; 
           FormAlert.FormCreate(nil);
-          FormAlert.Show;
+          FormAlert.Show;   
+          LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
+          if LastPositionFormAlertTop <= 0 then
+            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height; 
+          FormAlert.Top := LastPositionFormAlertTop;
+
         end;
         if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
         begin
@@ -357,6 +367,10 @@ begin
           FormAlert.Label2.Caption := domain;  
           FormAlert.FormCreate(nil);
           FormAlert.Show;
+          LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
+          if LastPositionFormAlertTop <= 0 then
+            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height; 
+          FormAlert.Top := LastPositionFormAlertTop;
         end;
 
   end
