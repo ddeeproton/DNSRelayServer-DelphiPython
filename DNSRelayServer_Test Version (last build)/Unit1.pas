@@ -1468,8 +1468,8 @@ begin
   TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-
-
+  CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
+  CheckBoxSwitchThemeClick(CheckBoxSwitchTheme);
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   ButtonRefreshNetCardClick(nil);
 
@@ -1523,7 +1523,6 @@ begin
 
 
 
-  setTheme(clBlack, clWhite);
   //setTheme(RGB(10,30,40), RGB(220,155,220));
 end;
 
@@ -2191,8 +2190,8 @@ begin
    }
   //if isSilent then Form1.MemoLogs.Lines.Add('Recherche de Mise à jour...');
 
-  url := 'https://raw.githubusercontent.com/ddeeproton/DNSRelayServer-DelphiPython/master/Special version/BlackEdition/lastversion.txt';
-  //url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt?'+DateTimeToStr(Now);
+  //url := 'https://raw.gith4ubusercontent.com/ddeeproton/DNSRelayServer-DelphiPython/master/Special version/BlackEdition/lastversion.txt';
+  url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt?'+DateTimeToStr(Now);
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
   if FileExists(lastverFile) then DeleteFile(lastverFile);
   if FileExists(lastverFile) then
@@ -2455,6 +2454,10 @@ begin
     setTheme(clWhite, clBlack)
   else
     setTheme(clBlack, clWhite);
+  if TCheckBox(Sender).Checked then
+    ecrireDansUnFichier(DataDirectoryPath + 'checkSwitchTheme.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkSwitchTheme.cfg');
 end;
 
 end.
