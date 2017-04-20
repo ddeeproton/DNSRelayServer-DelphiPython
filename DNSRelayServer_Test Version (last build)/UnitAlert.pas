@@ -58,6 +58,8 @@ begin
       //form1.ListView1.Items[i].SubItems[0] := '';
       //form1.Autoriser1Click(Form1.Autoriser1);
       delDomain(form1.EditFilehost.Text, domain);
+      Form1.TimerRestart.Enabled := False;
+      if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
             except
         On E :   EOSError do
           exit;
@@ -71,6 +73,7 @@ begin
   PanelDisallowed.Visible := False;
   ButtonAllowDomain.Visible := False;
   ButtonDisallow.Visible := False;
+
 end;
 
 
@@ -87,7 +90,8 @@ begin
   end;
   setDomain(Form1.EditFilehost.Text, domain, '127.0.0.1');
   Form1.refreshListView1Click();
-  if Form1.isServerStarted then Form1.ButtonStartClick(nil);
+  Form1.TimerRestart.Enabled := False;
+  if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
   //Self.Close;
   PanelAllowed.Visible := False;
   PanelDisallowed.Visible := True;

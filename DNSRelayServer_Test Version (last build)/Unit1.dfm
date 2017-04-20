@@ -115,11 +115,6 @@ object Form1: TForm1
             Width = 311
             Height = 258
             PageIndex = 3
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = []
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clWhite
             TabFont.Height = -11
@@ -5012,8 +5007,8 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 344
-    Top = 161
+    Left = 352
+    Top = 329
   end
   object ImageList3: TImageList
     Left = 347
@@ -8448,5 +8443,12 @@ object Form1: TForm1
     OnTimer = TimerStartInBackgroundTimer
     Left = 371
     Top = 136
+  end
+  object TimerRestart: TTimer
+    Enabled = False
+    Interval = 10000
+    OnTimer = TimerRestartTimer
+    Left = 344
+    Top = 168
   end
 end

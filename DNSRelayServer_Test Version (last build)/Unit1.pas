@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.53';
+var CurrentApplicationVersion: string = '0.4.54';
 
 type
   TForm1 = class(TForm)
@@ -123,6 +123,7 @@ type
     CheckBoxAlertEventsKnown: TCheckBox;
     CheckBoxAlertEventDisallowed: TCheckBox;
     CheckBoxAlertEventsUnknown: TCheckBox;
+    TimerRestart: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -198,6 +199,7 @@ type
     procedure CheckBoxAlertEventsKnownClick(Sender: TObject);
     procedure CheckBoxAlertEventsUnknownClick(Sender: TObject);
     procedure CheckBoxAlertEventDisallowedClick(Sender: TObject);
+    procedure TimerRestartTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -369,7 +371,7 @@ begin
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
-            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height; 
+            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
         end;
 
@@ -2540,5 +2542,11 @@ begin
     DeleteFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
 end;
 
+
+procedure TForm1.TimerRestartTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+  ButtonStartClick(nil);
+end;
 
 end.
