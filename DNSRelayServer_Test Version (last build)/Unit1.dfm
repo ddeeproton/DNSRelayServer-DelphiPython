@@ -773,79 +773,89 @@ object Form1: TForm1
       OnChange = MemoLogsChange
     end
   end
-  object ToolBar3: TToolBar
+  object Panel5: TPanel
     Left = 0
     Top = 0
     Width = 403
-    Height = 46
-    AutoSize = True
-    ButtonHeight = 46
-    ButtonWidth = 47
-    Caption = 'ToolBar3'
+    Height = 48
+    Align = alTop
+    BevelOuter = bvNone
     Color = clWhite
-    Customizable = True
-    EdgeInner = esNone
-    EdgeOuter = esNone
-    Flat = True
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWhite
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    Images = ImageList2
-    ParentColor = False
-    ParentFont = False
-    ParentShowHint = False
-    ShowHint = True
     TabOrder = 2
-    Transparent = True
-    Wrapable = False
-    object ToolButton11: TToolButton
-      Left = 0
-      Top = 0
-      Hint = 'Click pour d'#233'marrer'
-      Caption = 'D'#233'marrer'
-      ImageIndex = 7
+    object ToolBar3: TToolBar
+      Left = 1
+      Top = 1
+      Width = 248
+      Height = 46
+      Align = alNone
+      ButtonHeight = 46
+      ButtonWidth = 47
+      Caption = 'ToolBar3'
+      Color = clWhite
+      Customizable = True
+      EdgeInner = esNone
+      EdgeOuter = esNone
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Images = ImageList2
+      ParentColor = False
+      ParentFont = False
       ParentShowHint = False
       ShowHint = True
-      OnClick = ToolButton11Click
-    end
-    object ToolButton8: TToolButton
-      Left = 47
-      Top = 0
-      Hint = 'Config'
-      Caption = 'Config'
-      Grouped = True
-      ImageIndex = 9
-      OnClick = ToolButton8Click
-    end
-    object ToolButton4: TToolButton
-      Left = 94
-      Top = 0
-      Hint = 'Clients'
-      Caption = 'Clients'
-      Grouped = True
-      ImageIndex = 12
-      OnClick = ToolButton4Click
-    end
-    object ToolButton6: TToolButton
-      Left = 141
-      Top = 0
-      Hint = 'Web Filter'
-      Caption = 'Web Filter'
-      Grouped = True
-      ImageIndex = 11
-      ParentShowHint = False
-      ShowHint = True
-      OnClick = ToolButton6Click
-    end
-    object ToolButton5: TToolButton
-      Left = 188
-      Top = 0
-      Hint = 'Masquer'
-      Caption = 'Masquer'
-      ImageIndex = 10
-      OnClick = Masquer1Click
+      TabOrder = 0
+      Transparent = True
+      Wrapable = False
+      object ToolButton11: TToolButton
+        Left = 0
+        Top = 0
+        Hint = 'Click pour d'#233'marrer'
+        Caption = 'D'#233'marrer'
+        ImageIndex = 7
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = ToolButton11Click
+      end
+      object ToolButton8: TToolButton
+        Left = 47
+        Top = 0
+        Hint = 'Config'
+        Caption = 'Config'
+        Grouped = True
+        ImageIndex = 9
+        OnClick = ToolButton8Click
+      end
+      object ToolButton4: TToolButton
+        Left = 94
+        Top = 0
+        Hint = 'Clients'
+        Caption = 'Clients'
+        Grouped = True
+        ImageIndex = 12
+        OnClick = ToolButton4Click
+      end
+      object ToolButton6: TToolButton
+        Left = 141
+        Top = 0
+        Hint = 'Web Filter'
+        Caption = 'Web Filter'
+        Grouped = True
+        ImageIndex = 11
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = ToolButton6Click
+      end
+      object ToolButton5: TToolButton
+        Left = 188
+        Top = 0
+        Hint = 'Masquer'
+        Caption = 'Masquer'
+        ImageIndex = 10
+        OnClick = Masquer1Click
+      end
     end
   end
   object ImageList1: TImageList

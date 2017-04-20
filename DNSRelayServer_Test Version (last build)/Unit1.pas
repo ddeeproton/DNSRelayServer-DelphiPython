@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.55';
+var CurrentApplicationVersion: string = '0.4.56';
 
 type
   TForm1 = class(TForm)
@@ -113,18 +113,19 @@ type
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton7: TToolButton;
-    ToolBar3: TToolBar;
-    ToolButton11: TToolButton;
-    ToolButton8: TToolButton;
-    ToolButton4: TToolButton;
-    ToolButton6: TToolButton;
-    ToolButton5: TToolButton;
     CheckBoxSwitchTheme: TCheckBox;
     CheckBoxAlertEventsKnown: TCheckBox;
     CheckBoxAlertEventDisallowed: TCheckBox;
     CheckBoxAlertEventsUnknown: TCheckBox;
     TimerRestart: TTimer;
     TimerResetAlertPosition: TTimer;
+    Panel5: TPanel;
+    ToolBar3: TToolBar;
+    ToolButton11: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton5: TToolButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1613,6 +1614,7 @@ begin
   Panel2.Color := bg;
   Panel3.Color := bg;
   Panel4.Color := bg;
+  Panel5.Color := bg;
   Panel6.Color := bg;
   ToolBar1.Color := bg;
   ListBoxDNSMaster.Color := bg;
