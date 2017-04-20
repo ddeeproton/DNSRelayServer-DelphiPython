@@ -124,6 +124,7 @@ type
     CheckBoxAlertEventDisallowed: TCheckBox;
     CheckBoxAlertEventsUnknown: TCheckBox;
     TimerRestart: TTimer;
+    TimerResetAlertPosition: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -200,6 +201,7 @@ type
     procedure CheckBoxAlertEventsUnknownClick(Sender: TObject);
     procedure CheckBoxAlertEventDisallowedClick(Sender: TObject);
     procedure TimerRestartTimer(Sender: TObject);
+    procedure TimerResetAlertPositionTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -339,6 +341,9 @@ begin
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain;
           FormAlert.FormCreate(nil);
+          TimerResetAlertPosition.Enabled := False;
+          TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
+          TimerResetAlertPosition.Enabled := True;
           FormAlert.Show;        
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -353,10 +358,13 @@ begin
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain; 
           FormAlert.FormCreate(nil);
-          FormAlert.Show;   
+          TimerResetAlertPosition.Enabled := False;
+          TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
+          TimerResetAlertPosition.Enabled := True;
+          FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
-            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height; 
+            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
 
         end;
@@ -366,8 +374,11 @@ begin
           FormAlert.PanelAllowed.Visible := False;
           FormAlert.PanelDisallowed.Visible := True;
           FormAlert.Label1.Caption := domain;
-          FormAlert.Label2.Caption := domain;  
+          FormAlert.Label2.Caption := domain;
           FormAlert.FormCreate(nil);
+          TimerResetAlertPosition.Enabled := False;
+          TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
+          TimerResetAlertPosition.Enabled := True;
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -2547,6 +2558,12 @@ procedure TForm1.TimerRestartTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   ButtonStartClick(nil);
+end;
+
+procedure TForm1.TimerResetAlertPositionTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+  LastPositionFormAlertTop := 0;
 end;
 
 end.

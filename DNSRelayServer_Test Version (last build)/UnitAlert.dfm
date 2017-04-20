@@ -1,6 +1,6 @@
 object FormAlert: TFormAlert
-  Left = 933
-  Top = 599
+  Left = 201
+  Top = 125
   BorderStyle = bsNone
   Caption = 'FormAlert'
   ClientHeight = 84
@@ -32,8 +32,8 @@ object FormAlert: TFormAlert
     object Label1: TLabel
       Left = 6
       Top = 3
-      Width = 51
-      Height = 18
+      Width = 48
+      Height = 20
       Caption = 'Label1'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
@@ -93,7 +93,7 @@ object FormAlert: TFormAlert
     end
   end
   object TimerAfterCreate: TTimer
-    Interval = 10000
+    Interval = 20000
     OnTimer = PanelAllowedClick
     Left = 16
     Top = 56

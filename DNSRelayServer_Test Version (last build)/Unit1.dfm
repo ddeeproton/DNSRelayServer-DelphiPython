@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 196
-  Top = 211
+  Left = 231
+  Top = 168
   Width = 419
   Height = 519
   Caption = 'DNS Relay Server'
@@ -8449,6 +8449,12 @@ object Form1: TForm1
     Interval = 10000
     OnTimer = TimerRestartTimer
     Left = 344
+    Top = 168
+  end
+  object TimerResetAlertPosition: TTimer
+    Enabled = False
+    OnTimer = TimerResetAlertPositionTimer
+    Left = 376
     Top = 168
   end
 end
