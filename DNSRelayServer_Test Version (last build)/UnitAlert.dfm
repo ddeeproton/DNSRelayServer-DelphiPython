@@ -93,7 +93,7 @@ object FormAlert: TFormAlert
     end
   end
   object TimerAfterCreate: TTimer
-    Interval = 5000
+    Interval = 10000
     OnTimer = PanelAllowedClick
     Left = 16
     Top = 56

@@ -204,7 +204,8 @@ type
     { Public declarations }
     PythonPath: String;
     DataDirectoryPath: String;      
-    isServerStarted: boolean;
+    isServerStarted: boolean;    
+  SelectedListItem:TListItem;
   end;
 
   TSauvegarde = class(TThread)
@@ -234,7 +235,6 @@ var
   Form1: TForm1;
   FormHost: TFormHost;
   FormInstall:  TFormInstall = nil;
-  SelectedListItem:TListItem;
   listThreads: array of TSauvegarde;
   ThreadUpdate: TUpdate;
 
@@ -312,9 +312,6 @@ begin
       if form1.ListView1.Items[i].Caption =  domain then isNew := false;
     end;
 
-    if isNew then
-    begin
-
       ip := getDomain(Form1.EditFilehost.Text, domain);
       ip := onlyChars(ip);
       if ip = '' then imgIndex := 0
@@ -322,14 +319,19 @@ begin
       else if ipdomain = '127.0.0.1' then imgIndex := 3
       else imgIndex := 1;
 
+    if isNew then
+    begin
       EditerLigne2(form1.ListView1, -1, imgIndex, domain, ipdomain, imgIndex = 3);
       //i := form1.ListView1.Items.Count;
       //EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
       Form1.refreshListView1Click();
+    end;
+
 
         if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
         begin
-          FormAlert := TFormAlert.Create(nil);
+          FormAlert := TFormAlert.Create(nil);    
+          FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain;
@@ -339,6 +341,7 @@ begin
         if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
         begin        
           FormAlert := TFormAlert.Create(nil);
+          FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain; 
@@ -349,12 +352,12 @@ begin
         begin
           FormAlert := TFormAlert.Create(nil);
           FormAlert.PanelAllowed.Visible := False;
+          FormAlert.PanelDisallowed.Visible := True;
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain;  
           FormAlert.FormCreate(nil);
           FormAlert.Show;
         end;
-    end;
 
   end
   else begin
@@ -928,8 +931,8 @@ begin
   '			'#13#10+
   '		IPHost = dnss.checkHost(domain)'#13#10+
   '		if IPHost <> '''':'#13#10+
-  '			if config_display:'#13#10+
-  '				print "Host file domain:"'#13#10+
+  '			#if config_display:'#13#10+
+  '			#	print "Host file domain:"'#13#10+
   '			if config_cache_memory == 1:'#13#10+
   '				cache_ips.append(IPHost)'#13#10+
   '			return IPHost'#13#10+

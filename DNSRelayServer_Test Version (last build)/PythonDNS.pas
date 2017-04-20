@@ -237,8 +237,8 @@ begin
   '			'#13#10+
   '		IPHost = dnss.checkHost(domain)'#13#10+
   '		if IPHost <> '''':'#13#10+
-  '			if config_display:'#13#10+
-  '				print "Host file domain:"'#13#10+
+  '			#if config_display:'#13#10+
+  '			#	print "Host file domain:"'#13#10+
   '			if config_cache_memory == 1:'#13#10+
   '				cache_ips.append(IPHost)'#13#10+
   '			return IPHost'#13#10+

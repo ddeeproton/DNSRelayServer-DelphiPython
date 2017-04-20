@@ -42,13 +42,35 @@ var
 begin
   domain := Label1.Caption;
   if domain = '' then exit;
+
+  //delDomain(Form1.EditFilehost.Text, domain);
+  //if Form1.isServerStarted then Form1.ButtonStartClick(nil);
+  //Form1.refreshListView1Click();
+  //Self.Visible := False;
+
   for i := 0 to form1.ListView1.Items.Count-1 do
   begin
-    if form1.ListView1.Items[i].Caption =  domain then form1.ListView1.Items[i].Delete;
+    if form1.ListView1.Items[i].Caption =  domain then begin
+      try
+
+      form1.SelectedListItem := form1.ListView1.Items[i];
+      form1.ListView1.Items[i].Caption := '';
+      //form1.ListView1.Items[i].SubItems[0] := '';
+      //form1.Autoriser1Click(Form1.Autoriser1);
+      delDomain(form1.EditFilehost.Text, domain);
+            except
+        On E :   EOSError do
+          exit;
+      end;
+    end;
   end;
-  Form1.refreshListView1Click();
-  delDomain(Form1.EditFilehost.Text, domain);
-  if Form1.isServerStarted then Form1.ButtonStartClick(nil);
+
+  //Self.Close;
+  //FormAlert.Visible := False;
+  PanelAllowed.Visible := True;
+  PanelDisallowed.Visible := False;
+  ButtonAllowDomain.Visible := False;
+  ButtonDisallow.Visible := False;
 end;
 
 
@@ -66,15 +88,22 @@ begin
   setDomain(Form1.EditFilehost.Text, domain, '127.0.0.1');
   Form1.refreshListView1Click();
   if Form1.isServerStarted then Form1.ButtonStartClick(nil);
+  //Self.Close;
+  PanelAllowed.Visible := False;
+  PanelDisallowed.Visible := True;
+  ButtonAllowDomain.Visible := False;
+  ButtonDisallow.Visible := False;
 end;
 
 procedure TFormAlert.FormCreate(Sender: TObject);
 begin
+  PanelAllowed.Top := 0;
+  PanelDisallowed.Top := 0;
   Self.Height := PanelAllowed.Height;
-  Self.Width := Label1.Width + ButtonAllowDomain.Width + 100;
+  Self.Width := Label1.Width + ButtonAllowDomain.Width + 70;
   Self.Left := Screen.WorkAreaWidth - Self.Width;
   Self.Top := Screen.WorkAreaHeight - Self.Height;
-  Self.SendToBack;
+  //Self.SendToBack;
 end;
 
 procedure TFormAlert.PanelAllowedClick(Sender: TObject);
