@@ -263,16 +263,18 @@ begin
     '					try:'#13#10+
     '						return cache_ips[i]'#13#10+
     '					except:'#13#10+
-    '						cache_domains.append(domain)'#13#10+
-    '				else:'#13#10+
-    '					cache_domains.append(domain)'#13#10+
-    '			else:'#13#10+
-    '				cache_domains.append(domain)'#13#10+
+    '						sys.stdout.flush()'#13#10+
+    '						#cache_domains.append(domain)'#13#10+
+    '				#else:'#13#10+
+    '				#	cache_domains.append(domain)'#13#10+
+    '			#else:'#13#10+
+    '			#	cache_domains.append(domain)'#13#10+
     '				'#13#10+
     '		if ".in-addr.arpa" in domain:'#13#10+
     '			if config_display:'#13#10+
     '				print "ARPA"'#13#10+
     '			if config_cache_memory == 1:'#13#10+
+    '				cache_domains.append(domain)'#13#10+
     '				cache_ips.append("127.0.0.1")'#13#10+
     '			return "127.0.0.1"'#13#10+
     '			'#13#10+
@@ -281,11 +283,14 @@ begin
     '			#if config_display:'#13#10+
     '			#	print "Host file domain:"'#13#10+
     '			if config_cache_memory == 1:'#13#10+
+    '				cache_domains.append(domain)'#13#10+
     '				cache_ips.append(IPHost)'#13#10+
     '			return IPHost'#13#10+
     ''#13#10+
     '		IPHost = dnss.checkBlackHost(domain)'#13#10+
     '		if IPHost <> '''':'#13#10+
+    '			cache_domains.append(domain)'#13#10+
+    '			cache_ips.append(IPHost)'#13#10+
     '			return IPHost'#13#10+
     ''#13#10+
     ''#13#10+
@@ -296,11 +301,13 @@ begin
     '		ip = dnsc.dnsResolve(domain) # Ask the Primary DNS server'#13#10+
     '		if ip == 0:'#13#10+
     '			if config_cache_memory == 1:'#13#10+
+    '				cache_domains.append(domain)'#13#10+
     '				cache_ips.append("127.0.0.1")'#13#10+
     '			return "127.0.0.1"'#13#10+
     '			'#13#10+
     '		#db.sqlsetdomain(domain, ip) # Add IP in database'#13#10+
     '		if config_cache_memory == 1:'#13#10+
+    '			cache_domains.append(domain)'#13#10+
     '			cache_ips.append(ip)'#13#10+
     '		return ip'#13#10+
     ''#13#10+
@@ -309,7 +316,7 @@ begin
     'class SQLConnexion:'#13#10+
     '	def __init__(self, dbhost, dbport, dbuser, dbpasswd, dbname, dbtable):'#13#10+
     ''#13#10+
-    '                time.sleep(5)'#13#10+
+    '		time.sleep(5)'#13#10+
     '		self.db = MySQLdb.connect(host=dbhost, port=dbport, user=dbuser, passwd=dbpasswd, db=dbname)'#13#10+
     '		self.cur = self.db.cursor()'#13#10+
     '		self.tablecache = dbtable '#13#10+
