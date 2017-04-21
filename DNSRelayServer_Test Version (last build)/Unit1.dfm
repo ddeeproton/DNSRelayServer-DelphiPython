@@ -76,18 +76,17 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Top = 73
+    Top = 49
     Width = 345
-    Height = 304
+    Height = 328
     BevelOuter = bvNone
     Color = clWhite
     TabOrder = 0
     object Notebook1: TNotebook
-      Left = 1
-      Top = 9
+      Left = 9
+      Top = 17
       Width = 336
       Height = 296
-      PageIndex = 5
       TabOrder = 0
       object TPage
         Left = 0
@@ -115,7 +114,7 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 258
-            PageIndex = 4
+            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clWhite
             TabFont.Height = -11
@@ -702,7 +701,7 @@ object Form1: TForm1
         Caption = 'config'
         object GroupBox6: TGroupBox
           Left = 8
-          Top = 8
+          Top = 24
           Width = 323
           Height = 175
           Caption = 'DNS Relay'

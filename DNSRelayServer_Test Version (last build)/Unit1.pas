@@ -6,9 +6,9 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, XPMan,
+  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, //XPMan,
   Spin, Buttons, TabNotBk,
-  NetworkManager, DNSManager, UnitAlert,
+  NetworkManager, DNSManager, UnitAlert, PythonDNS, 
   // url Download
   UrlMon,
   // Pour lire écrire dans un fichier
@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.56';
+var CurrentApplicationVersion: string = '0.4.57';
 
 type
   TForm1 = class(TForm)
@@ -249,6 +249,8 @@ var
   SlaveDNSIPConfig: string = 'SlaveDNSIP.cfg';
   SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
   TimeCheckUpdateFile: string = 'TimeCheckUpdate.cfg';
+  BlackListCfgFile: string = 'blackhost.txt';
+
 
   //DataDirectoryPath: string = '';
   DNSMasterSerialized: string = '';
@@ -318,11 +320,12 @@ begin
       if form1.ListView1.Items[i].Caption =  domain then isNew := false;
     end;
 
-      ip := getDomain(Form1.EditFilehost.Text, domain);
+      //ip := getDomain(Form1.EditFilehost.Text, domain);
+      ip := ipdomain;
       ip := onlyChars(ip);
       if ip = '' then imgIndex := 0
       else if ip = '127.0.0.1' then imgIndex := 3
-      else if ipdomain = '127.0.0.1' then imgIndex := 3
+      else if ip = ' 127.0.0.1' then imgIndex := 3
       else imgIndex := 1;
 
     if isNew then
@@ -345,19 +348,19 @@ begin
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1;
           TimerResetAlertPosition.Enabled := True;
-          FormAlert.Show;        
+          FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
         end;
         if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
-        begin        
+        begin
           FormAlert := TFormAlert.Create(nil);
           FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
           FormAlert.Label1.Caption := domain;
-          FormAlert.Label2.Caption := domain; 
+          FormAlert.Label2.Caption := domain;
           FormAlert.FormCreate(nil);
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
@@ -730,6 +733,7 @@ begin
 
 end;
 
+{
 procedure createVBScript();
 var
   i: integer;
@@ -1134,6 +1138,7 @@ begin
   '		udps.close()'#13#10;
   ecrireDansUnFichier(Form1.DataDirectoryPath + 'relayDNS.py', script);
 end;
+}
 
 
 
@@ -1178,6 +1183,12 @@ begin
   filepath := String(EditFilehost.Text);
   if FileExists(filepath) = False then
     ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
+
+  if not FileExists(BlackListCfgFile) then
+    ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
+                                  '9an6.googlevideo.com'#13#10+
+                                  '9ans.googlevideo.com'#13#10+
+                                  '9anz.googlevideo.com');
 
   if not FileExists(filepath) then
   begin
@@ -1230,7 +1241,7 @@ begin
   i := Length(listThreads);
   SetLength(listThreads, i+1);
   listThreads[0] := Unit1.TSauvegarde.Create(True);
-  listThreads[0].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'"';
+  listThreads[0].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
   //MemoLogs.Lines.Add(listThreads[i].cmd);
   listThreads[0].output := TStringList.Create;
   listThreads[0].EnMemo := MemoLogs;
@@ -1503,6 +1514,7 @@ begin
   MasterDNSFile := DataDirectoryPath + MasterDNSFile;
   SlaveDNSProcesslist := DataDirectoryPath + SlaveDNSProcesslist;
   TimeCheckUpdateFile :=  DataDirectoryPath + TimeCheckUpdateFile;
+  BlackListCfgFile := DataDirectoryPath + BlackListCfgFile;
 
 
   if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
@@ -1600,17 +1612,19 @@ begin
 
   Form1.Color := bg;
   ToolBar3.Color := bg;
-  //GroupBox3.Color := bg;
-  //GroupBox4.Color := bg;
+  GroupBox2.Color := bg;
+  GroupBox3.Color := bg;
+  GroupBox4.Color := bg;
+  GroupBox5.Color := bg;
+  GroupBox6.Color := bg;
   ToolBar2.Color := bg;
   ListView1.Color := bg;
   Splitter1.Color := bg;
-  //GroupBox5.Color := bg;
-  //GroupBox6.Color := bg;
+
   Memo1.Color := bg;
   MemoLogs.Color := bg;
   ListBoxIpClients.Color := bg;
-  //GroupBox2.Color := bg;
+  Panel1.Color := bg;
   Panel2.Color := bg;
   Panel3.Color := bg;
   Panel4.Color := bg;
@@ -1624,7 +1638,7 @@ begin
   CheckBoxStartWithWindows.Color := bg;
   CheckBoxAutostartDNSOnBoot.Color := bg;
 
-
+  Panel1.Font.Color := color;
   Form1.Font.Color := color;
   ListView1.Font.Color := color;
   Memo1.Font.Color := color;
