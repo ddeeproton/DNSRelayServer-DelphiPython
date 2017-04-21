@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.59';
+var CurrentApplicationVersion: string = '0.4.60';
 
 type
   TForm1 = class(TForm)
@@ -1189,6 +1189,7 @@ begin
 
 
   ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
+                                        'www.googleapis.com'#13#10+
                                         'clients1.google.com'#13#10+
                                         'clients2.google.com'#13#10+
                                         'clients3.google.com'#13#10+
