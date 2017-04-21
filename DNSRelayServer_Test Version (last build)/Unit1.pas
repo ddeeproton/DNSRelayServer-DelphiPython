@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.57';
+var CurrentApplicationVersion: string = '0.4.58';
 
 type
   TForm1 = class(TForm)
@@ -1184,11 +1184,15 @@ begin
   if FileExists(filepath) = False then
     ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
 
-  if not FileExists(BlackListCfgFile) then
-    ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
-                                  '9an6.googlevideo.com'#13#10+
-                                  '9ans.googlevideo.com'#13#10+
-                                  '9anz.googlevideo.com');
+  //if not FileExists(BlackListCfgFile) then
+
+  ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
+                                        'atdmt.com'#13#10+
+                                        'googleadservices.com'#13#10+
+                                        'googlesyndication.com'#13#10+
+                                        '9an6.googlevideo.com'#13#10+
+                                        '9ans.googlevideo.com'#13#10+
+                                        '9anz.googlevideo.com');
 
   if not FileExists(filepath) then
   begin
