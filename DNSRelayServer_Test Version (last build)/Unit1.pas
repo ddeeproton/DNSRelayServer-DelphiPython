@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.61';
+var CurrentApplicationVersion: string = '0.4.62';
 
 type
   TForm1 = class(TForm)
@@ -1189,6 +1189,7 @@ begin
 
 
   ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
+                                        'www.youtube-nocookie.com'#13#10+
                                         'www.googleapis.com'#13#10+
                                         'clients1.google.com'#13#10+
                                         'clients2.google.com'#13#10+
@@ -2336,8 +2337,8 @@ begin
       downloadFile(url, lastverFile);
       if FileExists(lastverFile) and (FileSize(lastverFile) > 0) then
       begin
-        if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar('Le serveur va redémarrer. Continuer?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
-        begin
+        //if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar('Le serveur va redémarrer. Continuer?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
+        //begin
           if Form1.CheckBoxUpdateSilent.Checked then
             ExecAndWait(lastverFile, '/S', SW_HIDE)
           else
@@ -2347,7 +2348,7 @@ begin
           Form1.FormCloseQuery(nil, canClose);
           Application.Terminate;
 
-        end;
+        //end;
       end
       else begin
         if isSilent then
