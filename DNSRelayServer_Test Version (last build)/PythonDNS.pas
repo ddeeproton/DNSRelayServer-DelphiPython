@@ -30,6 +30,7 @@ begin
     'from dns.exception import DNSException'#13#10+
     'import time'#13#10+
     'import sys'#13#10+
+    'import re'#13#10+
     'import os.path'#13#10+
     ''#13#10+
     '#import MySQLdb'#13#10+
@@ -223,11 +224,18 @@ begin
     '		if os.path.isfile(blackhostfile) == False:'#13#10+
     '			return '''''#13#10+
     '		fp = open(blackhostfile, ''r'')'#13#10+
-    '		for line in fp.readlines():'#13#10+
-    '			#print '';EOL;''+line+'' in ''+domain+'';EOL;'''#13#10+
-    '			if domain.find(line) > -1:'#13#10+
-    '				#print '' YES;EOL;'''#13#10+
+    '		for line in fp.readlines():'#13#10+        
+    '			if re.search(line[:-1], domain):'#13#10+
     '				res = ''127.0.0.1'''#13#10+
+    '			#print '';EOL;''+line+'' in ''+domain+'';EOL;'''#13#10+
+    '			#if domain.find(line) != -1:'#13#10+
+    '			#try:'#13#10+
+    '			#	domain.index(line)'#13#10+
+    '			#except:'#13#10+
+    '			#		print '' NO;EOL;'''#13#10+
+    '			#	res = ''127.0.0.1'''#13#10+
+    '			#else:'#13#10+
+    '			#	print '' YES;EOL;'''#13#10+
     '			#else:'#13#10+
     '			#	print '' NO;EOL;'''#13#10+
     '		fp.close()'#13#10+

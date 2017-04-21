@@ -1186,9 +1186,13 @@ begin
 
   //if not FileExists(BlackListCfgFile) then
 
+
+
   ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
+                                        'serving-sys.com'#13#10+
                                         'atdmt.com'#13#10+
                                         'googleadservices.com'#13#10+
+                                        'doubleclick.net'#13#10+
                                         'googlesyndication.com'#13#10+
                                         '9an6.googlevideo.com'#13#10+
                                         '9ans.googlevideo.com'#13#10+
