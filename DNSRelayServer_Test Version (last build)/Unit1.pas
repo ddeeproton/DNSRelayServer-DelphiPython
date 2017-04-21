@@ -6,7 +6,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, //XPMan,
+  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, TabNotBk,
   NetworkManager, DNSManager, UnitAlert,
   // url Download
@@ -1600,17 +1600,17 @@ begin
 
   Form1.Color := bg;
   ToolBar3.Color := bg;
-  GroupBox3.Color := bg;
-  GroupBox4.Color := bg;
+  //GroupBox3.Color := bg;
+  //GroupBox4.Color := bg;
   ToolBar2.Color := bg;
   ListView1.Color := bg;
   Splitter1.Color := bg;
-  GroupBox5.Color := bg;
-  GroupBox6.Color := bg;
+  //GroupBox5.Color := bg;
+  //GroupBox6.Color := bg;
   Memo1.Color := bg;
   MemoLogs.Color := bg;
   ListBoxIpClients.Color := bg;
-  GroupBox2.Color := bg;
+  //GroupBox2.Color := bg;
   Panel2.Color := bg;
   Panel3.Color := bg;
   Panel4.Color := bg;

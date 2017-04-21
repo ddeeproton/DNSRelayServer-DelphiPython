@@ -87,6 +87,7 @@ object Form1: TForm1
       Top = 9
       Width = 336
       Height = 296
+      PageIndex = 5
       TabOrder = 0
       object TPage
         Left = 0
@@ -114,7 +115,7 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 258
-            PageIndex = 3
+            PageIndex = 4
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clWhite
             TabFont.Height = -11
@@ -705,11 +706,13 @@ object Form1: TForm1
           Width = 323
           Height = 175
           Caption = 'DNS Relay'
+          Color = clWhite
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWhite
+          Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
+          ParentColor = False
           ParentFont = False
           TabOrder = 0
           DesignSize = (
