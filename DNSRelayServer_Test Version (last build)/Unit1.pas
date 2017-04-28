@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.62';
+var CurrentApplicationVersion: string = '0.4.63';
 
 type
   TForm1 = class(TForm)
@@ -1221,7 +1221,7 @@ begin
   begin
     dns := ListBoxDNSMaster.Items.Strings[i];
     MemoLogs.Lines.Add('Master '+ dns +'... ');
-    if resolveDNSByPython('google.com', dns) = '' then
+    if resolveDNSByPython('a.root-servers.net', dns) = '' then
     begin
       DNSMasterSerialized := '';
       MemoLogs.Lines.Add('Erreur: Lancement annulé.');

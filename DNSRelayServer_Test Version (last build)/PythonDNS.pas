@@ -24,6 +24,9 @@ begin
   end;
 
   script :=     '#!/usr/bin/env python'#13#10+
+    'import Queue'#13#10+
+    'import threading'#13#10+
+    'import urllib2'#13#10+
     'import sys, subprocess'#13#10+
     'import socket'#13#10+
     'import dns.resolver'#13#10+
@@ -463,6 +466,88 @@ begin
     '	except KeyboardInterrupt:'#13#10+
     '		udps.close()'#13#10+
     '';
+
+{
+
+    class StartThread:
+        def __init__(self):
+            self._running = True
+            self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+            self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.s.bind(("0.0.0.0", 1234))
+
+        def terminate(self):
+            self._running = False
+
+        def run(self):
+            while  self._running:
+                data, addr = self.s.recvfrom(1024)
+
+c = StartThread()
+t = Thread(target=c.run)
+t.start()
+
+
+    }
+
+
+
+    {
+
+import argparse
+import json
+import socket
+import threading
+
+def handle_client(client_list, conn, address):
+    name = conn.recv(1024)
+    entry = dict(zip(['name', 'address', 'port'], [name, address[0], address[1]]))
+    client_list[name] = entry
+    conn.sendall(json.dumps(client_list))
+    conn.shutdown(socket.SHUT_RDWR)
+    conn.close()
+
+def server(client_list):
+    print "Starting server..."
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.bind(('127.0.0.1', 5000))
+    s.listen(5)
+    while True:
+        (conn, address) = s.accept()
+        t = threading.Thread(target=handle_client, args=(client_list, conn, address))
+        t.daemon = True
+        t.start()
+
+def client(name):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(('127.0.0.1', 5000))
+    s.send(name)
+    data = s.recv(1024)
+    result = json.loads(data)
+    print json.dumps(result, indent=4)
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', dest='client', action='store_true')
+    parser.add_argument('-n', dest='name', type=str, default='name')
+    result = parser.parse_args()
+    return result
+
+def main():
+    client_list = dict()
+    args = parse_arguments()
+    if args.client:
+        client(args.name)
+    else:
+        try:
+            server(client_list)
+        except KeyboardInterrupt:
+            print "Keyboard interrupt"
+
+if __name__ == '__main__':
+    main()
+    }
 
   ecrireDansUnFichier(Form1.DataDirectoryPath + 'relayDNS.py', script);
 end;
