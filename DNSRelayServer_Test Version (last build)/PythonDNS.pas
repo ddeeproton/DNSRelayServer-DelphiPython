@@ -24,9 +24,6 @@ begin
   end;
 
   script :=     '#!/usr/bin/env python'#13#10+
-    'import Queue'#13#10+
-    'import threading'#13#10+
-    'import urllib2'#13#10+
     'import sys, subprocess'#13#10+
     'import socket'#13#10+
     'import dns.resolver'#13#10+
@@ -35,6 +32,7 @@ begin
     'import sys'#13#10+
     'import re'#13#10+
     'import os.path'#13#10+
+    'import threading'#13#10+
     ''#13#10+
     '#import MySQLdb'#13#10+
     ''#13#10+
@@ -227,7 +225,7 @@ begin
     '		if os.path.isfile(blackhostfile) == False:'#13#10+
     '			return '''''#13#10+
     '		fp = open(blackhostfile, ''r'')'#13#10+
-    '		for line in fp.readlines():'#13#10+        
+    '		for line in fp.readlines():'#13#10+
     '			if re.search(line[:-1], domain):'#13#10+
     '				res = ''127.0.0.1'''#13#10+
     '			#print '';EOL;''+line+'' in ''+domain+'';EOL;'''#13#10+
@@ -257,7 +255,7 @@ begin
     '			return result[:-1]'#13#10+
     ''#13#10+
     ''#13#10+
-    '	def resolveDomain(self, domain, idstatus):'#13#10+
+    '	def resolveDomain(self, domain, idstatus, dnss):'#13#10+
     '	'#13#10+
     '		if config_cache_memory == 1:'#13#10+
     '			if domain in cache_domains:'#13#10+
@@ -388,166 +386,94 @@ begin
     '		else:'#13#10+
     '			return "unkown"'#13#10+
     ''#13#10+
-    'if __name__ == ''__main__'':'#13#10+
-    '	print ''Started;EOL;'''#13#10+
-    '	sys.stdout.flush()'#13#10+
-    '	if config_cache_sql == 1:'#13#10+
-    '                db = SQLConnexion(config_dbhost, config_dbport, config_dbuser, config_dbpasswd, config_dbname, config_dbtable) # SQL Connexion'#13#10+
-    '	dnsc = DNSClient(config_dnsrelay, config_dnstimeout) # DNS Client'#13#10+
-    '	udps = DNSServer(config_dnsip, config_dnsport, config_delayerror) # DNS Server'#13#10+
+    'def serveClient(data, addr):'#13#10+
+    '	#data, addr = req # recieve UDP data (usually on port 53)'#13#10+
+    '	dnss = DNSQuery(data) # Parse DNS query'#13#10+
     '	'#13#10+
+    '	isArpa = ".in-addr.arpa" in dnss.domain'#13#10+
+    '	country = ''unkown'''#13#10+
+    '	answer = ''127.0.0.1'''#13#10+
+    '	if isArpa:'#13#10+
+    '		print ''isArpa'''#13#10+
+    '		ip = dnss.domain.split(".") '#13#10+
+    '		answer = ip[3]+"."+ip[2]+"."+ip[1]+"."+ip[0]'#13#10+
+    '		#country = db.sqlgetcountry(answer)'#13#10+
+    '		#countryname = db.sqlgetcountryname(answer)'#13#10+
+    '		#if country in config_banned_countries:'#13#10+
+    '		#answer = answer+"."+country+"."+countryname'#13#10+
+    '		#TEST'#13#10+
+    '		#answer = ''127.0.0.1'''#13#10+
+    '		#print "arpa adress"'#13#10+
+    '	else:'#13#10+
+    '		#print "normal domain"'#13#10+
+    '		'#13#10+
+    '		if config_cache_sql == 1: # if domain exists'#13#10+
+    '			#UPDATE d''adresse deja existante'#13#10+
+    '			#answer = dnsc.dnsResolve(dnss.domain) # Ask the Primary DNS server'#13#10+
+    '			#db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
+    '			answer = db.sqlgetdomain(dnss.domain) # Check if domain exists in database'#13#10+
+    '			countryname = db.sqlgetcountryname(answer)'#13#10+
+    '			country = db.sqlgetcountry(answer)'#13#10+
+    '			if country in config_banned_countries and addr[0] == ''8.8.8.20'':'#13#10+
+    '				answer = ''127.0.0.1'''#13#10+
+    ''#13#10+
+    '			udps.sendQuery(dnss.dnsAnswer(answer), addr) # Send IP to the user'#13#10+
+    ''#13#10+
+    '		else: # if it''s a new domain'#13#10+
+    '			#print "New domain:"'#13#10+
+    '			answer = dnss.resolveDomain(dnss.domain, 2, dnss) # Ask the Primary DNS server'#13#10+
+    '			#answer = dnsc.dnsResolve(dnss.domain) # Ask the Primary DNS server'#13#10+
+    '			if answer == 0 :'#13#10+
+    '				answer = "127.0.0.1"'#13#10+
+    '			else:'#13#10+
+    '				#db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
+    '				#countryname = db.sqlgetcountryname(answer)'#13#10+
+    '				#country = db.sqlgetcountry(answer)'#13#10+
+    ''#13#10+
+    '				#if country in config_banned_countries and addr[0] == ''8.8.8.20'':'#13#10+
+    '				#	answer = ''127.0.0.1'''#13#10+
+    ''#13#10+
+    '				udps.sendQuery(dnss.dnsAnswer(answer), addr) # Send IP to the user'#13#10+
+    ''#13#10+
+    '	# Display log'#13#10+
+    '	heure = time.strftime(''%d.%m.%y; %H:%M:%S'',time.localtime())'#13#10+
+    ''#13#10+
+    '	'#13#10+
+    '	#if answer == ''127.0.0.1'':'#13#10+
+    '	#	countryname = '''''#13#10+
+    '	#	country = ''local'''#13#10+
+    '	#else:'#13#10+
+    '	#if answer != ''127.0.0.1'':'#13#10+
+    '	#	db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
+    '	print ''%s; %s; %s; %s;EOL;'' % (heure, addr[0], answer, dnss.domain)'#13#10+
+    '	sys.stdout.flush()'#13#10+
+    ''#13#10+
+    '	'#13#10+
+    'def waitClients():'#13#10+
     '	try:'#13#10+
     '		while 1:'#13#10+
     '			req = udps.recieveQuery() # recieve UDP data (usually on port 53)'#13#10+
     '			if not req:'#13#10+
     '				continue'#13#10+
-    '			data, addr = req # recieve UDP data (usually on port 53)'#13#10+
-    '			dnss = DNSQuery(data) # Parse DNS query'#13#10+
-    '			'#13#10+
-    '			isArpa = ".in-addr.arpa" in dnss.domain'#13#10+
-    '			country = ''unkown'''#13#10+
-    '			answer = ''127.0.0.1'''#13#10+
-    '			if isArpa:'#13#10+
-    '				print ''isArpa'''#13#10+
-    '				ip = dnss.domain.split(".") '#13#10+
-    '				answer = ip[3]+"."+ip[2]+"."+ip[1]+"."+ip[0]'#13#10+
-    '				#country = db.sqlgetcountry(answer)'#13#10+
-    '				#countryname = db.sqlgetcountryname(answer)'#13#10+
-    '				#if country in config_banned_countries:'#13#10+
-    '				#answer = answer+"."+country+"."+countryname'#13#10+
-    '				#TEST'#13#10+
-    '				#answer = ''127.0.0.1'''#13#10+
-    '				#print "arpa adress"'#13#10+
-    '			else:'#13#10+
-    '				#print "normal domain"'#13#10+
-    '				'#13#10+
-    ''#13#10+
-    '				if config_cache_sql == 1: # if domain exists'#13#10+
-    ''#13#10+
-    '					#UPDATE d''adresse deja existante'#13#10+
-    '					#answer = dnsc.dnsResolve(dnss.domain) # Ask the Primary DNS server'#13#10+
-    '					#db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
-    '					answer = db.sqlgetdomain(dnss.domain) # Check if domain exists in database'#13#10+
-    '					countryname = db.sqlgetcountryname(answer)'#13#10+
-    '					country = db.sqlgetcountry(answer)'#13#10+
-    '					if country in config_banned_countries and addr[0] == ''8.8.8.20'':'#13#10+
-    '						answer = ''127.0.0.1'''#13#10+
-    ''#13#10+
-    '					udps.sendQuery(dnss.dnsAnswer(answer), addr) # Send IP to the user'#13#10+
-    ''#13#10+
-    '				else: # if it''s a new domain'#13#10+
-    '					#print "New domain:"'#13#10+
-    '					answer = dnss.resolveDomain(dnss.domain, 2) # Ask the Primary DNS server'#13#10+
-    '					#answer = dnsc.dnsResolve(dnss.domain) # Ask the Primary DNS server'#13#10+
-    '					if answer == 0 :'#13#10+
-    '						answer = "127.0.0.1"'#13#10+
-    '					else:'#13#10+
-    '						#db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
-    '						#countryname = db.sqlgetcountryname(answer)'#13#10+
-    '						#country = db.sqlgetcountry(answer)'#13#10+
-    ''#13#10+
-    '						#if country in config_banned_countries and addr[0] == ''8.8.8.20'':'#13#10+
-    '						#	answer = ''127.0.0.1'''#13#10+
-    ''#13#10+
-    '						udps.sendQuery(dnss.dnsAnswer(answer), addr) # Send IP to the user'#13#10+
-    ''#13#10+
-    '			# Display log'#13#10+
-    '			heure = time.strftime(''%d.%m.%y; %H:%M:%S'',time.localtime())'#13#10+
-    ''#13#10+
-    '			'#13#10+
-    '			#if answer == ''127.0.0.1'':'#13#10+
-    '			#	countryname = '''''#13#10+
-    '			#	country = ''local'''#13#10+
-    '			#else:'#13#10+
-    '			#if answer != ''127.0.0.1'':'#13#10+
-    '			#	db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
-    '			print ''%s; %s; %s; %s;EOL;'' % (heure, addr[0], answer, dnss.domain)'#13#10+
-    '			sys.stdout.flush()'#13#10+
+    '			#serveClient(req)'#13#10+
+    '			#t = threading.Thread(target=serveClient, args=(req, conn, address))'#13#10+
+    '			t = threading.Thread(target=serveClient, args=(req))'#13#10+
+    '			t.daemon = True'#13#10+
+    '			t.start()'#13#10+
     '	except KeyboardInterrupt:'#13#10+
     '		udps.close()'#13#10+
+    ''#13#10+
+    ''#13#10+
+    'if __name__ == ''__main__'':'#13#10+
+    '	print ''Started;EOL;'''#13#10+
+    '	sys.stdout.flush()'#13#10+
+    '	if config_cache_sql == 1:'#13#10+
+    '		db = SQLConnexion(config_dbhost, config_dbport, config_dbuser, config_dbpasswd, config_dbname, config_dbtable) # SQL Connexion'#13#10+
+    '	dnsc = DNSClient(config_dnsrelay, config_dnstimeout) # DNS Client'#13#10+
+    '	udps = DNSServer(config_dnsip, config_dnsport, config_delayerror) # DNS Server'#13#10+
+    '	waitClients()'#13#10+
+    ''#13#10+
     '';
-
-{
-
-    class StartThread:
-        def __init__(self):
-            self._running = True
-            self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-            self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.s.bind(("0.0.0.0", 1234))
-
-        def terminate(self):
-            self._running = False
-
-        def run(self):
-            while  self._running:
-                data, addr = self.s.recvfrom(1024)
-
-c = StartThread()
-t = Thread(target=c.run)
-t.start()
-
-
-    }
-
-
-
-    {
-
-import argparse
-import json
-import socket
-import threading
-
-def handle_client(client_list, conn, address):
-    name = conn.recv(1024)
-    entry = dict(zip(['name', 'address', 'port'], [name, address[0], address[1]]))
-    client_list[name] = entry
-    conn.sendall(json.dumps(client_list))
-    conn.shutdown(socket.SHUT_RDWR)
-    conn.close()
-
-def server(client_list):
-    print "Starting server..."
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('127.0.0.1', 5000))
-    s.listen(5)
-    while True:
-        (conn, address) = s.accept()
-        t = threading.Thread(target=handle_client, args=(client_list, conn, address))
-        t.daemon = True
-        t.start()
-
-def client(name):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(('127.0.0.1', 5000))
-    s.send(name)
-    data = s.recv(1024)
-    result = json.loads(data)
-    print json.dumps(result, indent=4)
-
-def parse_arguments():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-c', dest='client', action='store_true')
-    parser.add_argument('-n', dest='name', type=str, default='name')
-    result = parser.parse_args()
-    return result
-
-def main():
-    client_list = dict()
-    args = parse_arguments()
-    if args.client:
-        client(args.name)
-    else:
-        try:
-            server(client_list)
-        except KeyboardInterrupt:
-            print "Keyboard interrupt"
-
-if __name__ == '__main__':
-    main()
-    }
 
   ecrireDansUnFichier(Form1.DataDirectoryPath + 'relayDNS.py', script);
 end;
@@ -555,4 +481,3 @@ end;
 
 
 end.
- 
