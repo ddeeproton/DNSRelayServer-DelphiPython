@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.63';
+var CurrentApplicationVersion: string = '0.4.64';
 
 type
   TForm1 = class(TForm)
@@ -281,7 +281,7 @@ end;
 procedure TForm1.OnOutput(txt:String);
 var
   i, imgIndex: integer;
-  isNew: Boolean;
+  isNew, isRepeated: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
   date, time, ipclient, ipdomain, domain, ip:string;
@@ -291,8 +291,12 @@ begin
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
 
+  isRepeated := True;
   if (MemoLogs.Lines.Count = 0) or (Pos(txt, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0) then
+  begin
+    isRepeated := False;
     MemoLogs.Lines.Add(txt);
+  end;
   //MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
@@ -336,6 +340,8 @@ begin
       Form1.refreshListView1Click();
     end;
 
+    if not isRepeated then
+    begin
 
         if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
         begin
@@ -389,7 +395,7 @@ begin
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
         end;
-
+     end;
   end
   else begin
     if Pos('Error: Port  53  already used', txt) > 0 then
