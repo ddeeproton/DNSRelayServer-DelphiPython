@@ -304,8 +304,7 @@ begin
     '			#if config_cache_memory == 1:'#13#10+
     '			#	cache_domains.append(domain)'#13#10+
     '			#	cache_ips.append("127.0.0.1")'#13#10+
-    '			#return "127.0.0.1"'#13#10+
-    '			return ""'#13#10+
+    '			return "127.0.0.1"'#13#10+
     '			'#13#10+
     '		#db.sqlsetdomain(domain, ip) # Add IP in database'#13#10+
     '		if config_cache_memory == 1:'#13#10+
