@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.65';
+var CurrentApplicationVersion: string = '0.4.66';
 
 type
   TForm1 = class(TForm)
@@ -340,7 +340,7 @@ begin
       Form1.refreshListView1Click();
     end;
 
-    if not isRepeated then
+    if not isRepeated and (imgIndex > 0) then
     begin
 
         if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
