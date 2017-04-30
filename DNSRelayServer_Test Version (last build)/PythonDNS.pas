@@ -299,12 +299,13 @@ begin
     '		d = dnss.onlyDomain(domain)'#13#10+
     '		#print d'#13#10+
     '		nameservers = config_dnsrelay'#13#10+
-    '		ip = dnsc.dnsResolve(domain) # Ask the Primary DNS server'#13#10+
+    '		ip = dnsc.dnsResolve(domain) # Ask the master DNS server'#13#10+
     '		if ip == 0:'#13#10+
-    '			if config_cache_memory == 1:'#13#10+
-    '				cache_domains.append(domain)'#13#10+
-    '				cache_ips.append("127.0.0.1")'#13#10+
-    '			return "127.0.0.1"'#13#10+
+    '			#if config_cache_memory == 1:'#13#10+
+    '			#	cache_domains.append(domain)'#13#10+
+    '			#	cache_ips.append("127.0.0.1")'#13#10+
+    '			#return "127.0.0.1"'#13#10+
+    '			return ""'#13#10+
     '			'#13#10+
     '		#db.sqlsetdomain(domain, ip) # Add IP in database'#13#10+
     '		if config_cache_memory == 1:'#13#10+
