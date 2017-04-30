@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.66';
+var CurrentApplicationVersion: string = '0.4.67';
 
 type
   TForm1 = class(TForm)
@@ -1153,6 +1153,7 @@ var
   i: Integer;
   filepath: string;
   dns: string;
+  script: string;
 begin
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
@@ -1190,7 +1191,7 @@ begin
   if FileExists(filepath) = False then
     ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
 
-  //if not FileExists(BlackListCfgFile) then
+
 
 
 
@@ -1219,6 +1220,9 @@ begin
     ToolButton11.Enabled := True;
     exit;
   end;
+
+
+
 
   ToolButton11.Enabled := True;
   MemoLogs.Lines.Add('Test DNS Master...');
@@ -1259,10 +1263,25 @@ begin
 
   if PythonPath = '' then PythonPath := getPythonPath();
 
+  if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
+  begin
+    script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
+    filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
+    ecrireDansUnFichier(filepath, script);
+    LaunchAndWait(filepath,'', launchAndWWindow);
+  end;
+
+  if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
+  begin
+    MemoLogs.Lines.Add('Erreur: Lancement annulé');
+    MemoLogs.Lines.Add('   La compilation du serveur à échoué. Mauvaise installation de Python 2.7?');
+    exit;
+  end;
+
   i := Length(listThreads);
   SetLength(listThreads, i+1);
   listThreads[0] := Unit1.TSauvegarde.Create(True);
-  listThreads[0].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.py" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
+  listThreads[0].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
   //MemoLogs.Lines.Add(listThreads[i].cmd);
   listThreads[0].output := TStringList.Create;
   listThreads[0].EnMemo := MemoLogs;
