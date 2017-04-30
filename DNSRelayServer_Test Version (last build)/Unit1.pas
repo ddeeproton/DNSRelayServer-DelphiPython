@@ -1263,13 +1263,13 @@ begin
 
   if PythonPath = '' then PythonPath := getPythonPath();
 
-  if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
-  begin
+  //if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
+  //begin
     script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
     filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
     ecrireDansUnFichier(filepath, script);
     LaunchAndWait(filepath,'', launchAndWWindow);
-  end;
+  //end;
 
   if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
   begin
