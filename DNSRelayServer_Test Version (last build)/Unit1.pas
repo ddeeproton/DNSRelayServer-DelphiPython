@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.73';
+var CurrentApplicationVersion: string = '0.4.74';
 
 type
   TForm1 = class(TForm)
@@ -1715,7 +1715,16 @@ begin
     //begin
       ServerDoStart := False;
       ToolButton11.Enabled := False;
+      TimerRestart.Enabled := False;
       ButtonCloseClick(nil);
+      if ToolButton11.ImageIndex = 13 then
+      begin
+        ToolButton11.ImageIndex := 7;
+        ToolButton11.Caption := 'Démarrer';
+        ToolButton11.Enabled := True;
+        ToolButton11.Hint := 'Démarrer le serveur DNS';
+      end;
+
     //end;
   end
   else begin
