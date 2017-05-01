@@ -1,6 +1,5 @@
 unit Unit1;
 
-
 interface
 
 uses
@@ -8,19 +7,9 @@ uses
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, //XPMan,
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
-  UrlMon, FilesManager,
-  // Pour FProcessEntry32
-  //Tlhelp32,
-  // Pour le registre
-  Registre,
-  // POur l'installation
-  UnitInstallation,
-  // Pour AnsiReplaceStr
-  StrUtils,
-  // Pour LaunchAndWait
-  ProcessManager;
+  UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.70';
+var CurrentApplicationVersion: string = '0.4.71';
 
 type
   TForm1 = class(TForm)
