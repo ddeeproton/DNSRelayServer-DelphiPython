@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.71';
+var CurrentApplicationVersion: string = '0.4.72';
 
 type
   TForm1 = class(TForm)
@@ -241,6 +241,7 @@ var
   TimeCheckUpdateFile: string = 'TimeCheckUpdate.cfg';
   BlackListCfgFile: string = 'blackhost.txt';
 
+  FormAlertLastShow: string = '';
 
   DNSMasterSerialized: string = '';
   LastPositionFormAlertTop: integer = 0;
@@ -329,9 +330,9 @@ begin
       Form1.refreshListView1Click();
     end;
 
-    if not isRepeated and (imgIndex > 0) then
+    if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
     begin
-
+        FormAlertLastShow := domain;
         if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
         begin
           FormAlert := TFormAlert.Create(nil);
