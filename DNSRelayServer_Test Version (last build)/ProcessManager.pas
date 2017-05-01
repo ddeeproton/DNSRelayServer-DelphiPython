@@ -92,11 +92,16 @@ begin
       if ((UpperCase(ExtractFileName(FProcessEntry32.szExeFile)) =
         UpperCase(ExeFileName)) or (UpperCase(FProcessEntry32.szExeFile) =
         UpperCase(ExeFileName))) then
-        Result := Integer(TerminateProcess(
+
+        CloseProcessPID(FProcessEntry32.th32ProcessID);
+        result := 1;
+
+        {Result := Integer(TerminateProcess(
                           OpenProcess(PROCESS_TERMINATE,
                                     BOOL(0),
                                     FProcessEntry32.th32ProcessID),
                                     0));
+        }
       ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
     end;
 

@@ -187,14 +187,20 @@ type
     procedure CheckBoxAlertEventDisallowedClick(Sender: TObject);
     procedure TimerRestartTimer(Sender: TObject);
     procedure TimerResetAlertPositionTimer(Sender: TObject);
+    procedure StartDNS1Click(Sender: TObject);
+    procedure StopDNS1Click(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     PythonPath: String;
     DataDirectoryPath: String;
-    isServerStarted: boolean;
-  SelectedListItem:TListItem;
+
+    ServerDoStart: Boolean;
+    ServerFailStartCount: Integer;
+
+    isServerStarted: Boolean;
+    SelectedListItem:TListItem;
   end;
 
   TSauvegarde = class(TThread)
@@ -388,6 +394,7 @@ begin
         Form1.MemoLogs.Lines.Add('Close all python.exe process');
         KillTask('python.exe');
         Form1.ButtonRefreshNetCardClick(nil);
+        ServerDoStart := True;
         Form1.ButtonStartClick(nil);
       end;
     end;
@@ -552,28 +559,40 @@ begin
   begin
     ButtonNetCardIntegrationClick(nil);
   end;
-  ImageList4.GetIcon(2, Application.Icon);
+  ImageList4.GetIcon(3, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   ToolButton11.ImageIndex := 8;
   ToolButton11.Caption := 'Arrêter';
   isServerStarted := True;
   ToolButton11.Enabled := True;
   ToolButton11.Hint := 'Arrêter le serveur DNS';
+  ServerFailStartCount := 0;
 end;
 
 procedure TForm1.onServerDNSStop();
 begin
+  if ServerDoStart then
+  begin
+    inc(ServerFailStartCount);
+    TimerRestart.Enabled := True;
+    exit;
+  end;
+  isServerStarted := False;
+
   if CheckBoxAllowModifyNetCard.Checked then
   begin
     ButtonNetCardDesintegrationClick(nil);
   end;
-  ImageList4.GetIcon(1, Application.Icon);
-  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  ToolButton11.ImageIndex := 7;
-  ToolButton11.Caption := 'Démarrer';
-  isServerStarted := False;
-  ToolButton11.Enabled := True;
-  ToolButton11.Hint := 'Démarrer le serveur DNS';
+  if not ServerDoStart then
+  begin
+    ImageList4.GetIcon(1, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+    ToolButton11.ImageIndex := 7;
+    ToolButton11.Caption := 'Démarrer';
+    ToolButton11.Enabled := True;
+    ToolButton11.Hint := 'Démarrer le serveur DNS';
+  end;
+
 end;
 
 
@@ -751,6 +770,7 @@ begin
     FormInstall.ButtonInstallClick(nil);
     ToolButton11.Enabled := True;
     FormInstall.TimerWatchThread.Enabled := True;
+    if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end
   else begin
@@ -793,6 +813,7 @@ begin
     MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
     MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
     ToolButton11.Enabled := True;
+    if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
 
@@ -813,6 +834,7 @@ begin
       MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
       MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
       MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
+      if ServerDoStart then TimerRestart.Enabled := True;
       exit;
     end;
     if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
@@ -828,6 +850,7 @@ begin
     MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
     MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
     ToolButton11.Enabled := True;
+    if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
 
@@ -850,6 +873,7 @@ begin
   begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé');
     MemoLogs.Lines.Add('   La compilation du serveur à échoué. Mauvaise installation de Python 2.7?');
+    if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
 
@@ -1038,6 +1062,9 @@ var
   startedInBackground: Boolean;
   autostarted: Boolean;
 begin
+  ServerDoStart := False;
+  ServerFailStartCount := 0;
+
   // Masque la fenêtre de la taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
@@ -1160,6 +1187,7 @@ begin
   begin
     if ParamStr(i) = '/background' then
     begin
+      ServerDoStart := True;
       ButtonStartClick(nil);
       startedInBackground := True;
       autostarted := True;
@@ -1167,6 +1195,7 @@ begin
     end;
     if ParamStr(i) = '/autostart' then
     begin
+      ServerDoStart := True;
       ButtonStartClick(nil);
       autostarted := True;
     end;
@@ -1177,7 +1206,10 @@ begin
   getDomains(EditFilehost.Text, ListView1);
 
   if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
+  begin
+    ServerDoStart := True;
     ButtonStartClick(nil);
+  end;
 
   TimerAfterFormCreate.Enabled := not startedInBackground;
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
@@ -1526,7 +1558,6 @@ begin
   ecrireDansUnFichier(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
   ecrireDansUnFichier(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
   ecrireDansUnFichier(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
-  if isServerStarted then TimerRestart.Enabled := True;
 end;
 
 procedure TForm1.ToolButton10Click(Sender: TObject);
@@ -1675,10 +1706,12 @@ end;
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
 
-  if isServerStarted then
+  //if isServerStarted then
+  if ServerDoStart then
   begin
     //if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     //begin
+      ServerDoStart := False;
       ToolButton11.Enabled := False;
       ButtonCloseClick(nil);
     //end;
@@ -1686,6 +1719,14 @@ begin
   else begin
     //if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     //begin
+      ImageList4.GetIcon(2, Application.Icon);
+      Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+      ToolButton11.ImageIndex := 13;
+      ToolButton11.Caption := 'Arrêter';
+      ToolButton11.Enabled := True;
+      ToolButton11.Hint := 'Arrêter le serveur DNS';
+
+      ServerDoStart := True;
       ToolButton11.Enabled := False;
       ButtonStartClick(nil);
     //end;
@@ -2038,6 +2079,18 @@ procedure TForm1.TimerResetAlertPositionTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   LastPositionFormAlertTop := 0;
+end;
+
+procedure TForm1.StartDNS1Click(Sender: TObject);
+begin
+  ServerDoStart := True;
+  ButtonStartClick(nil);
+end;
+
+procedure TForm1.StopDNS1Click(Sender: TObject);
+begin
+  ServerDoStart := False;
+  ButtonCloseClick(nil);
 end;
 
 end.
