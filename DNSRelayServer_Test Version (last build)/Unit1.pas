@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.75';
+var CurrentApplicationVersion: string = '0.4.76';
 
 type
   TForm1 = class(TForm)
@@ -1249,6 +1249,7 @@ begin
   EditFilehost.Color := bg;
   CheckBoxStartWithWindows.Color := bg;
   CheckBoxAutostartDNSOnBoot.Color := bg;
+  SpinTimeCheckUpdate.Color := bg;
 
   Panel1.Font.Color := color;
   Form1.Font.Color := color;
