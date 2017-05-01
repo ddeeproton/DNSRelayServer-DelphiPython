@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 171
   Top = 119
-  Width = 419
+  Width = 436
   Height = 519
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -66,7 +66,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 392
-    Width = 403
+    Width = 420
     Height = 10
     Cursor = crVSplit
     Align = alBottom
@@ -744,7 +744,7 @@ object Form1: TForm1
   object GroupBox5: TGroupBox
     Left = 0
     Top = 402
-    Width = 403
+    Width = 420
     Height = 82
     Align = alBottom
     Caption = 'Logs'
@@ -759,7 +759,7 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 15
-      Width = 399
+      Width = 416
       Height = 65
       Align = alClient
       Color = clWhite
@@ -778,7 +778,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 403
+    Width = 420
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -15141,7 +15141,7 @@ object Form1: TForm1
   end
   object TimerRestart: TTimer
     Enabled = False
-    Interval = 10000
+    Interval = 5000
     OnTimer = TimerRestartTimer
     Left = 344
     Top = 168

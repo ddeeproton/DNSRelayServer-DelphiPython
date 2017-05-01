@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.72';
+var CurrentApplicationVersion: string = '0.4.73';
 
 type
   TForm1 = class(TForm)
@@ -568,6 +568,8 @@ begin
   ToolButton11.Enabled := True;
   ToolButton11.Hint := 'Arrêter le serveur DNS';
   ServerFailStartCount := 0;
+  TimerRestart.Enabled := False;
+  ServerDoStart := True;
 end;
 
 procedure TForm1.onServerDNSStop();
@@ -1208,8 +1210,8 @@ begin
 
   if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
   begin
-    ServerDoStart := True;
-    ButtonStartClick(nil);
+    //ServerDoStart := True;
+    TimerRestart.Enabled := True;
   end;
 
   TimerAfterFormCreate.Enabled := not startedInBackground;
@@ -1380,8 +1382,7 @@ end;
 
 
 
-procedure TForm1.FormMouseMove(Sender: TObject; Shift: TShiftState; X,
-  Y: Integer);
+procedure TForm1.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 var
   Pos:TPoint;
 begin
