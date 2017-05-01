@@ -24,7 +24,7 @@ uses
   // Pour LaunchAndWait
   ProcessManager, jpeg;
 
-var CurrentApplicationVersion: string = '0.4.68';
+var CurrentApplicationVersion: string = '0.4.69';
 
 type
   TForm1 = class(TForm)
@@ -2128,7 +2128,7 @@ begin
   setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
   SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
   refreshListView1Click();
-  if isServerStarted then ButtonStartClick(nil);
+  if isServerStarted then TimerRestart.Enabled := True; //ButtonStartClick(nil);
 end;
 
 procedure TForm1.Autoriser1Click(Sender: TObject);
@@ -2139,7 +2139,7 @@ begin
   delDomain(EditFilehost.Text, SelectedListItem.Caption);
   SelectedListItem.Delete;
   refreshListView1Click();
-  if isServerStarted then ButtonStartClick(nil);
+  if isServerStarted then TimerRestart.Enabled := True; //ButtonStartClick(nil);
 end;
 
 procedure TForm1.Modifier1Click(Sender: TObject);
@@ -2153,7 +2153,7 @@ begin
   setDomain( EditFilehost.Text, SelectedListItem.Caption, txt);
   SelectedListItem.SubItems.Strings[0] := txt;
   refreshListView1Click();
-  if isServerStarted then ButtonStartClick(nil);
+  if isServerStarted then TimerRestart.Enabled := True; //ButtonStartClick(nil);
 end;
 
 procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
