@@ -21,6 +21,7 @@ function KillTask(ExeFileName: string): Integer;
 function CloseTaskPID(ExeFileName: string; pid: Integer): Integer;
 procedure CloseProcessPID(pid: Integer);
 procedure KillProcess(hWindowHandle: HWND);
+procedure DestroyProcess(hProcess: Cardinal);
 
 function IsUserAnAdmin(): Boolean; external shell32;
 
@@ -194,6 +195,24 @@ begin
   except
     On E : EOSError do
       exit;
+  end;
+end;
+
+procedure DestroyProcess(hProcess: Cardinal);
+Var
+  ovExitCode: LongWord;
+begin
+  try
+    if hProcess<>0 then
+    begin
+      GetExitCodeProcess(hProcess, ovExitCode);
+      if (ovExitCode = STILL_ACTIVE) or (ovExitCode <> WAIT_OBJECT_0) then
+        TerminateProcess(hProcess, ovExitCode);
+      //CloseHandle(hProcess);
+    end;
+  except
+  On E : EOSError do
+    exit;
   end;
 end;
 
