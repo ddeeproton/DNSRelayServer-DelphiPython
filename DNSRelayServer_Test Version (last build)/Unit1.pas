@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.74';
+var CurrentApplicationVersion: string = '0.4.75';
 
 type
   TForm1 = class(TForm)
@@ -1578,7 +1578,11 @@ begin
   setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
   SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
   refreshListView1Click();
-  if isServerStarted then TimerRestart.Enabled := True; //ButtonStartClick(nil);
+  if isServerStarted then
+  begin
+    TimerRestart.Enabled := False;
+    TimerRestart.Enabled := True;
+  end;
 end;
 
 procedure TForm1.Autoriser1Click(Sender: TObject);
@@ -1589,7 +1593,11 @@ begin
   delDomain(EditFilehost.Text, SelectedListItem.Caption);
   SelectedListItem.Delete;
   refreshListView1Click();
-  if isServerStarted then TimerRestart.Enabled := True; //ButtonStartClick(nil);
+  if isServerStarted then
+  begin
+    TimerRestart.Enabled := False;
+    TimerRestart.Enabled := True;
+  end;
 end;
 
 procedure TForm1.Modifier1Click(Sender: TObject);
@@ -1603,7 +1611,11 @@ begin
   setDomain( EditFilehost.Text, SelectedListItem.Caption, txt);
   SelectedListItem.SubItems.Strings[0] := txt;
   refreshListView1Click();
-  if isServerStarted then TimerRestart.Enabled := True; //ButtonStartClick(nil);
+  if isServerStarted then
+  begin
+    TimerRestart.Enabled := False;
+    TimerRestart.Enabled := True;
+  end;
 end;
 
 procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
