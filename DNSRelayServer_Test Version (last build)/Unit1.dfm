@@ -114,7 +114,7 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 258
-            PageIndex = 4
+            PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clWhite
             TabFont.Height = -11
