@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.76';
+var CurrentApplicationVersion: string = '0.4.77';
 
 type
   TForm1 = class(TForm)
@@ -111,6 +111,11 @@ type
     ToolButton4: TToolButton;
     ToolButton6: TToolButton;
     ToolButton5: TToolButton;
+    Alertes1: TMenuItem;
+    connus1: TMenuItem;
+    inconnus1: TMenuItem;
+    bloques1: TMenuItem;
+    N5: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -189,6 +194,9 @@ type
     procedure TimerResetAlertPositionTimer(Sender: TObject);
     procedure StartDNS1Click(Sender: TObject);
     procedure StopDNS1Click(Sender: TObject);
+    procedure inconnus1Click(Sender: TObject);
+    procedure connus1Click(Sender: TObject);
+    procedure bloques1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1183,6 +1191,9 @@ begin
   CheckBoxAlertEventsKnown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
   CheckBoxAlertEventsUnknown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
   CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
+  inconnus1.Checked := CheckBoxAlertEventsUnknown.Checked;
+  connus1.Checked := CheckBoxAlertEventsKnown.Checked;
+  bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;
 
   startedInBackground := False;
   autostarted := False;
@@ -1643,8 +1654,8 @@ begin
   // Si on récupère bien une ligne et pas un espace blanc
   {if ToolBar3.Align = alTop then
   begin}
-    LeftOffset := 20;
-    TopOffset := 142;
+    LeftOffset := 15;
+    TopOffset := 122;
   {end
   else begin
     LeftOffset := 115;
@@ -2074,6 +2085,7 @@ begin
     ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventsKnow.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
+  connus1.Checked := CheckBoxAlertEventsKnown.Checked;
 end;
 
 procedure TForm1.CheckBoxAlertEventsUnknownClick(Sender: TObject);
@@ -2082,6 +2094,8 @@ begin
     ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventsUnknown.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
+
+  inconnus1.Checked := CheckBoxAlertEventsUnknown.Checked;
 end;
 
 procedure TForm1.CheckBoxAlertEventDisallowedClick(Sender: TObject);
@@ -2090,6 +2104,7 @@ begin
     ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventDisallowed.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
+  bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;
 end;
 
 
@@ -2115,6 +2130,24 @@ procedure TForm1.StopDNS1Click(Sender: TObject);
 begin
   ServerDoStart := False;
   ButtonCloseClick(nil);
+end;
+
+procedure TForm1.inconnus1Click(Sender: TObject);
+begin
+  CheckBoxAlertEventsUnknown.Checked := not CheckBoxAlertEventsUnknown.Checked;
+  CheckBoxAlertEventsUnknownClick(CheckBoxAlertEventsUnknown);
+end;
+
+procedure TForm1.connus1Click(Sender: TObject);
+begin
+  CheckBoxAlertEventsKnown.Checked := not CheckBoxAlertEventsKnown.Checked;
+  CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
+end;
+
+procedure TForm1.bloques1Click(Sender: TObject);
+begin
+  CheckBoxAlertEventDisallowed.Checked := not CheckBoxAlertEventDisallowed.Checked;
+  CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
 end;
 
 end.
