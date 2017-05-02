@@ -576,6 +576,7 @@ object Form1: TForm1
             Height = 193
             ItemHeight = 13
             PopupMenu = PopupMenuBlacklist
+            Sorted = True
             TabOrder = 0
             OnContextPopup = ListBoxDNSMasterContextPopup
             OnDblClick = Modifier3Click
