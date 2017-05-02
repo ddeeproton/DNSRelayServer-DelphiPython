@@ -5,11 +5,11 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, //XPMan,
+  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.89';
+var CurrentApplicationVersion: string = '0.4.90';
 
 type
   TForm1 = class(TForm)
@@ -95,7 +95,6 @@ type
     Label4: TLabel;
     Label3: TLabel;
     Label5: TLabel;
-    SpeedButtonSelectFilehost: TSpeedButton;
     CBoxDNSServerSlaveIP: TComboBox;
     SpinPort: TSpinEdit;
     EditFilehost: TEdit;
@@ -110,7 +109,6 @@ type
     ToolButtonUpDNSMaster: TToolButton;
     ListBoxDNSMaster: TListBox;
     TabSheet3: TTabSheet;
-    SpeedButtonUpdate: TSpeedButton;
     CheckBoxUpdate: TCheckBox;
     CheckBoxUpdateIntervall: TCheckBox;
     SpinTimeCheckUpdate: TSpinEdit;
@@ -119,8 +117,6 @@ type
     GroupBox7: TGroupBox;
     Label7: TLabel;
     Panel4: TPanel;
-    SpeedButtonNetCardIntegration: TSpeedButton;
-    SpeedButtonNetCardDesintegration: TSpeedButton;
     Panel2: TPanel;
     Label9: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
@@ -129,6 +125,28 @@ type
     CheckBoxAlertEventsKnown: TCheckBox;
     CheckBoxAlertEventsUnknown: TCheckBox;
     CheckBoxAlertEventDisallowed: TCheckBox;
+    Label6: TLabel;
+    Label8: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    Label25: TLabel;
+    ButtonUpdate: TButton;
+    ButtonNetCardIntegration: TButton;
+    ButtonNetCardDesintegration: TButton;
+    Button1: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -220,6 +238,10 @@ type
     procedure ButtonApplyChangesClick(Sender: TObject);
     procedure PageControl1DrawTab(Control: TCustomTabControl;
       TabIndex: Integer; const Rect: TRect; Active: Boolean);
+    procedure LabelToCheckboxClick(Sender: TObject);
+    procedure LabelCheckboxMouseEnter(Sender: TObject);
+    procedure LabelCheckboxMouseLeave(Sender: TObject);
+
   private
     { Private declarations }
   public
@@ -1293,6 +1315,18 @@ begin
   SpinTimeCheckUpdate.Color := bg;
   PanelRestart.Color := bg;
 
+  Label6.Font.Color := color;
+  Label8.Font.Color := color;
+  Label10.Font.Color := color;
+  Label12.Font.Color := color;
+  Label13.Font.Color := color;
+  Label15.Font.Color := color;
+  Label16.Font.Color := color;
+  Label17.Font.Color := color;
+  Label18.Font.Color := color;
+  CheckBoxStartWithWindows.Font.Color := color;
+  CheckBoxAutostartDNSOnBoot.Font.Color := color;
+  GroupBox2.Font.Color := color;
   Panel1.Font.Color := color;
   Form1.Font.Color := color;
   ListView1.Font.Color := color;
@@ -1969,7 +2003,6 @@ begin
   Application.ShowMainForm := true;
   Form1.BringToFront;
   Application.BringToFront;
-  Application.ModalFinished;
   Self.Show;
   BringToFront;
   SetFocus;
@@ -2085,7 +2118,7 @@ end;
 
 procedure TForm1.Mettrejour1Click(Sender: TObject);
 begin
-  ButtonUpdateClick(SpeedButtonUpdate);
+  ButtonUpdateClick(ButtonUpdate);
 end;
 
 procedure TForm1.TimerStartInBackgroundTimer(Sender: TObject);
@@ -2275,6 +2308,28 @@ TPageControl).Pages[TabIndex].Caption);
   else
     Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as
 TPageControl).Pages[TabIndex].Caption); 
+end;
+
+
+
+procedure TForm1.LabelToCheckboxClick(Sender: TObject);
+var
+  Checkbox: TCheckbox;
+begin
+  Checkbox := TCheckbox(TLabel(Sender).FocusControl);
+  Checkbox.Checked := not Checkbox.Checked;
+  Checkbox.OnClick(Checkbox);
+  Checkbox.SetFocus;
+end;
+
+procedure TForm1.LabelCheckboxMouseEnter(Sender: TObject);
+begin
+  TLabel(Sender).Font.Style := [fsUnderline];
+end;
+
+procedure TForm1.LabelCheckboxMouseLeave(Sender: TObject);
+begin
+  TLabel(Sender).Font.Style := [];
 end;
 
 end.

@@ -30,8 +30,8 @@ del /Q *.dof
 
 copy /Y * DNSRelayServer_%v%_Source
 copy /Y images\* DNSRelayServer_%v%_Source\images\
-copy /Y images\* DNSRelayServer_%v%_Source\images\mainmenu\
-copy /Y images\* DNSRelayServer_%v%_Source\NSIS\
+copy /Y images\mainmenu\* DNSRelayServer_%v%_Source\images\mainmenu\
+copy /Y NSIS\* DNSRelayServer_%v%_Source\NSIS\
 
 del /Q DNSRelayServer_%v%_Source\DNSRelayServer.exe
 

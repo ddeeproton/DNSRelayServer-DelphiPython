@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 199
   Top = 114
-  Width = 436
+  Width = 435
   Height = 556
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -66,7 +66,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 429
-    Width = 420
+    Width = 419
     Height = 10
     Cursor = crVSplit
     Align = alBottom
@@ -77,7 +77,7 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 1
     Top = 93
-    Width = 345
+    Width = 344
     Height = 328
     BevelOuter = bvNone
     Color = clWhite
@@ -85,7 +85,7 @@ object Form1: TForm1
     object Notebook1: TNotebook
       Left = 9
       Top = 17
-      Width = 336
+      Width = 320
       Height = 304
       TabOrder = 0
       object TPage
@@ -93,22 +93,30 @@ object Form1: TForm1
         Top = 0
         Caption = 'Default'
         DesignSize = (
-          336
+          320
           304)
         object GroupBox2: TGroupBox
           Left = 8
           Top = 8
-          Width = 321
+          Width = 305
           Height = 289
           Anchors = [akLeft, akTop, akRight, akBottom]
-          Caption = 'Config'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
+          Caption = '            '
           TabOrder = 0
+          object Label14: TLabel
+            Left = 184
+            Top = 24
+            Width = 38
+            Height = 13
+            Caption = 'Label14'
+          end
+          object Label19: TLabel
+            Left = 11
+            Top = -1
+            Width = 30
+            Height = 13
+            Caption = 'Config'
+          end
           object PageControl1: TPageControl
             Left = 5
             Top = 14
@@ -199,15 +207,33 @@ object Form1: TForm1
                 Caption = 'Fichier Host'
                 Transparent = True
               end
-              object SpeedButtonSelectFilehost: TSpeedButton
-                Left = 264
-                Top = 88
-                Width = 33
-                Height = 22
-                Anchors = [akTop, akRight]
-                Caption = '...'
-                Flat = True
-                OnClick = ButtonSelectFilehostClick
+              object Label6: TLabel
+                Left = 27
+                Top = 138
+                Width = 239
+                Height = 13
+                Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
+                FocusControl = CheckBoxStartWithWindows
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Height = -11
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentFont = False
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
+              object Label8: TLabel
+                Left = 27
+                Top = 160
+                Width = 294
+                Height = 13
+                Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
+                FocusControl = CheckBoxAutostartDNSOnBoot
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
               end
               object CBoxDNSServerSlaveIP: TComboBox
                 Left = 8
@@ -248,23 +274,31 @@ object Form1: TForm1
                 TabOrder = 2
                 OnChange = EditFilehostChange
               end
-              object CheckBoxStartWithWindows: TCheckBox
-                Left = 8
-                Top = 136
-                Width = 273
-                Height = 17
-                Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
-                TabOrder = 3
-                OnClick = CheckBoxStartWithWindowsClick
-              end
               object CheckBoxAutostartDNSOnBoot: TCheckBox
                 Left = 8
                 Top = 160
-                Width = 347
+                Width = 19
                 Height = 17
-                Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
                 TabOrder = 4
                 OnClick = CheckBoxAutostartDNSOnBootClick
+              end
+              object CheckBoxStartWithWindows: TCheckBox
+                Left = 8
+                Top = 136
+                Width = 17
+                Height = 17
+                TabOrder = 3
+                OnClick = CheckBoxStartWithWindowsClick
+              end
+              object Button1: TButton
+                Left = 260
+                Top = 87
+                Width = 35
+                Height = 23
+                Anchors = [akTop, akRight]
+                Caption = '...'
+                TabOrder = 5
+                OnClick = ButtonSelectFilehostClick
               end
             end
             object TabSheet2: TTabSheet
@@ -337,40 +371,57 @@ object Form1: TForm1
             object TabSheet3: TTabSheet
               Caption = 'Mise '#224' jour'
               ImageIndex = 2
-              DesignSize = (
-                303
-                230)
-              object SpeedButtonUpdate: TSpeedButton
-                Left = 0
-                Top = 8
-                Width = 303
-                Height = 33
-                Anchors = [akLeft, akTop, akRight]
-                Caption = 'Mettre '#224' jour'
-                Flat = True
-                OnClick = ButtonUpdateClick
+              object Label10: TLabel
+                Left = 26
+                Top = 10
+                Width = 226
+                Height = 13
+                Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
+                FocusControl = CheckBoxUpdate
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
+              object Label11: TLabel
+                Left = 26
+                Top = 35
+                Width = 175
+                Height = 13
+                Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
+                FocusControl = CheckBoxUpdateIntervall
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
+              object Label12: TLabel
+                Left = 26
+                Top = 60
+                Width = 238
+                Height = 13
+                Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
+                FocusControl = CheckBoxUpdateSilent
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
               end
               object CheckBoxUpdate: TCheckBox
                 Left = 8
-                Top = 48
-                Width = 273
+                Top = 8
+                Width = 17
                 Height = 17
-                Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
                 TabOrder = 0
                 OnClick = CheckBoxUpdateClick
               end
               object CheckBoxUpdateIntervall: TCheckBox
                 Left = 8
-                Top = 74
-                Width = 193
+                Top = 34
+                Width = 17
                 Height = 17
-                Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
                 TabOrder = 1
                 OnClick = CheckBoxUpdateIntervallClick
               end
               object SpinTimeCheckUpdate: TSpinEdit
                 Left = 208
-                Top = 72
+                Top = 32
                 Width = 73
                 Height = 22
                 MaxValue = 0
@@ -381,12 +432,20 @@ object Form1: TForm1
               end
               object CheckBoxUpdateSilent: TCheckBox
                 Left = 8
-                Top = 99
-                Width = 263
+                Top = 59
+                Width = 17
                 Height = 17
-                Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
                 TabOrder = 3
                 OnClick = CheckBoxUpdateSilentClick
+              end
+              object ButtonUpdate: TButton
+                Left = 8
+                Top = 80
+                Width = 75
+                Height = 25
+                Caption = 'Mettre '#224' jour'
+                TabOrder = 4
+                OnClick = ButtonUpdateClick
               end
             end
             object TabSheet4: TTabSheet
@@ -396,13 +455,13 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 201
+                Height = 193
                 Align = alTop
-                Caption = 'Int'#233'gration du serveur'
+                Caption = '                                     '
                 TabOrder = 0
                 DesignSize = (
                   303
-                  201)
+                  193)
                 object Label7: TLabel
                   Left = 8
                   Top = 63
@@ -418,6 +477,13 @@ object Form1: TForm1
                   Transparent = True
                   WordWrap = True
                 end
+                object Label20: TLabel
+                  Left = 11
+                  Top = -2
+                  Width = 103
+                  Height = 13
+                  Caption = 'Int'#233'gration du serveur'
+                end
                 object Panel4: TPanel
                   Left = 56
                   Top = 154
@@ -427,22 +493,22 @@ object Form1: TForm1
                   BevelOuter = bvNone
                   Color = clWhite
                   TabOrder = 0
-                  object SpeedButtonNetCardIntegration: TSpeedButton
-                    Left = 13
-                    Top = 3
+                  object ButtonNetCardIntegration: TButton
+                    Left = 16
+                    Top = 0
                     Width = 75
-                    Height = 26
+                    Height = 25
                     Caption = 'Installer'
-                    Flat = True
+                    TabOrder = 0
                     OnClick = ButtonNetCardIntegrationClick
                   end
-                  object SpeedButtonNetCardDesintegration: TSpeedButton
-                    Left = 101
-                    Top = 3
+                  object ButtonNetCardDesintegration: TButton
+                    Left = 104
+                    Top = 0
                     Width = 75
-                    Height = 26
+                    Height = 25
                     Caption = 'D'#233'sinstaller'
-                    Flat = True
+                    TabOrder = 1
                     OnClick = ButtonNetCardDesintegrationClick
                   end
                 end
@@ -464,14 +530,24 @@ object Form1: TForm1
                     Caption = '(Executera un script de r'#233'paration au red'#233'marrage Windows)'
                     Transparent = True
                   end
-                  object CheckBoxAllowModifyNetCard: TCheckBox
-                    Left = 8
-                    Top = 10
-                    Width = 327
-                    Height = 17
+                  object Label13: TLabel
+                    Left = 25
+                    Top = 11
+                    Width = 309
+                    Height = 13
                     Caption = 
                       'Modifier la carte r'#233'seau au lancement et '#224' la fermeture du serve' +
                       'ur'
+                    FocusControl = CheckBoxAllowModifyNetCard
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object CheckBoxAllowModifyNetCard: TCheckBox
+                    Left = 8
+                    Top = 10
+                    Width = 15
+                    Height = 17
                     Checked = True
                     State = cbChecked
                     TabOrder = 0
@@ -483,39 +559,79 @@ object Form1: TForm1
             object TabSheet5: TTabSheet
               Caption = 'Affichage'
               ImageIndex = 4
+              object Label15: TLabel
+                Left = 26
+                Top = 9
+                Width = 120
+                Height = 13
+                Caption = 'Afficher un th'#232'me sombre'
+                FocusControl = CheckBoxSwitchTheme
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
+              object Label16: TLabel
+                Left = 26
+                Top = 33
+                Width = 216
+                Height = 13
+                Caption = 'Afficher des alertes pour les domaines connus'
+                FocusControl = CheckBoxAlertEventsKnown
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
+              object Label17: TLabel
+                Left = 26
+                Top = 58
+                Width = 224
+                Height = 13
+                Caption = 'Afficher des alertes pour les domaines inconnus'
+                FocusControl = CheckBoxAlertEventsUnknown
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
+              object Label18: TLabel
+                Left = 26
+                Top = 81
+                Width = 218
+                Height = 13
+                Caption = 'Afficher des alertes pour les domaines bloqu'#233's'
+                FocusControl = CheckBoxAlertEventDisallowed
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
               object CheckBoxSwitchTheme: TCheckBox
                 Left = 8
                 Top = 8
-                Width = 161
+                Width = 17
                 Height = 17
-                Caption = 'Afficher un th'#232'me sombre'
                 TabOrder = 0
                 OnClick = CheckBoxSwitchThemeClick
               end
               object CheckBoxAlertEventsKnown: TCheckBox
                 Left = 8
                 Top = 32
-                Width = 273
+                Width = 17
                 Height = 17
-                Caption = 'Afficher des alertes pour les domaines connus'
                 TabOrder = 1
                 OnClick = CheckBoxAlertEventsKnownClick
               end
               object CheckBoxAlertEventsUnknown: TCheckBox
                 Left = 8
                 Top = 56
-                Width = 257
+                Width = 17
                 Height = 17
-                Caption = 'Afficher des alertes pour les domaines inconnus'
                 TabOrder = 2
                 OnClick = CheckBoxAlertEventsUnknownClick
               end
               object CheckBoxAlertEventDisallowed: TCheckBox
                 Left = 8
                 Top = 80
-                Width = 273
+                Width = 17
                 Height = 17
-                Caption = 'Afficher des alertes pour les domaines bloqu'#233's'
                 TabOrder = 3
                 OnClick = CheckBoxAlertEventDisallowedClick
               end
@@ -530,12 +646,21 @@ object Form1: TForm1
         object GroupBox1: TGroupBox
           Left = 16
           Top = 16
-          Width = 305
+          Width = 297
           Height = 265
           Caption = 
-            'Blackwords: Bloque le domaine s'#39'il comporte un mot de la liste c' +
-            'i-dessous:'
+            '                                                                ' +
+            '                                                     '
           TabOrder = 0
+          object Label22: TLabel
+            Left = 10
+            Top = -1
+            Width = 347
+            Height = 13
+            Caption = 
+              'Blackwords: Bloque le domaine s'#39'il comporte un mot de la liste c' +
+              'i-dessous:'
+          end
           object ListBoxBlacklist: TListBox
             Left = 8
             Top = 40
@@ -556,15 +681,15 @@ object Form1: TForm1
         Top = 0
         Caption = 'IP Clients'
         DesignSize = (
-          336
+          320
           304)
         object GroupBox3: TGroupBox
           Left = 8
           Top = 8
-          Width = 320
+          Width = 304
           Height = 257
           Anchors = [akLeft, akTop, akRight, akBottom]
-          Caption = 'Clients'
+          Caption = '             '
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -572,10 +697,17 @@ object Form1: TForm1
           Font.Style = []
           ParentFont = False
           TabOrder = 0
+          object Label23: TLabel
+            Left = 11
+            Top = -1
+            Width = 31
+            Height = 13
+            Caption = 'Clients'
+          end
           object ListBoxIpClients: TListBox
             Left = 2
             Top = 15
-            Width = 316
+            Width = 300
             Height = 240
             Align = alClient
             Color = clWhite
@@ -596,15 +728,17 @@ object Form1: TForm1
         Top = 0
         Caption = 'DNS Domains'
         DesignSize = (
-          336
+          320
           304)
         object GroupBox4: TGroupBox
           Left = 8
           Top = 8
-          Width = 320
+          Width = 304
           Height = 296
           Anchors = [akLeft, akTop, akRight, akBottom]
-          Caption = 'Web Filter: R'#232'gle appliqu'#233' '#224' chaque domaine'
+          Caption = 
+            '                                                                ' +
+            '     '
           Color = clWhite
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -614,10 +748,17 @@ object Form1: TForm1
           ParentColor = False
           ParentFont = False
           TabOrder = 0
+          object Label24: TLabel
+            Left = 11
+            Top = 0
+            Width = 200
+            Height = 13
+            Caption = 'WebFilter: R'#232'gles appliqu'#233's aux domaines'
+          end
           object ListView1: TListView
             Left = 2
             Top = 39
-            Width = 316
+            Width = 300
             Height = 255
             Align = alClient
             BevelWidth = 10
@@ -637,7 +778,7 @@ object Form1: TForm1
           object Panel6: TPanel
             Left = 2
             Top = 15
-            Width = 316
+            Width = 300
             Height = 24
             Align = alTop
             BevelOuter = bvNone
@@ -696,7 +837,7 @@ object Form1: TForm1
           Top = 24
           Width = 323
           Height = 175
-          Caption = 'DNS Relay'
+          Caption = '                     '
           Color = clWhite
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -709,6 +850,13 @@ object Form1: TForm1
           DesignSize = (
             323
             175)
+          object Label25: TLabel
+            Left = 13
+            Top = 0
+            Width = 53
+            Height = 13
+            Caption = 'DNS Relay'
+          end
           object Memo1: TMemo
             Left = 8
             Top = 16
@@ -736,22 +884,29 @@ object Form1: TForm1
   object GroupBox5: TGroupBox
     Left = 0
     Top = 439
-    Width = 420
+    Width = 419
     Height = 82
     Align = alBottom
-    Caption = 'Logs'
+    Caption = '           '
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWhite
+    Font.Color = clBlack
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
     TabOrder = 1
     Visible = False
+    object Label21: TLabel
+      Left = 13
+      Top = 0
+      Width = 23
+      Height = 13
+      Caption = 'Logs'
+    end
     object MemoLogs: TMemo
       Left = 2
       Top = 15
-      Width = 416
+      Width = 415
       Height = 65
       Align = alClient
       Color = clWhite
@@ -770,7 +925,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 420
+    Width = 419
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -863,15 +1018,15 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 420
+    Width = 419
     Height = 33
     Align = alTop
     TabOrder = 3
     DesignSize = (
-      420
+      419
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 393
+      Left = 392
       Top = 6
       Width = 22
       Height = 22
