@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.79';
+var CurrentApplicationVersion: string = '0.4.80';
 
 type
   TForm1 = class(TForm)
@@ -2194,7 +2194,7 @@ begin
     exit;
   end;
   txt := ListBoxBlacklist.Items.Strings[i];
-  txt := InputBox('Update Blackword', '', txt);
+  txt := InputBox('Update Blackword', txt, txt);
   if txt = '' then exit;
   ListBoxBlacklist.Items.Strings[i] := txt;
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);

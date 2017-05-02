@@ -87,7 +87,7 @@ object Form1: TForm1
       Top = 17
       Width = 336
       Height = 304
-      PageIndex = 3
+      PageIndex = 1
       TabOrder = 0
       object TPage
         Left = 0
@@ -578,6 +578,7 @@ object Form1: TForm1
             PopupMenu = PopupMenuBlacklist
             TabOrder = 0
             OnContextPopup = ListBoxDNSMasterContextPopup
+            OnDblClick = Modifier3Click
           end
         end
       end
