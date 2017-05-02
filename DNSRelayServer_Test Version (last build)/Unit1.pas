@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.84';
+var CurrentApplicationVersion: string = '0.4.85';
 
 type
   TForm1 = class(TForm)
@@ -123,6 +123,9 @@ type
     Ajouter2: TMenuItem;
     Modifier3: TMenuItem;
     Supprimer2: TMenuItem;
+    PanelRestart: TPanel;
+    Label8: TLabel;
+    Button1: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -210,6 +213,7 @@ type
     procedure Supprimer2Click(Sender: TObject);
     procedure ListBoxBlacklistKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -983,7 +987,7 @@ begin
   if txt = '' then exit;
   ListBoxDNSMaster.Items.Add(txt);
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
-  if isServerStarted then TimerRestart.Enabled := True;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 // Erase  DNS MASTER
@@ -1005,7 +1009,7 @@ begin
     ListBoxDNSMaster.DeleteSelected;
     ListBoxDNSMaster.ItemIndex := 1 - 1;
     ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
-    if isServerStarted then TimerRestart.Enabled := True;
+    if isServerStarted then PanelRestart.Visible := True;
     ShowMessage('Effacé');
   end;
 end;
@@ -1027,7 +1031,7 @@ begin
   if txt = '' then exit;
   ListBoxDNSMaster.Items.Strings[i] := txt;
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
-  if isServerStarted then TimerRestart.Enabled := True;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.ToolButtonDownDNSMasterClick(Sender: TObject);
@@ -1043,7 +1047,7 @@ begin
   ListBoxDNSMaster.Items.Move(i, i +1);
   ListBoxDNSMaster.ItemIndex := i +1;
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
-  if isServerStarted then TimerRestart.Enabled := True;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.ToolButtonUpDNSMasterClick(Sender: TObject);
@@ -1059,7 +1063,7 @@ begin
   ListBoxDNSMaster.Items.Move(i, i - 1);
   ListBoxDNSMaster.ItemIndex := i - 1;
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
-  if isServerStarted then TimerRestart.Enabled := True;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 
@@ -1154,7 +1158,7 @@ begin
   TabbedNotebook1.Align := alClient;
   ListBoxBlacklist.Align := alClient;
 
-
+  PanelRestart.Visible := False;
 
   TabbedNotebook1.PageIndex := 0;
   Notebook1.PageIndex := 5;
@@ -1278,7 +1282,9 @@ begin
   CheckBoxStartWithWindows.Color := bg;
   CheckBoxAutostartDNSOnBoot.Color := bg;
   SpinTimeCheckUpdate.Color := bg;
+  PanelRestart.Color := bg;
 
+  Label8.Font.Color := color;
   Panel1.Font.Color := color;
   Form1.Font.Color := color;
   ListView1.Font.Color := color;
@@ -1612,8 +1618,7 @@ begin
   refreshListView1Click();
   if isServerStarted then
   begin
-    TimerRestart.Enabled := False;
-    TimerRestart.Enabled := True;
+    PanelRestart.Visible := True;
   end;
 end;
 
@@ -1627,8 +1632,7 @@ begin
   refreshListView1Click();
   if isServerStarted then
   begin
-    TimerRestart.Enabled := False;
-    TimerRestart.Enabled := True;
+    PanelRestart.Visible := True;
   end;
 end;
 
@@ -1645,8 +1649,7 @@ begin
   refreshListView1Click();
   if isServerStarted then
   begin
-    TimerRestart.Enabled := False;
-    TimerRestart.Enabled := True;
+    PanelRestart.Visible := True;
   end;
 end;
 
@@ -2182,7 +2185,7 @@ begin
   if txt = '' then exit;
   ListBoxBlacklist.Items.Add(txt);
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-  if isServerStarted then TimerRestart.Enabled := True;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.Modifier3Click(Sender: TObject);
@@ -2201,7 +2204,7 @@ begin
   if (txt = '') or (txt = ListBoxBlacklist.Items.Strings[i]) then exit;
   ListBoxBlacklist.Items.Strings[i] := txt;
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-  if isServerStarted then TimerRestart.Enabled := True;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.Supprimer2Click(Sender: TObject);
@@ -2222,7 +2225,7 @@ begin
     ListBoxBlacklist.DeleteSelected;
     ListBoxBlacklist.ItemIndex := 1 - 1;
     ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-    if isServerStarted then TimerRestart.Enabled := True;
+    if isServerStarted then PanelRestart.Visible := True;
     //ShowMessage('Effacé');
   end;
 end;
@@ -2232,6 +2235,12 @@ procedure TForm1.ListBoxBlacklistKeyUp(Sender: TObject; var Key: Word;
 begin
   if Key = 46 then
     Supprimer2Click(nil);
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  PanelRestart.Visible := False;
+  ButtonStartClick(nil);
 end;
 
 end.

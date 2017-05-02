@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 171
   Top = 119
   Width = 436
-  Height = 519
+  Height = 566
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -65,7 +65,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 392
+    Top = 439
     Width = 420
     Height = 10
     Cursor = crVSplit
@@ -76,7 +76,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Top = 49
+    Top = 89
     Width = 345
     Height = 328
     BevelOuter = bvNone
@@ -768,7 +768,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 402
+    Top = 449
     Width = 420
     Height = 82
     Align = alBottom
@@ -891,6 +891,35 @@ object Form1: TForm1
         ImageIndex = 10
         OnClick = Masquer1Click
       end
+    end
+  end
+  object PanelRestart: TPanel
+    Left = 0
+    Top = 48
+    Width = 420
+    Height = 33
+    Align = alTop
+    TabOrder = 3
+    DesignSize = (
+      420
+      33)
+    object Label8: TLabel
+      Left = 12
+      Top = 8
+      Width = 221
+      Height = 13
+      Caption = 'Red'#233'marrez pour appliquer les changements.'
+      Transparent = True
+    end
+    object Button1: TButton
+      Left = 340
+      Top = 4
+      Width = 75
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'Red'#233'marrer'
+      TabOrder = 0
+      OnClick = Button1Click
     end
   end
   object ImageList1: TImageList
@@ -1761,7 +1790,7 @@ object Form1: TForm1
     Left = 372
     Top = 296
     Bitmap = {
-      494C01010F001300040028002800FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C01010F001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5890,7 +5919,8 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFFE00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFC000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF003FFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
