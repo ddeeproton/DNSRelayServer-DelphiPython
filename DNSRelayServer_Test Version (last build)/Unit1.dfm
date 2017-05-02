@@ -87,7 +87,6 @@ object Form1: TForm1
       Top = 17
       Width = 336
       Height = 304
-      PageIndex = 1
       TabOrder = 0
       object TPage
         Left = 0
@@ -115,7 +114,7 @@ object Form1: TForm1
             Top = 15
             Width = 311
             Height = 258
-            PageIndex = 3
+            PageIndex = 2
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clWhite
             TabFont.Height = -11
@@ -912,7 +911,7 @@ object Form1: TForm1
       Transparent = True
     end
     object Button1: TButton
-      Left = 340
+      Left = 317
       Top = 4
       Width = 75
       Height = 25
@@ -920,6 +919,16 @@ object Form1: TForm1
       Caption = 'Red'#233'marrer'
       TabOrder = 0
       OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 396
+      Top = 5
+      Width = 19
+      Height = 17
+      Anchors = [akTop, akRight]
+      Caption = 'X'
+      TabOrder = 1
+      OnClick = Button2Click
     end
   end
   object ImageList1: TImageList
@@ -15271,6 +15280,7 @@ object Form1: TForm1
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
+    Interval = 100
     OnTimer = TimerAfterFormCreateTimer
     Left = 344
     Top = 136

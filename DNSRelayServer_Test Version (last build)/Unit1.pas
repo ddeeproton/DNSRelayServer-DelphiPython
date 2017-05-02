@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.85';
+var CurrentApplicationVersion: string = '0.4.86';
 
 type
   TForm1 = class(TForm)
@@ -126,6 +126,7 @@ type
     PanelRestart: TPanel;
     Label8: TLabel;
     Button1: TButton;
+    Button2: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -214,6 +215,7 @@ type
     procedure ListBoxBlacklistKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -270,6 +272,7 @@ var
 
   DNSMasterSerialized: string = '';
   LastPositionFormAlertTop: integer = 0;
+  startedInBackground: Boolean = False;
 implementation
 
 {$R *.dfm}
@@ -778,6 +781,7 @@ var
   dns: string;
   script: string;
 begin
+  PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
   if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
@@ -948,6 +952,7 @@ procedure TForm1.ButtonCloseClick(Sender: TObject);
 var
   i, max: Integer;
 begin
+  PanelRestart.Visible := False;
   //Notebook1.PageIndex := 4;
   max := Length(listThreads)-1;
   for i:=0 to max do
@@ -1088,7 +1093,6 @@ var
   param: string;
   net: tNetworkInterfaceList;
   canClose: Boolean;
-  startedInBackground: Boolean;
   autostarted: Boolean;
 begin
   ServerDoStart := False;
@@ -1158,7 +1162,7 @@ begin
   TabbedNotebook1.Align := alClient;
   ListBoxBlacklist.Align := alClient;
 
-  PanelRestart.Visible := False;
+
 
   TabbedNotebook1.PageIndex := 0;
   Notebook1.PageIndex := 5;
@@ -1245,7 +1249,7 @@ begin
     TimerRestart.Enabled := True;
   end;
 
-  TimerAfterFormCreate.Enabled := not startedInBackground;
+  TimerAfterFormCreate.Enabled := True;
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
   //setTheme(RGB(10,30,40), RGB(220,155,220));
 end;
@@ -1554,6 +1558,7 @@ begin
     getDomains(EditFilehost.Text, ListView1);
     ListView1.OnChange := ListView1Change;
     TimerSaveChange.Enabled := True;
+    PanelRestart.Visible := True;
   end;
 end;
 
@@ -1589,6 +1594,7 @@ procedure TForm1.EditFilehostChange(Sender: TObject);
 begin
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
+  PanelRestart.Visible := True;
 end;
 
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
@@ -1754,7 +1760,6 @@ end;
 
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
-
   //if isServerStarted then
   if ServerDoStart then
   begin
@@ -1954,15 +1959,18 @@ end;
 procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
-    Application.ShowMainForm := true;
-    Form1.BringToFront;
-    Application.BringToFront;
-    Application.ModalFinished;
-    Self.Show;
-    BringToFront;
-    SetFocus;
-    FlashWindow(Application.Handle, true);
-    ShowWindow(Application.Handle, SW_SHOW);
+  PanelRestart.Visible := False;
+
+  if startedInBackground then exit;
+  Application.ShowMainForm := true;
+  Form1.BringToFront;
+  Application.BringToFront;
+  Application.ModalFinished;
+  Self.Show;
+  BringToFront;
+  SetFocus;
+  FlashWindow(Application.Handle, true);
+  ShowWindow(Application.Handle, SW_SHOW);
 end;
 
 procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);
@@ -2241,6 +2249,11 @@ procedure TForm1.Button1Click(Sender: TObject);
 begin
   PanelRestart.Visible := False;
   ButtonStartClick(nil);
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  PanelRestart.Visible := False;
 end;
 
 end.
