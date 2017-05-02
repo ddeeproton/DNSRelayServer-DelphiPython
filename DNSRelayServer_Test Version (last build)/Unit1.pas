@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.88';
+var CurrentApplicationVersion: string = '0.4.89';
 
 type
   TForm1 = class(TForm)
@@ -46,36 +46,6 @@ type
     Mettrejour1: TMenuItem;
     N3: TMenuItem;
     TimerCheckUpdate: TTimer;
-    TabbedNotebook1: TTabbedNotebook;
-    ToolBar1: TToolBar;
-    ToolButton1: TToolButton;
-    ToolButtonUpdateDNSMaster: TToolButton;
-    ToolButtonEraseDNSMaster: TToolButton;
-    ToolButtonDownDNSMaster: TToolButton;
-    ToolButtonUpDNSMaster: TToolButton;
-    ListBoxDNSMaster: TListBox;
-    CheckBoxUpdate: TCheckBox;
-    CheckBoxUpdateIntervall: TCheckBox;
-    SpinTimeCheckUpdate: TSpinEdit;
-    CheckBoxUpdateSilent: TCheckBox;
-    GroupBox7: TGroupBox;
-    Panel3: TPanel;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label4: TLabel;
-    Label3: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    CBoxDNSServerSlaveIP: TComboBox;
-    SpinPort: TSpinEdit;
-    EditFilehost: TEdit;
-    CheckBoxStartWithWindows: TCheckBox;
-    CheckBoxAutostartDNSOnBoot: TCheckBox;
-    Label7: TLabel;
-    Panel4: TPanel;
-    Panel2: TPanel;
-    Label9: TLabel;
-    CheckBoxAllowModifyNetCard: TCheckBox;
     GroupBox5: TGroupBox;
     MemoLogs: TMemo;
     Splitter1: TSplitter;
@@ -93,10 +63,6 @@ type
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton7: TToolButton;
-    CheckBoxSwitchTheme: TCheckBox;
-    CheckBoxAlertEventsKnown: TCheckBox;
-    CheckBoxAlertEventDisallowed: TCheckBox;
-    CheckBoxAlertEventsUnknown: TCheckBox;
     TimerRestart: TTimer;
     TimerResetAlertPosition: TTimer;
     Panel5: TPanel;
@@ -121,11 +87,48 @@ type
     PanelRestart: TPanel;
     ButtonClosePanelRestart: TSpeedButton;
     ButtonApplyChanges: TSpeedButton;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    Label1: TLabel;
+    SpeedButtonRefreshNetCard: TSpeedButton;
+    Label2: TLabel;
+    Label4: TLabel;
+    Label3: TLabel;
+    Label5: TLabel;
+    SpeedButtonSelectFilehost: TSpeedButton;
+    CBoxDNSServerSlaveIP: TComboBox;
+    SpinPort: TSpinEdit;
+    EditFilehost: TEdit;
+    CheckBoxStartWithWindows: TCheckBox;
+    CheckBoxAutostartDNSOnBoot: TCheckBox;
+    TabSheet2: TTabSheet;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButtonUpdateDNSMaster: TToolButton;
+    ToolButtonEraseDNSMaster: TToolButton;
+    ToolButtonDownDNSMaster: TToolButton;
+    ToolButtonUpDNSMaster: TToolButton;
+    ListBoxDNSMaster: TListBox;
+    TabSheet3: TTabSheet;
+    SpeedButtonUpdate: TSpeedButton;
+    CheckBoxUpdate: TCheckBox;
+    CheckBoxUpdateIntervall: TCheckBox;
+    SpinTimeCheckUpdate: TSpinEdit;
+    CheckBoxUpdateSilent: TCheckBox;
+    TabSheet4: TTabSheet;
+    GroupBox7: TGroupBox;
+    Label7: TLabel;
+    Panel4: TPanel;
     SpeedButtonNetCardIntegration: TSpeedButton;
     SpeedButtonNetCardDesintegration: TSpeedButton;
-    SpeedButtonUpdate: TSpeedButton;
-    SpeedButtonRefreshNetCard: TSpeedButton;
-    SpeedButtonSelectFilehost: TSpeedButton;
+    Panel2: TPanel;
+    Label9: TLabel;
+    CheckBoxAllowModifyNetCard: TCheckBox;
+    TabSheet5: TTabSheet;
+    CheckBoxSwitchTheme: TCheckBox;
+    CheckBoxAlertEventsKnown: TCheckBox;
+    CheckBoxAlertEventsUnknown: TCheckBox;
+    CheckBoxAlertEventDisallowed: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -215,6 +218,8 @@ type
       Shift: TShiftState);
     procedure ButtonClosePanelRestartClick(Sender: TObject);
     procedure ButtonApplyChangesClick(Sender: TObject);
+    procedure PageControl1DrawTab(Control: TCustomTabControl;
+      TabIndex: Integer; const Rect: TRect; Active: Boolean);
   private
     { Private declarations }
   public
@@ -1094,6 +1099,7 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
+  PageControl1.OwnerDraw := True;
   ServerDoStart := False;
   ServerFailStartCount := 0;
 
@@ -1158,12 +1164,12 @@ begin
   //GroupBox5.Align := alClient;
   GroupBox6.Align := alClient;
   Notebook1.Align := alClient;
-  TabbedNotebook1.Align := alClient;
+  PageControl1.Align := alClient;
   ListBoxBlacklist.Align := alClient;
 
 
 
-  TabbedNotebook1.PageIndex := 0;
+  PageControl1.TabIndex := 0;
   Notebook1.PageIndex := 5;
 
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
@@ -1273,7 +1279,7 @@ begin
   ListBoxIpClients.Color := bg;
   Panel1.Color := bg;
   Panel2.Color := bg;
-  Panel3.Color := bg;
+  //Panel3.Color := bg;
   Panel4.Color := bg;
   Panel5.Color := bg;
   Panel6.Color := bg;
@@ -1308,7 +1314,7 @@ begin
   Label3.Font.Color := color;
   Label4.Font.Color := color;
   Label5.Font.Color := color;
-  Label6.Font.Color := color;
+  //Label6.Font.Color := color;
   Label7.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
@@ -2252,6 +2258,23 @@ procedure TForm1.ButtonApplyChangesClick(Sender: TObject);
 begin
   PanelRestart.Visible := False;
   ButtonStartClick(nil);
+end;
+
+procedure TForm1.PageControl1DrawTab(Control: TCustomTabControl;
+  TabIndex: Integer; const Rect: TRect; Active: Boolean);
+begin
+  Control.Canvas.Brush.Color := Color;
+  if Active then
+  begin
+    Control.Canvas.TextOut (Rect.Left +6, Rect.Top +5, (Control as
+TPageControl).Pages[TabIndex].Caption);
+    Control.Canvas.Pen.Color := Color;
+    Control.Canvas.MoveTo (Rect.Left +1, Rect.Bottom -1);
+    Control.Canvas.LineTo (Rect.Right,   Rect.Bottom -1);
+  end
+  else
+    Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as
+TPageControl).Pages[TabIndex].Caption); 
 end;
 
 end.
