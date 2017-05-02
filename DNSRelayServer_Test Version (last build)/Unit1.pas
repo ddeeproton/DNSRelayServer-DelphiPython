@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.78';
+var CurrentApplicationVersion: string = '0.4.79';
 
 type
   TForm1 = class(TForm)
@@ -116,6 +116,13 @@ type
     inconnus1: TMenuItem;
     bloques1: TMenuItem;
     N5: TMenuItem;
+    ToolButtonBlackwords: TToolButton;
+    GroupBox1: TGroupBox;
+    ListBoxBlacklist: TListBox;
+    PopupMenuBlacklist: TPopupMenu;
+    Ajouter2: TMenuItem;
+    Modifier3: TMenuItem;
+    Supprimer2: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -197,6 +204,10 @@ type
     procedure inconnus1Click(Sender: TObject);
     procedure connus1Click(Sender: TObject);
     procedure bloques1Click(Sender: TObject);
+    procedure ToolButtonBlackwordsClick(Sender: TObject);
+    procedure Ajouter2Click(Sender: TObject);
+    procedure Modifier3Click(Sender: TObject);
+    procedure Supprimer2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -800,23 +811,23 @@ begin
 
 
 
-
-  ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
-                                        'www.youtube-nocookie.com'#13#10+
-                                        'www.googleapis.com'#13#10+
-                                        'clients1.google.com'#13#10+
-                                        'clients2.google.com'#13#10+
-                                        'clients3.google.com'#13#10+
-                                        'clients4.google.com'#13#10+
-                                        'youtubei.youtube.com'#13#10+
-                                        'serving-sys.com'#13#10+
-                                        'atdmt.com'#13#10+
-                                        'googleadservices.com'#13#10+
-                                        'doubleclick.net'#13#10+
-                                        'googlesyndication.com'#13#10+
-                                        '9an6.googlevideo.com'#13#10+
-                                        '9ans.googlevideo.com'#13#10+
-                                        '9anz.googlevideo.com');
+  if not FileExists(BlackListCfgFile) then
+    ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
+                                          'www.youtube-nocookie.com'#13#10+
+                                          'www.googleapis.com'#13#10+
+                                          'clients1.google.com'#13#10+
+                                          'clients2.google.com'#13#10+
+                                          'clients3.google.com'#13#10+
+                                          'clients4.google.com'#13#10+
+                                          'youtubei.youtube.com'#13#10+
+                                          'serving-sys.com'#13#10+
+                                          'atdmt.com'#13#10+
+                                          'googleadservices.com'#13#10+
+                                          'doubleclick.net'#13#10+
+                                          'googlesyndication.com'#13#10+
+                                          '9an6.googlevideo.com'#13#10+
+                                          '9ans.googlevideo.com'#13#10+
+                                          '9anz.googlevideo.com');
 
   if not FileExists(filepath) then
   begin
@@ -1130,6 +1141,7 @@ begin
 
 
   Panel1.Align := alClient;
+  GroupBox1.Align := alClient;
   GroupBox2.Align := alClient;
   GroupBox3.Align := alClient;
   GroupBox4.Align := alClient;
@@ -1137,7 +1149,7 @@ begin
   GroupBox6.Align := alClient;
   Notebook1.Align := alClient;
   TabbedNotebook1.Align := alClient;
-
+  ListBoxBlacklist.Align := alClient;
 
 
 
@@ -1174,7 +1186,8 @@ begin
   if FileExists(TimeCheckUpdateFile) then
     SpinTimeCheckUpdate.Value := StrToInt(lireFichier(TimeCheckUpdateFile));
 
-
+  if FileExists(BlackListCfgFile) then
+    ListBoxBlacklist.Items.LoadFromFile(BlackListCfgFile);
 
 
   CheckBoxAutostartDNSOnBoot.Checked := FileExists(DataDirectoryPath + 'checkAutostartDNS.cfg');
@@ -1243,6 +1256,7 @@ begin
   ToolBar2.Color := bg;
   ListView1.Color := bg;
   Splitter1.Color := bg;
+  ListBoxBlacklist.Color := bg;
 
   Memo1.Color := bg;
   MemoLogs.Color := bg;
@@ -1294,7 +1308,7 @@ begin
   CheckBoxAllowModifyNetCard.Font.Color := color;
   Label9.Font.Color := color;
   Label7.Font.Color := color;
-
+  ListBoxBlacklist.Font.Color := color;
 end;
 
 procedure TUpdate.Execute;
@@ -1477,7 +1491,10 @@ begin
   Notebook1.PageIndex := 4;
 end;
 
-
+procedure TForm1.ToolButtonBlackwordsClick(Sender: TObject);
+begin
+  Notebook1.PageIndex := 1;
+end;
 
 procedure TForm1.refreshCheckBox(Checkbox:TCheckBox);
 var
@@ -1740,7 +1757,9 @@ begin
       ServerDoStart := False;
       ToolButton11.Enabled := False;
       TimerRestart.Enabled := False;
+
       ButtonCloseClick(nil);
+
       if ToolButton11.ImageIndex = 13 then
       begin
         ToolButton11.ImageIndex := 7;
@@ -1763,6 +1782,7 @@ begin
 
       ServerDoStart := True;
       ToolButton11.Enabled := False;
+
       ButtonStartClick(nil);
     //end;
   end;
@@ -2150,4 +2170,59 @@ begin
   CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
 end;
 
+
+
+procedure TForm1.Ajouter2Click(Sender: TObject);
+var txt: string;
+begin
+  txt := InputBox('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', '');
+  if txt = '' then exit;
+  ListBoxBlacklist.Items.Add(txt);
+  ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
+  if isServerStarted then TimerRestart.Enabled := True;
+end;
+
+procedure TForm1.Modifier3Click(Sender: TObject);
+var
+  i:integer;
+  txt:string;
+begin
+  i := ListBoxBlacklist.ItemIndex;
+  if i < 0 then
+  begin
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    exit;
+  end;
+  txt := ListBoxBlacklist.Items.Strings[i];
+  txt := InputBox('Update Blackword', '', txt);
+  if txt = '' then exit;
+  ListBoxBlacklist.Items.Strings[i] := txt;
+  ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
+  if isServerStarted then TimerRestart.Enabled := True;
+end;
+
+procedure TForm1.Supprimer2Click(Sender: TObject);
+var
+  i:integer;
+  txt:string;
+begin
+  i := ListBoxBlacklist.ItemIndex;
+  if i < 0 then
+  begin
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    exit;
+  end;
+  txt := ListBoxBlacklist.Items.Strings[i];
+  MessageBeep(MB_OK);
+  if MessageDlg(Pchar('Effacer "' + txt + '"?'),mtConfirmation, mbOKCancel, 0)  = mrOK then
+  begin
+    ListBoxBlacklist.DeleteSelected;
+    ListBoxBlacklist.ItemIndex := 1 - 1;
+    ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
+    if isServerStarted then TimerRestart.Enabled := True;
+    //ShowMessage('Effacé');
+  end;
+end;
+
 end.
+
