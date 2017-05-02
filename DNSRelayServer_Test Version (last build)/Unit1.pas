@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.87';
+var CurrentApplicationVersion: string = '0.4.88';
 
 type
   TForm1 = class(TForm)
@@ -55,7 +55,6 @@ type
     ToolButtonUpDNSMaster: TToolButton;
     ListBoxDNSMaster: TListBox;
     CheckBoxUpdate: TCheckBox;
-    ButtonUpdate: TButton;
     CheckBoxUpdateIntervall: TCheckBox;
     SpinTimeCheckUpdate: TSpinEdit;
     CheckBoxUpdateSilent: TCheckBox;
@@ -68,16 +67,12 @@ type
     Label5: TLabel;
     Label6: TLabel;
     CBoxDNSServerSlaveIP: TComboBox;
-    ButtonRefreshNetCard: TBitBtn;
     SpinPort: TSpinEdit;
     EditFilehost: TEdit;
-    ButtonSelectFilehost: TButton;
     CheckBoxStartWithWindows: TCheckBox;
     CheckBoxAutostartDNSOnBoot: TCheckBox;
     Label7: TLabel;
     Panel4: TPanel;
-    ButtonNetCardDesintegration: TButton;
-    ButtonNetCardIntegration: TButton;
     Panel2: TPanel;
     Label9: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
@@ -124,9 +119,13 @@ type
     Modifier3: TMenuItem;
     Supprimer2: TMenuItem;
     PanelRestart: TPanel;
-    Label8: TLabel;
-    Button1: TButton;
-    Button2: TButton;
+    ButtonClosePanelRestart: TSpeedButton;
+    ButtonApplyChanges: TSpeedButton;
+    SpeedButtonNetCardIntegration: TSpeedButton;
+    SpeedButtonNetCardDesintegration: TSpeedButton;
+    SpeedButtonUpdate: TSpeedButton;
+    SpeedButtonRefreshNetCard: TSpeedButton;
+    SpeedButtonSelectFilehost: TSpeedButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -214,8 +213,8 @@ type
     procedure Supprimer2Click(Sender: TObject);
     procedure ListBoxBlacklistKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure ButtonClosePanelRestartClick(Sender: TObject);
+    procedure ButtonApplyChangesClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1288,7 +1287,6 @@ begin
   SpinTimeCheckUpdate.Color := bg;
   PanelRestart.Color := bg;
 
-  Label8.Font.Color := color;
   Panel1.Font.Color := color;
   Form1.Font.Color := color;
   ListView1.Font.Color := color;
@@ -2081,7 +2079,7 @@ end;
 
 procedure TForm1.Mettrejour1Click(Sender: TObject);
 begin
-  ButtonUpdateClick(ButtonUpdate);
+  ButtonUpdateClick(SpeedButtonUpdate);
 end;
 
 procedure TForm1.TimerStartInBackgroundTimer(Sender: TObject);
@@ -2245,15 +2243,15 @@ begin
     Supprimer2Click(nil);
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.ButtonClosePanelRestartClick(Sender: TObject);
+begin
+  PanelRestart.Visible := False;
+end;
+
+procedure TForm1.ButtonApplyChangesClick(Sender: TObject);
 begin
   PanelRestart.Visible := False;
   ButtonStartClick(nil);
-end;
-
-procedure TForm1.Button2Click(Sender: TObject);
-begin
-  PanelRestart.Visible := False;
 end;
 
 end.

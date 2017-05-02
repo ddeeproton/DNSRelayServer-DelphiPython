@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 171
-  Top = 119
+  Left = 199
+  Top = 114
   Width = 436
   Height = 566
   Caption = 'DNS Relay Server'
@@ -109,11 +109,15 @@ object Form1: TForm1
           Font.Style = []
           ParentFont = False
           TabOrder = 0
+          DesignSize = (
+            321
+            289)
           object TabbedNotebook1: TTabbedNotebook
             Left = 2
-            Top = 15
+            Top = 7
             Width = 311
             Height = 258
+            Anchors = [akTop]
             PageIndex = 3
             TabFont.Charset = DEFAULT_CHARSET
             TabFont.Color = clWhite
@@ -193,27 +197,13 @@ object Form1: TForm1
                   ParentFont = False
                   Transparent = True
                 end
-                object CBoxDNSServerSlaveIP: TComboBox
-                  Left = 8
+                object SpeedButtonRefreshNetCard: TSpeedButton
+                  Left = 160
                   Top = 24
-                  Width = 145
-                  Height = 21
-                  Color = clWhite
-                  ItemHeight = 13
-                  TabOrder = 0
-                  Text = 'CBoxDNSServerSlaveIP'
-                  OnChange = EditFilehostChange
-                end
-                object ButtonRefreshNetCard: TBitBtn
-                  Left = 161
-                  Top = 23
                   Width = 23
-                  Height = 23
-                  Hint = 'Rafraichir la liste des Adresses IP'
-                  ParentShowHint = False
-                  ShowHint = True
-                  TabOrder = 1
-                  OnClick = ButtonRefreshNetCardClick
+                  Height = 22
+                  Hint = 'Rafraichir les Adresses IP'
+                  Flat = True
                   Glyph.Data = {
                     06030000424D06030000000000003600000028000000100000000F0000000100
                     180000000000D002000000000000000000000000000000000000FFFFFFFFFFFF
@@ -240,6 +230,30 @@ object Form1: TForm1
                     F79200EB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
                     FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
                     FFFFFFFFFFFFFFFFFFFF}
+                  ParentShowHint = False
+                  ShowHint = True
+                  OnClick = ButtonRefreshNetCardClick
+                end
+                object SpeedButtonSelectFilehost: TSpeedButton
+                  Left = 264
+                  Top = 88
+                  Width = 33
+                  Height = 22
+                  Anchors = [akTop, akRight]
+                  Caption = '...'
+                  Flat = True
+                  OnClick = ButtonSelectFilehostClick
+                end
+                object CBoxDNSServerSlaveIP: TComboBox
+                  Left = 8
+                  Top = 24
+                  Width = 145
+                  Height = 21
+                  Color = clWhite
+                  ItemHeight = 13
+                  TabOrder = 0
+                  Text = 'CBoxDNSServerSlaveIP'
+                  OnChange = EditFilehostChange
                 end
                 object SpinPort: TSpinEdit
                   Left = 192
@@ -249,14 +263,14 @@ object Form1: TForm1
                   Color = clWhite
                   MaxValue = 0
                   MinValue = 0
-                  TabOrder = 2
+                  TabOrder = 1
                   Value = 53
                   OnChange = EditFilehostChange
                 end
                 object EditFilehost: TEdit
                   Left = 8
                   Top = 88
-                  Width = 184
+                  Width = 249
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -266,18 +280,8 @@ object Form1: TForm1
                   Font.Name = 'MS Sans Serif'
                   Font.Style = []
                   ParentFont = False
-                  TabOrder = 3
+                  TabOrder = 2
                   OnChange = EditFilehostChange
-                end
-                object ButtonSelectFilehost: TButton
-                  Left = 199
-                  Top = 85
-                  Width = 35
-                  Height = 25
-                  Anchors = [akTop, akRight]
-                  Caption = '...'
-                  TabOrder = 4
-                  OnClick = ButtonSelectFilehostClick
                 end
                 object CheckBoxStartWithWindows: TCheckBox
                   Left = 8
@@ -285,7 +289,7 @@ object Form1: TForm1
                   Width = 273
                   Height = 17
                   Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
-                  TabOrder = 5
+                  TabOrder = 3
                   OnClick = CheckBoxStartWithWindowsClick
                 end
                 object CheckBoxAutostartDNSOnBoot: TCheckBox
@@ -294,7 +298,7 @@ object Form1: TForm1
                   Width = 347
                   Height = 17
                   Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
-                  TabOrder = 6
+                  TabOrder = 4
                   OnClick = CheckBoxAutostartDNSOnBootClick
                 end
               end
@@ -371,51 +375,55 @@ object Form1: TForm1
               Left = 4
               Top = 24
               Caption = 'Mise '#224' jour'
+              DesignSize = (
+                303
+                230)
+              object SpeedButtonUpdate: TSpeedButton
+                Left = 8
+                Top = 8
+                Width = 326
+                Height = 33
+                Anchors = [akLeft, akTop, akRight]
+                Caption = 'Mettre '#224' jour'
+                Flat = True
+                OnClick = ButtonUpdateClick
+              end
               object CheckBoxUpdate: TCheckBox
                 Left = 8
-                Top = 24
+                Top = 48
                 Width = 273
                 Height = 17
                 Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
                 TabOrder = 0
                 OnClick = CheckBoxUpdateClick
               end
-              object ButtonUpdate: TButton
-                Left = 8
-                Top = 140
-                Width = 89
-                Height = 25
-                Caption = 'Mettre '#224' jour'
-                TabOrder = 1
-                OnClick = ButtonUpdateClick
-              end
               object CheckBoxUpdateIntervall: TCheckBox
                 Left = 8
-                Top = 66
+                Top = 74
                 Width = 193
                 Height = 17
                 Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
-                TabOrder = 2
+                TabOrder = 1
                 OnClick = CheckBoxUpdateIntervallClick
               end
               object SpinTimeCheckUpdate: TSpinEdit
                 Left = 208
-                Top = 64
+                Top = 72
                 Width = 73
                 Height = 22
                 MaxValue = 0
                 MinValue = 0
-                TabOrder = 3
+                TabOrder = 2
                 Value = 24
                 OnChange = SpinTimeCheckUpdateChange
               end
               object CheckBoxUpdateSilent: TCheckBox
                 Left = 8
-                Top = 104
+                Top = 99
                 Width = 321
                 Height = 17
                 Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
-                TabOrder = 4
+                TabOrder = 3
                 OnClick = CheckBoxUpdateSilentClick
               end
             end
@@ -427,13 +435,13 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 185
+                Height = 225
                 Align = alTop
                 Caption = 'Int'#233'gration du serveur'
                 TabOrder = 0
                 DesignSize = (
                   303
-                  185)
+                  225)
                 object Label7: TLabel
                   Left = 8
                   Top = 63
@@ -451,30 +459,30 @@ object Form1: TForm1
                 end
                 object Panel4: TPanel
                   Left = 56
-                  Top = 144
+                  Top = 154
                   Width = 193
-                  Height = 33
+                  Height = 31
                   Anchors = [akTop]
                   BevelOuter = bvNone
                   Color = clWhite
                   TabOrder = 0
-                  object ButtonNetCardDesintegration: TButton
-                    Left = 102
+                  object SpeedButtonNetCardIntegration: TSpeedButton
+                    Left = 13
                     Top = 3
                     Width = 75
-                    Height = 25
-                    Caption = 'D'#233'sinstaller'
-                    TabOrder = 0
-                    OnClick = ButtonNetCardDesintegrationClick
-                  end
-                  object ButtonNetCardIntegration: TButton
-                    Left = 16
-                    Top = 3
-                    Width = 75
-                    Height = 25
+                    Height = 26
                     Caption = 'Installer'
-                    TabOrder = 1
+                    Flat = True
                     OnClick = ButtonNetCardIntegrationClick
+                  end
+                  object SpeedButtonNetCardDesintegration: TSpeedButton
+                    Left = 101
+                    Top = 3
+                    Width = 75
+                    Height = 26
+                    Caption = 'D'#233'sinstaller'
+                    Flat = True
+                    OnClick = ButtonNetCardDesintegrationClick
                   end
                 end
                 object Panel2: TPanel
@@ -902,33 +910,40 @@ object Form1: TForm1
     DesignSize = (
       420
       33)
-    object Label8: TLabel
-      Left = 12
-      Top = 8
-      Width = 221
-      Height = 13
-      Caption = 'Red'#233'marrez pour appliquer les changements.'
-      Transparent = True
-    end
-    object Button1: TButton
-      Left = 317
-      Top = 4
-      Width = 75
-      Height = 25
+    object ButtonClosePanelRestart: TSpeedButton
+      Left = 393
+      Top = 6
+      Width = 22
+      Height = 22
       Anchors = [akTop, akRight]
-      Caption = 'Red'#233'marrer'
-      TabOrder = 0
-      OnClick = Button1Click
+      Flat = True
+      Glyph.Data = {
+        E6010000424DE60100000000000036000000280000000C0000000C0000000100
+        180000000000B001000000000000000000000000000000000000818181A3A3A3
+        9E9E9E9898989696969191918B8B8B8686868181817C7C7C797979575757A8A8
+        A88181815252523C3C3C3A3A3A3A3A3A3535353535352F2F2F3C3C3C5F5F5F79
+        7979AEAEAE5C5C5C575757FFFFFE8181813C3C3C3A3A3A7E7E7EFFFFFE4A4A4A
+        3737377C7C7CB3B3B3616161FFFFFEFFFFFEFFFFFE838383818181FFFFFEFFFF
+        FEFFFFFE2F2F2F818181B5B5B56767678B8B8BFFFFFEFFFFFEFFFFFEFFFFFEFF
+        FFFEFFFFFE7E7E7E323232868686BDBDBD6C6C6C4F4F4F8E8E8EFFFFFEFFFFFE
+        FFFFFEFFFFFE8181813A3A3A353535919191D0D0D07979795F5F5F989898FFFF
+        FEFFFFFEFFFFFEFFFFFE8989894A4A4A444444A6A6A6DDDDDD9B9B9BB8B8B8FF
+        FFFEFFFFFEFFFFFEFFFFFEFFFFFEFFFFFEA8A8A86C6C6CB8B8B8DFDFDFA0A0A0
+        FFFFFEFFFFFEFFFFFEB3B3B3B0B0B0FFFFFEFFFFFEFFFFFE6C6C6CBBBBBBE2E2
+        E2A0A0A09B9B9BFFFFFEB8B8B87E7E7E797979AEAEAEFFFFFE838383767676BD
+        BDBDDFDFDFBBBBBB9393939191918E8E8E8989898686868181817E7E7E797979
+        989898B8B8B8AEAEAED5D5D5D2D2D2D0D0D0CACACAC5C5C5C3C3C3C0C0C0BBBB
+        BBB8B8B8B3B3B3898989}
+      OnClick = ButtonClosePanelRestartClick
     end
-    object Button2: TButton
-      Left = 396
+    object ButtonApplyChanges: TSpeedButton
+      Left = 5
       Top = 5
-      Width = 19
-      Height = 17
-      Anchors = [akTop, akRight]
-      Caption = 'X'
-      TabOrder = 1
-      OnClick = Button2Click
+      Width = 228
+      Height = 22
+      Caption = 'Red'#233'marrez pour appliquer les changements'
+      Flat = True
+      OnClick = ButtonApplyChangesClick
     end
   end
   object ImageList1: TImageList
