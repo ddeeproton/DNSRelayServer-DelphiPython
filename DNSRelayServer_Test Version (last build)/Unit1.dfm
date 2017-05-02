@@ -579,6 +579,7 @@ object Form1: TForm1
             TabOrder = 0
             OnContextPopup = ListBoxDNSMasterContextPopup
             OnDblClick = Modifier3Click
+            OnKeyUp = ListBoxBlacklistKeyUp
           end
         end
       end

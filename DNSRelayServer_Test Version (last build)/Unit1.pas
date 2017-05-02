@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.81';
+var CurrentApplicationVersion: string = '0.4.82';
 
 type
   TForm1 = class(TForm)
@@ -208,6 +208,8 @@ type
     procedure Ajouter2Click(Sender: TObject);
     procedure Modifier3Click(Sender: TObject);
     procedure Supprimer2Click(Sender: TObject);
+    procedure ListBoxBlacklistKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -992,7 +994,7 @@ begin
   i := ListBoxDNSMaster.ItemIndex;
   if i < 0 then
   begin
-    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste');
     exit;
   end;
   txt := ListBoxDNSMaster.Items.Strings[i];
@@ -1016,7 +1018,7 @@ begin
   i := ListBoxDNSMaster.ItemIndex;
   if i < 0 then
   begin
-    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste');
     exit;
   end;
   txt := ListBoxDNSMaster.Items.Strings[i];
@@ -1033,7 +1035,7 @@ begin
   i := ListBoxDNSMaster.ItemIndex;
   if i < 0 then
   begin
-    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste');
     exit;
   end;
   if i >= ListBoxDNSMaster.Items.Count -1 then exit;
@@ -1049,7 +1051,7 @@ begin
   i := ListBoxDNSMaster.ItemIndex;
   if i < 0 then
   begin
-    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste');
     exit;
   end;
   if i > ListBoxDNSMaster.Items.Count -1 then exit;
@@ -2190,7 +2192,7 @@ begin
   i := ListBoxBlacklist.ItemIndex;
   if i < 0 then
   begin
-    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste');
     exit;
   end;
   txt := ListBoxBlacklist.Items.Strings[i];
@@ -2209,7 +2211,7 @@ begin
   i := ListBoxBlacklist.ItemIndex;
   if i < 0 then
   begin
-    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste avant de cliquer sur ce bouton');
+    ShowMessage('Veuillez d''abord sélectionner un élément dans la liste');
     exit;
   end;
   txt := ListBoxBlacklist.Items.Strings[i];
@@ -2222,6 +2224,13 @@ begin
     if isServerStarted then TimerRestart.Enabled := True;
     //ShowMessage('Effacé');
   end;
+end;
+
+procedure TForm1.ListBoxBlacklistKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = 46 then
+    Supprimer2Click(nil);
 end;
 
 end.
