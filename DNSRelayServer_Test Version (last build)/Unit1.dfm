@@ -122,7 +122,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 258
-            ActivePage = TabSheet1
+            ActivePage = TabSheet3
             TabOrder = 0
             OnDrawTab = PageControl1DrawTab
             object TabSheet1: TTabSheet
@@ -440,7 +440,7 @@ object Form1: TForm1
               end
               object ButtonUpdate: TButton
                 Left = 8
-                Top = 80
+                Top = 88
                 Width = 75
                 Height = 25
                 Caption = 'Mettre '#224' jour'
@@ -835,7 +835,7 @@ object Form1: TForm1
         object GroupBox6: TGroupBox
           Left = 8
           Top = 24
-          Width = 323
+          Width = 303
           Height = 175
           Caption = '                     '
           Color = clWhite
@@ -847,9 +847,6 @@ object Form1: TForm1
           ParentColor = False
           ParentFont = False
           TabOrder = 0
-          DesignSize = (
-            323
-            175)
           object Label25: TLabel
             Left = 13
             Top = 0
@@ -858,11 +855,11 @@ object Form1: TForm1
             Caption = 'DNS Relay'
           end
           object Memo1: TMemo
-            Left = 8
-            Top = 16
-            Width = 305
-            Height = 151
-            Anchors = [akLeft, akTop, akRight, akBottom]
+            Left = 2
+            Top = 15
+            Width = 299
+            Height = 158
+            Align = alClient
             Color = clWhite
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -916,7 +913,7 @@ object Form1: TForm1
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      ScrollBars = ssBoth
+      ScrollBars = ssVertical
       TabOrder = 0
       WordWrap = False
       OnChange = MemoLogsChange
