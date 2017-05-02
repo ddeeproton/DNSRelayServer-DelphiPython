@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.83';
+var CurrentApplicationVersion: string = '0.4.84';
 
 type
   TForm1 = class(TForm)
@@ -295,7 +295,7 @@ var
   isNew, isRepeated: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
-  date, time, ipclient, ipdomain, domain, ip:string;
+  date, time, ipclient, ipdomain, domain, ip, logs:string;
   FormAlert: TFormAlert;
 begin
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
@@ -303,10 +303,11 @@ begin
   if txt = '' then exit;
 
   isRepeated := True;
-  if (MemoLogs.Lines.Count = 0) or (Pos(txt, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0) then
+  logs := StringReplace(txt, ';', '', [rfReplaceAll, rfIgnoreCase]);
+  if (MemoLogs.Lines.Count = 0) or (Pos(logs, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0) then
   begin
     isRepeated := False;
-    MemoLogs.Lines.Add(txt);
+    MemoLogs.Lines.Add(logs);
   end;
   //MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
