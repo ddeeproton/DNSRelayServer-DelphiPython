@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.92';
+var CurrentApplicationVersion: string = '0.4.93';
 
 type
   TForm1 = class(TForm)
@@ -147,6 +147,11 @@ type
     ButtonNetCardIntegration: TButton;
     ButtonNetCardDesintegration: TButton;
     Button1: TButton;
+    ColorDialog1: TColorDialog;
+    GroupBox8: TGroupBox;
+    Button3: TButton;
+    Button2: TButton;
+    Label26: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -241,7 +246,10 @@ type
     procedure LabelToCheckboxClick(Sender: TObject);
     procedure LabelCheckboxMouseEnter(Sender: TObject);
     procedure LabelCheckboxMouseLeave(Sender: TObject);
-
+    procedure Button2Click(Sender: TObject);
+    procedure setThemeFont(color:TColor);
+    procedure setThemeBg(bg:TColor);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1285,6 +1293,13 @@ end;
 
 procedure TForm1.setTheme(color, bg:TColor);
 begin
+  setThemeBg(bg);
+  setThemeFont(color);
+end;
+
+
+procedure TForm1.setThemeBg(bg:TColor);
+begin
 
   Form1.Color := bg;
   ToolBar3.Color := bg;
@@ -1316,7 +1331,9 @@ begin
   CheckBoxAutostartDNSOnBoot.Color := bg;
   SpinTimeCheckUpdate.Color := bg;
   PanelRestart.Color := bg;
-
+end;
+procedure TForm1.setThemeFont(color:TColor);
+begin
   Label6.Font.Color := color;
   Label8.Font.Color := color;
   Label10.Font.Color := color;
@@ -1326,6 +1343,7 @@ begin
   Label16.Font.Color := color;
   Label17.Font.Color := color;
   Label18.Font.Color := color;
+  Label26.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
   GroupBox2.Font.Color := color;
@@ -2145,7 +2163,7 @@ procedure TForm1.CheckBoxSwitchThemeClick(Sender: TObject);
 begin
   if TCheckbox(Sender).Checked then
     //setTheme(clWhite, clBlack)
-    setTheme(RGB(250,250,250), RGB(30,30,30))
+    setTheme(RGB(250,250,250), RGB(10,10,10))
   else
     setTheme(clBlack, clWhite);
   if TCheckBox(Sender).Checked then
@@ -2308,12 +2326,13 @@ begin
     Control.Canvas.TextOut (Rect.Left +6, Rect.Top +5, (Control as
 TPageControl).Pages[TabIndex].Caption);
     Control.Canvas.Pen.Color := Color;
-    Control.Canvas.MoveTo (Rect.Left +1, Rect.Bottom -1);
-    Control.Canvas.LineTo (Rect.Right,   Rect.Bottom -1);
+    Control.Canvas.MoveTo (Rect.Left +1, Rect.Bottom -2);
+    Control.Canvas.LineTo (Rect.Right,   Rect.Bottom -2);
   end
   else
     Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as
-TPageControl).Pages[TabIndex].Caption); 
+TPageControl).Pages[TabIndex].Caption);
+  
 end;
 
 
@@ -2336,6 +2355,22 @@ end;
 procedure TForm1.LabelCheckboxMouseLeave(Sender: TObject);
 begin
   TLabel(Sender).Font.Style := [];
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  if not ColorDialog1.Execute then exit;
+  setThemeFont(ColorDialog1.Color);
+  Notebook1.PageIndex := 4;
+  Notebook1.PageIndex := 0;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  if not ColorDialog1.Execute then exit;
+  setThemeBg(ColorDialog1.Color);   
+  Notebook1.PageIndex := 4;
+  Notebook1.PageIndex := 0;
 end;
 
 end.

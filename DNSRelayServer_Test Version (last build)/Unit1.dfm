@@ -122,7 +122,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 258
-            ActivePage = TabSheet1
+            ActivePage = TabSheet5
             TabOrder = 0
             OnDrawTab = PageControl1DrawTab
             object TabSheet1: TTabSheet
@@ -560,6 +560,9 @@ object Form1: TForm1
             object TabSheet5: TTabSheet
               Caption = 'Affichage'
               ImageIndex = 4
+              DesignSize = (
+                303
+                230)
               object Label15: TLabel
                 Left = 26
                 Top = 9
@@ -635,6 +638,39 @@ object Form1: TForm1
                 Height = 17
                 TabOrder = 3
                 OnClick = CheckBoxAlertEventDisallowedClick
+              end
+              object GroupBox8: TGroupBox
+                Left = 0
+                Top = 104
+                Width = 297
+                Height = 73
+                Anchors = [akLeft, akTop, akRight]
+                TabOrder = 4
+                object Label26: TLabel
+                  Left = 8
+                  Top = 43
+                  Width = 263
+                  Height = 13
+                  Caption = 'Ne sauvegarde pas le choix (en cours d'#39'impl'#233'mentation)'
+                end
+                object Button3: TButton
+                  Left = 96
+                  Top = 11
+                  Width = 75
+                  Height = 25
+                  Caption = 'Fond'
+                  TabOrder = 0
+                  OnClick = Button3Click
+                end
+                object Button2: TButton
+                  Left = 8
+                  Top = 11
+                  Width = 75
+                  Height = 25
+                  Caption = 'Texte'
+                  TabOrder = 1
+                  OnClick = Button2Click
+                end
               end
             end
           end
@@ -15482,5 +15518,9 @@ object Form1: TForm1
       Caption = 'Supprimer'
       OnClick = Supprimer2Click
     end
+  end
+  object ColorDialog1: TColorDialog
+    Left = 374
+    Top = 324
   end
 end
