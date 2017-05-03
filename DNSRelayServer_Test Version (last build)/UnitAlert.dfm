@@ -1,6 +1,6 @@
 object FormAlert: TFormAlert
-  Left = 1031
-  Top = 224
+  Left = 639
+  Top = 124
   BorderStyle = bsNone
   Caption = 'FormAlert'
   ClientHeight = 84
@@ -74,7 +74,7 @@ object FormAlert: TFormAlert
       Height = 20
       Caption = 'Label2'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
+      Font.Color = clBlack
       Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = []
