@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.105';
+var CurrentApplicationVersion: string = '0.4.106';
 
 type
   TForm1 = class(TForm)
@@ -680,6 +680,24 @@ procedure TForm1.onServerDNSStop();
 begin
   if ServerDoStart then
   begin
+    ImageList4.GetIcon(2, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+    ToolButton11.ImageIndex := 13;
+    ToolButton11.Caption := 'Arrêter';
+    ToolButton11.Enabled := True;
+    ToolButton11.Hint := 'Arrêter le serveur DNS';
+  end
+  else begin
+    ImageList4.GetIcon(1, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+    ToolButton11.ImageIndex := 7;
+    ToolButton11.Caption := 'Démarrer';
+    ToolButton11.Enabled := True;
+    ToolButton11.Hint := 'Démarrer le serveur DNS';
+  end;
+
+  if ServerDoStart then
+  begin
     inc(ServerFailStartCount);
     TimerRestart.Enabled := True;
     exit;
@@ -690,15 +708,10 @@ begin
   begin
     ButtonNetCardDesintegrationClick(nil);
   end;
-  if not ServerDoStart then
-  begin
-    ImageList4.GetIcon(1, Application.Icon);
-    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-    ToolButton11.ImageIndex := 7;
-    ToolButton11.Caption := 'Démarrer';
-    ToolButton11.Enabled := True;
-    ToolButton11.Hint := 'Démarrer le serveur DNS';
-  end;
+  //if not ServerDoStart then
+  //begin
+
+  //end;
 
 end;
 
@@ -952,7 +965,7 @@ begin
     MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
     MemoLogs.Lines.Add('Master '+ dns +'... OK');
   end;
-  ToolButton11.Enabled := False;
+  //ToolButton11.Enabled := False;
 
   if DNSMasterSerialized = '' then
   begin
@@ -1904,7 +1917,7 @@ begin
     //if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     //begin
       ServerDoStart := False;
-      ToolButton11.Enabled := False;
+      //ToolButton11.Enabled := False;
       TimerRestart.Enabled := False;
 
       ButtonCloseClick(nil);
@@ -1930,7 +1943,7 @@ begin
       ToolButton11.Hint := 'Arrêter le serveur DNS';
 
       ServerDoStart := True;
-      ToolButton11.Enabled := False;
+      //ToolButton11.Enabled := False;
 
       ButtonStartClick(nil);
     //end;
@@ -2466,20 +2479,24 @@ begin
   else begin
     // Create first list of themes
     ThemesList.Add('0,0,0,255,255,255');
-    ThemesList.Add('250,250,250,10,10,10');
-    ThemesList.Add('0,0,0,0,221,221');
+    ThemesList.Add('250,250,250,30,30,30');
     ThemesList.Add('0,255,0,0,0,0');
     ThemesList.Add('0,0,0,255,0,255');
-    ThemesList.Add('255,255,255,0,0,160');
+    ThemesList.Add('255,255,255,168,0,168');
+    ThemesList.Add('255,255,255,0,0,160'); 
+    ThemesList.Add('0,0,0,0,221,221');
+    ThemesList.Add('0,0,0,192,192,192');
     WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
 
     ComboBoxCurrentTheme.Clear;
     ComboBoxCurrentTheme.Items.Add('White');
     ComboBoxCurrentTheme.Items.Add('Black');
-    ComboBoxCurrentTheme.Items.Add('BlueSky');
     ComboBoxCurrentTheme.Items.Add('Matrix');
     ComboBoxCurrentTheme.Items.Add('Pink');
+    ComboBoxCurrentTheme.Items.Add('DarkPink');
     ComboBoxCurrentTheme.Items.Add('Blue');
+    ComboBoxCurrentTheme.Items.Add('BlueSky');
+    ComboBoxCurrentTheme.Items.Add('Gray');
     ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
     ComboBoxCurrentTheme.ItemIndex := 0;
     WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
