@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 199
-  Top = 114
+  Left = 191
+  Top = 120
   Width = 435
   Height = 556
   Caption = 'DNS Relay Server'
@@ -241,7 +241,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 13
+                ItemHeight = 0
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
