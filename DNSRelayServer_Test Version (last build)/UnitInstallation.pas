@@ -244,7 +244,7 @@ begin
   if not FileExists(exePath) then begin CheckInstallation(); exit; end;
   installThread.LabelPython := PChar('Installation... [2)');
   //ExecAndWait('msiexec.exe', '/i "'+exePath+'" TARGETDIR="c:\Python27" /qb', launchAndWWindow);
-  ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installPython27.bat', 'msiexec /i "'+exePath+'" TARGETDIR="c:\Python27" /qb');
+  WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installPython27.bat', 'msiexec /i "'+exePath+'" TARGETDIR="c:\Python27" /qb');
   LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installPython27.bat','', launchAndWWindow);
   installThread.LabelPython := PChar('Installation... [3)');
 
@@ -292,7 +292,7 @@ begin
 
     //LaunchAndWait(wget, '-O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
 
-    ecrireDansUnFichier(
+    WriteInFile(
       ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadsetuptools.bat',
       '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate'
     );
@@ -323,10 +323,10 @@ begin
 
   if DirectoryExists(outdir) then RemoveDir(outdir);
 
-  ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs', vbs);
+  WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs', vbs);
 
   //LaunchAndWait('wscript.exe', '"'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs" "'+exePath+'" "'+outdir+'"', launchAndWWindow);
-  ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs.bat', 'wscript.exe "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs" "'+exePath+'" "'+outdir+'"');
+  WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs.bat', 'wscript.exe "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs" "'+exePath+'" "'+outdir+'"');
   LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs.bat','', launchAndWWindow);
 
   end;
@@ -349,7 +349,7 @@ begin
       '"'+PythonPath+'python.exe" "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'setuptools-20.0\setuptools-20.0\setup.py" install'#13#10+
       '';
     if isDebug then bat := bat + #13#10 + '@pause';
-    ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installst.bat', bat);
+    WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installst.bat', bat);
     LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installst.bat','', launchAndWWindow);
 
   end;
@@ -389,7 +389,7 @@ begin
       installThread.LabelDNSResolver := PChar('Downloading...');
       Application.ProcessMessages;
       //LaunchAndWait(wget, '-O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
-      ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloaddns.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
+      WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloaddns.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
       LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloaddns.bat','', launchAndWWindow);
     end;
 
@@ -410,8 +410,8 @@ begin
     '	Set objShell = Nothing'#13#10+
     'End Sub'#13#10+
     'UnZip WScript.Arguments(0), WScript.Arguments(1)'#13#10;
-    ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs', vbs);
-    ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', 'wscript.exe "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs" "'+exePath+'" "'+outdir+'"'+#13#10+'@rem pause');
+    WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs', vbs);
+    WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', 'wscript.exe "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs" "'+exePath+'" "'+outdir+'"'+#13#10+'@rem pause');
     installThread.LabelDNSResolver := PChar('Unzipping... 2');
     LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', '', launchAndWWindow);
     installThread.LabelDNSResolver := PChar('Unzipping... 3');
@@ -445,7 +445,7 @@ begin
     bat := 'cd  "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0"'#13#10+
       '"'+PythonPath+'python.exe" "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0\setup.py" install';
     if isDebug then bat := bat + #13#10 + '@pause';
-    ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installDNS.bat', bat);
+    WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installDNS.bat', bat);
     LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installDNS.bat','', launchAndWWindow);
     Sleep(2000);
   end;

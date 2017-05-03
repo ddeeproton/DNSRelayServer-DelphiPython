@@ -475,7 +475,7 @@ begin
     ''#13#10+
     '';
 
-  ecrireDansUnFichier(Form1.DataDirectoryPath + 'relayDNS.py', script);
+  WriteInFile(Form1.DataDirectoryPath + 'relayDNS.py', script);
 end;
 
 

@@ -5,12 +5,11 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, XPMan,
-  Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
-  UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
-  TeeProcs, TeEngine, Chart;
+  UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
+  Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
+  UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.99';
+var CurrentApplicationVersion: string = '0.4.100';
 
 type
   TForm1 = class(TForm)
@@ -122,7 +121,6 @@ type
     Label9: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
     TabSheet5: TTabSheet;
-    CheckBoxSwitchTheme: TCheckBox;
     Label6: TLabel;
     Label8: TLabel;
     Label10: TLabel;
@@ -130,7 +128,6 @@ type
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
-    Label15: TLabel;
     Label19: TLabel;
     Label20: TLabel;
     Label21: TLabel;
@@ -157,10 +154,9 @@ type
     ShapeColorText: TShape;
     Label28: TLabel;
     ShapeColorBackground: TShape;
-    Button4: TButton;
+    ButtonUpdateTheme: TButton;
     Shape1: TShape;
     Shape2: TShape;
-    Label26: TLabel;
     Label30: TLabel;
     ComboBoxCurrentTheme: TComboBox;
     ButtonMenuTheme: TButton;
@@ -171,6 +167,8 @@ type
     GroupBox9: TGroupBox;
     SpeedButtonClosePanelUpdateTheme: TSpeedButton;
     LabelUpdateTheme: TLabel;
+    N6: TMenuItem;
+    Restaurer1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -277,6 +275,8 @@ type
     procedure Supprimer3Click(Sender: TObject);
     procedure SpeedButtonClosePanelUpdateThemeClick(Sender: TObject);
     procedure ComboBoxCurrentThemeSelect(Sender: TObject);
+    procedure ButtonUpdateThemeClick(Sender: TObject);
+    procedure Restaurer1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -783,7 +783,7 @@ begin
     '    WScript.Quit'#13#10+
     '  loop'#13#10+
     'end sub';
-    if enabled then ecrireDansUnFichier(dirPath+'setDNSOnBoot.vbs', scriptVBS);
+    if enabled then WriteInFile(dirPath+'setDNSOnBoot.vbs', scriptVBS);
 
   // For versions equal or less than <= 0.4.7
   Reg := TRegistry.Create;
@@ -883,13 +883,13 @@ begin
 
   filepath := String(EditFilehost.Text);
   if FileExists(filepath) = False then
-    ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
+    WriteInFile(filepath, '127.0.0.1	localhost');
 
 
 
 
   if not FileExists(BlackListCfgFile) then
-    ecrireDansUnFichier(BlackListCfgFile, 'gstatic.com'#13#10+
+    WriteInFile(BlackListCfgFile, 'gstatic.com'#13#10+
                                           'www.youtube-nocookie.com'#13#10+
                                           'www.googleapis.com'#13#10+
                                           'clients1.google.com'#13#10+
@@ -964,7 +964,7 @@ begin
   //begin
     script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
     filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
-    ecrireDansUnFichier(filepath, script);
+    WriteInFile(filepath, script);
     LaunchAndWait(filepath,'', launchAndWWindow);
   //end;
 
@@ -1145,7 +1145,7 @@ var
 begin
   filepath := ExtractFilePath(Application.ExeName)+ String(EditFilehost.Text);
   if FileExists(filepath) = False then
-    ecrireDansUnFichier(filepath, '127.0.0.1	localhost');
+    WriteInFile(filepath, '127.0.0.1	localhost');
 
   FormHost := TFormHost.Create(Self);
   FormHost.Show;
@@ -1255,16 +1255,16 @@ begin
     ListBoxDNSMaster.Items.LoadFromFile(MasterDNSFile);
 
   if FileExists(FilehostPathConfig) then
-    EditFilehost.Text := lireFichier(FilehostPathConfig);
+    EditFilehost.Text := ReadFromFile(FilehostPathConfig);
 
   if FileExists(SlaveDNSIPConfig) then
-    CBoxDNSServerSlaveIP.Text := lireFichier(SlaveDNSIPConfig);
+    CBoxDNSServerSlaveIP.Text := ReadFromFile(SlaveDNSIPConfig);
 
   if FileExists(SlaveDNSPortConfig) then
-    SpinPort.Value := StrToInt(lireFichier(SlaveDNSPortConfig));
+    SpinPort.Value := StrToInt(ReadFromFile(SlaveDNSPortConfig));
 
   if FileExists(TimeCheckUpdateFile) then
-    SpinTimeCheckUpdate.Value := StrToInt(lireFichier(TimeCheckUpdateFile));
+    SpinTimeCheckUpdate.Value := StrToInt(ReadFromFile(TimeCheckUpdateFile));
 
   if FileExists(BlackListCfgFile) then
     ListBoxBlacklist.Items.LoadFromFile(BlackListCfgFile);
@@ -1277,8 +1277,16 @@ begin
   TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-  CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
-  CheckBoxSwitchThemeClick(CheckBoxSwitchTheme);
+
+  //CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
+  if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
+    ComboBoxCurrentTheme.Items.LoadFromFile(DataDirectoryPath + 'ThemeNames.cfg');
+  ComboBoxCurrentTheme.ItemIndex := 0;
+  if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then
+    ComboBoxCurrentTheme.ItemIndex := StrToInt( ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'));
+  ComboBoxCurrentThemeSelect(ComboBoxCurrentTheme);
+
+
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   ButtonRefreshNetCardClick(nil);
   CheckBoxAlertEventsKnown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
@@ -1378,11 +1386,9 @@ begin
   Label10.Font.Color := color;
   Label12.Font.Color := color;
   Label13.Font.Color := color;
-  Label15.Font.Color := color;
   Label16.Font.Color := color;
   Label17.Font.Color := color;
   Label18.Font.Color := color;
-  Label26.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
   GroupBox2.Font.Color := color;
@@ -1456,7 +1462,7 @@ end;
 procedure TForm1.onProcessCreated(h: Cardinal);
 //var txt: string;
 begin
-  ecrireDansUnFichier(SlaveDNSProcesslist, IntToStr(h));
+  WriteInFile(SlaveDNSProcesslist, IntToStr(h));
   {
   exit;
   txt := '';
@@ -1478,14 +1484,14 @@ var
 begin
   if not FileExists(SlaveDNSProcesslist) then exit;
 
-  txt := LireFichier(SlaveDNSProcesslist);
+  txt := ReadFromFile(SlaveDNSProcesslist);
   if txt = '' then exit;
   h := StrToInt(txt);
   CloseTaskPID('python.exe',h);
   exit;
 
   sl:=TStringList.Create;
-  txt := LireFichier(SlaveDNSProcesslist);
+  txt := ReadFromFile(SlaveDNSProcesslist);
   SplitStr(txt,';',sl);
   if sl.Count > 0 then
   begin
@@ -1565,7 +1571,7 @@ begin
 
   if Form1.WindowState = wsMaximized then exit;
 
-  if Form1.Width < 370 then Form1.Width := 370;
+  if Form1.Width < 420 then Form1.Width := 420;
   if Splitter1.Visible then
   begin
     if Form1.Height < 440 then
@@ -1700,10 +1706,10 @@ end;
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
-  ecrireDansUnFichier(FilehostPathConfig, EditFilehost.Text);
-  ecrireDansUnFichier(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
-  ecrireDansUnFichier(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
-  ecrireDansUnFichier(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
+  WriteInFile(FilehostPathConfig, EditFilehost.Text);
+  WriteInFile(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
+  WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
+  WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
 end;
 
 procedure TForm1.ToolButton10Click(Sender: TObject);
@@ -1960,7 +1966,7 @@ begin
       ShowMessage('Error Update: Problème de connexion au serveur de mise à jour.');
     exit;
   end;
-  lastversion := lireFichier(lastverFile);
+  lastversion := ReadFromFile(lastverFile);
   if Pos(CurrentApplicationVersion, lastversion) = 1 then
   begin
     if isSilent then
@@ -2012,7 +2018,7 @@ end;
 procedure TForm1.CheckBoxUpdateClick(Sender: TObject);
 begin
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkupdate.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkupdate.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
 
@@ -2075,7 +2081,7 @@ end;
 procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);
 begin
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
   else DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
 
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
@@ -2086,7 +2092,7 @@ end;
 procedure TForm1.CheckBoxUpdateSilentClick(Sender: TObject);
 begin
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkupdateSilent.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkupdateSilent.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdateSilent.cfg');
 end;
@@ -2102,7 +2108,7 @@ end;
 procedure TForm1.CheckBoxAllowModifyNetCardClick(Sender: TObject);
 begin
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
 end;
@@ -2111,7 +2117,7 @@ end;
 procedure TForm1.CheckBoxAutostartDNSOnBootClick(Sender: TObject);
 begin
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkAutostartDNS.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkAutostartDNS.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAutostartDNS.cfg');
 end;
@@ -2200,15 +2206,17 @@ end;
 
 procedure TForm1.CheckBoxSwitchThemeClick(Sender: TObject);
 begin
+{
   if TCheckbox(Sender).Checked then
     //setTheme(clWhite, clBlack)
     setTheme(RGB(250,250,250), RGB(10,10,10))
   else
     setTheme(clBlack, clWhite);
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkSwitchTheme.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkSwitchTheme.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkSwitchTheme.cfg');
+    }
 end;
 
 
@@ -2216,7 +2224,7 @@ end;
 procedure TForm1.CheckBoxAlertEventsKnownClick(Sender: TObject);
 begin
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventsKnow.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
   connus1.Checked := CheckBoxAlertEventsKnown.Checked;
@@ -2225,7 +2233,7 @@ end;
 procedure TForm1.CheckBoxAlertEventsUnknownClick(Sender: TObject);
 begin
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventsUnknown.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
 
@@ -2235,7 +2243,7 @@ end;
 procedure TForm1.CheckBoxAlertEventDisallowedClick(Sender: TObject);
 begin
   if TCheckBox(Sender).Checked then
-    ecrireDansUnFichier(DataDirectoryPath + 'checkAlertEventDisallowed.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
   bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;
@@ -2424,22 +2432,6 @@ begin
   PopupMenuTheme.Popup(Pos.X,Pos.Y);
 end;
 
-procedure TForm1.Ajouter3Click(Sender: TObject);
-begin
-  LabelUpdateTheme.Caption := PChar('Ajouter un thème');
-  GroupBoxUpdateTheme.Visible := True;
-end;
-
-procedure TForm1.Modifier4Click(Sender: TObject);
-begin                             
-  LabelUpdateTheme.Caption := PChar('Modifier un thème');
-  GroupBoxUpdateTheme.Visible := True;
-end;
-
-procedure TForm1.Supprimer3Click(Sender: TObject);
-begin
-  //
-end;
 
 procedure TForm1.SpeedButtonClosePanelUpdateThemeClick(Sender: TObject);
 begin
@@ -2447,16 +2439,201 @@ begin
 end;
 
 procedure TForm1.ComboBoxCurrentThemeSelect(Sender: TObject);
-var i: Integer;
+var
+  i:Integer;
+  ThemesList, s:TStringList;
 begin
   i := ComboBoxCurrentTheme.ItemIndex;
   if i = -1 then exit;
-  if i = 0 then setTheme(clBlack, clWhite);
-  if i = 1 then setTheme(RGB(250,250,250), RGB(10,10,10));
-  if i = 2 then setTheme(RGB(255,255,255), RGB(0,221,221));
-  if i = 3 then setTheme(RGB(0,255,0), RGB(0,0,0));
-  if i = 4 then setTheme(RGB(255,255,255), RGB(255,0,255));
+
+  ThemesList := TStringList.Create;
+  if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then
+    ThemesList := ReadFileToStringList(DataDirectoryPath + 'ThemeListData.cfg')
+  else begin
+    // Create first list of themes
+    ThemesList.Add('0,0,0,255,255,255');
+    ThemesList.Add('250,250,250,10,10,10');
+    ThemesList.Add('0,0,0,0,221,221');
+    ThemesList.Add('0,255,0,0,0,0');
+    ThemesList.Add('255,255,255,255,0,255');
+    WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
+
+    ComboBoxCurrentTheme.Clear;
+    ComboBoxCurrentTheme.Items.Add('White');
+    ComboBoxCurrentTheme.Items.Add('Black');
+    ComboBoxCurrentTheme.Items.Add('BlueSky');
+    ComboBoxCurrentTheme.Items.Add('Matrix');
+    ComboBoxCurrentTheme.Items.Add('Pink');
+    ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
+    ComboBoxCurrentTheme.ItemIndex := 0;
+    WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
+
+  end;
+
+  if (i >= 0) and (i < ThemesList.Count) then
+  begin
+    s := TStringList.Create;
+    SplitStr(ThemesList.Strings[i], ',', s);
+    if s.Count >= 6 then
+    begin
+      setTheme(RGB(StrToInt(s[0]),StrToInt(s[1]),StrToInt(s[2])), RGB(StrToInt(s[3]),StrToInt(s[4]),StrToInt(s[5])));
+      WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
+      if Notebook1.PageIndex = 0 then
+      begin
+        Notebook1.PageIndex := 4;
+        Notebook1.PageIndex := 0;
+        ComboBoxCurrentTheme.SetFocus;
+      end;
+    end;
+  end;
 end;
+
+
+
+procedure TForm1.Ajouter3Click(Sender: TObject);
+begin
+  LabelUpdateTheme.Caption := PChar('Ajouter un thème');
+  EditThemeName.Text := '';
+  GroupBoxUpdateTheme.Hint := 'add';
+  GroupBoxUpdateTheme.Visible := True;
+end;
+
+procedure TForm1.Modifier4Click(Sender: TObject);
+begin
+  LabelUpdateTheme.Caption := PChar('Modifier un thème');
+  EditThemeName.Text := ComboBoxCurrentTheme.Text;
+  GroupBoxUpdateTheme.Hint := IntToStr(ComboBoxCurrentTheme.ItemIndex);
+  GroupBoxUpdateTheme.Visible := True;
+end;
+
+procedure TForm1.Supprimer3Click(Sender: TObject);
+var
+  i: Integer;
+  ThemesList, s:TStringList;
+  txt :String;
+  c: TColor;
+  fr,fg,fb,br,bg,bb:string;
+begin
+  if MessageDlg(PChar('Effacer le theme ['+ComboBoxCurrentTheme.Text+']?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+  if ComboBoxCurrentTheme.Items.Count <= 1 then
+  begin
+    ShowMessage('Vous ne pouvez pas effacer le dernier thème. Veuillez en créer un autre avant d''effacer celui-ci.');
+    exit;
+  end;
+
+  ThemesList := TStringList.Create;
+  if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then
+    ThemesList := ReadFileToStringList(DataDirectoryPath + 'ThemeListData.cfg');
+
+
+  if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
+    ComboBoxCurrentTheme.Items.LoadFromFile(DataDirectoryPath + 'ThemeNames.cfg');
+
+  ComboBoxCurrentTheme.ItemIndex := 0;
+  if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then
+    ComboBoxCurrentTheme.ItemIndex := StrToInt(ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'));
+
+    i := ComboBoxCurrentTheme.ItemIndex;
+    if (i >= ThemesList.Count) or (i < 0) then
+    begin
+      if MessageDlg(PChar('Erreur avec les fichiers template. Restaurer les templates à leur origine?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+      if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then DeleteFile(DataDirectoryPath + 'ThemeListData.cfg');
+      if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then DeleteFile(DataDirectoryPath + 'ThemeNames.cfg');
+      if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then DeleteFile(DataDirectoryPath + 'ThemeSelected.cfg');
+      ComboBoxCurrentThemeSelect(nil);
+    end
+    else begin
+      ThemesList.Delete(i);
+      ComboBoxCurrentTheme.DeleteSelected;
+    end;
+
+  WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
+  ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
+  ComboBoxCurrentTheme.ItemIndex := 0;
+  ComboBoxCurrentThemeSelect(ComboBoxCurrentTheme);
+  GroupBoxUpdateTheme.Visible := False;
+
+
+
+end;
+
+
+procedure TForm1.ButtonUpdateThemeClick(Sender: TObject);
+var
+  i: Integer;
+  ThemesList, s:TStringList;
+  txt :String;
+  c: TColor;
+  fr,fg,fb,br,bg,bb:string;
+begin
+  ThemesList := TStringList.Create;
+  if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then
+    ThemesList := ReadFileToStringList(DataDirectoryPath + 'ThemeListData.cfg');
+
+
+  if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
+    ComboBoxCurrentTheme.Items.LoadFromFile(DataDirectoryPath + 'ThemeNames.cfg');
+
+  ComboBoxCurrentTheme.ItemIndex := 0;
+  if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then
+    ComboBoxCurrentTheme.ItemIndex := StrToInt(ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'));
+
+
+
+  c := ShapeColorText.Brush.Color;
+
+  fr := IntToStr(getRValue(ColorToRGB(c)));
+  fg := IntToStr(getGValue(ColorToRGB(c)));
+  fb := IntToStr(getBValue(ColorToRGB(c)));
+
+  c := ShapeColorBackground.Brush.Color;
+
+  br := IntToStr(getRValue(ColorToRGB(c)));
+  bg := IntToStr(getGValue(ColorToRGB(c)));
+  bb := IntToStr(getBValue(ColorToRGB(c)));
+
+  txt := fr+','+fg+','+fb+','+br+','+bg+','+bb;
+
+  if GroupBoxUpdateTheme.Hint = 'add' then
+  begin
+    ThemesList.Add(txt);
+    ComboBoxCurrentTheme.Items.Add(EditThemeName.Text);
+  end else
+  begin
+    i := StrtoInt(GroupBoxUpdateTheme.Hint);
+    if (i >= ThemesList.Count) or (i < 0) then
+    begin
+      if MessageDlg(PChar('Erreur avec les fichiers template. Restaurer les templates à leur origine?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+      if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then DeleteFile(DataDirectoryPath + 'ThemeListData.cfg');
+      if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then DeleteFile(DataDirectoryPath + 'ThemeNames.cfg');
+      if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then DeleteFile(DataDirectoryPath + 'ThemeSelected.cfg');
+      ComboBoxCurrentThemeSelect(nil);
+    end
+    else begin
+      ThemesList.Strings[i] := txt;
+      ComboBoxCurrentTheme.Items.Strings[i] := EditThemeName.Text;
+    end;
+  end;
+  WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
+  ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
+  if GroupBoxUpdateTheme.Hint = 'add' then
+    ComboBoxCurrentTheme.ItemIndex := ComboBoxCurrentTheme.Items.Count - 1
+  else
+    ComboBoxCurrentTheme.ItemIndex := i;
+  GroupBoxUpdateTheme.Visible := False;
+end;
+
+procedure TForm1.Restaurer1Click(Sender: TObject);
+begin
+  if MessageDlg(PChar('Restaurer les templates à leur origine?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+  if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then DeleteFile(DataDirectoryPath + 'ThemeListData.cfg');
+  if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then DeleteFile(DataDirectoryPath + 'ThemeNames.cfg');
+  if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then DeleteFile(DataDirectoryPath + 'ThemeSelected.cfg');
+  ComboBoxCurrentThemeSelect(nil);
+  ComboBoxCurrentThemeSelect(nil);
+end;
+
+
 
 end.
 

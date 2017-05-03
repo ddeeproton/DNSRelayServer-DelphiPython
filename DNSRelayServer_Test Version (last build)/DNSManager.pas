@@ -90,7 +90,7 @@ begin
     '    WScript.Quit'#13#10+
     '  loop'#13#10+
     'end sub';
-    if not FileExists(dirPath+'setDNS.vbs') or (FileSize(dirPath+'setDNS.vbs') = 0) then ecrireDansUnFichier(dirPath+'setDNS.vbs', scriptVBS);
+    if not FileExists(dirPath+'setDNS.vbs') or (FileSize(dirPath+'setDNS.vbs') = 0) then WriteInFile(dirPath+'setDNS.vbs', scriptVBS);
     ProcessManager.ExecAndWait('wscript.exe', ' "'+dirPath+'setDNS.vbs" '+Servers, SW_HIDE);
     //scriptBAT := 'wscript.exe "'+dirPath+'setDNS.vbs" '+Servers;
     //ecrireDansUnFichier(dirPath+'setDNS.bat', scriptBAT);
@@ -160,7 +160,7 @@ begin
     '	ip = dnsc.dnsResolve(config_domain)'#13#10+
     '	if ip <> 0:'#13#10+
     '		sys.stdout.write(ip)';
-  ecrireDansUnFichier(Form1.DataDirectoryPath + 'checkDNS.py', scriptPython);
+  WriteInFile(Form1.DataDirectoryPath + 'checkDNS.py', scriptPython);
   if Form1.PythonPath = '' then Form1.PythonPath := Form1.getPythonPath();
   result := ExecAndRead('"'+Form1.PythonPath+'python.exe" "'+Form1.DataDirectoryPath + 'checkDNS.py" server "'+dns+'" domain "'+domain+'"');
 end;
@@ -248,7 +248,7 @@ begin
     ''#13#10+
     'EnableDHCP '#13#10+
     '';
-    if not FileExists(dirPath+'setDHCP.vbs') or (FileSize(dirPath+'setDHCP.vbs') = 0) then ecrireDansUnFichier(dirPath+'setDHCP.vbs', scriptVBS);
+    if not FileExists(dirPath+'setDHCP.vbs') or (FileSize(dirPath+'setDHCP.vbs') = 0) then WriteInFile(dirPath+'setDHCP.vbs', scriptVBS);
     scriptBAT := 'wscript.exe "'+dirPath+'setDHCP.vbs"';
 
     ProcessManager.ExecAndWait('wscript.exe', ' "'+dirPath+'setDHCP.vbs"', SW_HIDE);

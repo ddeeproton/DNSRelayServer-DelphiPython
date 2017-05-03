@@ -2,14 +2,20 @@ unit FilesManager;
 
 interface
 
-  function lireFichier(Filename: string):String;
-  procedure ecrireDansUnFichier(Fichier: string; txt: string);
+uses SysUtils, Classes;
+
+  function ReadFromFile(Filename: string):String;
+  procedure WriteInFile(Filename, txt: string);
+
+  function ReadFileToStringList(Filename: string):TStringList;
+  procedure WriteStringListInFile(Filename: string; content :TStringList);
+
   function makeDir(path:string):Boolean; 
   function FileSize(fileName : wideString) : Int64;
   
 implementation
 
-uses SysUtils;
+
 
 function FileSize(fileName : wideString) : Int64;
  var
@@ -23,12 +29,13 @@ function FileSize(fileName : wideString) : Int64;
    FindClose(sr) ;
  end;
 
-function LireFichier(Filename: string):String;
+function ReadFromFile(Filename: string):String;
 var
   Fichier        : textfile;
   texte          : string;
 begin
   result:= '';
+  if not FileExists(Filename) then exit;
   try
     //reset(Fp);
     {$I-}
@@ -49,28 +56,39 @@ begin
   end;
 end;
 
-procedure ecrireDansUnFichier(Fichier: string; txt: string);
+
+
+procedure WriteInFile(Filename, txt: string);
 var
   Fp : textfile;
 begin
-  if not DirectoryExists(ExtractFileDir(Fichier)) then exit;
-  assignFile(Fp, Fichier);
-
+  if not DirectoryExists(ExtractFileDir(Filename)) then exit;
+  assignFile(Fp, Filename);
   try
-    //reset(Fp);
     {$I-}
-    reWrite(Fp); // ouvre en lecture
+    reWrite(Fp);
     Write(Fp, txt);
     closefile(Fp);
     {$I+}
   except
-  // If there was an error the reason can be found here
   on E: EInOutError do
     //writeln('File handling error occurred. Details: ', E.ClassName, '/', E.Message);
     exit;
   end;
-
 end;
+
+function ReadFileToStringList(Filename: string):TStringList;
+begin
+  result:=TStringList.Create;
+  if FileExists(Filename) then result.LoadFromFile(Filename);
+end;
+
+procedure WriteStringListInFile(Filename: string; content :TStringList);
+begin
+  if not DirectoryExists(ExtractFileDir(Filename)) then exit;
+  content.SaveToFile(FileName);
+end;
+
 
 function makeDir(path:string):Boolean; // return true if created
 var
