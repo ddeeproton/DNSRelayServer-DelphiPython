@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.106';
+var CurrentApplicationVersion: string = '0.4.107';
 
 type
   TForm1 = class(TForm)
@@ -176,6 +176,8 @@ type
     ButtonClearLogs: TToolButton;
     ToolButton9: TToolButton;
     ToolButton10: TToolButton;
+    ComboBoxPosLogs: TComboBox;
+    Label15: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -288,6 +290,8 @@ type
     procedure ToolButtonDisplayGreenClick(Sender: TObject);
     procedure ToolButtonDisplayGrayClick(Sender: TObject);
     procedure ButtonClearLogsClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure ComboBoxPosLogsSelect(Sender: TObject);
   private
     { Private declarations }
   public
@@ -872,6 +876,7 @@ begin
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
   if Form1.WindowState = wsNormal then
   begin
     if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
@@ -1201,6 +1206,8 @@ begin
   Form1.Top := Screen.WorkAreaHeight - Form1.Height;
   Form1.Left := Screen.WorkAreaWidth - Form1.Width;
 
+  GroupBox5.Height := Form1.Height div 2;
+  GroupBox5.Width := Form1.Width div 2;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -1305,11 +1312,16 @@ begin
   //CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
     ComboBoxCurrentTheme.Items.LoadFromFile(DataDirectoryPath + 'ThemeNames.cfg');
+
   ComboBoxCurrentTheme.ItemIndex := 0;
   if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then
     ComboBoxCurrentTheme.ItemIndex := StrToInt( ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'));
   ComboBoxCurrentThemeSelect(ComboBoxCurrentTheme);
 
+  ComboBoxPosLogs.ItemIndex := 1;
+  if FileExists(DataDirectoryPath + 'PositionLogs.cfg') then
+    ComboBoxPosLogs.ItemIndex := StrToInt( ReadFromFile(DataDirectoryPath + 'PositionLogs.cfg'));
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   ButtonRefreshNetCardClick(nil);
@@ -1418,7 +1430,7 @@ begin
   ComboBoxCurrentTheme.Color := bg;
   EditThemeName.Color := bg;
   ListBoxBlacklist.Color := bg;
-
+  ComboBoxPosLogs.Color := bg;
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
@@ -1470,6 +1482,7 @@ begin
   Label9.Font.Color := color;
   Label7.Font.Color := color;
   ListBoxBlacklist.Font.Color := color;
+  ComboBoxPosLogs.Font.Color := color;
 end;
 
 procedure TUpdate.Execute;
@@ -1648,6 +1661,7 @@ end;
 procedure TForm1.ToolButton6Click(Sender: TObject);
 begin
   Notebook1.PageIndex := 3;
+  Form1.Resize;
 end;
 
 procedure TForm1.ToolButton3Click(Sender: TObject);
@@ -2714,6 +2728,51 @@ procedure TForm1.ButtonClearLogsClick(Sender: TObject);
 begin
   if MessageDlg(PChar('Voulez-vous effacer les logs?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   MemoLogs.Clear;
+end;
+
+procedure TForm1.FormResize(Sender: TObject);
+begin
+  if ListView1.Columns.Count < 2 then exit;
+  ListView1.Columns.Items[1].Width := 95;
+  ListView1.Columns.Items[0].Width := ListView1.Width - ListView1.Columns.Items[1].Width - 5;
+end;
+
+procedure TForm1.ComboBoxPosLogsSelect(Sender: TObject);
+begin
+  if ComboBoxPosLogs.ItemIndex = 0 then
+  begin
+    GroupBox5.Align := alTop;
+    Splitter1.Align := alTop;
+    Splitter1.Top := GroupBox5.height;
+  end;
+  if ComboBoxPosLogs.ItemIndex = 1 then
+  begin
+    GroupBox5.Align := alBottom;
+    Splitter1.Align := alBottom;
+    Splitter1.Top := Form1.Height - GroupBox5.height;
+  end;
+  if ComboBoxPosLogs.ItemIndex = 2 then
+  begin
+    Splitter1.Align := alLeft;
+    GroupBox5.Align := alLeft;
+    Splitter1.Left := GroupBox5.Width;
+  end;
+  if ComboBoxPosLogs.ItemIndex = 3 then
+  begin
+    GroupBox5.Align := alRight;
+    Splitter1.Align := alRight;
+    Splitter1.Left := Form1.Width - GroupBox5.Width;
+  end;
+
+  if GroupBox5.Visible then
+  begin
+
+  end
+  else begin
+
+  end;
+
+  WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
 end;
 
 end.
