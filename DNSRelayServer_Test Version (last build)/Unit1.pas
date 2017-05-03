@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   TeeProcs, TeEngine, Chart;
 
-var CurrentApplicationVersion: string = '0.4.98';
+var CurrentApplicationVersion: string = '0.4.99';
 
 type
   TForm1 = class(TForm)
@@ -2449,12 +2449,13 @@ end;
 procedure TForm1.ComboBoxCurrentThemeSelect(Sender: TObject);
 var i: Integer;
 begin
-
   i := ComboBoxCurrentTheme.ItemIndex;
-  //Form1.Caption := PChar(inttostr(i));
   if i = -1 then exit;
-  if i = 0 then setTheme(RGB(250,250,250), RGB(10,10,10));
-  if i = 1 then setTheme(clBlack, clWhite);
+  if i = 0 then setTheme(clBlack, clWhite);
+  if i = 1 then setTheme(RGB(250,250,250), RGB(10,10,10));
+  if i = 2 then setTheme(RGB(255,255,255), RGB(0,221,221));
+  if i = 3 then setTheme(RGB(0,255,0), RGB(0,0,0));
+  if i = 4 then setTheme(RGB(255,255,255), RGB(255,0,255));
 end;
 
 end.

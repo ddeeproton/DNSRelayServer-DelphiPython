@@ -747,14 +747,16 @@ object Form1: TForm1
                 Style = csDropDownList
                 Anchors = [akLeft, akTop, akRight]
                 ItemHeight = 13
-                ItemIndex = 1
-                Sorted = True
+                ItemIndex = 0
                 TabOrder = 2
                 Text = 'White'
                 OnSelect = ComboBoxCurrentThemeSelect
                 Items.Strings = (
+                  'White'
                   'Black'
-                  'White')
+                  'Blue Sky'
+                  'Matrix'
+                  'Pink')
               end
               object ButtonMenuTheme: TButton
                 Left = 272
