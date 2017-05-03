@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.101';
+var CurrentApplicationVersion: string = '0.4.102';
 
 type
   TForm1 = class(TForm)
@@ -2439,6 +2439,7 @@ begin
     ThemesList.Add('0,0,0,0,221,221');
     ThemesList.Add('0,255,0,0,0,0');
     ThemesList.Add('0,0,0,255,0,255');
+    ThemesList.Add('255,255,255,0,0,160');
     WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
 
     ComboBoxCurrentTheme.Clear;
@@ -2447,6 +2448,7 @@ begin
     ComboBoxCurrentTheme.Items.Add('BlueSky');
     ComboBoxCurrentTheme.Items.Add('Matrix');
     ComboBoxCurrentTheme.Items.Add('Pink');
+    ComboBoxCurrentTheme.Items.Add('Blue');
     ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
     ComboBoxCurrentTheme.ItemIndex := 0;
     WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
