@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.111';
+var CurrentApplicationVersion: string = '0.4.112';
 
 type
   TForm1 = class(TForm)
@@ -454,6 +454,8 @@ begin
           FormAlert.Label2.Font.Color := Form1.Font.Color; 
           FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
           FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
+          FormAlert.PanelAllowed.Color := Form1.Color;
+          FormAlert.PanelDisallowed.Color := Form1.Color;
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -475,7 +477,9 @@ begin
           FormAlert.Label1.Font.Color := Form1.Font.Color;
           FormAlert.Label2.Font.Color := Form1.Font.Color; 
           FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color; 
+          FormAlert.PanelAllowed.Color := Form1.Color;
+          FormAlert.PanelDisallowed.Color := Form1.Color;
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -498,7 +502,9 @@ begin
           FormAlert.Label1.Font.Color := Form1.Font.Color;
           FormAlert.Label2.Font.Color := Form1.Font.Color;
           FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color; 
+          FormAlert.PanelAllowed.Color := Form1.Color;
+          FormAlert.PanelDisallowed.Color := Form1.Color;
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -2508,6 +2514,7 @@ begin
     ThemesList.Add('0,0,0,255,255,255');
     ThemesList.Add('250,250,250,30,30,30');
     ThemesList.Add('0,255,0,0,0,0');
+    ThemesList.Add('0,255,255,0,0,0');
     ThemesList.Add('0,0,0,255,0,255');
     ThemesList.Add('255,255,255,168,0,168');
     ThemesList.Add('255,255,255,0,0,160'); 
@@ -2519,6 +2526,7 @@ begin
     ComboBoxCurrentTheme.Items.Add('White');
     ComboBoxCurrentTheme.Items.Add('Black');
     ComboBoxCurrentTheme.Items.Add('Matrix');
+    ComboBoxCurrentTheme.Items.Add('DarkBlue');
     ComboBoxCurrentTheme.Items.Add('Pink');
     ComboBoxCurrentTheme.Items.Add('DarkPink');
     ComboBoxCurrentTheme.Items.Add('Blue');

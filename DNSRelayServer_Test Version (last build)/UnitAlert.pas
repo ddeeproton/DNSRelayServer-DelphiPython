@@ -16,7 +16,6 @@ type
     TimerAfterCreate: TTimer;
     ButtonAllowDomain: TSpeedButton;
     ButtonDisallow: TSpeedButton;
-    ImageList1: TImageList;
     Image1: TImage;
     Image2: TImage;
     procedure ButtonAllowDomainClick(Sender: TObject);
@@ -109,6 +108,7 @@ begin
   Self.Height := PanelAllowed.Height;
   Self.Width := Label1.Width + ButtonAllowDomain.Width + 2 + Label1.Left;
   Self.Left := Screen.WorkAreaWidth - Self.Width;
+
   //Self.Top := Screen.WorkAreaHeight - Self.Height;
   //Self.SendToBack;
 end;
