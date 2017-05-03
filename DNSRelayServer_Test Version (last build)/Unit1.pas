@@ -7,9 +7,10 @@ uses
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost,  Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
-  UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
+  UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
+  TeeProcs, TeEngine, Chart;
 
-var CurrentApplicationVersion: string = '0.4.97';
+var CurrentApplicationVersion: string = '0.4.98';
 
 type
   TForm1 = class(TForm)
@@ -122,9 +123,6 @@ type
     CheckBoxAllowModifyNetCard: TCheckBox;
     TabSheet5: TTabSheet;
     CheckBoxSwitchTheme: TCheckBox;
-    CheckBoxAlertEventsKnown: TCheckBox;
-    CheckBoxAlertEventsUnknown: TCheckBox;
-    CheckBoxAlertEventDisallowed: TCheckBox;
     Label6: TLabel;
     Label8: TLabel;
     Label10: TLabel;
@@ -133,9 +131,6 @@ type
     Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
-    Label16: TLabel;
-    Label17: TLabel;
-    Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
     Label21: TLabel;
@@ -148,10 +143,27 @@ type
     ButtonNetCardDesintegration: TButton;
     Button1: TButton;
     ColorDialog1: TColorDialog;
+    TabSheet6: TTabSheet;
+    Label16: TLabel;
+    CheckBoxAlertEventsKnown: TCheckBox;
+    CheckBoxAlertEventsUnknown: TCheckBox;
+    Label17: TLabel;
+    Label18: TLabel;
+    CheckBoxAlertEventDisallowed: TCheckBox;
     GroupBox8: TGroupBox;
-    Button3: TButton;
-    Button2: TButton;
+    ComboBoxCurrentTheme: TComboBox;
+    Button5: TButton;
+    Label29: TLabel;
+    EditThemeName: TEdit;
+    Label27: TLabel;
+    ShapeColorText: TShape;
+    Label28: TLabel;
+    ShapeColorBackground: TShape;
+    Button4: TButton;
     Label26: TLabel;
+    Label30: TLabel;
+    Shape1: TShape;
+    Shape2: TShape;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -246,10 +258,12 @@ type
     procedure LabelToCheckboxClick(Sender: TObject);
     procedure LabelCheckboxMouseEnter(Sender: TObject);
     procedure LabelCheckboxMouseLeave(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
     procedure setThemeFont(color:TColor);
     procedure setThemeBg(bg:TColor);
-    procedure Button3Click(Sender: TObject);
+    procedure ShapeColorTextMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure ShapeColorBackgroundMouseUp(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
   public
@@ -1334,9 +1348,15 @@ begin
   CheckBoxAutostartDNSOnBoot.Color := bg;
   SpinTimeCheckUpdate.Color := bg;
   PanelRestart.Color := bg;
+  ComboBoxCurrentTheme.Color := bg;
+  EditThemeName.Color := bg;
+  ShapeColorBackground.Brush.Color := bg;
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
+  ShapeColorText.Brush.Color := color;
+  EditThemeName.Font.Color := color;
+  ComboBoxCurrentTheme.Font.Color := color;
   Label6.Font.Color := color;
   Label8.Font.Color := color;
   Label10.Font.Color := color;
@@ -2360,18 +2380,22 @@ begin
   TLabel(Sender).Font.Style := [];
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TForm1.ShapeColorTextMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if not ColorDialog1.Execute then exit;
   setThemeFont(ColorDialog1.Color);
+  ShapeColorText.Brush.Color := ColorDialog1.Color;
   Notebook1.PageIndex := 4;
   Notebook1.PageIndex := 0;
 end;
 
-procedure TForm1.Button3Click(Sender: TObject);
+procedure TForm1.ShapeColorBackgroundMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if not ColorDialog1.Execute then exit;
-  setThemeBg(ColorDialog1.Color);   
+  setThemeBg(ColorDialog1.Color);
+  ShapeColorBackground.Brush.Color := ColorDialog1.Color;
   Notebook1.PageIndex := 4;
   Notebook1.PageIndex := 0;
 end;

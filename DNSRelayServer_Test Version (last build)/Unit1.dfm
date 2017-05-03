@@ -241,7 +241,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 0
+                ItemHeight = 13
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
@@ -456,13 +456,13 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 193
+                Height = 209
                 Align = alTop
                 Caption = '                                     '
                 TabOrder = 0
                 DesignSize = (
                   303
-                  193)
+                  209)
                 object Label7: TLabel
                   Left = 8
                   Top = 63
@@ -487,7 +487,7 @@ object Form1: TForm1
                 end
                 object Panel4: TPanel
                   Left = 56
-                  Top = 154
+                  Top = 170
                   Width = 193
                   Height = 31
                   Anchors = [akTop]
@@ -574,9 +574,139 @@ object Form1: TForm1
                 OnMouseEnter = LabelCheckboxMouseEnter
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
+              object CheckBoxSwitchTheme: TCheckBox
+                Left = 8
+                Top = 8
+                Width = 17
+                Height = 17
+                TabOrder = 0
+                OnClick = CheckBoxSwitchThemeClick
+              end
+              object GroupBox8: TGroupBox
+                Left = 0
+                Top = 48
+                Width = 297
+                Height = 153
+                Anchors = [akLeft, akTop, akRight]
+                TabOrder = 1
+                DesignSize = (
+                  297
+                  153)
+                object Shape2: TShape
+                  Left = 158
+                  Top = 90
+                  Width = 29
+                  Height = 29
+                  Anchors = [akTop, akRight]
+                  OnMouseUp = ShapeColorBackgroundMouseUp
+                end
+                object Label29: TLabel
+                  Left = 8
+                  Top = 80
+                  Width = 69
+                  Height = 13
+                  Caption = 'Nom du th'#232'me'
+                end
+                object Label27: TLabel
+                  Left = 120
+                  Top = 104
+                  Width = 30
+                  Height = 13
+                  Anchors = [akTop, akRight]
+                  Caption = 'Texte:'
+                end
+                object ShapeColorText: TShape
+                  Left = 160
+                  Top = 92
+                  Width = 25
+                  Height = 25
+                  Anchors = [akTop, akRight]
+                  Brush.Color = clBlack
+                  OnMouseUp = ShapeColorTextMouseUp
+                end
+                object Label28: TLabel
+                  Left = 192
+                  Top = 104
+                  Width = 27
+                  Height = 13
+                  Anchors = [akTop, akRight]
+                  Caption = 'Fond:'
+                end
+                object Label26: TLabel
+                  Left = 8
+                  Top = 11
+                  Width = 264
+                  Height = 13
+                  Caption = 'En cours d'#39'impl'#233'mentation (Ne sauvegarde pas le choix)'
+                end
+                object Label30: TLabel
+                  Left = 8
+                  Top = 32
+                  Width = 65
+                  Height = 13
+                  Caption = 'Th'#232'me actuel'
+                end
+                object Shape1: TShape
+                  Left = 222
+                  Top = 90
+                  Width = 29
+                  Height = 29
+                  Anchors = [akTop, akRight]
+                  OnMouseUp = ShapeColorBackgroundMouseUp
+                end
+                object ShapeColorBackground: TShape
+                  Left = 224
+                  Top = 92
+                  Width = 25
+                  Height = 25
+                  Anchors = [akTop, akRight]
+                  OnMouseUp = ShapeColorBackgroundMouseUp
+                end
+                object ComboBoxCurrentTheme: TComboBox
+                  Left = 8
+                  Top = 48
+                  Width = 249
+                  Height = 21
+                  Anchors = [akLeft, akTop, akRight]
+                  ItemHeight = 13
+                  TabOrder = 0
+                  Text = 'ComboBoxCurrentTheme'
+                end
+                object Button5: TButton
+                  Left = 264
+                  Top = 46
+                  Width = 27
+                  Height = 25
+                  Anchors = [akTop, akRight]
+                  Caption = '+'
+                  TabOrder = 1
+                end
+                object EditThemeName: TEdit
+                  Left = 8
+                  Top = 96
+                  Width = 105
+                  Height = 21
+                  Anchors = [akLeft, akTop, akRight]
+                  TabOrder = 2
+                  Text = 'EditThemeName'
+                end
+                object Button4: TButton
+                  Left = 256
+                  Top = 92
+                  Width = 35
+                  Height = 25
+                  Anchors = [akTop, akRight]
+                  Caption = 'OK'
+                  TabOrder = 3
+                end
+              end
+            end
+            object TabSheet6: TTabSheet
+              Caption = 'Alertes'
+              ImageIndex = 5
               object Label16: TLabel
                 Left = 26
-                Top = 33
+                Top = 9
                 Width = 216
                 Height = 13
                 Caption = 'Afficher des alertes pour les domaines connus'
@@ -587,7 +717,7 @@ object Form1: TForm1
               end
               object Label17: TLabel
                 Left = 26
-                Top = 58
+                Top = 34
                 Width = 224
                 Height = 13
                 Caption = 'Afficher des alertes pour les domaines inconnus'
@@ -598,7 +728,7 @@ object Form1: TForm1
               end
               object Label18: TLabel
                 Left = 26
-                Top = 81
+                Top = 57
                 Width = 218
                 Height = 13
                 Caption = 'Afficher des alertes pour les domaines bloqu'#233's'
@@ -607,70 +737,29 @@ object Form1: TForm1
                 OnMouseEnter = LabelCheckboxMouseEnter
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
-              object CheckBoxSwitchTheme: TCheckBox
+              object CheckBoxAlertEventsKnown: TCheckBox
                 Left = 8
                 Top = 8
                 Width = 17
                 Height = 17
                 TabOrder = 0
-                OnClick = CheckBoxSwitchThemeClick
+                OnClick = CheckBoxAlertEventsKnownClick
               end
-              object CheckBoxAlertEventsKnown: TCheckBox
+              object CheckBoxAlertEventsUnknown: TCheckBox
                 Left = 8
                 Top = 32
                 Width = 17
                 Height = 17
                 TabOrder = 1
-                OnClick = CheckBoxAlertEventsKnownClick
+                OnClick = CheckBoxAlertEventsUnknownClick
               end
-              object CheckBoxAlertEventsUnknown: TCheckBox
+              object CheckBoxAlertEventDisallowed: TCheckBox
                 Left = 8
                 Top = 56
                 Width = 17
                 Height = 17
                 TabOrder = 2
-                OnClick = CheckBoxAlertEventsUnknownClick
-              end
-              object CheckBoxAlertEventDisallowed: TCheckBox
-                Left = 8
-                Top = 80
-                Width = 17
-                Height = 17
-                TabOrder = 3
                 OnClick = CheckBoxAlertEventDisallowedClick
-              end
-              object GroupBox8: TGroupBox
-                Left = 0
-                Top = 104
-                Width = 297
-                Height = 73
-                Anchors = [akLeft, akTop, akRight]
-                TabOrder = 4
-                object Label26: TLabel
-                  Left = 8
-                  Top = 43
-                  Width = 263
-                  Height = 13
-                  Caption = 'Ne sauvegarde pas le choix (en cours d'#39'impl'#233'mentation)'
-                end
-                object Button3: TButton
-                  Left = 96
-                  Top = 11
-                  Width = 75
-                  Height = 25
-                  Caption = 'Fond'
-                  TabOrder = 0
-                  OnClick = Button3Click
-                end
-                object Button2: TButton
-                  Left = 8
-                  Top = 11
-                  Width = 75
-                  Height = 25
-                  Caption = 'Texte'
-                  TabOrder = 1
-                  OnClick = Button2Click
-                end
               end
             end
           end
