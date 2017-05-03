@@ -1,6 +1,6 @@
 object FormAlert: TFormAlert
-  Left = 639
-  Top = 124
+  Left = 239
+  Top = 125
   BorderStyle = bsNone
   Caption = 'FormAlert'
   ClientHeight = 84
@@ -20,18 +20,18 @@ object FormAlert: TFormAlert
     Left = 0
     Top = 0
     Width = 309
-    Height = 27
+    Height = 26
     Align = alTop
     AutoSize = True
-    Color = clMaroon
+    Color = clGreen
     TabOrder = 0
     OnClick = PanelAllowedClick
     DesignSize = (
       309
-      27)
+      26)
     object Label1: TLabel
       Left = 6
-      Top = 3
+      Top = 2
       Width = 48
       Height = 20
       Caption = 'Label1'
@@ -43,52 +43,64 @@ object FormAlert: TFormAlert
       ParentFont = False
       OnClick = PanelAllowedClick
     end
-    object ButtonAllowDomain: TButton
-      Left = 232
+    object ButtonAllowDomain: TSpeedButton
+      Left = 227
       Top = 1
-      Width = 75
-      Height = 25
+      Width = 81
+      Height = 24
       Anchors = [akTop, akRight]
       Caption = 'Autoriser'
-      TabOrder = 0
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       OnClick = ButtonAllowDomainClick
     end
   end
   object PanelAllowed: TPanel
     Left = 0
-    Top = 27
+    Top = 26
     Width = 309
-    Height = 27
+    Height = 26
     Align = alTop
     AutoSize = True
-    Color = clGreen
+    Color = clMaroon
     TabOrder = 1
     OnClick = PanelAllowedClick
     DesignSize = (
       309
-      27)
+      26)
     object Label2: TLabel
       Left = 6
-      Top = 3
+      Top = 4
       Width = 48
       Height = 20
       Caption = 'Label2'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWhite
       Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
       OnClick = PanelAllowedClick
     end
-    object ButtonDisallow: TButton
-      Left = 232
+    object ButtonDisallow: TSpeedButton
+      Left = 227
       Top = 1
-      Width = 75
-      Height = 25
+      Width = 81
+      Height = 24
       Anchors = [akTop, akRight]
       Caption = 'Bloquer'
-      TabOrder = 0
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       OnClick = ButtonDisallowClick
     end
   end

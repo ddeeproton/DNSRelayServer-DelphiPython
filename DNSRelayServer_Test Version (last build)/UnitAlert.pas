@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls,  
-  HostParser;
+  HostParser, Buttons;
 
 type
   TFormAlert = class(TForm)
@@ -13,9 +13,9 @@ type
     PanelAllowed: TPanel;
     Label1: TLabel;
     Label2: TLabel;
-    ButtonDisallow: TButton;   
-    ButtonAllowDomain: TButton;
     TimerAfterCreate: TTimer;
+    ButtonAllowDomain: TSpeedButton;
+    ButtonDisallow: TSpeedButton;
     procedure ButtonAllowDomainClick(Sender: TObject);
     procedure ButtonDisallowClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);

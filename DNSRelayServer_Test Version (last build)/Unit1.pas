@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.95';
+var CurrentApplicationVersion: string = '0.4.96';
 
 type
   TForm1 = class(TForm)
@@ -407,7 +407,7 @@ begin
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1;
           TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := RGB(255,0,0);
+          FormAlert.Color := RGB(0, 150, 0);
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -425,7 +425,7 @@ begin
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
           TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := RGB(255,0,0);
+          FormAlert.Color := RGB(0, 150, 0);
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -444,7 +444,7 @@ begin
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
           TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := RGB(0,255,0);
+          FormAlert.Color := RGB(150,0,0);
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
