@@ -145,7 +145,7 @@ object FormAlert: TFormAlert
       27)
     object Label2: TLabel
       Left = 22
-      Top = 5
+      Top = 3
       Width = 48
       Height = 20
       Caption = 'Label2'
