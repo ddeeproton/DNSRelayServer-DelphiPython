@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 191
-  Top = 120
+  Left = 258
+  Top = 122
   Width = 435
   Height = 556
   Caption = 'DNS Relay Server'
@@ -574,6 +574,28 @@ object Form1: TForm1
                 OnMouseEnter = LabelCheckboxMouseEnter
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
+              object Label26: TLabel
+                Left = 3
+                Top = 46
+                Width = 332
+                Height = 13
+                Caption = 
+                  'Ci-dessous en cours d'#39'impl'#233'mentation (Ne sauvegardera pas le cho' +
+                  'ix)'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clBlack
+                Font.Height = -11
+                Font.Name = 'MS Sans Serif'
+                Font.Style = [fsItalic]
+                ParentFont = False
+              end
+              object Label30: TLabel
+                Left = 0
+                Top = 71
+                Width = 65
+                Height = 13
+                Caption = 'Th'#232'me actuel'
+              end
               object CheckBoxSwitchTheme: TCheckBox
                 Left = 8
                 Top = 8
@@ -582,19 +604,19 @@ object Form1: TForm1
                 TabOrder = 0
                 OnClick = CheckBoxSwitchThemeClick
               end
-              object GroupBox8: TGroupBox
+              object GroupBoxUpdateTheme: TGroupBox
                 Left = 0
-                Top = 48
-                Width = 297
-                Height = 153
+                Top = 120
+                Width = 303
+                Height = 81
                 Anchors = [akLeft, akTop, akRight]
                 TabOrder = 1
                 DesignSize = (
-                  297
-                  153)
+                  303
+                  81)
                 object Shape2: TShape
-                  Left = 158
-                  Top = 90
+                  Left = 164
+                  Top = 47
                   Width = 29
                   Height = 29
                   Anchors = [akTop, akRight]
@@ -602,22 +624,22 @@ object Form1: TForm1
                 end
                 object Label29: TLabel
                   Left = 8
-                  Top = 80
+                  Top = 37
                   Width = 69
                   Height = 13
                   Caption = 'Nom du th'#232'me'
                 end
                 object Label27: TLabel
-                  Left = 120
-                  Top = 104
+                  Left = 126
+                  Top = 61
                   Width = 30
                   Height = 13
                   Anchors = [akTop, akRight]
                   Caption = 'Texte:'
                 end
                 object ShapeColorText: TShape
-                  Left = 160
-                  Top = 92
+                  Left = 166
+                  Top = 49
                   Width = 25
                   Height = 25
                   Anchors = [akTop, akRight]
@@ -625,80 +647,124 @@ object Form1: TForm1
                   OnMouseUp = ShapeColorTextMouseUp
                 end
                 object Label28: TLabel
-                  Left = 192
-                  Top = 104
+                  Left = 198
+                  Top = 61
                   Width = 27
                   Height = 13
                   Anchors = [akTop, akRight]
                   Caption = 'Fond:'
                 end
-                object Label26: TLabel
-                  Left = 8
-                  Top = 11
-                  Width = 264
-                  Height = 13
-                  Caption = 'En cours d'#39'impl'#233'mentation (Ne sauvegarde pas le choix)'
-                end
-                object Label30: TLabel
-                  Left = 8
-                  Top = 32
-                  Width = 65
-                  Height = 13
-                  Caption = 'Th'#232'me actuel'
-                end
                 object Shape1: TShape
-                  Left = 222
-                  Top = 90
+                  Left = 228
+                  Top = 47
                   Width = 29
                   Height = 29
                   Anchors = [akTop, akRight]
                   OnMouseUp = ShapeColorBackgroundMouseUp
                 end
                 object ShapeColorBackground: TShape
-                  Left = 224
-                  Top = 92
+                  Left = 230
+                  Top = 49
                   Width = 25
                   Height = 25
                   Anchors = [akTop, akRight]
                   OnMouseUp = ShapeColorBackgroundMouseUp
                 end
-                object ComboBoxCurrentTheme: TComboBox
-                  Left = 8
-                  Top = 48
-                  Width = 249
-                  Height = 21
-                  Anchors = [akLeft, akTop, akRight]
-                  ItemHeight = 13
-                  TabOrder = 0
-                  Text = 'ComboBoxCurrentTheme'
-                end
-                object Button5: TButton
-                  Left = 264
-                  Top = 46
-                  Width = 27
-                  Height = 25
-                  Anchors = [akTop, akRight]
-                  Caption = '+'
-                  TabOrder = 1
-                end
                 object EditThemeName: TEdit
                   Left = 8
-                  Top = 96
-                  Width = 105
+                  Top = 53
+                  Width = 111
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
-                  TabOrder = 2
+                  TabOrder = 0
                   Text = 'EditThemeName'
                 end
                 object Button4: TButton
-                  Left = 256
-                  Top = 92
+                  Left = 262
+                  Top = 49
                   Width = 35
                   Height = 25
                   Anchors = [akTop, akRight]
                   Caption = 'OK'
-                  TabOrder = 3
+                  TabOrder = 1
                 end
+                object GroupBox9: TGroupBox
+                  Left = 0
+                  Top = 0
+                  Width = 304
+                  Height = 31
+                  Anchors = [akLeft, akTop, akRight]
+                  TabOrder = 2
+                  DesignSize = (
+                    304
+                    31)
+                  object SpeedButtonClosePanelUpdateTheme: TSpeedButton
+                    Left = 277
+                    Top = 5
+                    Width = 22
+                    Height = 22
+                    Anchors = [akTop, akRight]
+                    Flat = True
+                    Glyph.Data = {
+                      E6010000424DE60100000000000036000000280000000C0000000C0000000100
+                      180000000000B001000000000000000000000000000000000000818181A3A3A3
+                      9E9E9E9898989696969191918B8B8B8686868181817C7C7C797979575757A8A8
+                      A88181815252523C3C3C3A3A3A3A3A3A3535353535352F2F2F3C3C3C5F5F5F79
+                      7979AEAEAE5C5C5C575757FFFFFE8181813C3C3C3A3A3A7E7E7EFFFFFE4A4A4A
+                      3737377C7C7CB3B3B3616161FFFFFEFFFFFEFFFFFE838383818181FFFFFEFFFF
+                      FEFFFFFE2F2F2F818181B5B5B56767678B8B8BFFFFFEFFFFFEFFFFFEFFFFFEFF
+                      FFFEFFFFFE7E7E7E323232868686BDBDBD6C6C6C4F4F4F8E8E8EFFFFFEFFFFFE
+                      FFFFFEFFFFFE8181813A3A3A353535919191D0D0D07979795F5F5F989898FFFF
+                      FEFFFFFEFFFFFEFFFFFE8989894A4A4A444444A6A6A6DDDDDD9B9B9BB8B8B8FF
+                      FFFEFFFFFEFFFFFEFFFFFEFFFFFEFFFFFEA8A8A86C6C6CB8B8B8DFDFDFA0A0A0
+                      FFFFFEFFFFFEFFFFFEB3B3B3B0B0B0FFFFFEFFFFFEFFFFFE6C6C6CBBBBBBE2E2
+                      E2A0A0A09B9B9BFFFFFEB8B8B87E7E7E797979AEAEAEFFFFFE838383767676BD
+                      BDBDDFDFDFBBBBBB9393939191918E8E8E8989898686868181817E7E7E797979
+                      989898B8B8B8AEAEAED5D5D5D2D2D2D0D0D0CACACAC5C5C5C3C3C3C0C0C0BBBB
+                      BBB8B8B8B3B3B3898989}
+                    OnClick = SpeedButtonClosePanelUpdateThemeClick
+                  end
+                  object LabelUpdateTheme: TLabel
+                    Left = 8
+                    Top = 11
+                    Width = 97
+                    Height = 13
+                    Caption = 'Ajouter un th'#232'me'
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clBlack
+                    Font.Height = -11
+                    Font.Name = 'MS Sans Serif'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                  end
+                end
+              end
+              object ComboBoxCurrentTheme: TComboBox
+                Left = 0
+                Top = 87
+                Width = 265
+                Height = 21
+                Style = csDropDownList
+                Anchors = [akLeft, akTop, akRight]
+                ItemHeight = 13
+                ItemIndex = 1
+                Sorted = True
+                TabOrder = 2
+                Text = 'White'
+                OnSelect = ComboBoxCurrentThemeSelect
+                Items.Strings = (
+                  'Black'
+                  'White')
+              end
+              object ButtonMenuTheme: TButton
+                Left = 272
+                Top = 86
+                Width = 27
+                Height = 23
+                Anchors = [akTop, akRight]
+                Caption = '+'
+                TabOrder = 3
+                OnClick = ButtonMenuThemeClick
               end
             end
             object TabSheet6: TTabSheet
@@ -1186,7 +1252,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 375
-    Top = 262
+    Top = 294
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2050,7 +2116,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 375
-    Top = 290
+    Top = 322
     Bitmap = {
       494C01010F001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -6187,11 +6253,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 347
-    Top = 323
+    Top = 355
   end
   object ImageList3: TImageList
     Left = 346
-    Top = 290
+    Top = 322
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -6725,7 +6791,7 @@ object Form1: TForm1
     Height = 80
     Width = 71
     Left = 346
-    Top = 262
+    Top = 294
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -15610,6 +15676,22 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 374
-    Top = 324
+    Top = 356
+  end
+  object PopupMenuTheme: TPopupMenu
+    Left = 346
+    Top = 255
+    object Ajouter3: TMenuItem
+      Caption = 'Ajouter'
+      OnClick = Ajouter3Click
+    end
+    object Modifier4: TMenuItem
+      Caption = 'Modifier'
+      OnClick = Modifier4Click
+    end
+    object Supprimer3: TMenuItem
+      Caption = 'Supprimer'
+      OnClick = Supprimer3Click
+    end
   end
 end

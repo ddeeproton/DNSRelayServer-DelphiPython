@@ -150,9 +150,7 @@ type
     Label17: TLabel;
     Label18: TLabel;
     CheckBoxAlertEventDisallowed: TCheckBox;
-    GroupBox8: TGroupBox;
-    ComboBoxCurrentTheme: TComboBox;
-    Button5: TButton;
+    GroupBoxUpdateTheme: TGroupBox;
     Label29: TLabel;
     EditThemeName: TEdit;
     Label27: TLabel;
@@ -160,10 +158,19 @@ type
     Label28: TLabel;
     ShapeColorBackground: TShape;
     Button4: TButton;
-    Label26: TLabel;
-    Label30: TLabel;
     Shape1: TShape;
     Shape2: TShape;
+    Label26: TLabel;
+    Label30: TLabel;
+    ComboBoxCurrentTheme: TComboBox;
+    ButtonMenuTheme: TButton;
+    PopupMenuTheme: TPopupMenu;
+    Ajouter3: TMenuItem;
+    Modifier4: TMenuItem;
+    Supprimer3: TMenuItem;
+    GroupBox9: TGroupBox;
+    SpeedButtonClosePanelUpdateTheme: TSpeedButton;
+    LabelUpdateTheme: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -264,6 +271,12 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure ShapeColorBackgroundMouseUp(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure ButtonMenuThemeClick(Sender: TObject);
+    procedure Ajouter3Click(Sender: TObject);
+    procedure Modifier4Click(Sender: TObject);
+    procedure Supprimer3Click(Sender: TObject);
+    procedure SpeedButtonClosePanelUpdateThemeClick(Sender: TObject);
+    procedure ComboBoxCurrentThemeSelect(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1151,6 +1164,8 @@ begin
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;
   ServerFailStartCount := 0;
+  GroupBoxUpdateTheme.Visible := False;
+
 
   // Masque la fenêtre de la taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
@@ -1354,6 +1369,7 @@ begin
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
+  LabelUpdateTheme.Font.Color := color;
   ShapeColorText.Brush.Color := color;
   EditThemeName.Font.Color := color;
   ComboBoxCurrentTheme.Font.Color := color;
@@ -2398,6 +2414,47 @@ begin
   ShapeColorBackground.Brush.Color := ColorDialog1.Color;
   Notebook1.PageIndex := 4;
   Notebook1.PageIndex := 0;
+end;
+
+procedure TForm1.ButtonMenuThemeClick(Sender: TObject);
+var
+  Pos:TPoint;
+begin
+  GetCursorPos(Pos);
+  PopupMenuTheme.Popup(Pos.X,Pos.Y);
+end;
+
+procedure TForm1.Ajouter3Click(Sender: TObject);
+begin
+  LabelUpdateTheme.Caption := PChar('Ajouter un thème');
+  GroupBoxUpdateTheme.Visible := True;
+end;
+
+procedure TForm1.Modifier4Click(Sender: TObject);
+begin                             
+  LabelUpdateTheme.Caption := PChar('Modifier un thème');
+  GroupBoxUpdateTheme.Visible := True;
+end;
+
+procedure TForm1.Supprimer3Click(Sender: TObject);
+begin
+  //
+end;
+
+procedure TForm1.SpeedButtonClosePanelUpdateThemeClick(Sender: TObject);
+begin
+  GroupBoxUpdateTheme.Visible := False;
+end;
+
+procedure TForm1.ComboBoxCurrentThemeSelect(Sender: TObject);
+var i: Integer;
+begin
+
+  i := ComboBoxCurrentTheme.ItemIndex;
+  //Form1.Caption := PChar(inttostr(i));
+  if i = -1 then exit;
+  if i = 0 then setTheme(RGB(250,250,250), RGB(10,10,10));
+  if i = 1 then setTheme(clBlack, clWhite);
 end;
 
 end.
