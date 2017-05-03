@@ -244,7 +244,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 13
+                ItemHeight = 0
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
@@ -15880,7 +15880,7 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 414
-    Top = 396
+    Top = 395
   end
   object PopupMenuTheme: TPopupMenu
     Left = 386

@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.108';
+var CurrentApplicationVersion: string = '0.4.109';
 
 type
   TForm1 = class(TForm)
@@ -449,7 +449,11 @@ begin
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1;
           TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := RGB(0, 150, 0);
+          FormAlert.Color := Form1.Color;
+          FormAlert.Label1.Font.Color := Form1.Font.Color;
+          FormAlert.Label2.Font.Color := Form1.Font.Color; 
+          FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -467,7 +471,11 @@ begin
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
           TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := RGB(0, 150, 0);
+          FormAlert.Color := Form1.Color;
+          FormAlert.Label1.Font.Color := Form1.Font.Color;
+          FormAlert.Label2.Font.Color := Form1.Font.Color; 
+          FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
@@ -486,7 +494,11 @@ begin
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
           TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := RGB(150,0,0);
+          FormAlert.Color := Form1.Color;
+          FormAlert.Label1.Font.Color := Form1.Font.Color;
+          FormAlert.Label2.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
           FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
