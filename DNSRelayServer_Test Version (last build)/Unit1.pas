@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.107';
+var CurrentApplicationVersion: string = '0.4.108';
 
 type
   TForm1 = class(TForm)
@@ -2734,7 +2734,7 @@ procedure TForm1.FormResize(Sender: TObject);
 begin
   if ListView1.Columns.Count < 2 then exit;
   ListView1.Columns.Items[1].Width := 95;
-  ListView1.Columns.Items[0].Width := ListView1.Width - ListView1.Columns.Items[1].Width - 5;
+  ListView1.Columns.Items[0].Width := ListView1.Width - ListView1.Columns.Items[1].Width - 25;
 end;
 
 procedure TForm1.ComboBoxPosLogsSelect(Sender: TObject);

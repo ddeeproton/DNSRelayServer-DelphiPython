@@ -75,6 +75,7 @@ object Form1: TForm1
     MinSize = 1
     ParentColor = False
     Visible = False
+    OnMoved = FormResize
   end
   object Panel1: TPanel
     Left = 1
