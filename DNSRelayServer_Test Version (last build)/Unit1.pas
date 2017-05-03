@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.100';
+var CurrentApplicationVersion: string = '0.4.101';
 
 type
   TForm1 = class(TForm)
@@ -169,6 +169,7 @@ type
     LabelUpdateTheme: TLabel;
     N6: TMenuItem;
     Restaurer1: TMenuItem;
+    Button2: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -265,8 +266,6 @@ type
     procedure LabelCheckboxMouseLeave(Sender: TObject);
     procedure setThemeFont(color:TColor);
     procedure setThemeBg(bg:TColor);
-    procedure ShapeColorTextMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure ShapeColorBackgroundMouseUp(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ButtonMenuThemeClick(Sender: TObject);
@@ -277,6 +276,8 @@ type
     procedure ComboBoxCurrentThemeSelect(Sender: TObject);
     procedure ButtonUpdateThemeClick(Sender: TObject);
     procedure Restaurer1Click(Sender: TObject);
+    procedure ShapeColorTextMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
   public
@@ -2404,25 +2405,7 @@ begin
   TLabel(Sender).Font.Style := [];
 end;
 
-procedure TForm1.ShapeColorTextMouseUp(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  if not ColorDialog1.Execute then exit;
-  setThemeFont(ColorDialog1.Color);
-  ShapeColorText.Brush.Color := ColorDialog1.Color;
-  Notebook1.PageIndex := 4;
-  Notebook1.PageIndex := 0;
-end;
 
-procedure TForm1.ShapeColorBackgroundMouseUp(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  if not ColorDialog1.Execute then exit;
-  setThemeBg(ColorDialog1.Color);
-  ShapeColorBackground.Brush.Color := ColorDialog1.Color;
-  Notebook1.PageIndex := 4;
-  Notebook1.PageIndex := 0;
-end;
 
 procedure TForm1.ButtonMenuThemeClick(Sender: TObject);
 var
@@ -2455,7 +2438,7 @@ begin
     ThemesList.Add('250,250,250,10,10,10');
     ThemesList.Add('0,0,0,0,221,221');
     ThemesList.Add('0,255,0,0,0,0');
-    ThemesList.Add('255,255,255,255,0,255');
+    ThemesList.Add('0,0,0,255,0,255');
     WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
 
     ComboBoxCurrentTheme.Clear;
@@ -2634,6 +2617,28 @@ begin
 end;
 
 
+
+procedure TForm1.ShapeColorTextMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  ColorDialog1.Color := ShapeColorText.Brush.Color;
+  if not ColorDialog1.Execute then exit;
+  setThemeFont(ColorDialog1.Color);
+  ShapeColorText.Brush.Color := ColorDialog1.Color;
+  Notebook1.PageIndex := 4;
+  Notebook1.PageIndex := 0;
+end;
+
+procedure TForm1.ShapeColorBackgroundMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  ColorDialog1.Color := ShapeColorBackground.Brush.Color;
+  if not ColorDialog1.Execute then exit;
+  setThemeBg(ColorDialog1.Color);
+  ShapeColorBackground.Brush.Color := ColorDialog1.Color;
+  Notebook1.PageIndex := 4;
+  Notebook1.PageIndex := 0;
+end;
 
 end.
 

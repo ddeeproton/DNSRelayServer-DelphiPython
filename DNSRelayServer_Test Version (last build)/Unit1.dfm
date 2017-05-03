@@ -646,7 +646,7 @@ object Form1: TForm1
                   Text = 'EditThemeName'
                 end
                 object ButtonUpdateTheme: TButton
-                  Left = 184
+                  Left = 104
                   Top = 89
                   Width = 75
                   Height = 25
@@ -704,6 +704,16 @@ object Form1: TForm1
                     Font.Style = [fsBold]
                     ParentFont = False
                   end
+                end
+                object Button2: TButton
+                  Left = 185
+                  Top = 89
+                  Width = 75
+                  Height = 25
+                  Anchors = [akTop, akRight]
+                  Caption = 'Annuler'
+                  TabOrder = 3
+                  OnClick = SpeedButtonClosePanelUpdateThemeClick
                 end
               end
               object ComboBoxCurrentTheme: TComboBox
