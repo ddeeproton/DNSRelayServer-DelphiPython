@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.103';
+var CurrentApplicationVersion: string = '0.4.104';
 
 type
   TForm1 = class(TForm)
@@ -170,6 +170,9 @@ type
     N6: TMenuItem;
     Restaurer1: TMenuItem;
     Button2: TButton;
+    ToolButtonDisplayGray: TToolButton;
+    ToolButtonDisplayGreen: TToolButton;
+    ToolButtonDisplayOrange: TToolButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -278,6 +281,9 @@ type
     procedure Restaurer1Click(Sender: TObject);
     procedure ShapeColorTextMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure ToolButtonDisplayOrangeClick(Sender: TObject);
+    procedure ToolButtonDisplayGreenClick(Sender: TObject);
+    procedure ToolButtonDisplayGrayClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2661,6 +2667,26 @@ begin
   ShapeColorBackground.Brush.Color := ColorDialog1.Color;
   Notebook1.PageIndex := 4;
   Notebook1.PageIndex := 0;
+end;
+
+
+
+procedure TForm1.ToolButtonDisplayOrangeClick(Sender: TObject);
+begin
+  if MessageDlg(PChar('Voulez-vous effacer les boules rouges de la liste?'+#13#10+'(efface juste l''affichage)'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+  ListViewEraseFromImageIndex(ListView1, 3);
+end;
+
+procedure TForm1.ToolButtonDisplayGreenClick(Sender: TObject);
+begin
+  if MessageDlg(PChar('Voulez-vous effacer les boules vertes de la liste?'+#13#10+'(efface juste l''affichage)'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+  ListViewEraseFromImageIndex(ListView1, 1);
+end;
+
+procedure TForm1.ToolButtonDisplayGrayClick(Sender: TObject);
+begin
+  if MessageDlg(PChar('Voulez-vous effacer les boules grises de la liste?'+#13#10+'(efface juste l''affichage)'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+  ListViewEraseFromImageIndex(ListView1, 0);
 end;
 
 end.

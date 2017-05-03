@@ -14,6 +14,7 @@ procedure ListViewClick(Sender: TObject);
 procedure ListView1DblClick(Sender: TObject);
 procedure EditerLigne2(ListView: TListView; Ligne:integer; ImageNum:integer = -1;
   Colone1: string = ''; Colone2: string = ''; isChecked: Boolean = false);
+procedure ListViewEraseFromImageIndex(ListView:TListView;indexImage:integer);
 
 implementation
 
@@ -226,6 +227,16 @@ begin
   RafraichirProxies(TListView(Sender));
 end;
 
-
+procedure ListViewEraseFromImageIndex(ListView:TListView;indexImage:integer);
+var
+  i: integer;
+begin
+  i := 0;
+  while i < ListView.items.count do
+    if ListView.Items.Item[i].ImageIndex = indexImage then
+      ListView.Items.Item[i].Delete
+    else
+      Inc(i);
+end;
 
 end.

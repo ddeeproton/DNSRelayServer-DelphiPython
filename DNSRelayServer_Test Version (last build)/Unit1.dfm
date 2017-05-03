@@ -71,6 +71,7 @@ object Form1: TForm1
     Cursor = crVSplit
     Align = alBottom
     Color = clWhite
+    MinSize = 1
     ParentColor = False
     Visible = False
   end
@@ -87,6 +88,7 @@ object Form1: TForm1
       Top = 17
       Width = 320
       Height = 304
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -656,17 +658,17 @@ object Form1: TForm1
                   OnClick = ButtonUpdateThemeClick
                 end
                 object GroupBox9: TGroupBox
-                  Left = 0
+                  Left = -3
                   Top = 0
-                  Width = 274
+                  Width = 278
                   Height = 31
                   Anchors = [akLeft, akTop, akRight]
                   TabOrder = 2
                   DesignSize = (
-                    274
+                    278
                     31)
                   object SpeedButtonClosePanelUpdateTheme: TSpeedButton
-                    Left = 247
+                    Left = 251
                     Top = 5
                     Width = 22
                     Height = 22
@@ -692,7 +694,7 @@ object Form1: TForm1
                     OnClick = SpeedButtonClosePanelUpdateThemeClick
                   end
                   object LabelUpdateTheme: TLabel
-                    Left = 8
+                    Left = 11
                     Top = 9
                     Width = 97
                     Height = 13
@@ -719,7 +721,7 @@ object Form1: TForm1
               object ComboBoxCurrentTheme: TComboBox
                 Left = 16
                 Top = 31
-                Width = 233
+                Width = 239
                 Height = 21
                 Style = csDropDownList
                 Anchors = [akLeft, akTop, akRight]
@@ -736,7 +738,7 @@ object Form1: TForm1
                   'Pink')
               end
               object ButtonMenuTheme: TButton
-                Left = 256
+                Left = 263
                 Top = 30
                 Width = 27
                 Height = 23
@@ -959,7 +961,7 @@ object Form1: TForm1
             object ToolBar2: TToolBar
               Left = 2
               Top = 1
-              Width = 79
+              Width = 143
               Height = 24
               Align = alNone
               Caption = 'ToolBar2'
@@ -989,6 +991,27 @@ object Form1: TForm1
                 Caption = 'ToolButton7'
                 ImageIndex = 6
                 OnClick = ToolButton9Click
+              end
+              object ToolButtonDisplayGray: TToolButton
+                Left = 69
+                Top = 0
+                Caption = 'ToolButtonDisplayGray'
+                ImageIndex = 0
+                OnClick = ToolButtonDisplayGrayClick
+              end
+              object ToolButtonDisplayGreen: TToolButton
+                Left = 92
+                Top = 0
+                Caption = 'ToolButtonDisplayGreen'
+                ImageIndex = 1
+                OnClick = ToolButtonDisplayGreenClick
+              end
+              object ToolButtonDisplayOrange: TToolButton
+                Left = 115
+                Top = 0
+                Caption = 'ToolButtonDisplayOrange'
+                ImageIndex = 3
+                OnClick = ToolButtonDisplayOrangeClick
               end
             end
           end
@@ -1230,7 +1253,7 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 375
+    Left = 346
     Top = 334
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -2095,7 +2118,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 375
-    Top = 362
+    Top = 334
     Bitmap = {
       494C01010F001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -6769,8 +6792,8 @@ object Form1: TForm1
   object ImageList4: TImageList
     Height = 80
     Width = 71
-    Left = 346
-    Top = 334
+    Left = 374
+    Top = 362
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
