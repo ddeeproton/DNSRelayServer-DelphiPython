@@ -122,7 +122,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 258
-            ActivePage = TabSheet3
+            ActivePage = TabSheet1
             TabOrder = 0
             OnDrawTab = PageControl1DrawTab
             object TabSheet1: TTabSheet
@@ -209,7 +209,7 @@ object Form1: TForm1
               end
               object Label6: TLabel
                 Left = 27
-                Top = 138
+                Top = 122
                 Width = 239
                 Height = 13
                 Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
@@ -226,7 +226,7 @@ object Form1: TForm1
               end
               object Label8: TLabel
                 Left = 27
-                Top = 160
+                Top = 144
                 Width = 294
                 Height = 13
                 Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
@@ -276,7 +276,7 @@ object Form1: TForm1
               end
               object CheckBoxAutostartDNSOnBoot: TCheckBox
                 Left = 8
-                Top = 160
+                Top = 144
                 Width = 19
                 Height = 17
                 TabOrder = 4
@@ -284,7 +284,7 @@ object Form1: TForm1
               end
               object CheckBoxStartWithWindows: TCheckBox
                 Left = 8
-                Top = 136
+                Top = 120
                 Width = 17
                 Height = 17
                 TabOrder = 3
@@ -389,6 +389,7 @@ object Form1: TForm1
                 Height = 13
                 Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
                 FocusControl = CheckBoxUpdateIntervall
+                OnClick = LabelToCheckboxClick
                 OnMouseEnter = LabelCheckboxMouseEnter
                 OnMouseLeave = LabelCheckboxMouseLeave
               end

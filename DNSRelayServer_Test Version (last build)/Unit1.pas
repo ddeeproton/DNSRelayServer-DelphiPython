@@ -9,7 +9,7 @@ uses
   Spin, Buttons, TabNotBk, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.91';
+var CurrentApplicationVersion: string = '0.4.92';
 
 type
   TForm1 = class(TForm)
@@ -810,9 +810,11 @@ begin
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
-  if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
-    Form1.Top := Screen.WorkAreaHeight - Form1.Height;
-
+  if Form1.WindowState = wsNormal then
+  begin
+    if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
+      Form1.Top := Screen.WorkAreaHeight - Form1.Height;
+  end;
   if FormInstall = nil then
   begin
     FormInstall := TFormInstall.Create(Self);
@@ -1503,6 +1505,9 @@ procedure TForm1.ToolButton8Click(Sender: TObject);
 begin
   Notebook1.PageIndex := 0;
   refreshCheckBox(CheckBoxStartWithWindows);
+
+  if Form1.WindowState = wsMaximized then exit;
+
   if Form1.Width < 370 then Form1.Width := 370;
   if Splitter1.Visible then
   begin
@@ -2139,7 +2144,8 @@ end;
 procedure TForm1.CheckBoxSwitchThemeClick(Sender: TObject);
 begin
   if TCheckbox(Sender).Checked then
-    setTheme(clWhite, clBlack)
+    //setTheme(clWhite, clBlack)
+    setTheme(RGB(250,250,250), RGB(30,30,30))
   else
     setTheme(clBlack, clWhite);
   if TCheckBox(Sender).Checked then
