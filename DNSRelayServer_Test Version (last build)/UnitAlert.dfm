@@ -52,7 +52,7 @@ object FormAlert: TFormAlert
       Caption = 'Autoriser'
       Flat = True
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
+      Font.Color = clSilver
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -96,7 +96,7 @@ object FormAlert: TFormAlert
       Caption = 'Bloquer'
       Flat = True
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
+      Font.Color = clSilver
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
