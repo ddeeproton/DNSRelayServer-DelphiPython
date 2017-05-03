@@ -693,7 +693,7 @@ object Form1: TForm1
                   end
                   object LabelUpdateTheme: TLabel
                     Left = 8
-                    Top = 11
+                    Top = 9
                     Width = 97
                     Height = 13
                     Caption = 'Ajouter un th'#232'me'

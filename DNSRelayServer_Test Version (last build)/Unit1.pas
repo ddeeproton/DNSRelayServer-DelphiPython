@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.102';
+var CurrentApplicationVersion: string = '0.4.103';
 
 type
   TForm1 = class(TForm)
@@ -1339,6 +1339,22 @@ begin
 end;
 
 
+function secureColor(i:Integer):Integer;
+begin
+  if i < 0 then i := 0;
+  if i > 255 then i := 255;
+  result := i;
+end;
+
+function changeColor(c:TColor; r,g,b:Integer):TColor;
+begin
+  result := RGB(
+    secureColor(getRValue(ColorToRGB(c)) + r),
+    secureColor(getGValue(ColorToRGB(c)) + g),
+    secureColor(getBValue(ColorToRGB(c)) + b)
+  );
+end;
+
 procedure TForm1.setThemeBg(bg:TColor);
 begin
 
@@ -1350,13 +1366,8 @@ begin
   GroupBox5.Color := bg;
   GroupBox6.Color := bg;
   ToolBar2.Color := bg;
-  ListView1.Color := bg;
   Splitter1.Color := bg;
-  ListBoxBlacklist.Color := bg;
 
-  Memo1.Color := bg;
-  MemoLogs.Color := bg;
-  ListBoxIpClients.Color := bg;
   Panel1.Color := bg;
   Panel2.Color := bg;
   //Panel3.Color := bg;
@@ -1364,17 +1375,27 @@ begin
   Panel5.Color := bg;
   Panel6.Color := bg;
   ToolBar1.Color := bg;
+  CheckBoxStartWithWindows.Color := bg;
+  CheckBoxAutostartDNSOnBoot.Color := bg;
+  PanelRestart.Color := bg;
+  ShapeColorBackground.Brush.Color := bg;
+
+
+  bg := changeColor(bg, -20, -20, -20);
+
+  ListView1.Color := bg;
+  Memo1.Color := bg;
+  MemoLogs.Color := bg;
+  ListBoxIpClients.Color := bg;
   ListBoxDNSMaster.Color := bg;
   CBoxDNSServerSlaveIP.Color := bg;
   SpinPort.Color := bg;
   EditFilehost.Color := bg;
-  CheckBoxStartWithWindows.Color := bg;
-  CheckBoxAutostartDNSOnBoot.Color := bg;
   SpinTimeCheckUpdate.Color := bg;
-  PanelRestart.Color := bg;
   ComboBoxCurrentTheme.Color := bg;
   EditThemeName.Color := bg;
-  ShapeColorBackground.Brush.Color := bg;
+  ListBoxBlacklist.Color := bg;
+
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
