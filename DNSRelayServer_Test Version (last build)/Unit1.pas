@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.104';
+var CurrentApplicationVersion: string = '0.4.105';
 
 type
   TForm1 = class(TForm)
@@ -173,6 +173,9 @@ type
     ToolButtonDisplayGray: TToolButton;
     ToolButtonDisplayGreen: TToolButton;
     ToolButtonDisplayOrange: TToolButton;
+    ButtonClearLogs: TToolButton;
+    ToolButton9: TToolButton;
+    ToolButton10: TToolButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -284,6 +287,7 @@ type
     procedure ToolButtonDisplayOrangeClick(Sender: TObject);
     procedure ToolButtonDisplayGreenClick(Sender: TObject);
     procedure ToolButtonDisplayGrayClick(Sender: TObject);
+    procedure ButtonClearLogsClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2687,6 +2691,12 @@ procedure TForm1.ToolButtonDisplayGrayClick(Sender: TObject);
 begin
   if MessageDlg(PChar('Voulez-vous effacer les boules grises de la liste?'+#13#10+'(efface juste l''affichage)'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   ListViewEraseFromImageIndex(ListView1, 0);
+end;
+
+procedure TForm1.ButtonClearLogsClick(Sender: TObject);
+begin
+  if MessageDlg(PChar('Voulez-vous effacer les logs?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+  MemoLogs.Clear;
 end;
 
 end.
