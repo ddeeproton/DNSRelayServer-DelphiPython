@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.114';
+var CurrentApplicationVersion: string = '0.4.115';
 
 type
   TForm1 = class(TForm)
@@ -894,7 +894,12 @@ begin
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
-  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  Form1.Height := Form1.Height + 1;
+  Form1.Height := Form1.Height - 1;
+  Application.ProcessMessages;
+  //ComboBoxPosLogsSelect(nil);  
+  Application.ProcessMessages;
+
   if Form1.WindowState = wsNormal then
   begin
     if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
@@ -1048,6 +1053,7 @@ begin
   listThreads[1].Suspended := False;
    }
   //listThreads[0].Terminate;
+
 end;
 
 
@@ -1208,6 +1214,7 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
+  TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;
   ServerFailStartCount := 0;
@@ -1223,9 +1230,9 @@ begin
 
   Form1.Top := Screen.WorkAreaHeight - Form1.Height;
   Form1.Left := Screen.WorkAreaWidth - Form1.Width;
-
-  GroupBox5.Height := Form1.Height div 2;
-  GroupBox5.Width := Form1.Width div 2;
+  
+  //GroupBox5.Height := Form1.Height div 2;
+  //GroupBox5.Width := Form1.Width div 2;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -1339,7 +1346,7 @@ begin
   ComboBoxPosLogs.ItemIndex := 1;
   if FileExists(DataDirectoryPath + 'PositionLogs.cfg') then
     ComboBoxPosLogs.ItemIndex := StrToInt( ReadFromFile(DataDirectoryPath + 'PositionLogs.cfg'));
-  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  //ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   ButtonRefreshNetCardClick(nil);
@@ -1380,7 +1387,7 @@ begin
     TimerRestart.Enabled := True;
   end;
 
-  TimerAfterFormCreate.Enabled := True;
+
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
   //setTheme(RGB(10,30,40), RGB(220,155,220));
 end;
@@ -1647,8 +1654,15 @@ begin
   refreshCheckBox(CheckBoxStartWithWindows);
 
   if Form1.WindowState = wsMaximized then exit;
+  if GroupBox5.Visible then
+  begin
+    if Form1.Width < 450 + GroupBox5.Width then
+      Form1.Width := 450 + GroupBox5.Width;
+  end else begin
+    if Form1.Width < 420 then
+      Form1.Width := 420;
+  end;
 
-  if Form1.Width < 420 then Form1.Width := 420;
   if Splitter1.Visible then
   begin
     if Form1.Height < 440 then
@@ -2142,9 +2156,9 @@ end;
 
 procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
 begin
-  TTimer(Sender).Enabled := False;
+  TTimer(Sender).Enabled := False;       
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
   PanelRestart.Visible := False;
-  Form1.Resize;
   if startedInBackground then exit;
   Application.ShowMainForm := true;
   Form1.BringToFront;
@@ -2154,6 +2168,7 @@ begin
   SetFocus;
   FlashWindow(Application.Handle, true);
   ShowWindow(Application.Handle, SW_SHOW);
+
 end;
 
 procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);
@@ -2764,41 +2779,45 @@ begin
   begin
     GroupBox5.Align := alTop;
     Splitter1.Align := alTop;
-    GroupBox5.Height := (Form1.height div 2) - Splitter1.Height;
-    Panel1.Height := GroupBox5.Height;
-    Splitter1.Top := GroupBox5.height;
+
+    GroupBox5.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
+    GroupBox5.Width := Form1.Width;
+    Panel1.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
+    Panel1.Width := Form1.Width;
+    Splitter1.Top := ((Form1.height - Panel5.Height) div 2);
   end;
   if ComboBoxPosLogs.ItemIndex = 1 then
   begin
     GroupBox5.Align := alBottom;
     Splitter1.Align := alBottom;
-    GroupBox5.Height := (Form1.height div 2) - Splitter1.Height;
-    Panel1.Height := GroupBox5.Height;
-    Splitter1.Top := Form1.Height - GroupBox5.height;
+   
+    GroupBox5.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
+    GroupBox5.Width := Form1.Width;
+    Panel1.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
+    Panel1.Width := Form1.Width;
+    Splitter1.Top := ((Form1.height - Panel5.Height) div 2);
   end;
   if ComboBoxPosLogs.ItemIndex = 2 then
   begin
     Splitter1.Align := alLeft;
     GroupBox5.Align := alLeft;
-    GroupBox5.Height := (Form1.Width div 2) - Splitter1.Width;
-    Panel1.Height := GroupBox5.Width;
-    Splitter1.Left := GroupBox5.Width;
+
+    GroupBox5.Width := (Form1.Width div 2) - Splitter1.Width;
+    GroupBox5.Height := Form1.height - Panel5.Height;
+    Panel1.Width := GroupBox5.Width;
+    Panel1.Height := Form1.Height - Panel5.Height;
+    Splitter1.Left := (Form1.Width div 2);
   end;
   if ComboBoxPosLogs.ItemIndex = 3 then
   begin
     GroupBox5.Align := alRight;
     Splitter1.Align := alRight;
-    GroupBox5.Height := (Form1.Width div 2) - Splitter1.Width;
-    Panel1.Height := GroupBox5.Width;
-    Splitter1.Left := Form1.Width - GroupBox5.Width;
-  end;
-
-  if GroupBox5.Visible then
-  begin
-
-  end
-  else begin
-
+    
+    GroupBox5.Width := (Form1.Width div 2) - Splitter1.Width;
+    GroupBox5.Height := Form1.height - Panel5.Height;
+    Panel1.Width := GroupBox5.Width;
+    Panel1.Height := Form1.Height - Panel5.Height;
+    Splitter1.Left := (Form1.Width div 2);
   end;
 
   WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));

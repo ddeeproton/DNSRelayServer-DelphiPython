@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 275
-            ActivePage = TabSheet3
+            ActivePage = TabSheet5
             TabOrder = 0
             OnDrawTab = PageControl1DrawTab
             object TabSheet1: TTabSheet
@@ -244,7 +244,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 0
+                ItemHeight = 13
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
