@@ -4,14 +4,14 @@ interface
 
 uses FilesManager;
 
-procedure createVBScript();
+procedure createVBScript(config_use_host, config_use_blackhost: string);
 
 implementation
 
 uses Unit1, SysUtils;
 
 
-procedure createVBScript();
+procedure createVBScript(config_use_host, config_use_blackhost: string);
 var
   i: integer;
   script, dnsMaster: string;
@@ -77,6 +77,8 @@ begin
     '#Client DNS'#13#10+
     'config_cache_sql = 0  # [ 0 | 1 ] utilise la base MySQL en priorite'#13#10+
     'config_cache_memory = 1 # [ 0 | 1 ] utilise la memoire pour stocker les resolutions'#13#10+
+    'config_use_host = 1 # [ 0 | 1 ] utilise le fichier host'#13#10+
+    'config_use_blackhost = 1 # [ 0 | 1 ] utilise le fichier blackhost'#13#10+
     ''#13#10+
     '# Server DNS'#13#10+
     'config_dnsip = ''0.0.0.0'''#13#10+
@@ -280,7 +282,7 @@ begin
     '			return "127.0.0.1"'#13#10+
     '			'#13#10+
     '		IPHost = dnss.checkHost(domain)'#13#10+
-    '		if IPHost <> '''':'#13#10+
+    '		if config_use_host == 1 and IPHost <> '''':'#13#10+
     '			#if config_display:'#13#10+
     '			#	print "Host file domain:"'#13#10+
     '			if config_cache_memory == 1:'#13#10+
@@ -289,7 +291,7 @@ begin
     '			return IPHost'#13#10+
     ''#13#10+
     '		IPHost = dnss.checkBlackHost(domain)'#13#10+
-    '		if IPHost <> '''':'#13#10+
+    '		if config_use_blackhost == 1 and IPHost <> '''':'#13#10+
     '			cache_domains.append(domain)'#13#10+
     '			cache_ips.append(IPHost)'#13#10+
     '			return IPHost'#13#10+

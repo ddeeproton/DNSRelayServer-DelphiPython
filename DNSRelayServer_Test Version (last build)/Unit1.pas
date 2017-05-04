@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.123';
+var CurrentApplicationVersion: string = '0.4.124';
 
 type
   TForm1 = class(TForm)
@@ -86,7 +86,6 @@ type
     Supprimer2: TMenuItem;
     PanelRestart: TPanel;
     ButtonClosePanelRestart: TSpeedButton;
-    ButtonApplyChanges: TSpeedButton;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     Label1: TLabel;
@@ -180,6 +179,15 @@ type
     Label15: TLabel;
     Label26: TLabel;
     SpinEditContraste: TTrackBar;
+    Panel3: TPanel;
+    ToolBar4: TToolBar;
+    ButtonDisableBlackhost: TToolButton;
+    ToolButton12: TToolButton;
+    ButtonDisableHost: TToolButton;
+    ButtonApplyChanges: TButton;
+    Filrage1: TMenuItem;
+    DsactiverlefiltragedufichierHost1: TMenuItem;
+    DsactiverlefiltrageBlackword1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -294,6 +302,10 @@ type
     procedure ButtonClearLogsClick(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure ComboBoxPosLogsSelect(Sender: TObject);
+    procedure ButtonDisableBlackhostClick(Sender: TObject);
+    procedure ButtonDisableHostClick(Sender: TObject);
+    procedure DsactiverlefiltragedufichierHost1Click(Sender: TObject);
+    procedure DsactiverlefiltrageBlackword1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -880,8 +892,6 @@ begin
   finally
     Reg.Free;
   end;
-
-
 end;
 
 
@@ -889,9 +899,7 @@ end;
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i: Integer;
-  filepath: string;
-  dns: string;
-  script: string;
+  filepath, dns, script, config_use_host, config_use_blackhost: string;
 begin
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
@@ -1009,8 +1017,13 @@ begin
 
   //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
   //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
+  config_use_host := '1';
+  config_use_blackhost := '1';
+  if ButtonDisableBlackhost.Down then config_use_blackhost := '0';
+  if ButtonDisableHost.Down then config_use_host := '0';
 
-  createVBScript();
+
+  createVBScript(config_use_host, config_use_blackhost);
 
   if PythonPath = '' then PythonPath := getPythonPath();
 
@@ -1339,6 +1352,10 @@ begin
   TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
+  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
+  DsactiverlefiltragedufichierHost1.Checked := ButtonDisableHost.Down;
+  DsactiverlefiltrageBlackword1.Checked := ButtonDisableBlackhost.Down;
 
   //CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
   ComboBoxCurrentTheme.OnSelect := nil;
@@ -1428,22 +1445,24 @@ procedure TForm1.setThemeBg(bg:TColor);
 begin
 
   Form1.Color := bg;
-  ToolBar3.Color := bg;
   GroupBox2.Color := bg;
   GroupBox3.Color := bg;
   GroupBox4.Color := bg;
   GroupBox5.Color := bg;
   GroupBox6.Color := bg;
-  ToolBar2.Color := bg;
+
   Splitter1.Color := bg;
 
   Panel1.Color := bg;
   Panel2.Color := bg;
-  //Panel3.Color := bg;
+  Panel3.Color := bg;
   Panel4.Color := bg;
   Panel5.Color := bg;
   Panel6.Color := bg;
   ToolBar1.Color := bg;
+  ToolBar2.Color := bg;
+  ToolBar3.Color := bg;
+  ToolBar4.Color := bg;
   CheckBoxStartWithWindows.Color := bg;
   CheckBoxAutostartDNSOnBoot.Color := bg;
   PanelRestart.Color := bg;
@@ -1485,7 +1504,9 @@ begin
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
   GroupBox2.Font.Color := color;
   Panel1.Font.Color := color;
+  Panel3.Font.Color := color;
   Form1.Font.Color := color;
+  ToolBar4.Font.Color := color;
   ListView1.Font.Color := color;
   Memo1.Font.Color := color;
   MemoLogs.Font.Color := color;
@@ -1946,9 +1967,21 @@ end;
 
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
-  //if isServerStarted then
-  if ServerDoStart then
+  if not ServerDoStart then
   begin
+    //if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    //begin
+      ImageList4.GetIcon(2, Application.Icon);
+      Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+      ToolButton11.ImageIndex := 13;
+      ToolButton11.Caption := 'Arrêter';
+      ToolButton11.Enabled := True;
+      ToolButton11.Hint := 'Arrêter le serveur DNS';
+      ServerDoStart := True;
+      ButtonStartClick(nil);
+    //end;
+  end
+  else begin
     //if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     //begin
       ServerDoStart := False;
@@ -1965,22 +1998,6 @@ begin
         ToolButton11.Hint := 'Démarrer le serveur DNS';
       end;
 
-    //end;
-  end
-  else begin
-    //if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
-    //begin
-      ImageList4.GetIcon(2, Application.Icon);
-      Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-      ToolButton11.ImageIndex := 13;
-      ToolButton11.Caption := 'Arrêter';
-      ToolButton11.Enabled := True;
-      ToolButton11.Hint := 'Arrêter le serveur DNS';
-
-      ServerDoStart := True;
-      //ToolButton11.Enabled := False;
-
-      ButtonStartClick(nil);
     //end;
   end;
 end;
@@ -2841,6 +2858,40 @@ begin
   Form1.Height := Form1.Height - 1;
   Application.ProcessMessages;
   WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
+end;
+
+procedure TForm1.ButtonDisableBlackhostClick(Sender: TObject);
+begin
+  PanelRestart.Visible := True;
+  DsactiverlefiltrageBlackword1.Checked := TToolButton(Sender).Down;
+  if TToolButton(Sender).Down then
+    WriteInFile(DataDirectoryPath + 'disableBlackhost.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
+end;
+
+procedure TForm1.ButtonDisableHostClick(Sender: TObject);
+begin
+  PanelRestart.Visible := True;
+  DsactiverlefiltragedufichierHost1.Checked := TToolButton(Sender).Down;
+  if TToolButton(Sender).Down then
+    WriteInFile(DataDirectoryPath + 'disableHost.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'disableHost.cfg');
+end;
+
+procedure TForm1.DsactiverlefiltragedufichierHost1Click(Sender: TObject);
+begin
+  ButtonDisableHost.Down := not ButtonDisableHost.Down;
+  ButtonDisableHostClick(ButtonDisableHost);
+  Afficher1Click(nil);
+end;
+
+procedure TForm1.DsactiverlefiltrageBlackword1Click(Sender: TObject);
+begin
+  ButtonDisableBlackhost.Down := not ButtonDisableBlackhost.Down;
+  ButtonDisableBlackhostClick(ButtonDisableBlackhost);
+  Afficher1Click(nil);
 end;
 
 end.
