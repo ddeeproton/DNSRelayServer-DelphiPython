@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.112';
+var CurrentApplicationVersion: string = '0.4.113';
 
 type
   TForm1 = class(TForm)
@@ -2764,24 +2764,32 @@ begin
   begin
     GroupBox5.Align := alTop;
     Splitter1.Align := alTop;
+    GroupBox5.Height := (Form1.height div 2) - Splitter1.Height;
+    Panel1.Height := GroupBox5.Height;
     Splitter1.Top := GroupBox5.height;
   end;
   if ComboBoxPosLogs.ItemIndex = 1 then
   begin
     GroupBox5.Align := alBottom;
     Splitter1.Align := alBottom;
+    GroupBox5.Height := (Form1.height div 2) - Splitter1.Height;
+    Panel1.Height := GroupBox5.Height;
     Splitter1.Top := Form1.Height - GroupBox5.height;
   end;
   if ComboBoxPosLogs.ItemIndex = 2 then
   begin
     Splitter1.Align := alLeft;
     GroupBox5.Align := alLeft;
+    GroupBox5.Height := (Form1.Width div 2) - Splitter1.Width;
+    Panel1.Height := GroupBox5.Width;
     Splitter1.Left := GroupBox5.Width;
   end;
   if ComboBoxPosLogs.ItemIndex = 3 then
   begin
     GroupBox5.Align := alRight;
     Splitter1.Align := alRight;
+    GroupBox5.Height := (Form1.Width div 2) - Splitter1.Width;
+    Panel1.Height := GroupBox5.Width;
     Splitter1.Left := Form1.Width - GroupBox5.Width;
   end;
 
