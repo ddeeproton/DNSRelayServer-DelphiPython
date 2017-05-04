@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.125';
+var CurrentApplicationVersion: string = '0.4.126';
 
 type
   TForm1 = class(TForm)
@@ -899,7 +899,7 @@ end;
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i: Integer;
-  filepath, dns, script, config_use_host, config_use_blackhost: string;
+  filepath, dns, script, config_use_host, config_use_blackhost, config_block_all: string;
 begin
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
@@ -1019,11 +1019,12 @@ begin
   //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
   config_use_host := '1';
   config_use_blackhost := '1';
+  config_block_all := '0';
   if ButtonDisableBlackhost.Down then config_use_blackhost := '0';
   if ButtonDisableHost.Down then config_use_host := '0';
+  //if .Down then config_use_host := '1';
 
-
-  createVBScript(config_use_host, config_use_blackhost);
+  createVBScript(config_use_host, config_use_blackhost, config_block_all);
 
   if PythonPath = '' then PythonPath := getPythonPath();
 

@@ -4,14 +4,14 @@ interface
 
 uses FilesManager;
 
-procedure createVBScript(config_use_host, config_use_blackhost: string);
+procedure createVBScript(config_use_host, config_use_blackhost, config_block_all: string);
 
 implementation
 
 uses Unit1, SysUtils;
 
 
-procedure createVBScript(config_use_host, config_use_blackhost: string);
+procedure createVBScript(config_use_host, config_use_blackhost, config_block_all: string);
 var
   i: integer;
   script, dnsMaster: string;
@@ -77,10 +77,11 @@ begin
     '#Client DNS'#13#10+
     'config_cache_sql = 0  # [ 0 | 1 ] utilise la base MySQL en priorite'#13#10+
     'config_cache_memory = 1 # [ 0 | 1 ] utilise la memoire pour stocker les resolutions'#13#10+
-    'config_use_host = 1 # [ 0 | 1 ] utilise le fichier host'#13#10+
-    'config_use_blackhost = 1 # [ 0 | 1 ] utilise le fichier blackhost'#13#10+
+    'config_use_host = '+config_use_host+' # [ 0 | 1 ] utilise le fichier host'#13#10+
+    'config_use_blackhost = '+config_use_blackhost+' # [ 0 | 1 ] utilise le fichier blackhost'#13#10+
     ''#13#10+
     '# Server DNS'#13#10+
+    'config_block_all = '+config_block_all+' # [ 0 | 1 ] utilise le fichier blackhost'#13#10+
     'config_dnsip = ''0.0.0.0'''#13#10+
     'if len(sys.argv) > 1:'#13#10+
     '	if sys.argv[1] == ''config_dnsip'':'#13#10+

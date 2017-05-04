@@ -126,6 +126,7 @@ object Form1: TForm1
             Width = 311
             Height = 323
             ActivePage = TabSheet5
+            TabIndex = 4
             TabOrder = 0
             OnDrawTab = PageControl1DrawTab
             object TabSheet1: TTabSheet
@@ -244,7 +245,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 13
+                ItemHeight = 0
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
@@ -787,8 +788,14 @@ object Form1: TForm1
                 Anchors = [akLeft, akTop, akRight]
                 Max = 255
                 Min = -255
+                Orientation = trHorizontal
+                Frequency = 1
                 Position = 30
+                SelEnd = 0
+                SelStart = 0
                 TabOrder = 4
+                TickMarks = tmBottomRight
+                TickStyle = tsAuto
               end
             end
             object TabSheet6: TTabSheet
@@ -6413,7 +6420,7 @@ object Form1: TForm1
     Left = 386
     Top = 362
     Bitmap = {
-      494C01010B000E00040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C01010B000E00040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -6945,7 +6952,8 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFF81FF81FF81FF81FF00FF00FF00FF00FE007E007E007E007
       E007E007E007E007E007E007E007E007E007E007E007E007E007E007E007E007
       E007E007E007E007F00FF00FF00FF00FF81FF81FF81FF81FFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
   end
   object TimerSaveChange: TTimer
     Enabled = False
@@ -15960,6 +15968,7 @@ object Form1: TForm1
     end
   end
   object ColorDialog1: TColorDialog
+    Ctl3D = True
     Left = 414
     Top = 395
   end
