@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.121';
+var CurrentApplicationVersion: string = '0.4.122';
 
 type
   TForm1 = class(TForm)
@@ -453,7 +453,7 @@ begin
           TimerResetAlertPosition.Enabled := True;
           FormAlert.Color := Form1.Color;
           FormAlert.Label1.Font.Color := Form1.Font.Color;
-          FormAlert.Label2.Font.Color := Form1.Font.Color; 
+          FormAlert.Label2.Font.Color := Form1.Font.Color;
           FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
           FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
@@ -477,9 +477,9 @@ begin
           TimerResetAlertPosition.Enabled := True;
           FormAlert.Color := Form1.Color;
           FormAlert.Label1.Font.Color := Form1.Font.Color;
-          FormAlert.Label2.Font.Color := Form1.Font.Color; 
+          FormAlert.Label2.Font.Color := Form1.Font.Color;
           FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color; 
+          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
           FormAlert.Show;
@@ -504,7 +504,7 @@ begin
           FormAlert.Label1.Font.Color := Form1.Font.Color;
           FormAlert.Label2.Font.Color := Form1.Font.Color;
           FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color; 
+          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
           FormAlert.Show;
@@ -518,14 +518,14 @@ begin
   else begin
     if Pos('Error: Port  53  already used', txt) > 0 then
     begin
-      if MessageDlg(PChar('Le port 53 est déjà utilisé. Désirez-vous forcer la fermerture des processus python et essayer à nouveau?'#13#13'(si ce message persiste, soit le port 53 est utilisé par un autre processus, soit vous avez indiqué une mauvaise adresse IP.'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
-      begin
+      //if MessageDlg(PChar('Le port 53 est déjà utilisé. Désirez-vous forcer la fermerture des processus python et essayer à nouveau?'#13#13'(si ce message persiste, soit le port 53 est utilisé par un autre processus, soit vous avez indiqué une mauvaise adresse IP.'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+      //begin
         Form1.MemoLogs.Lines.Add('Close all python.exe process');
         KillTask('python.exe');
         Form1.ButtonRefreshNetCardClick(nil);
         ServerDoStart := True;
         Form1.ButtonStartClick(nil);
-      end;
+      //end;
     end;
   end;
   if sl <> nil then
@@ -935,6 +935,7 @@ begin
 
   ButtonCloseClick(nil);
   closeProcessCreated;
+  KillTask('python.exe');
 
   filepath := String(EditFilehost.Text);
   if FileExists(filepath) = False then
@@ -1874,39 +1875,18 @@ var
   CurPos:TPoint;
   TopOffset, LeftOffset:integer;
 begin
-
-
   // Si on clique dans la case à cocher, on séléctionne la ligne
   // Donc on récupère la position de la souris sur l'écran
   GetcursorPos(MousePos);
   // on indique sa position en fonction du ListView
   CurPos:=TListView(Sender).ScreenToClient(MousePos);
-
-
-
   // On récupère la ligne du listView où se trouve la souris
   ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
-
-
-  // Si on récupère bien une ligne et pas un espace blanc
-  {if ToolBar3.Align = alTop then
-  begin}
-    LeftOffset := 15;
-    TopOffset := 122;
-  {end
-  else begin
-    LeftOffset := 115;
-    TopOffset := 78;
-  end;
-  }
-
   if Assigned(ListItem) then
   begin
     SelectedListItem := ListItem;
-    PopupMenuListView.Popup(Left+CurPos.x+Notebook1.Left+LeftOffset,Top+CurPos.y+Notebook1.Top+TopOffset);
+    PopupMenuListView.Popup(MousePos.x, MousePos.y);
   end;
-
-
 end;
 
 
