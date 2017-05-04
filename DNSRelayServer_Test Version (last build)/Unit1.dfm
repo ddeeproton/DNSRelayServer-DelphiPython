@@ -783,7 +783,7 @@ object Form1: TForm1
                 Left = 8
                 Top = 120
                 Width = 289
-                Height = 33
+                Height = 23
                 Anchors = [akLeft, akTop, akRight]
                 Max = 255
                 Min = -255
