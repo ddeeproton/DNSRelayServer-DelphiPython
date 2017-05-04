@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.122';
+var CurrentApplicationVersion: string = '0.4.123';
 
 type
   TForm1 = class(TForm)
@@ -899,9 +899,7 @@ begin
 
   Application.ProcessMessages;
   ComboBoxPosLogsSelect(nil);
-  Form1.Height := Form1.Height + 1;
-  Form1.Height := Form1.Height - 1;
-  Application.ProcessMessages;
+
 
   if Form1.WindowState = wsNormal then
   begin
@@ -2839,7 +2837,9 @@ begin
       Splitter1.Visible := True;
     end;
   end;
-
+  Form1.Height := Form1.Height + 1;
+  Form1.Height := Form1.Height - 1;
+  Application.ProcessMessages;
   WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
 end;
 
