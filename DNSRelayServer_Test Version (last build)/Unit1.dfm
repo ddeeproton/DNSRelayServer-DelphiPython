@@ -1347,7 +1347,7 @@ object Form1: TForm1
       object ToolButtonBlockAll: TToolButton
         Left = 235
         Top = 0
-        Hint = 'Bloquer tout'
+        Hint = 'Tout Bloquer'
         Caption = 'ToolButtonBlockAll'
         ImageIndex = 15
         Style = tbsCheck

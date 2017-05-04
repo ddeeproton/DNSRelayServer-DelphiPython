@@ -320,6 +320,7 @@ object FormAlert: TFormAlert
     end
     object DisableAlertDisallowed: TMenuItem
       Caption = 'D'#233'sactiver les alertes pour les domaines bloqu'#233's'
+      ImageIndex = 9
       OnClick = DisableAlertDisallowedClick
     end
   end
