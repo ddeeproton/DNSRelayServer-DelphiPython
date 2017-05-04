@@ -29,6 +29,10 @@ type
     AutoriserledomainedufichierHost1: TMenuItem;
     AutoriserledomaineBlackwords1: TMenuItem;
     Desactiverlebloquagedetouslesdomaines1: TMenuItem;
+    DisableAlertDisallowed: TMenuItem;
+    Dsactiverlesalertespourlesdomainesautoriss1: TMenuItem;
+    N1: TMenuItem;
+    N2: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure PanelAllowedClick(Sender: TObject);
     procedure Bloquerparfichierhost1Click(Sender: TObject);
@@ -39,6 +43,9 @@ type
     procedure CheckBoxStayClick(Sender: TObject);
     procedure AutoriserledomainedufichierHost1Click(Sender: TObject);
     procedure Desactiverlebloquagedetouslesdomaines1Click(Sender: TObject);
+    procedure DisableAlertDisallowedClick(Sender: TObject);
+    procedure Dsactiverlesalertespourlesdomainesautoriss1Click(
+      Sender: TObject);
   private
     { Private declarations }
   public
@@ -204,13 +211,13 @@ begin
             callRestart := True;
             ListBoxBlacklist.ItemIndex := i;
             ListBoxBlacklist.DeleteSelected;
-            ListBoxBlacklist.ItemIndex := 1 - 1;
+            //ListBoxBlacklist.ItemIndex := 1 - 1;
             ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
             if isServerStarted then PanelRestart.Visible := True;
          end;
        end;
     end;
-    if callRestart and isServerStarted then TimerRestart.Enabled := True;
+    if callRestart then TimerRestart.Enabled := True;  //and isServerStarted 
     if not isFound then ShowMessage('Pas de bloquage trouvé');
   end;
   FormCreate(nil);
@@ -264,6 +271,22 @@ procedure TFormAlert.Desactiverlebloquagedetouslesdomaines1Click(
 begin
   Form1.ToolButtonBlockAll.Down := not Form1.ToolButtonBlockAll.Down;
   Form1.ToolButtonBlockAllClick(Form1.ToolButtonBlockAll);
+end;
+
+procedure TFormAlert.DisableAlertDisallowedClick(Sender: TObject);
+begin
+  Form1.CheckBoxAlertEventDisallowed.Checked := False;
+  Form1.CheckBoxAlertEventDisallowedClick(Form1.CheckBoxAlertEventDisallowed);
+end;
+
+procedure TFormAlert.Dsactiverlesalertespourlesdomainesautoriss1Click(
+  Sender: TObject);
+begin
+  Form1.CheckBoxAlertEventsKnown.Checked := False;
+  Form1.CheckBoxAlertEventsKnownClick(Form1.CheckBoxAlertEventsKnown);
+  Form1.CheckBoxAlertEventsUnknown.Checked := False;
+  Form1.CheckBoxAlertEventsUnknownClick(Form1.CheckBoxAlertEventsUnknown);
+
 end;
 
 end.

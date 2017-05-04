@@ -1,6 +1,6 @@
 object FormAlert: TFormAlert
-  Left = 710
-  Top = 557
+  Left = 576
+  Top = 510
   BorderStyle = bsNone
   Caption = 'FormAlert'
   ClientHeight = 84
@@ -287,6 +287,14 @@ object FormAlert: TFormAlert
       ImageIndex = 10
       OnClick = BloquerparfichierBlackwords1Click
     end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object Dsactiverlesalertespourlesdomainesautoriss1: TMenuItem
+      Caption = 'D'#233'sactiver les alertes pour les domaines autoris'#233's'
+      ImageIndex = 9
+      OnClick = Dsactiverlesalertespourlesdomainesautoriss1Click
+    end
   end
   object PopupMenuForDisallowed: TPopupMenu
     Images = Form1.ImageList3
@@ -306,6 +314,13 @@ object FormAlert: TFormAlert
       Caption = 'D'#233'sactiver le bloquage de tous les domaines'
       ImageIndex = 9
       OnClick = Desactiverlebloquagedetouslesdomaines1Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object DisableAlertDisallowed: TMenuItem
+      Caption = 'D'#233'sactiver les alertes pour les domaines bloqu'#233's'
+      OnClick = DisableAlertDisallowedClick
     end
   end
 end
