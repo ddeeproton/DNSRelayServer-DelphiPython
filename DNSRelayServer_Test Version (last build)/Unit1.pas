@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.117';
+var CurrentApplicationVersion: string = '0.4.118';
 
 type
   TForm1 = class(TForm)
@@ -896,10 +896,11 @@ begin
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
+
+  Application.ProcessMessages;
+  ComboBoxPosLogsSelect(nil);
   Form1.Height := Form1.Height + 1;
   Form1.Height := Form1.Height - 1;
-  Application.ProcessMessages;
-  //ComboBoxPosLogsSelect(nil);  
   Application.ProcessMessages;
 
   if Form1.WindowState = wsNormal then
@@ -2803,17 +2804,27 @@ begin
     Panel1.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
     Panel1.Width := Form1.Width;
     Splitter1.Top := ((Form1.height - Panel5.Height) div 2);
+    if Splitter1.Visible then
+    begin
+      Splitter1.Visible := False;
+      Splitter1.Visible := True;
+    end;
   end;
   if ComboBoxPosLogs.ItemIndex = 1 then
   begin
     GroupBox5.Align := alBottom;
     Splitter1.Align := alBottom;
-   
+
     GroupBox5.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
     GroupBox5.Width := Form1.Width;
     Panel1.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
     Panel1.Width := Form1.Width;
     Splitter1.Top := ((Form1.height - Panel5.Height) div 2);
+    if Splitter1.Visible then
+    begin
+      Splitter1.Visible := False;
+      Splitter1.Visible := True;
+    end;
   end;
   if ComboBoxPosLogs.ItemIndex = 2 then
   begin
@@ -2825,17 +2836,28 @@ begin
     Panel1.Width := GroupBox5.Width;
     Panel1.Height := Form1.Height - Panel5.Height;
     Splitter1.Left := (Form1.Width div 2);
+    if Splitter1.Visible then
+    begin
+      Splitter1.Visible := False;
+      Splitter1.Visible := True;
+    end;
   end;
   if ComboBoxPosLogs.ItemIndex = 3 then
   begin
     GroupBox5.Align := alRight;
     Splitter1.Align := alRight;
-    
+
     GroupBox5.Width := (Form1.Width div 2) - Splitter1.Width;
     GroupBox5.Height := Form1.height - Panel5.Height;
     Panel1.Width := GroupBox5.Width;
     Panel1.Height := Form1.Height - Panel5.Height;
     Splitter1.Left := (Form1.Width div 2);
+    //Splitter1.Left := 0;
+    if Splitter1.Visible then
+    begin
+      Splitter1.Visible := False;
+      Splitter1.Visible := True;
+    end;
   end;
 
   WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));

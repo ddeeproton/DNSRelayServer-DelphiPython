@@ -15867,7 +15867,7 @@ object Form1: TForm1
   end
   object TimerRestart: TTimer
     Enabled = False
-    Interval = 5000
+    Interval = 3000
     OnTimer = TimerRestartTimer
     Left = 387
     Top = 167
