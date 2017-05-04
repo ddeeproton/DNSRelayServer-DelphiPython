@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.113';
+var CurrentApplicationVersion: string = '0.4.114';
 
 type
   TForm1 = class(TForm)
@@ -2144,7 +2144,7 @@ procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   PanelRestart.Visible := False;
-
+  Form1.Resize;
   if startedInBackground then exit;
   Application.ShowMainForm := true;
   Form1.BringToFront;
