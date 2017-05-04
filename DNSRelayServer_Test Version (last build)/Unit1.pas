@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.115';
+var CurrentApplicationVersion: string = '0.4.116';
 
 type
   TForm1 = class(TForm)
@@ -1654,7 +1654,7 @@ begin
   refreshCheckBox(CheckBoxStartWithWindows);
 
   if Form1.WindowState = wsMaximized then exit;
-  if GroupBox5.Visible then
+  if GroupBox5.Visible and ((Splitter1.Align = alLeft) or (Splitter1.Align = alRight)) then
   begin
     if Form1.Width < 450 + GroupBox5.Width then
       Form1.Width := 450 + GroupBox5.Width;
