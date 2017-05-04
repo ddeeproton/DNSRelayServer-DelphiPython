@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.124';
+var CurrentApplicationVersion: string = '0.4.125';
 
 type
   TForm1 = class(TForm)
@@ -466,8 +466,8 @@ begin
           FormAlert.Color := Form1.Color;
           FormAlert.Label1.Font.Color := Form1.Font.Color;
           FormAlert.Label2.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
           FormAlert.Show;
@@ -490,8 +490,8 @@ begin
           FormAlert.Color := Form1.Color;
           FormAlert.Label1.Font.Color := Form1.Font.Color;
           FormAlert.Label2.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
           FormAlert.Show;
@@ -515,8 +515,8 @@ begin
           FormAlert.Color := Form1.Color;
           FormAlert.Label1.Font.Color := Form1.Font.Color;
           FormAlert.Label2.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonDisallow.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonAllowDomain.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
+          FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
           FormAlert.Show;

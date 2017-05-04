@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls,  
-  HostParser, Buttons, ImgList;
+  HostParser, Buttons, ImgList, Menus;
 
 type
   TFormAlert = class(TForm)
@@ -14,14 +14,29 @@ type
     Label1: TLabel;
     Label2: TLabel;
     TimerAfterCreate: TTimer;
-    ButtonAllowDomain: TSpeedButton;
-    ButtonDisallow: TSpeedButton;
+    ButtonMenuForDisallowed: TSpeedButton;
+    ButtonMenuForAllowed: TSpeedButton;
     Image1: TImage;
     Image2: TImage;
-    procedure ButtonAllowDomainClick(Sender: TObject);
-    procedure ButtonDisallowClick(Sender: TObject);
+    SpeedButtonClosePanelUpdateTheme: TSpeedButton;
+    SpeedButton1: TSpeedButton;
+    CheckBoxStay: TCheckBox;
+    CheckBox2: TCheckBox;
+    PopupMenuForAllowed: TPopupMenu;
+    Bloquerparfichierhost1: TMenuItem;
+    BloquerparfichierBlackwords1: TMenuItem;
+    PopupMenuForDisallowed: TPopupMenu;
+    AutoriserledomainedufichierHost1: TMenuItem;
+    AutoriserledomaineBlackwords1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure PanelAllowedClick(Sender: TObject);
+    procedure Bloquerparfichierhost1Click(Sender: TObject);
+    procedure ButtonMenuForDisallowedClick(Sender: TObject);
+    procedure ButtonMenuForAllowedClick(Sender: TObject);
+    procedure BloquerparfichierBlackwords1Click(Sender: TObject);
+    procedure AutoriserledomaineBlackwords1Click(Sender: TObject);
+    procedure CheckBoxStayClick(Sender: TObject);
+    procedure AutoriserledomainedufichierHost1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,49 +52,29 @@ implementation
 
 uses Unit1;
 
-procedure TFormAlert.ButtonAllowDomainClick(Sender: TObject);
-var
-  i: integer;
-  domain: string;
+procedure TFormAlert.FormCreate(Sender: TObject);
 begin
-  domain := Label1.Caption;
-  if domain = '' then exit;
+  PanelAllowed.Top := 0;
+  PanelDisallowed.Top := 0;
+  Self.Height := PanelAllowed.Height;
+  Self.Width := Label1.Width
+    + ButtonMenuForAllowed.Width
+    + SpeedButtonClosePanelUpdateTheme.Width
+    + CheckBoxStay.Width
+    + 10
+    + Label1.Left;
+  Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
 
-  //delDomain(Form1.EditFilehost.Text, domain);
-  //if Form1.isServerStarted then Form1.ButtonStartClick(nil);
-  //Form1.refreshListView1Click();
-  //Self.Visible := False;
-
-  for i := 0 to form1.ListView1.Items.Count-1 do
-  begin
-    if form1.ListView1.Items[i].Caption =  domain then begin
-      try
-
-      form1.SelectedListItem := form1.ListView1.Items[i];
-      form1.ListView1.Items[i].Caption := '';
-      //form1.ListView1.Items[i].SubItems[0] := '';
-      //form1.Autoriser1Click(Form1.Autoriser1);
-      delDomain(form1.EditFilehost.Text, domain);
-      Form1.TimerRestart.Enabled := False;
-      if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
-            except
-        On E :   EOSError do
-          exit;
-      end;
-    end;
-  end;
-
-  //Self.Close;
-  //FormAlert.Visible := False;
-  PanelAllowed.Visible := True;
-  PanelDisallowed.Visible := False;
-  ButtonAllowDomain.Visible := False;
-  ButtonDisallow.Visible := False;
-
+  //Self.Top := Screen.WorkAreaHeight - Self.Height;
+  //Self.SendToBack;
 end;
 
+procedure TFormAlert.PanelAllowedClick(Sender: TObject);
+begin
+  Self.Close;
+end;
 
-procedure TFormAlert.ButtonDisallowClick(Sender: TObject);
+procedure TFormAlert.Bloquerparfichierhost1Click(Sender: TObject);
 var
   i: integer;
   domain: string;
@@ -97,25 +92,124 @@ begin
   //Self.Close;
   PanelAllowed.Visible := False;
   PanelDisallowed.Visible := True;
-  ButtonAllowDomain.Visible := False;
-  ButtonDisallow.Visible := False;
+  ButtonMenuForAllowed.Visible := False;
+  ButtonMenuForDisallowed.Visible := False;
 end;
 
-procedure TFormAlert.FormCreate(Sender: TObject);
+procedure TFormAlert.ButtonMenuForDisallowedClick(Sender: TObject);
+var
+  Pos:TPoint;
 begin
-  PanelAllowed.Top := 0;
-  PanelDisallowed.Top := 0;
-  Self.Height := PanelAllowed.Height;
-  Self.Width := Label1.Width + ButtonAllowDomain.Width + 2 + Label1.Left;
-  Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
-
-  //Self.Top := Screen.WorkAreaHeight - Self.Height;
-  //Self.SendToBack;
+  TimerAfterCreate.Enabled := False;
+  GetCursorPos(Pos);
+  PopupMenuForDisallowed.Popup(Pos.X,Pos.Y);
 end;
 
-procedure TFormAlert.PanelAllowedClick(Sender: TObject);
+procedure TFormAlert.ButtonMenuForAllowedClick(Sender: TObject);
+var
+  Pos:TPoint;
 begin
-  Self.Close;
+  TimerAfterCreate.Enabled := False;
+  GetCursorPos(Pos);
+  PopupMenuForAllowed.Popup(Pos.X,Pos.Y);
+end;
+
+procedure TFormAlert.BloquerparfichierBlackwords1Click(Sender: TObject);
+var
+  i, j:integer;
+  txt, domain: string;
+begin
+  domain := Label2.Caption;
+  with Form1 do
+  begin
+    txt := InputBox('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain);
+    if txt = '' then exit;
+    ListBoxBlacklist.Items.Add(txt);
+    ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
+    if isServerStarted then TimerRestart.Enabled := True;
+  end;
+  TimerAfterCreate.Enabled := True;
+end;
+
+procedure TFormAlert.AutoriserledomaineBlackwords1Click(Sender: TObject);
+var
+  i, j:integer;
+  txt, domain: string;
+  callRestart, isFound: boolean;
+begin
+  domain := Label2.Caption;
+  with Form1 do
+  begin
+    i := -1;
+    callRestart := False;
+    isFound := False;
+    for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+    begin
+      txt := ListBoxBlacklist.Items.Strings[i];
+       if Pos(txt, domain) > 0 then
+       begin
+         isFound := True;
+         if MessageDlg(PChar('Effacer l''entrée suivante du Blackword? ['+txt+']'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+         begin
+            callRestart := True;
+            ListBoxBlacklist.ItemIndex := i;
+            ListBoxBlacklist.DeleteSelected;
+            ListBoxBlacklist.ItemIndex := 1 - 1;
+            ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
+            if isServerStarted then PanelRestart.Visible := True;
+         end;
+       end;
+    end;
+    if callRestart and isServerStarted then TimerRestart.Enabled := True;
+    if not isFound then ShowMessage('Pas de bloquage trouvé');
+  end;
+  TimerAfterCreate.Enabled := True;
+end;
+
+procedure TFormAlert.CheckBoxStayClick(Sender: TObject);
+begin
+  TimerAfterCreate.Enabled := not TCheckBox(Sender).Checked;
+end;
+
+procedure TFormAlert.AutoriserledomainedufichierHost1Click(
+  Sender: TObject);
+var
+  i: integer;
+  domain: string;
+begin
+  domain := Label1.Caption;
+  if domain = '' then exit;
+
+  //delDomain(Form1.EditFilehost.Text, domain);
+  //if Form1.isServerStarted then Form1.ButtonStartClick(nil);
+  //Form1.refreshListView1Click();
+  //Self.Visible := False;
+
+  for i := 0 to form1.ListView1.Items.Count-1 do
+  begin
+    if form1.ListView1.Items[i].Caption =  domain then begin
+      try
+        form1.SelectedListItem := form1.ListView1.Items[i];
+        form1.ListView1.Items[i].Caption := '';
+        //form1.ListView1.Items[i].SubItems[0] := '';
+        //form1.Autoriser1Click(Form1.Autoriser1);
+        delDomain(form1.EditFilehost.Text, domain);
+        Form1.TimerRestart.Enabled := False;
+        if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
+      except
+        On E :   EOSError do
+          exit;
+      end;
+    end;
+  end;
+
+  //Self.Close;
+  //FormAlert.Visible := False;
+  PanelAllowed.Visible := True;
+  PanelDisallowed.Visible := False;
+  ButtonMenuForAllowed.Visible := False;
+  ButtonMenuForDisallowed.Visible := False;
+  TimerAfterCreate.Enabled := True;
 end;
 
 end.
