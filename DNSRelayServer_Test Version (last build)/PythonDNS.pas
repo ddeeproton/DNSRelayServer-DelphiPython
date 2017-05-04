@@ -260,6 +260,8 @@ begin
     ''#13#10+
     '	def resolveDomain(self, domain, idstatus, dnss):'#13#10+
     '	'#13#10+
+    '		if config_block_all == 1:'#13#10+
+    '			return "127.0.0.1"'#13#10+
     '		if config_cache_memory == 1:'#13#10+
     '			if domain in cache_domains:'#13#10+
     '				i = cache_domains.index(domain)'#13#10+

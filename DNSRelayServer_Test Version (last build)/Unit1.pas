@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.126';
+var CurrentApplicationVersion: string = '0.4.127';
 
 type
   TForm1 = class(TForm)
@@ -188,6 +188,9 @@ type
     Filrage1: TMenuItem;
     DsactiverlefiltragedufichierHost1: TMenuItem;
     DsactiverlefiltrageBlackword1: TMenuItem;
+    ToolButtonBlockAll: TToolButton;
+    N7: TMenuItem;
+    toutbloquer1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -306,6 +309,8 @@ type
     procedure ButtonDisableHostClick(Sender: TObject);
     procedure DsactiverlefiltragedufichierHost1Click(Sender: TObject);
     procedure DsactiverlefiltrageBlackword1Click(Sender: TObject);
+    procedure ToolButtonBlockAllClick(Sender: TObject);
+    procedure toutbloquer1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1022,7 +1027,7 @@ begin
   config_block_all := '0';
   if ButtonDisableBlackhost.Down then config_use_blackhost := '0';
   if ButtonDisableHost.Down then config_use_host := '0';
-  //if .Down then config_use_host := '1';
+  if ToolButtonBlockAll.Down then config_block_all := '1';
 
   createVBScript(config_use_host, config_use_blackhost, config_block_all);
 
@@ -1241,8 +1246,8 @@ begin
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
 
-  Form1.Width := Form1.Constraints.MinWidth + 50;
-  Form1.Height := Form1.Constraints.MinHeight + 50;
+  Form1.Width := Form1.Constraints.MinWidth;
+  Form1.Height := Form1.Constraints.MinHeight;
 
   Form1.Top := Screen.WorkAreaHeight - Form1.Height;
   Form1.Left := Screen.WorkAreaWidth - Form1.Width;
@@ -1338,13 +1343,11 @@ begin
   if FileExists(DataDirectoryPath + 'contrasteTextarea.cfg') then
     SpinEditContraste.Position := StrToInt(ReadFromFile(DataDirectoryPath + 'contrasteTextarea.cfg'));
 
-
   if FileExists(TimeCheckUpdateFile) then
     SpinTimeCheckUpdate.Value := StrToInt(ReadFromFile(TimeCheckUpdateFile));
 
   if FileExists(BlackListCfgFile) then
     ListBoxBlacklist.Items.LoadFromFile(BlackListCfgFile);
-
 
   CheckBoxAutostartDNSOnBoot.Checked := FileExists(DataDirectoryPath + 'checkAutostartDNS.cfg');
   CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
@@ -1357,7 +1360,9 @@ begin
   ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
   DsactiverlefiltragedufichierHost1.Checked := ButtonDisableHost.Down;
   DsactiverlefiltrageBlackword1.Checked := ButtonDisableBlackhost.Down;
-
+  ToolButtonBlockAll.Down := FileExists(DataDirectoryPath + 'disableAll.cfg');
+  toutbloquer1.Checked := ToolButtonBlockAll.Down;
+  
   //CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
   ComboBoxCurrentTheme.OnSelect := nil;
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
@@ -2865,10 +2870,17 @@ procedure TForm1.ButtonDisableBlackhostClick(Sender: TObject);
 begin
   PanelRestart.Visible := True;
   DsactiverlefiltrageBlackword1.Checked := TToolButton(Sender).Down;
+
   if TToolButton(Sender).Down then
-    WriteInFile(DataDirectoryPath + 'disableBlackhost.cfg', '1')
-  else
+  begin
+    MemoLogs.Lines.Add('Désactivation du filtre Blackwords.');
+    WriteInFile(DataDirectoryPath + 'disableBlackhost.cfg', '1');
+  end
+  else begin
+    MemoLogs.Lines.Add('Activation du filtre Blackwords.');
     DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
+  end;
+
 end;
 
 procedure TForm1.ButtonDisableHostClick(Sender: TObject);
@@ -2876,9 +2888,14 @@ begin
   PanelRestart.Visible := True;
   DsactiverlefiltragedufichierHost1.Checked := TToolButton(Sender).Down;
   if TToolButton(Sender).Down then
-    WriteInFile(DataDirectoryPath + 'disableHost.cfg', '1')
-  else
+  begin
+    MemoLogs.Lines.Add('Désactivation du fichier Host.');
+    WriteInFile(DataDirectoryPath + 'disableHost.cfg', '1');
+  end
+  else begin
+    MemoLogs.Lines.Add('Activation du du fichier Host.');
     DeleteFile(DataDirectoryPath + 'disableHost.cfg');
+  end;
 end;
 
 procedure TForm1.DsactiverlefiltragedufichierHost1Click(Sender: TObject);
@@ -2893,6 +2910,27 @@ begin
   ButtonDisableBlackhost.Down := not ButtonDisableBlackhost.Down;
   ButtonDisableBlackhostClick(ButtonDisableBlackhost);
   Afficher1Click(nil);
+end;
+
+procedure TForm1.ToolButtonBlockAllClick(Sender: TObject);
+begin
+  if TToolButton(Sender).Down then
+  begin
+    MemoLogs.Lines.Add('Bloquage de tous les domaines [activé].');
+    WriteInFile(DataDirectoryPath + 'disableAll.cfg', '1');
+  end
+  else begin
+    MemoLogs.Lines.Add('Bloquage de tous les domaines [désactivé].');
+    DeleteFile(DataDirectoryPath + 'disableAll.cfg');
+  end;
+  toutbloquer1.Checked := TToolButton(Sender).Down;
+  if isServerStarted then ButtonApplyChangesClick(nil);
+end;
+
+procedure TForm1.toutbloquer1Click(Sender: TObject);
+begin
+  ToolButtonBlockAll.Down := not ToolButtonBlockAll.Down;
+  ToolButtonBlockAllClick(ToolButtonBlockAll);
 end;
 
 end.

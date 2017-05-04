@@ -1,6 +1,6 @@
 object FormAlert: TFormAlert
-  Left = 620
-  Top = 584
+  Left = 710
+  Top = 557
   BorderStyle = bsNone
   Caption = 'FormAlert'
   ClientHeight = 84
@@ -301,6 +301,11 @@ object FormAlert: TFormAlert
       Caption = 'Autoriser le domaine (Blackwords)'
       ImageIndex = 10
       OnClick = AutoriserledomaineBlackwords1Click
+    end
+    object Desactiverlebloquagedetouslesdomaines1: TMenuItem
+      Caption = 'D'#233'sactiver le bloquage de tous les domaines'
+      ImageIndex = 9
+      OnClick = Desactiverlebloquagedetouslesdomaines1Click
     end
   end
 end

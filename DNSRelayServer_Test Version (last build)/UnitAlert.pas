@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls,  
-  HostParser, Buttons, ImgList, Menus;
+  Dialogs, StdCtrls, ExtCtrls,
+  HostParser, Buttons, ImgList, Menus, FilesManager;
 
 type
   TFormAlert = class(TForm)
@@ -28,6 +28,7 @@ type
     PopupMenuForDisallowed: TPopupMenu;
     AutoriserledomainedufichierHost1: TMenuItem;
     AutoriserledomaineBlackwords1: TMenuItem;
+    Desactiverlebloquagedetouslesdomaines1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure PanelAllowedClick(Sender: TObject);
     procedure Bloquerparfichierhost1Click(Sender: TObject);
@@ -37,6 +38,7 @@ type
     procedure AutoriserledomaineBlackwords1Click(Sender: TObject);
     procedure CheckBoxStayClick(Sender: TObject);
     procedure AutoriserledomainedufichierHost1Click(Sender: TObject);
+    procedure Desactiverlebloquagedetouslesdomaines1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -53,6 +55,9 @@ implementation
 uses Unit1;
 
 procedure TFormAlert.FormCreate(Sender: TObject);
+var
+  i: integer;
+  domain, txt: string;
 begin
   PanelAllowed.Top := 0;
   PanelDisallowed.Top := 0;
@@ -65,8 +70,47 @@ begin
     + Label1.Left;
   Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
 
+  PanelAllowed.Visible := True;
+  PanelDisallowed.Visible := False;
   //Self.Top := Screen.WorkAreaHeight - Self.Height;
   //Self.SendToBack;
+
+    Desactiverlebloquagedetouslesdomaines1.Visible := Form1.ToolButtonBlockAll.Down;
+    if Form1.ToolButtonBlockAll.Down then
+    begin
+      PanelAllowed.Visible := False;
+      PanelDisallowed.Visible := True;
+    end;
+
+    AutoriserledomainedufichierHost1.Visible := False;
+    AutoriserledomaineBlackwords1.Visible := False;
+    domain := Label1.Caption;
+    if domain <> '' then
+    begin
+      txt := ReadFromFile(form1.EditFilehost.Text);
+      if Pos(txt, '127.0.0.1	'+domain) > 0 then
+      begin
+        AutoriserledomainedufichierHost1.Visible := False;
+        PanelAllowed.Visible := False;
+        PanelDisallowed.Visible := True;
+      end;
+
+      with Form1 do
+      begin
+        for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+        begin
+          txt := ListBoxBlacklist.Items.Strings[i];
+           if Pos(txt, domain) > 0 then
+           begin
+             AutoriserledomaineBlackwords1.Visible := True;
+             PanelAllowed.Visible := False;
+             PanelDisallowed.Visible := True;
+           end;
+        end;
+      end;
+
+    end;
+
 end;
 
 procedure TFormAlert.PanelAllowedClick(Sender: TObject);
@@ -90,10 +134,15 @@ begin
   Form1.TimerRestart.Enabled := False;
   if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
   //Self.Close;
+  FormCreate(nil);
+  {
   PanelAllowed.Visible := False;
   PanelDisallowed.Visible := True;
+  }
+  {
   ButtonMenuForAllowed.Visible := False;
   ButtonMenuForDisallowed.Visible := False;
+  }
 end;
 
 procedure TFormAlert.ButtonMenuForDisallowedClick(Sender: TObject);
@@ -128,6 +177,7 @@ begin
     ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
     if isServerStarted then TimerRestart.Enabled := True;
   end;
+  FormCreate(nil);
   TimerAfterCreate.Enabled := True;
 end;
 
@@ -163,6 +213,7 @@ begin
     if callRestart and isServerStarted then TimerRestart.Enabled := True;
     if not isFound then ShowMessage('Pas de bloquage trouvé');
   end;
+  FormCreate(nil);
   TimerAfterCreate.Enabled := True;
 end;
 
@@ -193,6 +244,7 @@ begin
         form1.ListView1.Items[i].Caption := '';
         //form1.ListView1.Items[i].SubItems[0] := '';
         //form1.Autoriser1Click(Form1.Autoriser1);
+        form1.ListView1.Items[i].Delete;
         delDomain(form1.EditFilehost.Text, domain);
         Form1.TimerRestart.Enabled := False;
         if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
@@ -203,13 +255,15 @@ begin
     end;
   end;
 
-  //Self.Close;
-  //FormAlert.Visible := False;
-  PanelAllowed.Visible := True;
-  PanelDisallowed.Visible := False;
-  ButtonMenuForAllowed.Visible := False;
-  ButtonMenuForDisallowed.Visible := False;
+  FormCreate(nil);
   TimerAfterCreate.Enabled := True;
+end;
+
+procedure TFormAlert.Desactiverlebloquagedetouslesdomaines1Click(
+  Sender: TObject);
+begin
+  Form1.ToolButtonBlockAll.Down := not Form1.ToolButtonBlockAll.Down;
+  Form1.ToolButtonBlockAllClick(Form1.ToolButtonBlockAll);
 end;
 
 end.
