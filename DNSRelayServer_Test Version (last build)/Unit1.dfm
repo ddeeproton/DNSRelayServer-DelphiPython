@@ -81,7 +81,7 @@ object Form1: TForm1
     Left = 1
     Top = 93
     Width = 368
-    Height = 348
+    Height = 388
     BevelOuter = bvNone
     Color = clWhite
     TabOrder = 0
@@ -89,7 +89,7 @@ object Form1: TForm1
       Left = 9
       Top = 17
       Width = 344
-      Height = 320
+      Height = 360
       TabOrder = 0
       object TPage
         Left = 0
@@ -97,12 +97,12 @@ object Form1: TForm1
         Caption = 'Default'
         DesignSize = (
           344
-          320)
+          360)
         object GroupBox2: TGroupBox
           Left = 8
           Top = 8
           Width = 329
-          Height = 305
+          Height = 345
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = '            '
           TabOrder = 0
@@ -124,7 +124,7 @@ object Form1: TForm1
             Left = 5
             Top = 14
             Width = 311
-            Height = 275
+            Height = 323
             ActivePage = TabSheet5
             TabOrder = 0
             OnDrawTab = PageControl1DrawTab
@@ -132,7 +132,7 @@ object Form1: TForm1
               Caption = 'Serveur DNS'
               DesignSize = (
                 303
-                247)
+                295)
               object Label1: TLabel
                 Left = 8
                 Top = 8
@@ -358,7 +358,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 29
                 Width = 303
-                Height = 218
+                Height = 266
                 Align = alClient
                 Color = clWhite
                 ItemHeight = 13
@@ -565,7 +565,7 @@ object Form1: TForm1
               ImageIndex = 4
               DesignSize = (
                 303
-                247)
+                295)
               object Label30: TLabel
                 Left = 16
                 Top = 7
@@ -580,9 +580,16 @@ object Form1: TForm1
                 Height = 13
                 Caption = 'Position des logs'
               end
-              object GroupBoxUpdateTheme: TGroupBox
+              object Label26: TLabel
                 Left = 16
                 Top = 104
+                Width = 240
+                Height = 13
+                Caption = 'Changer le contraste des zones textes (-255 '#224' 255)'
+              end
+              object GroupBoxUpdateTheme: TGroupBox
+                Left = 16
+                Top = 160
                 Width = 273
                 Height = 129
                 Anchors = [akLeft, akTop, akRight]
@@ -737,7 +744,6 @@ object Form1: TForm1
                 ItemIndex = 0
                 TabOrder = 1
                 Text = 'White'
-                OnSelect = ComboBoxCurrentThemeSelect
                 Items.Strings = (
                   'White'
                   'Black'
@@ -772,6 +778,16 @@ object Form1: TForm1
                   'Bas'
                   'Gauche'
                   'Droite')
+              end
+              object SpinEditContraste: TTrackBar
+                Left = 16
+                Top = 120
+                Width = 273
+                Height = 33
+                Max = 255
+                Min = -255
+                Position = 30
+                TabOrder = 4
               end
             end
             object TabSheet6: TTabSheet
@@ -881,12 +897,12 @@ object Form1: TForm1
         Caption = 'IP Clients'
         DesignSize = (
           344
-          320)
+          360)
         object GroupBox3: TGroupBox
           Left = 8
           Top = 24
           Width = 328
-          Height = 257
+          Height = 297
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = '             '
           Font.Charset = DEFAULT_CHARSET
@@ -907,7 +923,7 @@ object Form1: TForm1
             Left = 2
             Top = 15
             Width = 324
-            Height = 240
+            Height = 280
             Align = alClient
             Color = clWhite
             Font.Charset = DEFAULT_CHARSET
@@ -928,12 +944,12 @@ object Form1: TForm1
         Caption = 'DNS Domains'
         DesignSize = (
           344
-          320)
+          360)
         object GroupBox4: TGroupBox
           Left = 8
           Top = 16
           Width = 328
-          Height = 288
+          Height = 328
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 
             '                                                                ' +
@@ -958,7 +974,7 @@ object Form1: TForm1
             Left = 2
             Top = 39
             Width = 324
-            Height = 247
+            Height = 287
             Align = alClient
             BevelWidth = 10
             Color = clWhite

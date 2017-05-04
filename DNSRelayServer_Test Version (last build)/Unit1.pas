@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.116';
+var CurrentApplicationVersion: string = '0.4.117';
 
 type
   TForm1 = class(TForm)
@@ -178,6 +178,8 @@ type
     ToolButton10: TToolButton;
     ComboBoxPosLogs: TComboBox;
     Label15: TLabel;
+    Label26: TLabel;
+    SpinEditContraste: TTrackBar;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1319,6 +1321,10 @@ begin
   if FileExists(SlaveDNSPortConfig) then
     SpinPort.Value := StrToInt(ReadFromFile(SlaveDNSPortConfig));
 
+  if FileExists(DataDirectoryPath + 'contrasteTextarea.cfg') then
+    SpinEditContraste.Position := StrToInt(ReadFromFile(DataDirectoryPath + 'contrasteTextarea.cfg'));
+
+
   if FileExists(TimeCheckUpdateFile) then
     SpinTimeCheckUpdate.Value := StrToInt(ReadFromFile(TimeCheckUpdateFile));
 
@@ -1335,18 +1341,21 @@ begin
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
 
   //CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
+  ComboBoxCurrentTheme.OnSelect := nil;
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
     ComboBoxCurrentTheme.Items.LoadFromFile(DataDirectoryPath + 'ThemeNames.cfg');
 
   ComboBoxCurrentTheme.ItemIndex := 0;
   if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then
     ComboBoxCurrentTheme.ItemIndex := StrToInt( ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'));
+  //ShowMessage(inttostr(StrToInt(ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'))));
+  //ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
   ComboBoxCurrentThemeSelect(ComboBoxCurrentTheme);
 
   ComboBoxPosLogs.ItemIndex := 1;
   if FileExists(DataDirectoryPath + 'PositionLogs.cfg') then
     ComboBoxPosLogs.ItemIndex := StrToInt( ReadFromFile(DataDirectoryPath + 'PositionLogs.cfg'));
-  //ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   ButtonRefreshNetCardClick(nil);
@@ -1441,7 +1450,7 @@ begin
   ShapeColorBackground.Brush.Color := bg;
   Label11.Color := bg;
 
-  bg := changeColor(bg, -20, -20, -20);
+  bg := changeColor(bg, SpinEditContraste.Position, SpinEditContraste.Position, SpinEditContraste.Position);
 
   ListView1.Color := bg;
   Memo1.Color := bg;
@@ -2156,9 +2165,11 @@ end;
 
 procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
 begin
-  TTimer(Sender).Enabled := False;       
+  TTimer(Sender).Enabled := False;
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
   PanelRestart.Visible := False;
+  ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
+  SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
   if startedInBackground then exit;
   Application.ShowMainForm := true;
   Form1.BringToFront;
@@ -2532,9 +2543,10 @@ begin
     ThemesList.Add('0,255,255,0,0,0');
     ThemesList.Add('0,0,0,255,0,255');
     ThemesList.Add('255,255,255,168,0,168');
-    ThemesList.Add('255,255,255,0,0,160'); 
+    ThemesList.Add('255,255,255,0,0,160');
     ThemesList.Add('0,0,0,0,221,221');
     ThemesList.Add('0,0,0,192,192,192');
+    ThemesList.Add('0,0,0,238,238,238');
     WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
 
     ComboBoxCurrentTheme.Clear;
@@ -2547,9 +2559,10 @@ begin
     ComboBoxCurrentTheme.Items.Add('Blue');
     ComboBoxCurrentTheme.Items.Add('BlueSky');
     ComboBoxCurrentTheme.Items.Add('Gray');
+    ComboBoxCurrentTheme.Items.Add('Sylver');
     ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
     ComboBoxCurrentTheme.ItemIndex := 0;
-    WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
+    //WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
 
   end;
 
@@ -2560,7 +2573,7 @@ begin
     if s.Count >= 6 then
     begin
       setTheme(RGB(StrToInt(s[0]),StrToInt(s[1]),StrToInt(s[2])), RGB(StrToInt(s[3]),StrToInt(s[4]),StrToInt(s[5])));
-      WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
+      //WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
       if Notebook1.PageIndex = 0 then
       begin
         Notebook1.PageIndex := 4;
@@ -2569,6 +2582,11 @@ begin
       end;
     end;
   end;
+
+  WriteInFile(DataDirectoryPath + 'contrasteTextarea.cfg', IntToStr(SpinEditContraste.Position));
+  WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(ComboBoxCurrentTheme.ItemIndex));
+
+
 end;
 
 
