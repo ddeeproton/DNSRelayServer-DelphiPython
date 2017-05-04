@@ -583,9 +583,9 @@ object Form1: TForm1
               object Label26: TLabel
                 Left = 16
                 Top = 104
-                Width = 240
+                Width = 180
                 Height = 13
-                Caption = 'Changer le contraste des zones textes (-255 '#224' 255)'
+                Caption = 'Changer le contraste des zones textes'
               end
               object GroupBoxUpdateTheme: TGroupBox
                 Left = 16
@@ -784,6 +784,7 @@ object Form1: TForm1
                 Top = 120
                 Width = 273
                 Height = 33
+                Anchors = [akLeft, akTop, akRight]
                 Max = 255
                 Min = -255
                 Position = 30
