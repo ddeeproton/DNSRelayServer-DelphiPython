@@ -780,9 +780,9 @@ object Form1: TForm1
                   'Droite')
               end
               object SpinEditContraste: TTrackBar
-                Left = 16
+                Left = 8
                 Top = 120
-                Width = 273
+                Width = 289
                 Height = 33
                 Anchors = [akLeft, akTop, akRight]
                 Max = 255
