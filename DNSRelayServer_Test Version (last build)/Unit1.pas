@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.130';
+var CurrentApplicationVersion: string = '0.4.131';
 
 type
   TForm1 = class(TForm)
@@ -368,6 +368,7 @@ var
   DNSMasterSerialized: string = '';
   LastPositionFormAlertTop: integer = 0;
   startedInBackground: Boolean = False;
+  currentFormStyle : TFormStyle;
 implementation
 
 {$R *.dfm}
@@ -1660,16 +1661,24 @@ begin
   end;
 end;
 
+
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin
+  currentFormStyle := Self.FormStyle;
+  Self.FormStyle := fsStayOnTop;
   Self.Hide;
+  Systray.EnleveIconeTray;
+  Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
+  Self.FormStyle := currentFormStyle;
   Self.Show;
   Application.Restore;
   Application.BringToFront;
+  Systray.EnleveIconeTray;
+  Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 end;
 
 procedure TForm1.Quitter1Click(Sender: TObject);
@@ -2173,6 +2182,8 @@ begin
   ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
   SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
   if startedInBackground then exit;
+  Afficher1Click(nil);
+  {
   Application.ShowMainForm := true;
   Form1.BringToFront;
   Application.BringToFront;
@@ -2181,7 +2192,7 @@ begin
   SetFocus;
   FlashWindow(Application.Handle, true);
   ShowWindow(Application.Handle, SW_SHOW);
-
+  }
 end;
 
 procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);

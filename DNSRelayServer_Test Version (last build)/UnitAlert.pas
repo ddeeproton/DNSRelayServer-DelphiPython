@@ -73,6 +73,7 @@ var
   i: integer;
   domain, txt: string;
 begin
+  Self.FormStyle := fsStayOnTop;
   PanelAllowed.Top := 0;
   PanelDisallowed.Top := 0;
   Self.Height := PanelAllowed.Height;
