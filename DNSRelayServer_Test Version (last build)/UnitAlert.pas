@@ -218,9 +218,9 @@ begin
     if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   end;
   FormCreate(nil);
-  TimerAfterCreate.Enabled := True;
-  CheckBoxStay.Checked := False;
-  CheckBoxStay2.Checked := False;
+  TimerAfterCreate.Enabled := False;
+  CheckBoxStay.Checked := True;
+  CheckBoxStay2.Checked := True;
 end;
 
 procedure TFormAlert.AutoriserledomaineBlackwords1Click(Sender: TObject);
