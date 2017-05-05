@@ -310,8 +310,21 @@ object FormAlert: TFormAlert
       ImageIndex = 10
       OnClick = AutoriserledomaineBlackwords1Click
     end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object ButtonDisableBlockHost: TMenuItem
+      Caption = 'D'#233'sactiver tous les bloquages (fichier host)'
+      ImageIndex = 9
+      OnClick = ButtonDisableBlockHostClick
+    end
+    object ButtonDisableBlockBlackwords: TMenuItem
+      Caption = 'D'#233'sactiver tous les bloquages (Blackwords)'
+      ImageIndex = 9
+      OnClick = ButtonDisableBlockBlackwordsClick
+    end
     object Desactiverlebloquagedetouslesdomaines1: TMenuItem
-      Caption = 'D'#233'sactiver le bloquage de tous les domaines'
+      Caption = 'D'#233'sactiver tous les bloquages'
       ImageIndex = 9
       OnClick = Desactiverlebloquagedetouslesdomaines1Click
     end

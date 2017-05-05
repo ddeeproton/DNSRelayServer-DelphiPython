@@ -33,6 +33,9 @@ type
     Dsactiverlesalertespourlesdomainesautoriss1: TMenuItem;
     N1: TMenuItem;
     N2: TMenuItem;
+    ButtonDisableBlockHost: TMenuItem;
+    ButtonDisableBlockBlackwords: TMenuItem;
+    N3: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure PanelAllowedClick(Sender: TObject);
     procedure Bloquerparfichierhost1Click(Sender: TObject);
@@ -46,6 +49,8 @@ type
     procedure DisableAlertDisallowedClick(Sender: TObject);
     procedure Dsactiverlesalertespourlesdomainesautoriss1Click(
       Sender: TObject);
+    procedure ButtonDisableBlockHostClick(Sender: TObject);
+    procedure ButtonDisableBlockBlackwordsClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -91,15 +96,18 @@ begin
 
     AutoriserledomainedufichierHost1.Visible := False;
     AutoriserledomaineBlackwords1.Visible := False;
+    ButtonDisableBlockHost.Visible := False;
+    ButtonDisableBlockBlackwords.Visible := False;
     domain := Label1.Caption;
     if domain <> '' then
     begin
       txt := ReadFromFile(form1.EditFilehost.Text);
-      if Pos(txt, '127.0.0.1	'+domain) > 0 then
+      if Pos('127.0.0.1	'+domain, txt) > 0 then
       begin
-        AutoriserledomainedufichierHost1.Visible := False;
+        AutoriserledomainedufichierHost1.Visible := True;
         PanelAllowed.Visible := False;
         PanelDisallowed.Visible := True;
+        if not Form1.ButtonDisableHost.Down then ButtonDisableBlockHost.Visible := True;
       end;
 
       with Form1 do
@@ -112,6 +120,7 @@ begin
              AutoriserledomaineBlackwords1.Visible := True;
              PanelAllowed.Visible := False;
              PanelDisallowed.Visible := True;
+             if not Form1.ButtonDisableBlackhost.Down then ButtonDisableBlockBlackwords.Visible := True;
            end;
         end;
       end;
@@ -140,22 +149,14 @@ begin
   Form1.refreshListView1Click();
   Form1.TimerRestart.Enabled := False;
   if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
-  //Self.Close;
   FormCreate(nil);
-  {
-  PanelAllowed.Visible := False;
-  PanelDisallowed.Visible := True;
-  }
-  {
-  ButtonMenuForAllowed.Visible := False;
-  ButtonMenuForDisallowed.Visible := False;
-  }
 end;
 
 procedure TFormAlert.ButtonMenuForDisallowedClick(Sender: TObject);
 var
   Pos:TPoint;
 begin
+  FormCreate(nil);
   TimerAfterCreate.Enabled := False;
   GetCursorPos(Pos);
   PopupMenuForDisallowed.Popup(Pos.X,Pos.Y);
@@ -165,6 +166,7 @@ procedure TFormAlert.ButtonMenuForAllowedClick(Sender: TObject);
 var
   Pos:TPoint;
 begin
+  FormCreate(nil);
   TimerAfterCreate.Enabled := False;
   GetCursorPos(Pos);
   PopupMenuForAllowed.Popup(Pos.X,Pos.Y);
@@ -200,7 +202,9 @@ begin
     i := -1;
     callRestart := False;
     isFound := False;
-    for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+    //for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+    i := 0;
+    while i < ListBoxBlacklist.Items.Count do
     begin
       txt := ListBoxBlacklist.Items.Strings[i];
        if Pos(txt, domain) > 0 then
@@ -215,6 +219,9 @@ begin
             ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
             if isServerStarted then PanelRestart.Visible := True;
          end;
+       end
+       else begin
+         Inc(i);
        end;
     end;
     if callRestart then TimerRestart.Enabled := True;  //and isServerStarted 
@@ -243,12 +250,15 @@ begin
   //Form1.refreshListView1Click();
   //Self.Visible := False;
 
-  for i := 0 to form1.ListView1.Items.Count-1 do
+  //for i := 0 to form1.ListView1.Items.Count-1 do
+  i := 0;
+  while i < form1.ListView1.Items.Count do
   begin
-    if form1.ListView1.Items[i].Caption =  domain then begin
+    if form1.ListView1.Items[i].Caption =  domain then
+    begin
       try
         form1.SelectedListItem := form1.ListView1.Items[i];
-        form1.ListView1.Items[i].Caption := '';
+        //form1.ListView1.Items[i].Caption := '';
         //form1.ListView1.Items[i].SubItems[0] := '';
         //form1.Autoriser1Click(Form1.Autoriser1);
         form1.ListView1.Items[i].Delete;
@@ -259,6 +269,9 @@ begin
         On E :   EOSError do
           exit;
       end;
+    end
+    else begin
+        Inc(i);
     end;
   end;
 
@@ -287,6 +300,24 @@ begin
   Form1.CheckBoxAlertEventsUnknown.Checked := False;
   Form1.CheckBoxAlertEventsUnknownClick(Form1.CheckBoxAlertEventsUnknown);
 
+end;
+
+procedure TFormAlert.ButtonDisableBlockHostClick(Sender: TObject);
+begin
+  with Form1 do
+  begin
+    ButtonDisableHost.Down := True;
+    ButtonDisableHostClick(ButtonDisableHost);
+  end;
+end;
+
+procedure TFormAlert.ButtonDisableBlockBlackwordsClick(Sender: TObject);
+begin
+  with Form1 do
+  begin
+    ButtonDisableBlackhost.Down := True;
+    ButtonDisableBlackhostClick(ButtonDisableBlackhost);
+  end;
 end;
 
 end.
