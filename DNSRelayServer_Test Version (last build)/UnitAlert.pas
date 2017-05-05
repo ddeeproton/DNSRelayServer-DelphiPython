@@ -21,7 +21,7 @@ type
     SpeedButtonClosePanelUpdateTheme: TSpeedButton;
     SpeedButton1: TSpeedButton;
     CheckBoxStay: TCheckBox;
-    CheckBox2: TCheckBox;
+    CheckBoxStay2: TCheckBox;
     PopupMenuForAllowed: TPopupMenu;
     Bloquerparfichierhost1: TMenuItem;
     BloquerparfichierBlackwords1: TMenuItem;
@@ -137,6 +137,53 @@ begin
   Self.Close;
 end;
 
+
+procedure TFormAlert.AutoriserledomainedufichierHost1Click(
+  Sender: TObject);
+var
+  i: integer;
+  domain: string;
+begin
+  domain := Label1.Caption;
+  if domain = '' then exit;
+
+  //delDomain(Form1.EditFilehost.Text, domain);
+  //if Form1.isServerStarted then Form1.ButtonStartClick(nil);
+  //Form1.refreshListView1Click();
+  //Self.Visible := False;
+
+  //for i := 0 to form1.ListView1.Items.Count-1 do
+  i := 0;
+  while i < form1.ListView1.Items.Count do
+  begin
+    if form1.ListView1.Items[i].Caption =  domain then
+    begin
+      try
+        form1.SelectedListItem := form1.ListView1.Items[i];
+        //form1.ListView1.Items[i].Caption := '';
+        //form1.ListView1.Items[i].SubItems[0] := '';
+        //form1.Autoriser1Click(Form1.Autoriser1);
+        form1.ListView1.Items[i].Delete;
+        form1.MemoLogs.Lines.Add('Débloquage de '+domain);
+        delDomain(form1.EditFilehost.Text, domain);
+        Form1.TimerRestart.Enabled := False;
+        if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
+      except
+        On E :   EOSError do
+          exit;
+      end;
+    end
+    else begin
+        Inc(i);
+    end;
+  end;
+
+  FormCreate(nil);
+  TimerAfterCreate.Enabled := True;
+  CheckBoxStay.Checked := False;
+  CheckBoxStay2.Checked := False;
+end;
+
 procedure TFormAlert.Bloquerparfichierhost1Click(Sender: TObject);
 var
   i: integer;
@@ -149,29 +196,10 @@ begin
     if form1.ListView1.Items[i].Caption =  domain then form1.ListView1.Items[i].SubItems.Strings[0] := '127.0.0.1';
   end;
   setDomain(Form1.EditFilehost.Text, domain, '127.0.0.1');
+  Form1.MemoLogs.Lines.Add('Bloquage de '+domain);
   Form1.refreshListView1Click();
   Form1.TimerRestart.Enabled := False;
   if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
-  FormCreate(nil);
-end;
-
-procedure TFormAlert.ButtonMenuForDisallowedClick(Sender: TObject);
-var
-  Pos:TPoint;
-begin
-  TimerAfterCreate.Enabled := False;
-  GetCursorPos(Pos);
-  PopupMenuForDisallowed.Popup(Pos.X,Pos.Y);
-  FormCreate(nil);
-end;
-
-procedure TFormAlert.ButtonMenuForAllowedClick(Sender: TObject);
-var
-  Pos:TPoint;
-begin
-  TimerAfterCreate.Enabled := False;
-  GetCursorPos(Pos);
-  PopupMenuForAllowed.Popup(Pos.X,Pos.Y);
   FormCreate(nil);
 end;
 
@@ -187,10 +215,13 @@ begin
     if txt = '' then exit;
     ListBoxBlacklist.Items.Add(txt);
     ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-    if isServerStarted then TimerRestart.Enabled := True;
+    Form1.TimerRestart.Enabled := False;
+    if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   end;
   FormCreate(nil);
   TimerAfterCreate.Enabled := True;
+  CheckBoxStay.Checked := False;
+  CheckBoxStay2.Checked := False;
 end;
 
 procedure TFormAlert.AutoriserledomaineBlackwords1Click(Sender: TObject);
@@ -220,7 +251,8 @@ begin
             ListBoxBlacklist.DeleteSelected;
             //ListBoxBlacklist.ItemIndex := 1 - 1;
             ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-            if isServerStarted then PanelRestart.Visible := True;
+            Form1.TimerRestart.Enabled := False;
+            if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
          end;
        end
        else begin
@@ -232,62 +264,52 @@ begin
   end;
   FormCreate(nil);
   TimerAfterCreate.Enabled := True;
+  CheckBoxStay.Checked := False;
+  CheckBoxStay2.Checked := False;
 end;
+
+
+procedure TFormAlert.ButtonMenuForDisallowedClick(Sender: TObject);
+var
+  Pos:TPoint;
+begin
+  TimerAfterCreate.Enabled := False;
+  CheckBoxStay.Checked := True;
+  CheckBoxStay2.Checked := True;
+  GetCursorPos(Pos);
+  PopupMenuForDisallowed.Popup(Pos.X,Pos.Y);
+  FormCreate(nil);
+end;
+
+procedure TFormAlert.ButtonMenuForAllowedClick(Sender: TObject);
+var
+  Pos:TPoint;
+begin
+  TimerAfterCreate.Enabled := False;
+  CheckBoxStay.Checked := True;
+  CheckBoxStay2.Checked := True;
+  GetCursorPos(Pos);
+  PopupMenuForAllowed.Popup(Pos.X,Pos.Y);
+  FormCreate(nil);
+end;
+
 
 procedure TFormAlert.CheckBoxStayClick(Sender: TObject);
 begin
   TimerAfterCreate.Enabled := not TCheckBox(Sender).Checked;
+  CheckBoxStay.Checked := not TimerAfterCreate.Enabled;
+  CheckBoxStay2.Checked := not TimerAfterCreate.Enabled;
   FormCreate(nil);
 end;
 
-procedure TFormAlert.AutoriserledomainedufichierHost1Click(
-  Sender: TObject);
-var
-  i: integer;
-  domain: string;
-begin
-  domain := Label1.Caption;
-  if domain = '' then exit;
-
-  //delDomain(Form1.EditFilehost.Text, domain);
-  //if Form1.isServerStarted then Form1.ButtonStartClick(nil);
-  //Form1.refreshListView1Click();
-  //Self.Visible := False;
-
-  //for i := 0 to form1.ListView1.Items.Count-1 do
-  i := 0;
-  while i < form1.ListView1.Items.Count do
-  begin
-    if form1.ListView1.Items[i].Caption =  domain then
-    begin
-      try
-        form1.SelectedListItem := form1.ListView1.Items[i];
-        //form1.ListView1.Items[i].Caption := '';
-        //form1.ListView1.Items[i].SubItems[0] := '';
-        //form1.Autoriser1Click(Form1.Autoriser1);
-        form1.ListView1.Items[i].Delete;
-        delDomain(form1.EditFilehost.Text, domain);
-        Form1.TimerRestart.Enabled := False;
-        if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
-      except
-        On E :   EOSError do
-          exit;
-      end;
-    end
-    else begin
-        Inc(i);
-    end;
-  end;
-
-  FormCreate(nil);
-  TimerAfterCreate.Enabled := True;
-end;
 
 procedure TFormAlert.Desactiverlebloquagedetouslesdomaines1Click(
   Sender: TObject);
 begin
   Form1.ToolButtonBlockAll.Down := not Form1.ToolButtonBlockAll.Down;
   Form1.ToolButtonBlockAllClick(Form1.ToolButtonBlockAll);
+  Form1.TimerRestart.Enabled := False;
+  if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   FormCreate(nil);
 end;
 
@@ -314,6 +336,8 @@ begin
   begin
     ButtonDisableHost.Down := True;
     ButtonDisableHostClick(ButtonDisableHost);
+    Form1.TimerRestart.Enabled := False;
+    if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   end;
   FormCreate(nil);
 end;
@@ -323,7 +347,9 @@ begin
   with Form1 do
   begin
     ButtonDisableBlackhost.Down := True;
-    ButtonDisableBlackhostClick(ButtonDisableBlackhost);
+    ButtonDisableBlackhostClick(ButtonDisableBlackhost);             
+    Form1.TimerRestart.Enabled := False;
+    if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   end;
   FormCreate(nil);
 end;
@@ -333,7 +359,9 @@ begin
   with Form1 do
   begin
     ToolButtonBlockAll.Down := True;
-    ToolButtonBlockAllClick(ToolButtonBlockAll);
+    ToolButtonBlockAllClick(ToolButtonBlockAll);                     
+    Form1.TimerRestart.Enabled := False;
+    if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   end;
   FormCreate(nil);
 end;

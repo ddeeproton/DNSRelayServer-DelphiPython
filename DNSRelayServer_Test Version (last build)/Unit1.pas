@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.131';
+var CurrentApplicationVersion: string = '0.4.132';
 
 type
   TForm1 = class(TForm)
@@ -1864,6 +1864,7 @@ begin
   //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
   setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
   SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
+  MemoLogs.Lines.Add('Bloquage de '+SelectedListItem.Caption);
   refreshListView1Click();
   if isServerStarted then
   begin
@@ -1876,7 +1877,8 @@ begin
   if not Assigned(SelectedListItem) then exit;
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
   //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
-  delDomain(EditFilehost.Text, SelectedListItem.Caption);
+  delDomain(EditFilehost.Text, SelectedListItem.Caption);     
+  MemoLogs.Lines.Add('Débloquage de '+SelectedListItem.Caption);
   SelectedListItem.Delete;
   refreshListView1Click();
   if isServerStarted then

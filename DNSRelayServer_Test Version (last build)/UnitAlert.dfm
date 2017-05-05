@@ -1,6 +1,6 @@
 object FormAlert: TFormAlert
-  Left = 576
-  Top = 510
+  Left = 677
+  Top = 593
   BorderStyle = bsNone
   Caption = 'FormAlert'
   ClientHeight = 84
@@ -32,7 +32,7 @@ object FormAlert: TFormAlert
       Left = 22
       Top = 1
       Width = 48
-      Height = 21
+      Height = 20
       Caption = 'Label1'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
@@ -157,7 +157,7 @@ object FormAlert: TFormAlert
       Left = 22
       Top = 1
       Width = 48
-      Height = 21
+      Height = 20
       Caption = 'Label2'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
@@ -253,7 +253,7 @@ object FormAlert: TFormAlert
       ShowHint = True
       OnClick = PanelAllowedClick
     end
-    object CheckBox2: TCheckBox
+    object CheckBoxStay2: TCheckBox
       Left = 265
       Top = 1
       Width = 17
