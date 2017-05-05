@@ -20,19 +20,19 @@ object FormAlert: TFormAlert
     Left = 0
     Top = 0
     Width = 309
-    Height = 26
+    Height = 23
     Align = alTop
     AutoSize = True
     Color = clGreen
     TabOrder = 0
     DesignSize = (
       309
-      26)
+      23)
     object Label1: TLabel
       Left = 22
-      Top = 4
+      Top = 1
       Width = 48
-      Height = 20
+      Height = 21
       Caption = 'Label1'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
@@ -45,7 +45,7 @@ object FormAlert: TFormAlert
       Left = 236
       Top = 1
       Width = 25
-      Height = 24
+      Height = 21
       Hint = 'Menu'
       Anchors = [akTop, akRight]
       Caption = '+'
@@ -62,9 +62,9 @@ object FormAlert: TFormAlert
     end
     object Image1: TImage
       Left = 0
-      Top = 2
+      Top = 1
       Width = 23
-      Height = 23
+      Height = 21
       Center = True
       Picture.Data = {
         07544269746D6170AA030000424DAA0300000000000036000000280000001100
@@ -103,7 +103,7 @@ object FormAlert: TFormAlert
       Left = 285
       Top = 1
       Width = 22
-      Height = 23
+      Height = 21
       Hint = 'Fermer'
       Anchors = [akTop, akRight]
       Flat = True
@@ -132,7 +132,7 @@ object FormAlert: TFormAlert
       Left = 265
       Top = 1
       Width = 21
-      Height = 23
+      Height = 21
       Hint = 'Ne pas dispara'#238'tre'
       Anchors = [akTop, akRight]
       ParentShowHint = False
@@ -143,21 +143,21 @@ object FormAlert: TFormAlert
   end
   object PanelAllowed: TPanel
     Left = 0
-    Top = 26
+    Top = 23
     Width = 309
-    Height = 26
+    Height = 23
     Align = alTop
     AutoSize = True
     Color = clMaroon
     TabOrder = 1
     DesignSize = (
       309
-      26)
+      23)
     object Label2: TLabel
       Left = 22
-      Top = 4
+      Top = 1
       Width = 48
-      Height = 20
+      Height = 21
       Caption = 'Label2'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
@@ -170,7 +170,7 @@ object FormAlert: TFormAlert
       Left = 236
       Top = 1
       Width = 25
-      Height = 24
+      Height = 21
       Hint = 'Menu'
       Anchors = [akTop, akRight]
       Caption = '+'
@@ -187,9 +187,9 @@ object FormAlert: TFormAlert
     end
     object Image2: TImage
       Left = 0
-      Top = 2
+      Top = 1
       Width = 23
-      Height = 23
+      Height = 21
       Center = True
       Picture.Data = {
         07544269746D6170AA030000424DAA0300000000000036000000280000001100
@@ -226,9 +226,9 @@ object FormAlert: TFormAlert
     end
     object SpeedButton1: TSpeedButton
       Left = 285
-      Top = 2
+      Top = 1
       Width = 22
-      Height = 22
+      Height = 21
       Hint = 'Fermer'
       Anchors = [akTop, akRight]
       Flat = True
@@ -257,7 +257,7 @@ object FormAlert: TFormAlert
       Left = 265
       Top = 1
       Width = 17
-      Height = 24
+      Height = 21
       Hint = 'Ne pas dispara'#238'tre'
       Anchors = [akTop, akRight]
       ParentShowHint = False
@@ -286,6 +286,11 @@ object FormAlert: TFormAlert
       Hint = 'Si une partie du nom est d'#233'tect'#233', le domaine est bloqu'#233
       ImageIndex = 10
       OnClick = BloquerparfichierBlackwords1Click
+    end
+    object Bloquertout1: TMenuItem
+      Caption = 'Bloquer tout'
+      ImageIndex = 9
+      OnClick = Bloquertout1Click
     end
     object N2: TMenuItem
       Caption = '-'

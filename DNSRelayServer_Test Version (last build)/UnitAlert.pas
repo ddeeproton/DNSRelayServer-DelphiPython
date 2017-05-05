@@ -36,6 +36,7 @@ type
     ButtonDisableBlockHost: TMenuItem;
     ButtonDisableBlockBlackwords: TMenuItem;
     N3: TMenuItem;
+    Bloquertout1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure PanelAllowedClick(Sender: TObject);
     procedure Bloquerparfichierhost1Click(Sender: TObject);
@@ -51,6 +52,7 @@ type
       Sender: TObject);
     procedure ButtonDisableBlockHostClick(Sender: TObject);
     procedure ButtonDisableBlockBlackwordsClick(Sender: TObject);
+    procedure Bloquertout1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -156,20 +158,20 @@ procedure TFormAlert.ButtonMenuForDisallowedClick(Sender: TObject);
 var
   Pos:TPoint;
 begin
-  FormCreate(nil);
   TimerAfterCreate.Enabled := False;
   GetCursorPos(Pos);
   PopupMenuForDisallowed.Popup(Pos.X,Pos.Y);
+  FormCreate(nil);
 end;
 
 procedure TFormAlert.ButtonMenuForAllowedClick(Sender: TObject);
 var
   Pos:TPoint;
 begin
-  FormCreate(nil);
   TimerAfterCreate.Enabled := False;
   GetCursorPos(Pos);
   PopupMenuForAllowed.Popup(Pos.X,Pos.Y);
+  FormCreate(nil);
 end;
 
 procedure TFormAlert.BloquerparfichierBlackwords1Click(Sender: TObject);
@@ -224,7 +226,7 @@ begin
          Inc(i);
        end;
     end;
-    if callRestart then TimerRestart.Enabled := True;  //and isServerStarted 
+    if callRestart then TimerRestart.Enabled := True;  //and isServerStarted
     if not isFound then ShowMessage('Pas de bloquage trouvé');
   end;
   FormCreate(nil);
@@ -234,6 +236,7 @@ end;
 procedure TFormAlert.CheckBoxStayClick(Sender: TObject);
 begin
   TimerAfterCreate.Enabled := not TCheckBox(Sender).Checked;
+  FormCreate(nil);
 end;
 
 procedure TFormAlert.AutoriserledomainedufichierHost1Click(
@@ -284,12 +287,14 @@ procedure TFormAlert.Desactiverlebloquagedetouslesdomaines1Click(
 begin
   Form1.ToolButtonBlockAll.Down := not Form1.ToolButtonBlockAll.Down;
   Form1.ToolButtonBlockAllClick(Form1.ToolButtonBlockAll);
+  FormCreate(nil);
 end;
 
 procedure TFormAlert.DisableAlertDisallowedClick(Sender: TObject);
 begin
   Form1.CheckBoxAlertEventDisallowed.Checked := False;
   Form1.CheckBoxAlertEventDisallowedClick(Form1.CheckBoxAlertEventDisallowed);
+  FormCreate(nil);
 end;
 
 procedure TFormAlert.Dsactiverlesalertespourlesdomainesautoriss1Click(
@@ -299,7 +304,7 @@ begin
   Form1.CheckBoxAlertEventsKnownClick(Form1.CheckBoxAlertEventsKnown);
   Form1.CheckBoxAlertEventsUnknown.Checked := False;
   Form1.CheckBoxAlertEventsUnknownClick(Form1.CheckBoxAlertEventsUnknown);
-
+  FormCreate(nil);
 end;
 
 procedure TFormAlert.ButtonDisableBlockHostClick(Sender: TObject);
@@ -309,6 +314,7 @@ begin
     ButtonDisableHost.Down := True;
     ButtonDisableHostClick(ButtonDisableHost);
   end;
+  FormCreate(nil);
 end;
 
 procedure TFormAlert.ButtonDisableBlockBlackwordsClick(Sender: TObject);
@@ -318,6 +324,17 @@ begin
     ButtonDisableBlackhost.Down := True;
     ButtonDisableBlackhostClick(ButtonDisableBlackhost);
   end;
+  FormCreate(nil);
+end;
+
+procedure TFormAlert.Bloquertout1Click(Sender: TObject);
+begin
+  with Form1 do
+  begin
+    ToolButtonBlockAll.Down := True;
+    ToolButtonBlockAllClick(ToolButtonBlockAll);
+  end;
+  FormCreate(nil);
 end;
 
 end.
