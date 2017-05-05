@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.132';
+var CurrentApplicationVersion: string = '0.4.133';
 
 type
   TForm1 = class(TForm)
@@ -465,7 +465,7 @@ begin
           FormAlert.PanelDisallowed.Visible := False;
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain;
-          FormAlert.FormCreate(nil);
+
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1;
           TimerResetAlertPosition.Enabled := True;
@@ -476,11 +476,12 @@ begin
           FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
-          FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
+          FormAlert.FormCreate(nil);
+          FormAlert.Show;
         end;
         if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
         begin
@@ -489,7 +490,6 @@ begin
           FormAlert.PanelDisallowed.Visible := False;
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain;
-          FormAlert.FormCreate(nil);
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
           TimerResetAlertPosition.Enabled := True;
@@ -500,12 +500,12 @@ begin
           FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
-          FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
-
+          FormAlert.FormCreate(nil);
+          FormAlert.Show;
         end;
         if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
         begin
@@ -514,7 +514,6 @@ begin
           FormAlert.PanelDisallowed.Visible := True;
           FormAlert.Label1.Caption := domain;
           FormAlert.Label2.Caption := domain;
-          FormAlert.FormCreate(nil);
           TimerResetAlertPosition.Enabled := False;
           TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
           TimerResetAlertPosition.Enabled := True;
@@ -525,11 +524,12 @@ begin
           FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
-          FormAlert.Show;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
           if LastPositionFormAlertTop <= 0 then
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
+          FormAlert.FormCreate(nil);
+          FormAlert.Show;
         end;
      end;
   end

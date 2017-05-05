@@ -1,6 +1,6 @@
 object FormAlert: TFormAlert
-  Left = 677
-  Top = 593
+  Left = 588
+  Top = 597
   BorderStyle = bsNone
   Caption = 'FormAlert'
   ClientHeight = 84
@@ -11,7 +11,6 @@ object FormAlert: TFormAlert
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  FormStyle = fsStayOnTop
   OldCreateOrder = False
   OnCreate = FormCreate
   PixelsPerInch = 96
