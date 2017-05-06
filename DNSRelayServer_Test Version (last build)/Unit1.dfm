@@ -66,7 +66,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 515
+    Top = 502
     Width = 460
     Height = 10
     Cursor = crVSplit
@@ -1144,24 +1144,6 @@ object Form1: TForm1
                 ShowHint = True
                 OnClick = ToolButtonDisplayOrangeClick
               end
-              object ToolButton10: TToolButton
-                Left = 191
-                Top = 0
-                Width = 8
-                Caption = 'ToolButton10'
-                ImageIndex = 9
-                Style = tbsSeparator
-              end
-              object ButtonClearLogs: TToolButton
-                Left = 199
-                Top = 0
-                Hint = 'Effacer les logs'
-                Caption = 'ButtonClearLogs'
-                ImageIndex = 8
-                ParentShowHint = False
-                ShowHint = True
-                OnClick = ButtonClearLogsClick
-              end
             end
           end
         end
@@ -1223,9 +1205,9 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 525
+    Top = 512
     Width = 460
-    Height = 62
+    Height = 75
     Align = alBottom
     Caption = '           '
     Font.Charset = DEFAULT_CHARSET
@@ -1245,9 +1227,9 @@ object Form1: TForm1
     end
     object MemoLogs: TMemo
       Left = 2
-      Top = 15
+      Top = 39
       Width = 456
-      Height = 45
+      Height = 34
       Align = alClient
       Color = clWhite
       Font.Charset = DEFAULT_CHARSET
@@ -1260,6 +1242,42 @@ object Form1: TForm1
       TabOrder = 0
       WordWrap = False
       OnChange = MemoLogsChange
+    end
+    object Panel7: TPanel
+      Left = 2
+      Top = 15
+      Width = 456
+      Height = 24
+      Align = alTop
+      BevelOuter = bvNone
+      BorderWidth = 1
+      Color = clWhite
+      TabOrder = 1
+      object ToolBar5: TToolBar
+        Left = 2
+        Top = 1
+        Width = 87
+        Height = 24
+        Align = alNone
+        ButtonWidth = 25
+        Caption = 'ToolBar2'
+        EdgeInner = esNone
+        EdgeOuter = esNone
+        Flat = True
+        Images = ImageList3
+        TabOrder = 0
+        Transparent = True
+        object ToolButton23: TToolButton
+          Left = 0
+          Top = 0
+          Hint = 'Effacer les logs'
+          Caption = 'ButtonClearLogs'
+          ImageIndex = 8
+          ParentShowHint = False
+          ShowHint = True
+          OnClick = ButtonClearLogsClick
+        end
+      end
     end
   end
   object Panel5: TPanel
