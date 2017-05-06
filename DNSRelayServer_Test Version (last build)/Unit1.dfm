@@ -1117,7 +1117,7 @@ object Form1: TForm1
               object ToolButtonDisplayGray: TToolButton
                 Left = 116
                 Top = 0
-                Hint = 'Effacer les boules grises'
+                Hint = 'Effacer les boules grises (juste l'#39'affichage)'
                 Caption = 'ToolButtonDisplayGray'
                 ImageIndex = 0
                 ParentShowHint = False
@@ -1127,7 +1127,7 @@ object Form1: TForm1
               object ToolButtonDisplayGreen: TToolButton
                 Left = 141
                 Top = 0
-                Hint = 'Effacer les boules vertes'
+                Hint = 'Effacer les boules vertes (juste l'#39'affichage)'
                 Caption = 'ToolButtonDisplayGreen'
                 ImageIndex = 1
                 ParentShowHint = False
@@ -1137,7 +1137,7 @@ object Form1: TForm1
               object ToolButtonDisplayOrange: TToolButton
                 Left = 166
                 Top = 0
-                Hint = 'Effacer les boules rouges'
+                Hint = 'Effacer les boules rouges (juste l'#39'affichage)'
                 Caption = 'ToolButtonDisplayOrange'
                 ImageIndex = 3
                 ParentShowHint = False
