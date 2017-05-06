@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.134';
+var CurrentApplicationVersion: string = '0.4.135';
 
 type
   TForm1 = class(TForm)
@@ -401,6 +401,7 @@ var
   date, time, ipclient, ipdomain, domain, ip, logs:string;
   FormAlert: TFormAlert;
 begin
+
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
@@ -482,6 +483,8 @@ begin
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
           FormAlert.Show;
+          Application.Restore;
+          Application.BringToFront;
         end;
         if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
         begin
@@ -505,7 +508,9 @@ begin
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
-          FormAlert.Show;
+          FormAlert.Show;    
+          Application.Restore;
+          Application.BringToFront;
         end;
         if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
         begin
@@ -529,7 +534,9 @@ begin
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
-          FormAlert.Show;
+          FormAlert.Show;         
+          Application.Restore;
+          Application.BringToFront;
         end;
      end;
   end
