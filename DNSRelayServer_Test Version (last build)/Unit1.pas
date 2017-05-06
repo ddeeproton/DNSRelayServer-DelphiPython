@@ -2890,6 +2890,7 @@ end;
 procedure TForm1.ButtonDisableBlackhostClick(Sender: TObject);
 begin
   PanelRestart.Visible := True;
+  //TToolButton(Sender).Down := not TToolButton(Sender).Down;
   DsactiverlefiltrageBlackword1.Checked := TToolButton(Sender).Down;
 
   if TToolButton(Sender).Down then
@@ -2907,6 +2908,7 @@ end;
 procedure TForm1.ButtonDisableHostClick(Sender: TObject);
 begin
   PanelRestart.Visible := True;
+  //TToolButton(Sender).Down := not TToolButton(Sender).Down;
   DsactiverlefiltragedufichierHost1.Checked := TToolButton(Sender).Down;
   if TToolButton(Sender).Down then
   begin

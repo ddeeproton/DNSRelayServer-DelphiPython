@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 93
-  Top = 96
+  Left = 208
+  Top = 97
   Width = 476
   Height = 622
   Caption = 'DNS Relay Server'
@@ -90,6 +90,7 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
+      PageIndex = 1
       TabOrder = 0
       object TPage
         Left = 0
@@ -796,7 +797,7 @@ object Form1: TForm1
                 SelStart = 0
                 TabOrder = 4
                 TickMarks = tmBottomRight
-                TickStyle = tsAuto
+                TickStyle = tsNone
               end
             end
             object TabSheet6: TTabSheet
@@ -1050,6 +1051,7 @@ object Form1: TForm1
               Width = 223
               Height = 24
               Align = alNone
+              ButtonWidth = 25
               Caption = 'ToolBar2'
               EdgeInner = esNone
               EdgeOuter = esNone
@@ -1069,7 +1071,7 @@ object Form1: TForm1
                 OnClick = ButtonDisableHostClick
               end
               object ToolButton12: TToolButton
-                Left = 23
+                Left = 25
                 Top = 0
                 Width = 8
                 Caption = 'ToolButton12'
@@ -1077,7 +1079,7 @@ object Form1: TForm1
                 Style = tbsSeparator
               end
               object ToolButton2: TToolButton
-                Left = 31
+                Left = 33
                 Top = 0
                 Hint = 'Restaurer l'#39'affichage comme au d'#233'marrage'
                 Caption = 'ToolButton2'
@@ -1087,7 +1089,7 @@ object Form1: TForm1
                 OnClick = ToolButton10Click
               end
               object ToolButton3: TToolButton
-                Left = 54
+                Left = 58
                 Top = 0
                 Hint = 'Editer le fichier host'
                 Caption = 'ToolButton3'
@@ -1097,7 +1099,7 @@ object Form1: TForm1
                 OnClick = ToolButtonEditHostClick
               end
               object ToolButton7: TToolButton
-                Left = 77
+                Left = 83
                 Top = 0
                 Hint = 'Aide'
                 Caption = 'ToolButton7'
@@ -1107,7 +1109,7 @@ object Form1: TForm1
                 OnClick = ToolButton9Click
               end
               object ToolButton9: TToolButton
-                Left = 100
+                Left = 108
                 Top = 0
                 Width = 8
                 Caption = 'ToolButton9'
@@ -1115,7 +1117,7 @@ object Form1: TForm1
                 Style = tbsSeparator
               end
               object ToolButtonDisplayGray: TToolButton
-                Left = 108
+                Left = 116
                 Top = 0
                 Hint = 'Effacer les boules grises'
                 Caption = 'ToolButtonDisplayGray'
@@ -1125,7 +1127,7 @@ object Form1: TForm1
                 OnClick = ToolButtonDisplayGrayClick
               end
               object ToolButtonDisplayGreen: TToolButton
-                Left = 131
+                Left = 141
                 Top = 0
                 Hint = 'Effacer les boules vertes'
                 Caption = 'ToolButtonDisplayGreen'
@@ -1135,7 +1137,7 @@ object Form1: TForm1
                 OnClick = ToolButtonDisplayGreenClick
               end
               object ToolButtonDisplayOrange: TToolButton
-                Left = 154
+                Left = 166
                 Top = 0
                 Hint = 'Effacer les boules rouges'
                 Caption = 'ToolButtonDisplayOrange'
@@ -1145,7 +1147,7 @@ object Form1: TForm1
                 OnClick = ToolButtonDisplayOrangeClick
               end
               object ToolButton10: TToolButton
-                Left = 177
+                Left = 191
                 Top = 0
                 Width = 8
                 Caption = 'ToolButton10'
@@ -1153,7 +1155,7 @@ object Form1: TForm1
                 Style = tbsSeparator
               end
               object ButtonClearLogs: TToolButton
-                Left = 185
+                Left = 199
                 Top = 0
                 Hint = 'Effacer les logs'
                 Caption = 'ButtonClearLogs'
