@@ -90,7 +90,7 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
-      PageIndex = 1
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -929,7 +929,6 @@ object Form1: TForm1
                 ImageIndex = 9
                 ParentShowHint = False
                 ShowHint = True
-                Style = tbsCheck
                 OnClick = ButtonDisableBlackhostClick
               end
             end
@@ -1067,7 +1066,6 @@ object Form1: TForm1
                 ImageIndex = 9
                 ParentShowHint = False
                 ShowHint = True
-                Style = tbsCheck
                 OnClick = ButtonDisableHostClick
               end
               object ToolButton12: TToolButton
@@ -1353,7 +1351,6 @@ object Form1: TForm1
         Hint = 'Tout Bloquer'
         Caption = 'ToolButtonBlockAll'
         ImageIndex = 15
-        Style = tbsCheck
         OnClick = ToolButtonBlockAllClick
       end
       object ToolButton5: TToolButton

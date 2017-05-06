@@ -313,8 +313,10 @@ end;
 procedure TFormAlert.Desactiverlebloquagedetouslesdomaines1Click(
   Sender: TObject);
 begin
-  Form1.ToolButtonBlockAll.Down := not Form1.ToolButtonBlockAll.Down;
-  Form1.ToolButtonBlockAllClick(Form1.ToolButtonBlockAll);
+  Form1.MemoLogs.Lines.Add('Bloquage de tous les domaines [désactivé].');
+  DeleteFile(Form1.DataDirectoryPath + 'disableAll.cfg');
+  Form1.ToolButtonBlockAll.Down := False;
+  Desactiverlebloquagedetouslesdomaines1.Checked := False;
   Form1.TimerRestart.Enabled := False;
   if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   FormCreate(nil);
@@ -341,8 +343,9 @@ procedure TFormAlert.ButtonDisableBlockHostClick(Sender: TObject);
 begin
   with Form1 do
   begin
-    ButtonDisableHost.Down := True;
-    ButtonDisableHostClick(ButtonDisableHost);
+    ButtonDisableHost.Down := False;
+    MemoLogs.Lines.Add('Activation du du fichier Host.');
+    DeleteFile(DataDirectoryPath + 'disableHost.cfg');
     Form1.TimerRestart.Enabled := False;
     if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   end;
@@ -353,8 +356,9 @@ procedure TFormAlert.ButtonDisableBlockBlackwordsClick(Sender: TObject);
 begin
   with Form1 do
   begin
-    ButtonDisableBlackhost.Down := True;
-    ButtonDisableBlackhostClick(ButtonDisableBlackhost);             
+    ButtonDisableBlackhost.Down := False;
+    MemoLogs.Lines.Add('Activation du filtre Blackwords.');
+    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
     Form1.TimerRestart.Enabled := False;
     if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   end;

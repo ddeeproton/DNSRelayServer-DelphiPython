@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.136';
+var CurrentApplicationVersion: string = '0.4.138';
 
 type
   TForm1 = class(TForm)
@@ -1071,7 +1071,7 @@ begin
   //MemoLogs.Lines.Add('Flushdns');
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
 
-  ToolButton11.Enabled := False;
+  //ToolButton11.Enabled := False;
   //Notebook1.PageIndex := 3;
   //ToolButton6.Down := True;
 
@@ -1425,6 +1425,9 @@ begin
   if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
   begin
     //ServerDoStart := True;
+    ImageList4.GetIcon(2, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+    ToolButton11.ImageIndex := 13;
     TimerRestart.Enabled := True;
   end;
 
@@ -2890,35 +2893,38 @@ end;
 procedure TForm1.ButtonDisableBlackhostClick(Sender: TObject);
 begin
   PanelRestart.Visible := True;
-  //TToolButton(Sender).Down := not TToolButton(Sender).Down;
-  DsactiverlefiltrageBlackword1.Checked := TToolButton(Sender).Down;
-
-  if TToolButton(Sender).Down then
+  if FileExists(DataDirectoryPath + 'disableBlackhost.cfg') then
   begin
-    MemoLogs.Lines.Add('Désactivation du filtre Blackwords.');
-    WriteInFile(DataDirectoryPath + 'disableBlackhost.cfg', '1');
-  end
-  else begin
     MemoLogs.Lines.Add('Activation du filtre Blackwords.');
     DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
-  end;
+    TToolButton(Sender).Down := False;
+  end
+  else begin
+    MemoLogs.Lines.Add('Désactivation du filtre Blackwords.');
+    WriteInFile(DataDirectoryPath + 'disableBlackhost.cfg', '1');
 
+    TToolButton(Sender).Down := True;
+  end;
+  DsactiverlefiltrageBlackword1.Checked := TToolButton(Sender).Down;
 end;
 
 procedure TForm1.ButtonDisableHostClick(Sender: TObject);
 begin
   PanelRestart.Visible := True;
   //TToolButton(Sender).Down := not TToolButton(Sender).Down;
-  DsactiverlefiltragedufichierHost1.Checked := TToolButton(Sender).Down;
-  if TToolButton(Sender).Down then
+
+  if FileExists(DataDirectoryPath + 'disableHost.cfg') then
   begin
-    MemoLogs.Lines.Add('Désactivation du fichier Host.');
-    WriteInFile(DataDirectoryPath + 'disableHost.cfg', '1');
-  end
-  else begin
     MemoLogs.Lines.Add('Activation du du fichier Host.');
     DeleteFile(DataDirectoryPath + 'disableHost.cfg');
+    TToolButton(Sender).Down := False;
+  end
+  else begin
+    MemoLogs.Lines.Add('Désactivation du fichier Host.');
+    WriteInFile(DataDirectoryPath + 'disableHost.cfg', '1');
+    TToolButton(Sender).Down := True;
   end;
+  DsactiverlefiltragedufichierHost1.Checked := TToolButton(Sender).Down;
 end;
 
 procedure TForm1.DsactiverlefiltragedufichierHost1Click(Sender: TObject);
@@ -2937,14 +2943,16 @@ end;
 
 procedure TForm1.ToolButtonBlockAllClick(Sender: TObject);
 begin
-  if TToolButton(Sender).Down then
+  if FileExists(DataDirectoryPath + 'disableAll.cfg') then
   begin
-    MemoLogs.Lines.Add('Bloquage de tous les domaines [activé].');
-    WriteInFile(DataDirectoryPath + 'disableAll.cfg', '1');
-  end
-  else begin
     MemoLogs.Lines.Add('Bloquage de tous les domaines [désactivé].');
     DeleteFile(DataDirectoryPath + 'disableAll.cfg');
+    TToolButton(Sender).Down := False;
+  end
+  else begin             
+    MemoLogs.Lines.Add('Bloquage de tous les domaines [activé].');
+    WriteInFile(DataDirectoryPath + 'disableAll.cfg', '1');
+    TToolButton(Sender).Down := True;
   end;
   toutbloquer1.Checked := TToolButton(Sender).Down;
   if isServerStarted then ButtonApplyChangesClick(nil);
