@@ -90,7 +90,6 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -126,9 +125,10 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet6
-            TabIndex = 5
+            ActivePage = TabSheet5
+            TabIndex = 4
             TabOrder = 0
+            OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
             object TabSheet1: TTabSheet
               Caption = 'Serveur DNS'
@@ -246,7 +246,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 0
+                ItemHeight = 13
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
@@ -785,7 +785,7 @@ object Form1: TForm1
                 Left = 8
                 Top = 120
                 Width = 289
-                Height = 23
+                Height = 19
                 Anchors = [akLeft, akTop, akRight]
                 Max = 255
                 Min = -255

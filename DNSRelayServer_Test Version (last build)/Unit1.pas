@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.135';
+var CurrentApplicationVersion: string = '0.4.136';
 
 type
   TForm1 = class(TForm)
@@ -311,6 +311,7 @@ type
     procedure DsactiverlefiltrageBlackword1Click(Sender: TObject);
     procedure ToolButtonBlockAllClick(Sender: TObject);
     procedure toutbloquer1Click(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2951,6 +2952,11 @@ procedure TForm1.toutbloquer1Click(Sender: TObject);
 begin
   ToolButtonBlockAll.Down := not ToolButtonBlockAll.Down;
   ToolButtonBlockAllClick(ToolButtonBlockAll);
+end;
+
+procedure TForm1.PageControl1Change(Sender: TObject);
+begin
+  ToolButton8Click(nil);
 end;
 
 end.
