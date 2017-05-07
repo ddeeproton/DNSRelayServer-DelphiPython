@@ -90,7 +90,7 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
-      PageIndex = 3
+      PageIndex = 1
       TabOrder = 0
       object TPage
         Left = 0
@@ -1010,9 +1010,9 @@ object Form1: TForm1
           object Label24: TLabel
             Left = 11
             Top = 0
-            Width = 200
+            Width = 260
             Height = 13
-            Caption = 'WebFilter: R'#232'gles appliqu'#233's aux domaines'
+            Caption = 'WebFilter: R'#232'gles appliqu'#233's aux domaines (fichier host)'
           end
           object ListView1: TListView
             Left = 2
