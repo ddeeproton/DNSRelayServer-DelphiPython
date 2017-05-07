@@ -2587,6 +2587,7 @@ begin
   else begin
     // Create first list of themes
     ThemesList.Add('0,0,0,255,255,255');
+    ThemesList.Add('0,0,0,210,226,227');
     ThemesList.Add('250,250,250,30,30,30');
     ThemesList.Add('0,255,0,0,0,0');
     ThemesList.Add('0,255,255,0,0,0');
@@ -2600,6 +2601,7 @@ begin
 
     ComboBoxCurrentTheme.Clear;
     ComboBoxCurrentTheme.Items.Add('White');
+    ComboBoxCurrentTheme.Items.Add('Cream');
     ComboBoxCurrentTheme.Items.Add('Black');
     ComboBoxCurrentTheme.Items.Add('Matrix');
     ComboBoxCurrentTheme.Items.Add('DarkBlue');

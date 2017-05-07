@@ -247,7 +247,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 13
+                ItemHeight = 0
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
