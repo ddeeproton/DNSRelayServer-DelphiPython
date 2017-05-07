@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 208
-  Top = 97
+  Left = 199
+  Top = 112
   Width = 476
   Height = 622
   Caption = 'DNS Relay Server'
@@ -2284,9 +2284,13 @@ object Form1: TForm1
         OnClick = DsactiverlefiltrageBlackword1Click
       end
     end
+    object Toutautoriser1: TMenuItem
+      Caption = 'Tout autoriser'
+      OnClick = AllowAllClick
+    end
     object toutbloquer1: TMenuItem
       Caption = 'Tout bloquer'
-      OnClick = toutbloquer1Click
+      OnClick = DisallowAllClick
     end
     object N2: TMenuItem
       Caption = '-'
@@ -16008,7 +16012,7 @@ object Form1: TForm1
   end
   object PopupMenuTheme: TPopupMenu
     Left = 386
-    Top = 296
+    Top = 295
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -16027,6 +16031,21 @@ object Form1: TForm1
     object Restaurer1: TMenuItem
       Caption = 'Restaurer'
       OnClick = Restaurer1Click
+    end
+  end
+  object PopupMenuForAllDNSRules: TPopupMenu
+    Left = 414
+    Top = 295
+    object DisallowAll: TMenuItem
+      Caption = 'Tout bloquer'
+      OnClick = DisallowAllClick
+    end
+    object N8: TMenuItem
+      Caption = '-'
+    end
+    object AllowAll: TMenuItem
+      Caption = 'Tout autoriser (pas de filtrage)'
+      OnClick = AllowAllClick
     end
   end
 end
