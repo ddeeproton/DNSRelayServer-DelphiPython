@@ -37,6 +37,7 @@ type
     ButtonDisableBlockBlackwords: TMenuItem;
     N3: TMenuItem;
     Bloquertout1: TMenuItem;
+    Edit1: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure PanelAllowedClick(Sender: TObject);
     procedure Bloquerparfichierhost1Click(Sender: TObject);
@@ -53,6 +54,7 @@ type
     procedure ButtonDisableBlockHostClick(Sender: TObject);
     procedure ButtonDisableBlockBlackwordsClick(Sender: TObject);
     procedure Bloquertout1Click(Sender: TObject);
+    procedure Label2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -97,46 +99,46 @@ begin
   //Self.Top := Screen.WorkAreaHeight - Self.Height;
   //Self.SendToBack;
 
-    Desactiverlebloquagedetouslesdomaines1.Visible := Form1.ToolButtonBlockAll.Down;
-    if Form1.ToolButtonBlockAll.Down then
+  Desactiverlebloquagedetouslesdomaines1.Visible := Form1.ToolButtonBlockAll.Down;
+  if Form1.ToolButtonBlockAll.Down then
+  begin
+    PanelAllowed.Visible := False;
+    PanelDisallowed.Visible := True;
+  end;
+
+  AutoriserledomainedufichierHost1.Visible := False;
+  AutoriserledomaineBlackwords1.Visible := False;
+  ButtonDisableBlockHost.Visible := False;
+  ButtonDisableBlockBlackwords.Visible := False;
+  domain := Label1.Caption;
+  if domain <> '' then
+  begin
+    txt := ReadFromFile(form1.EditFilehost.Text);
+    if Pos('127.0.0.1	'+domain, txt) > 0 then
     begin
+      AutoriserledomainedufichierHost1.Visible := True;
       PanelAllowed.Visible := False;
       PanelDisallowed.Visible := True;
+      if not Form1.ButtonDisableHost.Down then ButtonDisableBlockHost.Visible := True;
     end;
-
-    AutoriserledomainedufichierHost1.Visible := False;
-    AutoriserledomaineBlackwords1.Visible := False;
-    ButtonDisableBlockHost.Visible := False;
-    ButtonDisableBlockBlackwords.Visible := False;
-    domain := Label1.Caption;
-    if domain <> '' then
+    with Form1 do
     begin
-      txt := ReadFromFile(form1.EditFilehost.Text);
-      if Pos('127.0.0.1	'+domain, txt) > 0 then
+      for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
       begin
-        AutoriserledomainedufichierHost1.Visible := True;
-        PanelAllowed.Visible := False;
-        PanelDisallowed.Visible := True;
-        if not Form1.ButtonDisableHost.Down then ButtonDisableBlockHost.Visible := True;
-      end;
-
-      with Form1 do
-      begin
-        for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+        txt := ListBoxBlacklist.Items.Strings[i];
+        if Pos(txt, domain) > 0 then
         begin
-          txt := ListBoxBlacklist.Items.Strings[i];
-           if Pos(txt, domain) > 0 then
-           begin
-             AutoriserledomaineBlackwords1.Visible := True;
-             PanelAllowed.Visible := False;
-             PanelDisallowed.Visible := True;
-             if not Form1.ButtonDisableBlackhost.Down then ButtonDisableBlockBlackwords.Visible := True;
-           end;
+          AutoriserledomaineBlackwords1.Visible := True;
+          PanelAllowed.Visible := False;
+          PanelDisallowed.Visible := True;
+          if not Form1.ButtonDisableBlackhost.Down then ButtonDisableBlockBlackwords.Visible := True;
         end;
       end;
-
     end;
 
+  end;
+  Edit1.Width := Label1.Width;
+  Edit1.Text := Label1.Caption;
 end;
 
 procedure TFormAlert.PanelAllowedClick(Sender: TObject);
@@ -370,11 +372,20 @@ begin
   with Form1 do
   begin
     ToolButtonBlockAll.Down := True;
-    ToolButtonBlockAllClick(ToolButtonBlockAll);                     
+    ToolButtonBlockAllClick(ToolButtonBlockAll);
     Form1.TimerRestart.Enabled := False;
     if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
   end;
   FormCreate(nil);
+end;
+
+procedure TFormAlert.Label2Click(Sender: TObject);
+begin
+  Edit1.Visible := True;
+  Edit1.SetFocus;
+  Edit1.SelectAll;
+  CheckBoxStay2.Checked := True;
+  TimerAfterCreate.Enabled := False;
 end;
 
 end.

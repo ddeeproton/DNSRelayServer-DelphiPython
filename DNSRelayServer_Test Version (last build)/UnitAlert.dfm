@@ -1,11 +1,13 @@
 object FormAlert: TFormAlert
-  Left = 588
-  Top = 597
+  Left = 451
+  Top = 492
   BorderStyle = bsNone
   Caption = 'FormAlert'
-  ClientHeight = 84
-  ClientWidth = 309
+  ClientHeight = 88
+  ClientWidth = 242
   Color = clWhite
+  TransparentColor = True
+  TransparentColorValue = clWindow
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -18,14 +20,14 @@ object FormAlert: TFormAlert
   object PanelDisallowed: TPanel
     Left = 0
     Top = 0
-    Width = 309
+    Width = 242
     Height = 23
     Align = alTop
     AutoSize = True
     Color = clGreen
     TabOrder = 0
     DesignSize = (
-      309
+      242
       23)
     object Label1: TLabel
       Left = 22
@@ -39,9 +41,10 @@ object FormAlert: TFormAlert
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
+      OnClick = Label2Click
     end
     object ButtonMenuForDisallowed: TSpeedButton
-      Left = 236
+      Left = 169
       Top = 1
       Width = 25
       Height = 21
@@ -99,7 +102,7 @@ object FormAlert: TFormAlert
       Transparent = True
     end
     object SpeedButtonClosePanelUpdateTheme: TSpeedButton
-      Left = 285
+      Left = 218
       Top = 1
       Width = 22
       Height = 21
@@ -128,7 +131,7 @@ object FormAlert: TFormAlert
       OnClick = PanelAllowedClick
     end
     object CheckBoxStay: TCheckBox
-      Left = 265
+      Left = 198
       Top = 1
       Width = 21
       Height = 21
@@ -143,14 +146,14 @@ object FormAlert: TFormAlert
   object PanelAllowed: TPanel
     Left = 0
     Top = 23
-    Width = 309
+    Width = 242
     Height = 23
     Align = alTop
     AutoSize = True
     Color = clMaroon
     TabOrder = 1
     DesignSize = (
-      309
+      242
       23)
     object Label2: TLabel
       Left = 22
@@ -164,9 +167,10 @@ object FormAlert: TFormAlert
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
+      OnClick = Label2Click
     end
     object ButtonMenuForAllowed: TSpeedButton
-      Left = 236
+      Left = 169
       Top = 1
       Width = 25
       Height = 21
@@ -224,7 +228,7 @@ object FormAlert: TFormAlert
       Transparent = True
     end
     object SpeedButton1: TSpeedButton
-      Left = 285
+      Left = 218
       Top = 1
       Width = 22
       Height = 21
@@ -253,7 +257,7 @@ object FormAlert: TFormAlert
       OnClick = PanelAllowedClick
     end
     object CheckBoxStay2: TCheckBox
-      Left = 265
+      Left = 198
       Top = 1
       Width = 17
       Height = 21
@@ -264,6 +268,15 @@ object FormAlert: TFormAlert
       TabOrder = 0
       OnClick = CheckBoxStayClick
     end
+  end
+  object Edit1: TEdit
+    Left = 21
+    Top = 1
+    Width = 121
+    Height = 21
+    TabOrder = 2
+    Text = 'Edit1'
+    Visible = False
   end
   object TimerAfterCreate: TTimer
     Interval = 20000
