@@ -55,6 +55,7 @@ type
     procedure ButtonDisableBlockBlackwordsClick(Sender: TObject);
     procedure Bloquertout1Click(Sender: TObject);
     procedure Label2Click(Sender: TObject);
+    procedure Edit1Enter(Sender: TObject);
   private
     { Private declarations }
   public
@@ -137,7 +138,7 @@ begin
     end;
 
   end;
-  Edit1.Width := Label1.Width;
+  Edit1.Width := Label1.Width + 5;
   Edit1.Text := Label1.Caption;
 end;
 
@@ -386,6 +387,11 @@ begin
   Edit1.SelectAll;
   CheckBoxStay2.Checked := True;
   TimerAfterCreate.Enabled := False;
+end;
+
+procedure TFormAlert.Edit1Enter(Sender: TObject);
+begin
+  Edit1.SelectAll;
 end;
 
 end.

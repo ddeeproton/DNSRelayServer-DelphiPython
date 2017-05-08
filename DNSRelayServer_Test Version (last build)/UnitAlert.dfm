@@ -277,6 +277,8 @@ object FormAlert: TFormAlert
     TabOrder = 2
     Text = 'Edit1'
     Visible = False
+    OnClick = Edit1Enter
+    OnEnter = Edit1Enter
   end
   object TimerAfterCreate: TTimer
     Interval = 20000
