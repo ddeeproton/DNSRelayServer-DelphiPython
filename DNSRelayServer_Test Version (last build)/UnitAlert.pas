@@ -263,6 +263,9 @@ begin
             ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
             Form1.TimerRestart.Enabled := False;
             if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
+         end else
+         begin
+           Inc(i);
          end;
        end
        else begin
@@ -367,7 +370,7 @@ begin
   end;
   FormCreate(nil);
 end;
-
+          
 procedure TFormAlert.Bloquertout1Click(Sender: TObject);
 begin
   with Form1 do
