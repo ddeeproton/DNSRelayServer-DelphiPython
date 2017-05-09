@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.144';
+var CurrentApplicationVersion: string = '0.4.145';
 
 type
   TForm1 = class(TForm)
@@ -199,6 +199,12 @@ type
     Toutautoriser1: TMenuItem;
     N9: TMenuItem;
     AjouterBlackworkds1: TMenuItem;
+    ToolButtonMenuLogs: TToolButton;
+    PopupMenuLogs: TPopupMenu;
+    Afficherenhaut1: TMenuItem;
+    Afficherenbas1: TMenuItem;
+    Affichergauche1: TMenuItem;
+    Afficherdroite1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -322,6 +328,11 @@ type
     procedure DisallowAllClick(Sender: TObject);
     procedure AllowAllClick(Sender: TObject);
     procedure AjouterBlackworkds1Click(Sender: TObject);
+    procedure ToolButtonMenuLogsClick(Sender: TObject);
+    procedure Afficherenhaut1Click(Sender: TObject);
+    procedure Afficherenbas1Click(Sender: TObject);
+    procedure Affichergauche1Click(Sender: TObject);
+    procedure Afficherdroite1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -3072,6 +3083,38 @@ begin
   ListBoxBlacklist.Items.Add(domain);
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
   TimerRestart.Enabled := isServerStarted;
+end;
+
+procedure TForm1.ToolButtonMenuLogsClick(Sender: TObject);
+var
+  Pos:TPoint;
+begin
+  GetCursorPos(Pos);
+  PopupMenuLogs.Popup(Pos.X,Pos.Y);
+end;
+
+procedure TForm1.Afficherenhaut1Click(Sender: TObject);
+begin
+  ComboBoxPosLogs.ItemIndex := 0;
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+end;
+
+procedure TForm1.Afficherenbas1Click(Sender: TObject);
+begin
+  ComboBoxPosLogs.ItemIndex := 1;
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+end;
+
+procedure TForm1.Affichergauche1Click(Sender: TObject);
+begin
+  ComboBoxPosLogs.ItemIndex := 2;
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+end;
+
+procedure TForm1.Afficherdroite1Click(Sender: TObject);
+begin
+  ComboBoxPosLogs.ItemIndex := 3;
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
 end;
 
 end.
