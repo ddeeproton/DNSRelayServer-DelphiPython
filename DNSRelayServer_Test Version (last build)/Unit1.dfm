@@ -125,8 +125,8 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet5
-            TabIndex = 4
+            ActivePage = TabSheet1
+            TabIndex = 0
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -2275,6 +2275,14 @@ object Form1: TForm1
         Caption = 'bloqu'#233's'
         OnClick = bloques1Click
       end
+    end
+    object Activertouteslesalertes1: TMenuItem
+      Caption = 'Activer toutes les alertes'
+      OnClick = Activertouteslesalertes1Click
+    end
+    object Dsactivertouteslesalertes1: TMenuItem
+      Caption = 'D'#233'sactiver toutes les alertes'
+      OnClick = Dsactivertouteslesalertes1Click
     end
     object N7: TMenuItem
       Caption = '-'

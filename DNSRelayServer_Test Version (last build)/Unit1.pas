@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.145';
+var CurrentApplicationVersion: string = '0.4.146';
 
 type
   TForm1 = class(TForm)
@@ -205,6 +205,8 @@ type
     Afficherenbas1: TMenuItem;
     Affichergauche1: TMenuItem;
     Afficherdroite1: TMenuItem;
+    Dsactivertouteslesalertes1: TMenuItem;
+    Activertouteslesalertes1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -333,6 +335,8 @@ type
     procedure Afficherenbas1Click(Sender: TObject);
     procedure Affichergauche1Click(Sender: TObject);
     procedure Afficherdroite1Click(Sender: TObject);
+    procedure Activertouteslesalertes1Click(Sender: TObject);
+    procedure Dsactivertouteslesalertes1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -3115,6 +3119,26 @@ procedure TForm1.Afficherdroite1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 3;
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
+end;
+
+procedure TForm1.Activertouteslesalertes1Click(Sender: TObject);
+begin
+  CheckBoxAlertEventsUnknown.Checked := True;
+  CheckBoxAlertEventsKnown.Checked := CheckBoxAlertEventsUnknown.Checked;
+  CheckBoxAlertEventDisallowed.Checked := CheckBoxAlertEventsUnknown.Checked;
+  CheckBoxAlertEventsUnknownClick(CheckBoxAlertEventsUnknown);
+  CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
+  CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
+end;
+
+procedure TForm1.Dsactivertouteslesalertes1Click(Sender: TObject);
+begin
+  CheckBoxAlertEventsUnknown.Checked := False;
+  CheckBoxAlertEventsKnown.Checked := CheckBoxAlertEventsUnknown.Checked;
+  CheckBoxAlertEventDisallowed.Checked := CheckBoxAlertEventsUnknown.Checked;
+  CheckBoxAlertEventsUnknownClick(CheckBoxAlertEventsUnknown);
+  CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
+  CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
 end;
 
 end.
