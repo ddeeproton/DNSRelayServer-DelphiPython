@@ -197,6 +197,8 @@ type
     DisallowAll: TMenuItem;
     N8: TMenuItem;
     Toutautoriser1: TMenuItem;
+    N9: TMenuItem;
+    AjouterBlackworkds1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -319,6 +321,7 @@ type
     procedure PageControl1Change(Sender: TObject);
     procedure DisallowAllClick(Sender: TObject);
     procedure AllowAllClick(Sender: TObject);
+    procedure AjouterBlackworkds1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1144,11 +1147,11 @@ end;
 
 // Add DNS MASTER
 procedure TForm1.ToolButton1Click(Sender: TObject);
-var txt: string;
+var dns: string;
 begin
-  txt := InputBox('Add DNS Master', 'Exemple 209.244.0.3', '');
-  if txt = '' then exit;
-  ListBoxDNSMaster.Items.Add(txt);
+  dns := '';
+  if not InputQuery('Add DNS Master', 'Exemple 209.244.0.3', dns) then exit;
+  ListBoxDNSMaster.Items.Add(dns);
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
   if isServerStarted then PanelRestart.Visible := True;
 end;
@@ -1181,7 +1184,7 @@ end;
 procedure TForm1.ToolButtonUpdateDNSMasterClick(Sender: TObject);
 var
   i:integer;
-  txt:string;
+  dns:string;
 begin
   i := ListBoxDNSMaster.ItemIndex;
   if i < 0 then
@@ -1189,10 +1192,10 @@ begin
     ShowMessage('Veuillez d''abord sélectionner un élément dans la liste');
     exit;
   end;
-  txt := ListBoxDNSMaster.Items.Strings[i];
-  txt := InputBox('Update DNS Master', 'Exemple 209.244.0.3', txt);
-  if txt = '' then exit;
-  ListBoxDNSMaster.Items.Strings[i] := txt;
+  dns := ListBoxDNSMaster.Items.Strings[i];
+  //txt := InputBox('Update DNS Master', 'Exemple 209.244.0.3', txt);
+  if not InputQuery('Update DNS Master', 'Exemple 209.244.0.3', dns) then exit;
+  ListBoxDNSMaster.Items.Strings[i] := dns;
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
   if isServerStarted then PanelRestart.Visible := True;
 end;
@@ -1925,14 +1928,14 @@ end;
 
 procedure TForm1.Modifier1Click(Sender: TObject);
 var
-  txt:string;
+  ip:string;
 begin
   if not Assigned(SelectedListItem) then exit;
-  txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]);
-  if (txt = '') or  (SelectedListItem.SubItems.Strings[0] = txt) then exit;
-  //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], txt);
-  setDomain( EditFilehost.Text, SelectedListItem.Caption, txt);
-  SelectedListItem.SubItems.Strings[0] := txt;
+  //txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]);
+  ip := SelectedListItem.SubItems.Strings[0];
+  if not InputQuery('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', ip) then exit;
+  setDomain( EditFilehost.Text, SelectedListItem.Caption, ip);
+  SelectedListItem.SubItems.Strings[0] := ip;
   refreshListView1Click();
   if isServerStarted then
   begin
@@ -2450,11 +2453,11 @@ end;
 
 
 procedure TForm1.Ajouter2Click(Sender: TObject);
-var txt: string;
+var ip: string;
 begin
-  txt := InputBox('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', '');
-  if txt = '' then exit;
-  ListBoxBlacklist.Items.Add(txt);
+  ip := '';
+  if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', ip) then exit;
+  ListBoxBlacklist.Items.Add(ip);
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
   if isServerStarted then PanelRestart.Visible := True;
 end;
@@ -2471,8 +2474,7 @@ begin
     exit;
   end;
   txt := ListBoxBlacklist.Items.Strings[i];
-  txt := InputBox('Update Blackword', txt, txt);
-  if (txt = '') or (txt = ListBoxBlacklist.Items.Strings[i]) then exit;
+  if not InputQuery('Update Blackword', txt, txt) then exit;
   ListBoxBlacklist.Items.Strings[i] := txt;
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
   if isServerStarted then PanelRestart.Visible := True;
@@ -3057,6 +3059,20 @@ begin
 end;
 
 
+
+procedure TForm1.AjouterBlackworkds1Click(Sender: TObject);
+var
+  i, j:integer;
+  txt, domain: string;
+begin
+  if not Assigned(SelectedListItem) then exit;
+  domain := SelectedListItem.Caption; //SelectedListItem.SubItems.Strings[0];
+  //txt := InputBox('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain);
+  if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain) then exit;
+  ListBoxBlacklist.Items.Add(domain);
+  ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
+  TimerRestart.Enabled := isServerStarted;
+end;
 
 end.
 

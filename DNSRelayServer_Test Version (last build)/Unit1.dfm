@@ -90,7 +90,7 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
-      PageIndex = 1
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -247,7 +247,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 0
+                ItemHeight = 13
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
@@ -7109,6 +7109,13 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFF00}
       Caption = 'Bloquer'
       OnClick = Bloquerledomaine1Click
+    end
+    object N9: TMenuItem
+      Caption = '-'
+    end
+    object AjouterBlackworkds1: TMenuItem
+      Caption = 'Ajouter (Blackworkds)'
+      OnClick = AjouterBlackworkds1Click
     end
   end
   object Timer1: TTimer

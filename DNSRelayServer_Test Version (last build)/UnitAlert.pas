@@ -214,19 +214,15 @@ begin
 end;
 
 procedure TFormAlert.BloquerparfichierBlackwords1Click(Sender: TObject);
-var
-  i, j:integer;
-  txt, domain: string;
+var domain: string;
 begin
   domain := Label2.Caption;
   with Form1 do
   begin
-    txt := InputBox('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain);
-    if txt = '' then exit;
-    ListBoxBlacklist.Items.Add(txt);
+    if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain) then exit;
+    ListBoxBlacklist.Items.Add(domain);
     ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-    Form1.TimerRestart.Enabled := False;
-    if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
+    TimerRestart.Enabled := isServerStarted;
   end;
   FormCreate(nil);
   TimerAfterCreate.Enabled := False;
