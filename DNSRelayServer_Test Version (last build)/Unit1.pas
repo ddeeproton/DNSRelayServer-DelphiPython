@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.146';
+var CurrentApplicationVersion: string = '0.4.147';
 
 type
   TForm1 = class(TForm)
@@ -1071,10 +1071,11 @@ begin
 
   //if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
   //begin
-    script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
-    filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
-    WriteInFile(filepath, script);
-    LaunchAndWait(filepath,'', launchAndWWindow);
+  if FileExists(DataDirectoryPath + 'relayDNS.pyo') then DeleteFile(DataDirectoryPath + 'relayDNS.pyo');
+  script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
+  filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
+  WriteInFile(filepath, script);
+  LaunchAndWait(filepath,'', launchAndWWindow);
   //end;
 
   if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
@@ -3086,7 +3087,7 @@ begin
   if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain) then exit;
   ListBoxBlacklist.Items.Add(domain);
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-  TimerRestart.Enabled := isServerStarted;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.ToolButtonMenuLogsClick(Sender: TObject);
@@ -3140,6 +3141,8 @@ begin
   CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
   CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
 end;
+
+//https://download.sysinternals.com/files/TCPView.zip
 
 end.
 

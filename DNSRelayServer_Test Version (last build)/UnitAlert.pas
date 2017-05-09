@@ -76,14 +76,10 @@ var
   i: integer;
   domain, txt: string;
 begin
-
   Self.FormStyle := fsStayOnTop;
   //Self.Show;
-
-
   //Systray.EnleveIconeTray;
   //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
-
   PanelAllowed.Top := 0;
   PanelDisallowed.Top := 0;
   Self.Height := PanelAllowed.Height;

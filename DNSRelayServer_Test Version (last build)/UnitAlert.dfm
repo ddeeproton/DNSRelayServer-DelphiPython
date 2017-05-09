@@ -1,9 +1,9 @@
 object FormAlert: TFormAlert
-  Left = 683
-  Top = 603
+  Left = 712
+  Top = 575
   BorderStyle = bsNone
   Caption = 'FormAlert'
-  ClientHeight = 88
+  ClientHeight = 82
   ClientWidth = 242
   Color = clWhite
   TransparentColor = True
@@ -283,13 +283,13 @@ object FormAlert: TFormAlert
   object TimerAfterCreate: TTimer
     Interval = 20000
     OnTimer = PanelAllowedClick
-    Left = 72
-    Top = 56
+    Left = 8
+    Top = 48
   end
   object PopupMenuForAllowed: TPopupMenu
     Images = Form1.ImageList3
-    Left = 104
-    Top = 56
+    Left = 40
+    Top = 48
     object Bloquerparfichierhost1: TMenuItem
       Caption = 'Bloquer par le fichier host'
       ImageIndex = 3
@@ -317,8 +317,8 @@ object FormAlert: TFormAlert
   end
   object PopupMenuForDisallowed: TPopupMenu
     Images = Form1.ImageList3
-    Left = 136
-    Top = 56
+    Left = 72
+    Top = 48
     object AutoriserledomainedufichierHost1: TMenuItem
       Caption = 'Autoriser le domaine (fichier Host)'
       ImageIndex = 1

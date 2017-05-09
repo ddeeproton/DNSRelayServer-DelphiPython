@@ -230,7 +230,7 @@ begin
     '		fp = open(blackhostfile, ''r'')'#13#10+
     '		for line in fp.readlines():'#13#10+
     '			if re.search(line[:-1], domain):'#13#10+
-    '				res = ''127.0.0.1'''#13#10+
+    '				res = ''127.0.0.9'''#13#10+
     '			#print '';EOL;''+line+'' in ''+domain+'';EOL;'''#13#10+
     '			#if domain.find(line) != -1:'#13#10+
     '			#try:'#13#10+
@@ -261,7 +261,7 @@ begin
     '	def resolveDomain(self, domain, idstatus, dnss):'#13#10+
     '	'#13#10+
     '		if config_block_all == 1:'#13#10+
-    '			return "127.0.0.1"'#13#10+
+    '			return "127.0.0.3"'#13#10+
     '		if config_cache_memory == 1:'#13#10+
     '			if domain in cache_domains:'#13#10+
     '				i = cache_domains.index(domain)'#13#10+
@@ -277,12 +277,12 @@ begin
     '			#	cache_domains.append(domain)'#13#10+
     '				'#13#10+
     '		if ".in-addr.arpa" in domain:'#13#10+
-    '			if config_display:'#13#10+
-    '				print "ARPA"'#13#10+
-    '			if config_cache_memory == 1:'#13#10+
-    '				cache_domains.append(domain)'#13#10+
-    '				cache_ips.append("127.0.0.1")'#13#10+
-    '			return "127.0.0.1"'#13#10+
+    '			#if config_display:'#13#10+
+    '			#	print "ARPA"'#13#10+
+    '			#if config_cache_memory == 1:'#13#10+
+    '			#	cache_domains.append(domain)'#13#10+
+    '			#	cache_ips.append("127.0.0.2")'#13#10+
+    '			return "127.0.0.2"'#13#10+
     '			'#13#10+
     '		IPHost = dnss.checkHost(domain)'#13#10+
     '		if config_use_host == 1 and IPHost <> '''':'#13#10+
@@ -306,13 +306,15 @@ begin
     '		nameservers = config_dnsrelay'#13#10+
     '		ip = dnsc.dnsResolve(domain) # Ask the master DNS server'#13#10+
     '		if ip == 0:'#13#10+
-    '			#if config_cache_memory == 1:'#13#10+
-    '			#	cache_domains.append(domain)'#13#10+
-    '			#	cache_ips.append("127.0.0.1")'#13#10+
-    '			return "127.0.0.1"'#13#10+
+    '			ip = dnsc.dnsResolve(domain)'#13#10+
+    '			if ip == 0:'#13#10+
+    '				#if config_cache_memory == 1:'#13#10+
+    '				#	cache_domains.append(domain)'#13#10+
+    '				#	cache_ips.append("127.0.0.4")'#13#10+
+    '				return "127.0.0.4"'#13#10+
     '			'#13#10+
     '		#db.sqlsetdomain(domain, ip) # Add IP in database'#13#10+
-    '		if config_cache_memory == 1 and ip <> "127.0.0.1":'#13#10+
+    '		if config_cache_memory == 1 and ip <> 0:'#13#10+
     '			cache_domains.append(domain)'#13#10+
     '			cache_ips.append(ip)'#13#10+
     '		return ip'#13#10+
@@ -360,7 +362,7 @@ begin
     '			ip = q[0][1]'#13#10+
     '			banned = q[0][2]'#13#10+
     '			if banned == 1:'#13#10+
-    '				res = "127.0.0.1"'#13#10+
+    '				res = "127.0.0.5"'#13#10+
     '			else:'#13#10+
     '				res = ip'#13#10+
     '		return res'#13#10+
@@ -397,9 +399,9 @@ begin
     '	'#13#10+
     '	isArpa = ".in-addr.arpa" in dnss.domain'#13#10+
     '	country = ''unkown'''#13#10+
-    '	answer = ''127.0.0.1'''#13#10+
+    '	answer = ''127.0.0.6'''#13#10+
     '	if isArpa:'#13#10+
-    '		print ''isArpa'''#13#10+
+    '		#print ''isArpa'''#13#10+
     '		ip = dnss.domain.split(".") '#13#10+
     '		answer = ip[3]+"."+ip[2]+"."+ip[1]+"."+ip[0]'#13#10+
     '		#country = db.sqlgetcountry(answer)'#13#10+
@@ -420,7 +422,7 @@ begin
     '			countryname = db.sqlgetcountryname(answer)'#13#10+
     '			country = db.sqlgetcountry(answer)'#13#10+
     '			if country in config_banned_countries and addr[0] == ''8.8.8.20'':'#13#10+
-    '				answer = ''127.0.0.1'''#13#10+
+    '				answer = ''127.0.0.7'''#13#10+
     ''#13#10+
     '			udps.sendQuery(dnss.dnsAnswer(answer), addr) # Send IP to the user'#13#10+
     ''#13#10+
@@ -429,7 +431,7 @@ begin
     '			answer = dnss.resolveDomain(dnss.domain, 2, dnss) # Ask the Primary DNS server'#13#10+
     '			#answer = dnsc.dnsResolve(dnss.domain) # Ask the Primary DNS server'#13#10+
     '			if answer == 0 :'#13#10+
-    '				answer = "127.0.0.1"'#13#10+
+    '				answer = "127.0.0.8"'#13#10+
     '			else:'#13#10+
     '				#db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
     '				#countryname = db.sqlgetcountryname(answer)'#13#10+
@@ -450,7 +452,8 @@ begin
     '	#else:'#13#10+
     '	#if answer != ''127.0.0.1'':'#13#10+
     '	#	db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
-    '	print ''%s; %s; %s; %s;EOL;'' % (heure, addr[0], answer, dnss.domain)'#13#10+
+    '	if isArpa == False:'#13#10+
+    '		print ''%s; %s; %s; %s;EOL;'' % (heure, addr[0], answer, dnss.domain)'#13#10+
     '	sys.stdout.flush()'#13#10+
     ''#13#10+
     '	'#13#10+
