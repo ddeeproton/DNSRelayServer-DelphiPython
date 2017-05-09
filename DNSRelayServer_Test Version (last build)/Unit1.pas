@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.143';
+var CurrentApplicationVersion: string = '0.4.144';
 
 type
   TForm1 = class(TForm)
@@ -981,6 +981,8 @@ begin
                                           'clients4.google.com'#13#10+
                                           'youtubei.youtube.com'#13#10+
                                           'serving-sys.com'#13#10+
+                                          '7zne6'#13#10+
+                                          '7znee'#13#10+
                                           'atdmt.com'#13#10+
                                           'googleadservices.com'#13#10+
                                           'doubleclick.net'#13#10+
