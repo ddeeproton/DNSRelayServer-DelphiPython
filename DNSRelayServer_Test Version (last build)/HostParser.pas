@@ -22,14 +22,10 @@ end;
 
 procedure delDomain(hostfile, domain: string);
 var
-  i: Integer;
   fp : textfile;
   texte, result : string;
-  isInHost : Boolean;
-begin
+begin        
   domain := onlyChars(domain);
-
-  isInHost := false;
   if FileExists(hostfile) then
   begin
     assignFile(fp, hostfile);
@@ -42,13 +38,12 @@ begin
     end;
     closefile(fp);
   end;
-
-
   assignFile(fp, hostfile);
   reWrite(fp);
   Write(Fp, result);
   closefile(fp);
 end;
+
 
 procedure setDomain(hostfile, domain, ip: string);
 var

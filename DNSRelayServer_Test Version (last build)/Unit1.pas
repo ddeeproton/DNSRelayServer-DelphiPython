@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.147';
+var CurrentApplicationVersion: string = '0.4.150';
 
 type
   TForm1 = class(TForm)
@@ -195,7 +195,6 @@ type
     PopupMenuForAllDNSRules: TPopupMenu;
     AllowAll: TMenuItem;
     DisallowAll: TMenuItem;
-    N8: TMenuItem;
     Toutautoriser1: TMenuItem;
     N9: TMenuItem;
     AjouterBlackworkds1: TMenuItem;
@@ -207,6 +206,8 @@ type
     Afficherdroite1: TMenuItem;
     Dsactivertouteslesalertes1: TMenuItem;
     Activertouteslesalertes1: TMenuItem;
+    Toutnormal1: TMenuItem;
+    Toutnormale1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -337,6 +338,7 @@ type
     procedure Afficherdroite1Click(Sender: TObject);
     procedure Activertouteslesalertes1Click(Sender: TObject);
     procedure Dsactivertouteslesalertes1Click(Sender: TObject);
+    procedure ToutNormal1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1304,7 +1306,7 @@ var
   autostarted: Boolean;
 begin
   // Opacity
-  SetLayeredWindowAttributes(Handle, 50);
+  //SetLayeredWindowAttributes(Handle, 50);
   TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;
@@ -1472,6 +1474,12 @@ begin
   DsactiverlefiltragedufichierHost1.Checked := AllowAll.Checked;
   DsactiverlefiltrageBlackword1.Checked := AllowAll.Checked;
 
+  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
+                      and not ButtonDisableHost.Down
+                      and not AllowAll.Checked
+                      and not DisallowAll.Checked
+                      and not Toutnormale1.Checked;
+  Toutnormal1.Checked := Toutnormale1.Checked;
 
 
   startedInBackground := False;
@@ -3045,67 +3053,114 @@ end;
 
 
 
-procedure TForm1.DisallowAllClick(Sender: TObject);
-begin
-  if FileExists(DataDirectoryPath + 'disableAll.cfg') then
-  begin
-    MemoLogs.Lines.Add('Les communications sont débloqués');
-    DeleteFile(DataDirectoryPath + 'disableAll.cfg');
-    ToolButtonBlockAll.Down := False;
-  end
-  else begin
-    MemoLogs.Lines.Add('Les communications sont bloqués');
-    WriteInFile(DataDirectoryPath + 'disableAll.cfg', '1');
-    ToolButtonBlockAll.Down := True;
-  end;
-  DisallowAll.Checked := ToolButtonBlockAll.Down;
-  toutbloquer1.Checked := ToolButtonBlockAll.Down;
-
-
-  if (Sender <> nil) and FileExists(DataDirectoryPath + 'disableHost.cfg')
-  and FileExists(DataDirectoryPath + 'disableBlackhost.cfg') then
-  AllowAllClick(nil)
-  else if isServerStarted then ButtonApplyChangesClick(nil);
-
-  ToolButtonBlockAll.Down := FileExists(DataDirectoryPath + 'disableAll.cfg')
-  or (FileExists(DataDirectoryPath + 'disableHost.cfg')
-  and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
-end;
-
-
-
 
 procedure TForm1.AllowAllClick(Sender: TObject);
 begin
-  if FileExists(DataDirectoryPath + 'disableHost.cfg')
-  and FileExists(DataDirectoryPath + 'disableBlackhost.cfg') then
-  begin
-    DeleteFile(DataDirectoryPath + 'disableHost.cfg');
-    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
-    MemoLogs.Lines.Add('Autorise tout désactivé (fichier Blackwords activé)');
-    MemoLogs.Lines.Add('Autorise tout désactivé (fichier Host activé)');
-    AllowAll.Checked := False;
-  end else
-  begin
+  if not FileExists(DataDirectoryPath + 'disableHost.cfg') then
     WriteInFile(DataDirectoryPath + 'disableHost.cfg', '1');
-    WriteInFile(DataDirectoryPath + 'disableBlackhost.cfg', '1');
-    MemoLogs.Lines.Add('Autorise tout activé (fichier Host désactivé)');
-    MemoLogs.Lines.Add('Autorise tout activé (Fichier Blackwords désactivé)');
-    AllowAll.Checked := True;
-  end;
 
-  ButtonDisableBlackhost.Down := AllowAll.Checked;
-  ButtonDisableHost.Down := AllowAll.Checked;
+  if not FileExists(DataDirectoryPath + 'disableBlackhost.cfg') then
+    WriteInFile(DataDirectoryPath + 'disableBlackhost.cfg', '1');
+
+  if FileExists(DataDirectoryPath + 'disableAll.cfg') then
+    DeleteFile(DataDirectoryPath + 'disableAll.cfg');
+
+  MemoLogs.Lines.Add('Mode "tout autoriser"');
+
+
+  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
+  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
+  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
+                      and not ButtonDisableHost.Down
+                      and not AllowAll.Checked
+                      and not DisallowAll.Checked
+                      and not Toutnormale1.Checked;
+  Toutnormal1.Checked := Toutnormale1.Checked;
+
+
+  if isServerStarted then ButtonApplyChangesClick(nil);
+
+end;
+
+
+
+procedure TForm1.ToutNormal1Click(Sender: TObject);
+begin
+  if FileExists(DataDirectoryPath + 'disableAll.cfg') then
+    DeleteFile(DataDirectoryPath + 'disableAll.cfg');
+
+  if FileExists(DataDirectoryPath + 'disableHost.cfg') then
+    DeleteFile(DataDirectoryPath + 'disableHost.cfg');
+
+  if FileExists(DataDirectoryPath + 'disableBlackhost.cfg') then
+    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
+
+
+  MemoLogs.Lines.Add('Mode normal');
+
+  AllowAll.Checked := False;
+  toutbloquer1.Checked := False;
+  ToolButtonBlockAll.Down := False;
+  ButtonDisableBlackhost.Down := False;
+  ButtonDisableHost.Down := False;
+  DsactiverlefiltragedufichierHost1.Checked := False;
+  DsactiverlefiltrageBlackword1.Checked := False;
+  Toutautoriser1.Checked := False;
+
+
+  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
+  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
+  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
+                      and not ButtonDisableHost.Down
+                      and not AllowAll.Checked
+                      and not DisallowAll.Checked
+                      and not Toutnormale1.Checked;
+  Toutnormal1.Checked := Toutnormale1.Checked;
+  if isServerStarted then ButtonApplyChangesClick(nil);
+end;
+
+
+procedure TForm1.DisallowAllClick(Sender: TObject);
+begin
+  if not FileExists(DataDirectoryPath + 'disableAll.cfg') then
+    WriteInFile(DataDirectoryPath + 'disableAll.cfg', '1');
+
+  if FileExists(DataDirectoryPath + 'disableHost.cfg') then
+    DeleteFile(DataDirectoryPath + 'disableHost.cfg');
+
+  if FileExists(DataDirectoryPath + 'disableBlackhost.cfg') then
+    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
+
+
+  MemoLogs.Lines.Add('Mode "tout bloquer"');
+
+  AllowAll.Checked := False;
+  toutbloquer1.Checked := not AllowAll.Checked;
+  ToolButtonBlockAll.Down := True;
   DsactiverlefiltragedufichierHost1.Checked := AllowAll.Checked;
   DsactiverlefiltrageBlackword1.Checked := AllowAll.Checked;
   Toutautoriser1.Checked := AllowAll.Checked;
-  if (Sender <> nil) and FileExists(DataDirectoryPath + 'disableAll.cfg') then DisallowAllClick(nil)
-  else if isServerStarted then ButtonApplyChangesClick(nil);
 
-  ToolButtonBlockAll.Down := FileExists(DataDirectoryPath + 'disableAll.cfg')
-  or (FileExists(DataDirectoryPath + 'disableHost.cfg')
-  and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
+  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
+  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg')
+                  and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
+  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
+                      and not ButtonDisableHost.Down
+                      and not AllowAll.Checked
+                      and not DisallowAll.Checked
+                      and not Toutnormale1.Checked;
+  Toutnormal1.Checked := Toutnormale1.Checked;
+
+  if isServerStarted then ButtonApplyChangesClick(nil);
 end;
+
+
 
 
 

@@ -66,7 +66,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 498
+    Top = 502
     Width = 460
     Height = 10
     Cursor = crVSplit
@@ -126,6 +126,7 @@ object Form1: TForm1
             Width = 311
             Height = 323
             ActivePage = TabSheet1
+            TabIndex = 0
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -788,8 +789,13 @@ object Form1: TForm1
                 Anchors = [akLeft, akTop, akRight]
                 Max = 255
                 Min = -255
+                Orientation = trHorizontal
+                Frequency = 1
                 Position = 30
+                SelEnd = 0
+                SelStart = 0
                 TabOrder = 4
+                TickMarks = tmBottomRight
                 TickStyle = tsNone
               end
             end
@@ -1198,7 +1204,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 508
+    Top = 512
     Width = 460
     Height = 75
     Align = alBottom
@@ -2295,6 +2301,10 @@ object Form1: TForm1
     object Toutautoriser1: TMenuItem
       Caption = 'Tout autoriser'
       OnClick = AllowAllClick
+    end
+    object Toutnormal1: TMenuItem
+      Caption = 'Tout normal'
+      OnClick = ToutNormal1Click
     end
     object toutbloquer1: TMenuItem
       Caption = 'Tout bloquer'
@@ -16021,6 +16031,7 @@ object Form1: TForm1
     end
   end
   object ColorDialog1: TColorDialog
+    Ctl3D = True
     Left = 414
     Top = 395
   end
@@ -16054,8 +16065,9 @@ object Form1: TForm1
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
     end
-    object N8: TMenuItem
-      Caption = '-'
+    object Toutnormale1: TMenuItem
+      Caption = 'Tout normale'
+      OnClick = ToutNormal1Click
     end
     object AllowAll: TMenuItem
       Caption = 'Tout autoriser (pas de filtrage)'
