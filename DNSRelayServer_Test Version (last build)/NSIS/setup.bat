@@ -62,3 +62,5 @@ del /Q ..\DNSRelayServer_%v%_Source.zip
 echo ==============================
 echo Done.
 echo ==============================
+
+"..\..\Setup installation\DNSRelayServerSetup_%v%.exe"

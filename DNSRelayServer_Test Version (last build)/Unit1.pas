@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.150';
+var CurrentApplicationVersion: string = '0.4.151';
 
 type
   TForm1 = class(TForm)
@@ -339,6 +339,7 @@ type
     procedure Activertouteslesalertes1Click(Sender: TObject);
     procedure Dsactivertouteslesalertes1Click(Sender: TObject);
     procedure ToutNormal1Click(Sender: TObject);
+    procedure RefreshModeFilter();
   private
     { Private declarations }
   public
@@ -2981,6 +2982,7 @@ begin
   ButtonDisableHost.Down := not ButtonDisableHost.Down;
   ButtonDisableHostClick(ButtonDisableHost);
   Afficher1Click(nil);
+  RefreshModeFilter();
 end;
 
 procedure TForm1.DsactiverlefiltrageBlackword1Click(Sender: TObject);
@@ -2988,6 +2990,8 @@ begin
   ButtonDisableBlackhost.Down := not ButtonDisableBlackhost.Down;
   ButtonDisableBlackhostClick(ButtonDisableBlackhost);
   Afficher1Click(nil);
+  RefreshModeFilter();
+
 end;
 
 
@@ -3051,7 +3055,20 @@ begin
   DsactiverlefiltrageBlackword1.Checked := TToolButton(Sender).Down;
 end;
 
-
+procedure TForm1.RefreshModeFilter();
+begin
+  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
+  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
+  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
+                      and not ButtonDisableHost.Down
+                      and not AllowAll.Checked
+                      and not DisallowAll.Checked
+                      and not Toutnormale1.Checked;
+  Toutnormal1.Checked := Toutnormale1.Checked;
+  if isServerStarted then ButtonApplyChangesClick(nil);
+end;
 
 
 procedure TForm1.AllowAllClick(Sender: TObject);
@@ -3066,21 +3083,7 @@ begin
     DeleteFile(DataDirectoryPath + 'disableAll.cfg');
 
   MemoLogs.Lines.Add('Mode "tout autoriser"');
-
-
-  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
-  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
-  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
-                      and not ButtonDisableHost.Down
-                      and not AllowAll.Checked
-                      and not DisallowAll.Checked
-                      and not Toutnormale1.Checked;
-  Toutnormal1.Checked := Toutnormale1.Checked;
-
-
-  if isServerStarted then ButtonApplyChangesClick(nil);
+  RefreshModeFilter();
 
 end;
 
@@ -3109,18 +3112,7 @@ begin
   DsactiverlefiltrageBlackword1.Checked := False;
   Toutautoriser1.Checked := False;
 
-
-  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
-  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
-  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
-                      and not ButtonDisableHost.Down
-                      and not AllowAll.Checked
-                      and not DisallowAll.Checked
-                      and not Toutnormale1.Checked;
-  Toutnormal1.Checked := Toutnormale1.Checked;
-  if isServerStarted then ButtonApplyChangesClick(nil);
+  RefreshModeFilter();
 end;
 
 
@@ -3145,19 +3137,8 @@ begin
   DsactiverlefiltrageBlackword1.Checked := AllowAll.Checked;
   Toutautoriser1.Checked := AllowAll.Checked;
 
-  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
-  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg')
-                  and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
-  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
-                      and not ButtonDisableHost.Down
-                      and not AllowAll.Checked
-                      and not DisallowAll.Checked
-                      and not Toutnormale1.Checked;
-  Toutnormal1.Checked := Toutnormale1.Checked;
+  RefreshModeFilter();
 
-  if isServerStarted then ButtonApplyChangesClick(nil);
 end;
 
 
