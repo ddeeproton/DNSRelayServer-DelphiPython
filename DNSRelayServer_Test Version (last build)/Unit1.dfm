@@ -66,7 +66,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 502
+    Top = 498
     Width = 460
     Height = 10
     Cursor = crVSplit
@@ -126,7 +126,6 @@ object Form1: TForm1
             Width = 311
             Height = 323
             ActivePage = TabSheet1
-            TabIndex = 0
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -789,13 +788,8 @@ object Form1: TForm1
                 Anchors = [akLeft, akTop, akRight]
                 Max = 255
                 Min = -255
-                Orientation = trHorizontal
-                Frequency = 1
                 Position = 30
-                SelEnd = 0
-                SelStart = 0
                 TabOrder = 4
-                TickMarks = tmBottomRight
                 TickStyle = tsNone
               end
             end
@@ -1204,7 +1198,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 512
+    Top = 508
     Width = 460
     Height = 75
     Align = alBottom
@@ -16027,7 +16021,6 @@ object Form1: TForm1
     end
   end
   object ColorDialog1: TColorDialog
-    Ctl3D = True
     Left = 414
     Top = 395
   end
