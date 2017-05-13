@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.159';
+var CurrentApplicationVersion: string = '0.4.160';
 
 type
   TForm1 = class(TForm)
@@ -504,6 +504,7 @@ begin
       if Length(domain) <= 11 then tab := #9 else tab := '';
       if Length(domain) <= 19 then tab := tab+#9;
       if Length(domain) <= 27 then tab := tab+#9;
+      if Length(domain) <= 36 then tab := tab+#9;
       status := 'OK';
       if ipdomain = '127.0.0.1' then status := 'BLOCKED by HostFile';
       if ipdomain = '127.0.0.3' then status := 'BLOCKED by Block ALL';
