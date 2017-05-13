@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.155';
+var CurrentApplicationVersion: string = '0.4.156';
 
 type
   TForm1 = class(TForm)
@@ -355,6 +355,7 @@ type
     procedure Carterseau1Click(Sender: TObject);
     procedure Affichage1Click(Sender: TObject);
     procedure Alertes2Click(Sender: TObject);
+    procedure Config1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1351,6 +1352,7 @@ begin
 
 
   PageControl1.TabIndex := 0;
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 5;
 
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
@@ -3188,7 +3190,8 @@ end;
 
 procedure TForm1.DNS1Click(Sender: TObject);
 begin
-  PageControl1.TabIndex := 0;
+  PageControl1.TabIndex := 0;                           
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
 end;
@@ -3196,6 +3199,7 @@ end;
 procedure TForm1.DNSMatres1Click(Sender: TObject);
 begin
   PageControl1.TabIndex := 1;
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
 end;
@@ -3203,6 +3207,7 @@ end;
 procedure TForm1.Misejour1Click(Sender: TObject);
 begin
   PageControl1.TabIndex := 2;
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
 end;
@@ -3210,6 +3215,7 @@ end;
 procedure TForm1.Carterseau1Click(Sender: TObject);
 begin
   PageControl1.TabIndex := 3;
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
 end;
@@ -3217,6 +3223,7 @@ end;
 procedure TForm1.Affichage1Click(Sender: TObject);
 begin
   PageControl1.TabIndex := 4;
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
 end;
@@ -3224,6 +3231,13 @@ end;
 procedure TForm1.Alertes2Click(Sender: TObject);
 begin
   PageControl1.TabIndex := 5;
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
+  Notebook1.PageIndex := 0;
+  ResizePanelConfig();
+end;
+
+procedure TForm1.Config1Click(Sender: TObject);
+begin
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
 end;

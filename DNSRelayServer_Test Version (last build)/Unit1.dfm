@@ -2300,6 +2300,7 @@ object Form1: TForm1
     end
     object Config1: TMenuItem
       Caption = 'Config'
+      OnClick = Config1Click
       object DNS1: TMenuItem
         Caption = 'Serveur DNS'
         OnClick = DNS1Click
