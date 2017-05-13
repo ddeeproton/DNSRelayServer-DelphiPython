@@ -994,7 +994,8 @@ begin
 
   if not FileExists(BlackListCfgFile) then
     WriteInFile(BlackListCfgFile, 'doubleclick'#13#10+
-                                  'ads.');
+                                  'godaddy'#13#10+
+                                  'googleads');
 
   if not FileExists(filepath) then
   begin
