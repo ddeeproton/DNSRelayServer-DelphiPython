@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.153';
+var CurrentApplicationVersion: string = '0.4.154';
 
 type
   TForm1 = class(TForm)
@@ -507,7 +507,7 @@ begin
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
-          if LastPositionFormAlertTop <= 0 then
+          if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
@@ -533,11 +533,11 @@ begin
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
-          if LastPositionFormAlertTop <= 0 then
+          if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
-          FormAlert.Show;    
+          FormAlert.Show;
           Application.Restore;
           Application.BringToFront;
         end;
@@ -559,7 +559,7 @@ begin
           FormAlert.PanelAllowed.Color := Form1.Color;
           FormAlert.PanelDisallowed.Color := Form1.Color;
           LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
-          if LastPositionFormAlertTop <= 0 then
+          if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);

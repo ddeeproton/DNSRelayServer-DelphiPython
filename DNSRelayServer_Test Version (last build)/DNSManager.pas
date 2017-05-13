@@ -135,9 +135,9 @@ begin
     '			answer = self.res.query(domain, "A")'#13#10+
     '			res = "%s" % answer[0]'#13#10+
     '		except dns.resolver.NoAnswer:'#13#10+
-    '			sys.stdout.write("")'#13#10+
+    '			sys.stdout.write('''')'#13#10+
     '		except dns.resolver.NXDOMAIN:'#13#10+
-    '			sys.stdout.write("")'#13#10+
+    '			sys.stdout.write('''')'#13#10+
     '		except DNSException:'#13#10+
     '			sys.stdout.write('''')'#13#10+
     '		return res'#13#10+
@@ -158,6 +158,8 @@ begin
     ''#13#10+
     '	dnsc = DNSClient([config_server], 1)'#13#10+
     '	ip = dnsc.dnsResolve(config_domain)'#13#10+
+    '	if ip == 0:'#13#10+
+    '		ip = dnsc.dnsResolve(config_domain)'#13#10+
     '	if ip == 0:'#13#10+
     '		ip = dnsc.dnsResolve(config_domain)'#13#10+
     '	if ip <> 0:'#13#10+
