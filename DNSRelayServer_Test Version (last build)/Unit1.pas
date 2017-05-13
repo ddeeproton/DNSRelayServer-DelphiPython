@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.157';
+var CurrentApplicationVersion: string = '0.4.158';
 
 type
   TForm1 = class(TForm)
@@ -444,7 +444,7 @@ var
   isNew, isRepeated: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
-  date, time, ipclient, ipdomain, domain, ip, logs, tab:string;
+  date, time, ipclient, ipdomain, domain, ip, logs, tab, status:string;
   FormAlert: TFormAlert;
 begin
 
@@ -504,7 +504,12 @@ begin
       if Length(domain) <= 11 then tab := #9 else tab := '';
       if Length(domain) <= 19 then tab := tab+#9;
       if Length(domain) <= 27 then tab := tab+#9;
-      logs := '['+date+' '+time+'] '+ipclient+' -> '+domain+tab+#9+' ('+ipdomain+')';
+      status := 'OK';
+      if ipdomain = '127.0.0.1' then status := 'BLOCKED -> HostFile';
+      if ipdomain = '127.0.0.3' then status := 'BLOCKED -> Block ALL';
+      if ipdomain = '127.0.0.4' then status := 'BLOCKED -> DNS Master fail';
+      if ipdomain = '127.0.0.9' then status := 'BLOCKED -> BlackHost';
+      logs := '['+date+' '+time+'] '+ipclient+' -> '+domain+tab+#9+' ['+status+'] -> ('+ipdomain+')';
       form1.MemoLogs.Lines.Add(logs);
     end;
     if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
