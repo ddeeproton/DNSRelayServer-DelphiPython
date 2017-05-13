@@ -125,8 +125,8 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet6
-            TabIndex = 5
+            ActivePage = TabSheet4
+            TabIndex = 3
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -246,7 +246,7 @@ object Form1: TForm1
                 Width = 145
                 Height = 21
                 Color = clWhite
-                ItemHeight = 0
+                ItemHeight = 13
                 TabOrder = 0
                 Text = 'CBoxDNSServerSlaveIP'
                 OnChange = EditFilehostChange
@@ -2261,28 +2261,13 @@ object Form1: TForm1
     object N5: TMenuItem
       Caption = '-'
     end
-    object Alertes1: TMenuItem
-      Caption = 'Alertes'
-      object connus1: TMenuItem
-        Caption = 'connus'
-        OnClick = connus1Click
-      end
-      object inconnus1: TMenuItem
-        Caption = 'inconnus'
-        OnClick = inconnus1Click
-      end
-      object bloques1: TMenuItem
-        Caption = 'bloqu'#233's'
-        OnClick = bloques1Click
-      end
+    object StartDNS1: TMenuItem
+      Caption = 'D'#233'marrer (red'#233'marrer)'
+      OnClick = StartDNS1Click
     end
-    object Activertouteslesalertes1: TMenuItem
-      Caption = 'Activer toutes les alertes'
-      OnClick = Activertouteslesalertes1Click
-    end
-    object Dsactivertouteslesalertes1: TMenuItem
-      Caption = 'D'#233'sactiver toutes les alertes'
-      OnClick = Dsactivertouteslesalertes1Click
+    object StopDNS1: TMenuItem
+      Caption = 'Arr'#234'ter'
+      OnClick = StopDNS1Click
     end
     object N7: TMenuItem
       Caption = '-'
@@ -2310,16 +2295,61 @@ object Form1: TForm1
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
     end
+    object N8: TMenuItem
+      Caption = '-'
+    end
+    object Config1: TMenuItem
+      Caption = 'Config'
+      object DNS1: TMenuItem
+        Caption = 'Serveur DNS'
+        OnClick = DNS1Click
+      end
+      object DNSMatres1: TMenuItem
+        Caption = 'DNS Ma'#238'tres'
+        OnClick = DNSMatres1Click
+      end
+      object Misejour1: TMenuItem
+        Caption = 'Mise '#224' jour'
+        OnClick = Misejour1Click
+      end
+      object Carterseau1: TMenuItem
+        Caption = 'Carte r'#233'seau'
+        OnClick = Carterseau1Click
+      end
+      object Affichage1: TMenuItem
+        Caption = 'Affichage'
+        OnClick = Affichage1Click
+      end
+      object Alertes2: TMenuItem
+        Caption = 'Alertes'
+        OnClick = Alertes2Click
+      end
+    end
     object N2: TMenuItem
       Caption = '-'
     end
-    object StartDNS1: TMenuItem
-      Caption = 'D'#233'marrer'
-      OnClick = StartDNS1Click
+    object Alertes1: TMenuItem
+      Caption = 'Alertes'
+      object connus1: TMenuItem
+        Caption = 'connus'
+        OnClick = connus1Click
+      end
+      object inconnus1: TMenuItem
+        Caption = 'inconnus'
+        OnClick = inconnus1Click
+      end
+      object bloques1: TMenuItem
+        Caption = 'bloqu'#233's'
+        OnClick = bloques1Click
+      end
     end
-    object StopDNS1: TMenuItem
-      Caption = 'Arr'#234'ter'
-      OnClick = StopDNS1Click
+    object Activertouteslesalertes1: TMenuItem
+      Caption = 'Activer toutes les alertes'
+      OnClick = Activertouteslesalertes1Click
+    end
+    object Dsactivertouteslesalertes1: TMenuItem
+      Caption = 'D'#233'sactiver toutes les alertes'
+      OnClick = Dsactivertouteslesalertes1Click
     end
     object N1: TMenuItem
       Caption = '-'

@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.154';
+var CurrentApplicationVersion: string = '0.4.155';
 
 type
   TForm1 = class(TForm)
@@ -208,6 +208,14 @@ type
     Activertouteslesalertes1: TMenuItem;
     Toutnormal1: TMenuItem;
     Toutnormale1: TMenuItem;
+    Config1: TMenuItem;
+    N8: TMenuItem;
+    DNS1: TMenuItem;
+    DNSMatres1: TMenuItem;
+    Misejour1: TMenuItem;
+    Carterseau1: TMenuItem;
+    Affichage1: TMenuItem;
+    Alertes2: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -340,6 +348,13 @@ type
     procedure Dsactivertouteslesalertes1Click(Sender: TObject);
     procedure ToutNormal1Click(Sender: TObject);
     procedure RefreshModeFilter();
+    procedure ResizePanelConfig();
+    procedure DNS1Click(Sender: TObject);
+    procedure DNSMatres1Click(Sender: TObject);
+    procedure Misejour1Click(Sender: TObject);
+    procedure Carterseau1Click(Sender: TObject);
+    procedure Affichage1Click(Sender: TObject);
+    procedure Alertes2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1335,7 +1350,6 @@ begin
   ListBoxBlacklist.Align := alClient;
 
 
-
   PageControl1.TabIndex := 0;
   Notebook1.PageIndex := 5;
 
@@ -1746,6 +1760,12 @@ end;
 procedure TForm1.ToolButton8Click(Sender: TObject);
 begin
   Notebook1.PageIndex := 0;
+  ResizePanelConfig();
+end;
+
+
+procedure TForm1.ResizePanelConfig();
+begin
   refreshCheckBox(CheckBoxStartWithWindows);
 
   if Form1.WindowState = wsMaximized then exit;
@@ -2951,7 +2971,7 @@ end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
 begin
-  ToolButton8Click(nil);
+  ResizePanelConfig();
 end;
 
 
@@ -3165,6 +3185,48 @@ begin
 end;
 
 //https://download.sysinternals.com/files/TCPView.zip
+
+procedure TForm1.DNS1Click(Sender: TObject);
+begin
+  PageControl1.TabIndex := 0;
+  Notebook1.PageIndex := 0;
+  ResizePanelConfig();
+end;
+
+procedure TForm1.DNSMatres1Click(Sender: TObject);
+begin
+  PageControl1.TabIndex := 1;
+  Notebook1.PageIndex := 0;
+  ResizePanelConfig();
+end;
+
+procedure TForm1.Misejour1Click(Sender: TObject);
+begin
+  PageControl1.TabIndex := 2;
+  Notebook1.PageIndex := 0;
+  ResizePanelConfig();
+end;
+
+procedure TForm1.Carterseau1Click(Sender: TObject);
+begin
+  PageControl1.TabIndex := 3;
+  Notebook1.PageIndex := 0;
+  ResizePanelConfig();
+end;
+
+procedure TForm1.Affichage1Click(Sender: TObject);
+begin
+  PageControl1.TabIndex := 4;
+  Notebook1.PageIndex := 0;
+  ResizePanelConfig();
+end;
+
+procedure TForm1.Alertes2Click(Sender: TObject);
+begin
+  PageControl1.TabIndex := 5;
+  Notebook1.PageIndex := 0;
+  ResizePanelConfig();
+end;
 
 end.
 
