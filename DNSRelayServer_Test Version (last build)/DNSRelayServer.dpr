@@ -13,7 +13,8 @@ uses
   ProcessManager in 'ProcessManager.pas',
   PythonDNS in 'PythonDNS.pas',
   DNSManager in 'DNSManager.pas',
-  UnitAlert in 'UnitAlert.pas' {FormAlert};
+  UnitAlert in 'UnitAlert.pas' {FormAlert},
+  WindowsManager in 'WindowsManager.pas';
 
 {$R *.res}
 

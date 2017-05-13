@@ -125,8 +125,8 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
-            TabIndex = 0
+            ActivePage = TabSheet6
+            TabIndex = 5
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -16066,7 +16066,7 @@ object Form1: TForm1
       OnClick = DisallowAllClick
     end
     object Toutnormale1: TMenuItem
-      Caption = 'Tout normale'
+      Caption = 'Tout normal'
       OnClick = ToutNormal1Click
     end
     object AllowAll: TMenuItem

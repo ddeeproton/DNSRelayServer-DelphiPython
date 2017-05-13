@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.151';
+var CurrentApplicationVersion: string = '0.4.152';
 
 type
   TForm1 = class(TForm)
@@ -993,24 +993,8 @@ begin
 
 
   if not FileExists(BlackListCfgFile) then
-    WriteInFile(BlackListCfgFile, 'gstatic.com'#13#10+
-                                          'www.youtube-nocookie.com'#13#10+
-                                          'www.googleapis.com'#13#10+
-                                          'clients1.google.com'#13#10+
-                                          'clients2.google.com'#13#10+
-                                          'clients3.google.com'#13#10+
-                                          'clients4.google.com'#13#10+
-                                          'youtubei.youtube.com'#13#10+
-                                          'serving-sys.com'#13#10+
-                                          '7zne6'#13#10+
-                                          '7znee'#13#10+
-                                          'atdmt.com'#13#10+
-                                          'googleadservices.com'#13#10+
-                                          'doubleclick.net'#13#10+
-                                          'googlesyndication.com'#13#10+
-                                          '9an6.googlevideo.com'#13#10+
-                                          '9ans.googlevideo.com'#13#10+
-                                          '9anz.googlevideo.com');
+    WriteInFile(BlackListCfgFile, 'doubleclick'#13#10+
+                                  'ads.');
 
   if not FileExists(filepath) then
   begin
@@ -1267,37 +1251,6 @@ begin
   FormHost.Load();
 end;
 
-// Opacity
-function SetLayeredWindowAttributes(wnd: HWND; transparent:
-integer): boolean; 
-type TSetLayeredWindowAttributes = function(Handle: HWND; crKey: DWORD; 
-bAlpha: Byte; dwFlags: DWORD): BOOL; stdcall; 
-const WS_EX_LAYERED = $00080000; 
-      LWA_COLORKEY  = $00000001; 
-      LWA_ALPHA     = $00000002; 
-var SetLayeredWindowAttributes: TSetLayeredWindowAttributes; 
-    h: THandle; 
-    dwStyle: DWORD; 
-    alpha: byte; 
-begin 
-  //if ((PLATFORM = 'Windows NT') and (VERSION[1] = '5')) then
-  //begin
-    h := LoadLibrary('user32.dll'); 
-    if (h <> 0) then 
-    begin 
-      @SetLayeredWindowAttributes := GetProcAddress(h, 
-'SetLayeredWindowAttributes'); 
-      alpha := (255 * transparent) div 100; 
-      dwStyle := GetWindowLong(wnd, GWL_EXSTYLE); 
-      SetWindowLong(wnd, GWL_EXSTYLE, dwStyle or WS_EX_LAYERED); 
-      if (@SetLayeredWindowAttributes <> nil) then 
-SetLayeredWindowAttributes(wnd, RGB(0,0,0), alpha, LWA_ALPHA); 
-      FreeLibrary(h); 
-      result := true; 
-    end else result := false; 
-  //end else result := false; 
-end;
-
 procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
@@ -1306,8 +1259,7 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
-  // Opacity
-  //SetLayeredWindowAttributes(Handle, 50);
+
   TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;

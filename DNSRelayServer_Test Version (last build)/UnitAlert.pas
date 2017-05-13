@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls,
-  HostParser, Buttons, ImgList, Menus, FilesManager;
+  HostParser, Buttons, ImgList, Menus, FilesManager, WindowsManager;
 
 type
   TFormAlert = class(TForm)
@@ -38,6 +38,8 @@ type
     N3: TMenuItem;
     Bloquertout1: TMenuItem;
     Edit1: TEdit;
+    TimerFadeIn: TTimer;
+    TimerFadeOut: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure PanelAllowedClick(Sender: TObject);
     procedure Bloquerparfichierhost1Click(Sender: TObject);
@@ -56,6 +58,8 @@ type
     procedure Bloquertout1Click(Sender: TObject);
     procedure Label2Click(Sender: TObject);
     procedure Edit1Enter(Sender: TObject);
+    procedure TimerFadeInTimer(Sender: TObject);
+    procedure TimerFadeOutTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,7 +68,7 @@ type
 
 var
   FormAlert: TFormAlert;
-
+  opacity: Integer;
 implementation
 
 {$R *.dfm}
@@ -76,6 +80,7 @@ var
   i: integer;
   domain, txt: string;
 begin
+
   Self.FormStyle := fsStayOnTop;
   //Self.Show;
   //Systray.EnleveIconeTray;
@@ -136,11 +141,15 @@ begin
   end;
   Edit1.Width := Label1.Width + 5;
   Edit1.Text := Label1.Caption;
+
+  opacity := 0;
+  SetFormOpacity(Self.Handle, opacity);
+  TimerFadeIn.Enabled := True;
 end;
 
 procedure TFormAlert.PanelAllowedClick(Sender: TObject);
 begin
-  Self.Close;
+  TimerFadeOut.Enabled := True;
 end;
 
 
@@ -228,17 +237,15 @@ end;
 
 procedure TFormAlert.AutoriserledomaineBlackwords1Click(Sender: TObject);
 var
-  i, j:integer;
+  i :integer;
   txt, domain: string;
   callRestart, isFound: boolean;
 begin
   domain := Label2.Caption;
   with Form1 do
   begin
-    i := -1;
     callRestart := False;
     isFound := False;
-    //for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
     i := 0;
     while i < ListBoxBlacklist.Items.Count do
     begin
@@ -251,7 +258,6 @@ begin
             callRestart := True;
             ListBoxBlacklist.ItemIndex := i;
             ListBoxBlacklist.DeleteSelected;
-            //ListBoxBlacklist.ItemIndex := 1 - 1;
             ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
             Form1.TimerRestart.Enabled := False;
             if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
@@ -387,6 +393,29 @@ end;
 procedure TFormAlert.Edit1Enter(Sender: TObject);
 begin
   Edit1.SelectAll;
+end;
+
+
+
+procedure TFormAlert.TimerFadeInTimer(Sender: TObject);
+begin
+  SetFormOpacity(Self.Handle, opacity);
+  Application.ProcessMessages;
+  if opacity < 100 then Inc(opacity) else TTimer(Sender).Enabled := False;
+end;
+
+procedure TFormAlert.TimerFadeOutTimer(Sender: TObject);
+begin                                               
+  SetFormOpacity(Self.Handle, opacity);
+  Application.ProcessMessages;
+  if opacity > 0 then
+    Dec(opacity)
+  else
+  begin
+    TTimer(Sender).Enabled := False;
+    Self.Close;
+    Self.Free;
+  end;
 end;
 
 end.

@@ -356,4 +356,18 @@ object FormAlert: TFormAlert
       OnClick = DisableAlertDisallowedClick
     end
   end
+  object TimerFadeIn: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = TimerFadeInTimer
+    Left = 104
+    Top = 48
+  end
+  object TimerFadeOut: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = TimerFadeOutTimer
+    Left = 136
+    Top = 48
+  end
 end
