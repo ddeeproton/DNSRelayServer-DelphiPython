@@ -149,6 +149,7 @@ end;
 
 procedure TFormAlert.PanelAllowedClick(Sender: TObject);
 begin
+  opacity := 100;
   TimerFadeOut.Enabled := True;
 end;
 
@@ -400,14 +401,14 @@ end;
 procedure TFormAlert.TimerFadeInTimer(Sender: TObject);
 begin
   SetFormOpacity(Self.Handle, opacity);
-  Application.ProcessMessages;
+  //Application.ProcessMessages;
   if opacity < 100 then Inc(opacity) else TTimer(Sender).Enabled := False;
 end;
 
 procedure TFormAlert.TimerFadeOutTimer(Sender: TObject);
 begin                                               
   SetFormOpacity(Self.Handle, opacity);
-  Application.ProcessMessages;
+  //Application.ProcessMessages;
   if opacity > 0 then
     Dec(opacity)
   else

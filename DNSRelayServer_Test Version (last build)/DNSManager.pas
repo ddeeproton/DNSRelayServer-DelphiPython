@@ -158,6 +158,8 @@ begin
     ''#13#10+
     '	dnsc = DNSClient([config_server], 1)'#13#10+
     '	ip = dnsc.dnsResolve(config_domain)'#13#10+
+    '	if ip == 0:'#13#10+
+    '		ip = dnsc.dnsResolve(config_domain)'#13#10+
     '	if ip <> 0:'#13#10+
     '		sys.stdout.write(ip)';
   WriteInFile(Form1.DataDirectoryPath + 'checkDNS.py', scriptPython);
