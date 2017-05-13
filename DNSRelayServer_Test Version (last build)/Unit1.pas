@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.156';
+var CurrentApplicationVersion: string = '0.4.157';
 
 type
   TForm1 = class(TForm)
@@ -414,6 +414,7 @@ var
   LastPositionFormAlertTop: integer = 0;
   startedInBackground: Boolean = False;
   currentFormStyle : TFormStyle;
+  lastLogOutput: string = '';
 implementation
 
 {$R *.dfm}
@@ -443,7 +444,7 @@ var
   isNew, isRepeated: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
-  date, time, ipclient, ipdomain, domain, ip, logs:string;
+  date, time, ipclient, ipdomain, domain, ip, logs, tab:string;
   FormAlert: TFormAlert;
 begin
 
@@ -451,13 +452,10 @@ begin
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
 
-  isRepeated := True;
-  logs := StringReplace(txt, ';', '', [rfReplaceAll, rfIgnoreCase]);
-  if (MemoLogs.Lines.Count = 0) or (Pos(logs, MemoLogs.Lines.Strings[MemoLogs.Lines.Count - 1]) = 0) then
-  begin
-    isRepeated := False;
-    MemoLogs.Lines.Add(logs);
-  end;
+
+  isRepeated := lastLogOutput = txt;
+  lastLogOutput := txt;
+
   //MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
@@ -501,6 +499,14 @@ begin
       Form1.refreshListView1Click();
     end;
 
+    if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
+    begin
+      if Length(domain) <= 11 then tab := #9 else tab := '';
+      if Length(domain) <= 19 then tab := tab+#9;
+      if Length(domain) <= 27 then tab := tab+#9;
+      logs := '['+date+' '+time+'] '+ipclient+' -> '+domain+tab+#9+' ('+ipdomain+')';
+      form1.MemoLogs.Lines.Add(logs);
+    end;
     if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
     begin
         FormAlertLastShow := domain;
@@ -579,7 +585,7 @@ begin
             LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
-          FormAlert.Show;         
+          FormAlert.Show;
           Application.Restore;
           Application.BringToFront;
         end;
@@ -596,6 +602,10 @@ begin
         ServerDoStart := True;
         Form1.ButtonStartClick(nil);
       //end;
+    end
+    else begin
+        logs := StringReplace(txt, ';', '', [rfReplaceAll, rfIgnoreCase]);
+        form1.MemoLogs.Lines.Add(logs);
     end;
   end;
   if sl <> nil then

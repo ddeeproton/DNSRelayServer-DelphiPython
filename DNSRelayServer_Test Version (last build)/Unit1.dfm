@@ -1231,10 +1231,10 @@ object Form1: TForm1
       Height = 34
       Align = alClient
       Color = clWhite
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = ANSI_CHARSET
       Font.Color = clBlack
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Courier New'
       Font.Style = []
       ParentFont = False
       ScrollBars = ssVertical
