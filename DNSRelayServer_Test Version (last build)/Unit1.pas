@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.158';
+var CurrentApplicationVersion: string = '0.4.159';
 
 type
   TForm1 = class(TForm)
@@ -505,10 +505,10 @@ begin
       if Length(domain) <= 19 then tab := tab+#9;
       if Length(domain) <= 27 then tab := tab+#9;
       status := 'OK';
-      if ipdomain = '127.0.0.1' then status := 'BLOCKED -> HostFile';
-      if ipdomain = '127.0.0.3' then status := 'BLOCKED -> Block ALL';
-      if ipdomain = '127.0.0.4' then status := 'BLOCKED -> DNS Master fail';
-      if ipdomain = '127.0.0.9' then status := 'BLOCKED -> BlackHost';
+      if ipdomain = '127.0.0.1' then status := 'BLOCKED by HostFile';
+      if ipdomain = '127.0.0.3' then status := 'BLOCKED by Block ALL';
+      if ipdomain = '127.0.0.4' then status := 'BLOCKED by DNS Master fail';
+      if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
       logs := '['+date+' '+time+'] '+ipclient+' -> '+domain+tab+#9+' ['+status+'] -> ('+ipdomain+')';
       form1.MemoLogs.Lines.Add(logs);
     end;
