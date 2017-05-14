@@ -90,7 +90,8 @@ begin
     '    WScript.Quit'#13#10+
     '  loop'#13#10+
     'end sub';
-    if not FileExists(dirPath+'setDNS.vbs') or (FileSize(dirPath+'setDNS.vbs') = 0) then WriteInFile(dirPath+'setDNS.vbs', scriptVBS);
+    //if not FileExists(dirPath+'setDNS.vbs') or (FileSize(dirPath+'setDNS.vbs') = 0) then
+    WriteInFile(dirPath+'setDNS.vbs', scriptVBS);
     ProcessManager.ExecAndWait('wscript.exe', ' "'+dirPath+'setDNS.vbs" '+Servers, SW_HIDE);
     //scriptBAT := 'wscript.exe "'+dirPath+'setDNS.vbs" '+Servers;
     //ecrireDansUnFichier(dirPath+'setDNS.bat', scriptBAT);
