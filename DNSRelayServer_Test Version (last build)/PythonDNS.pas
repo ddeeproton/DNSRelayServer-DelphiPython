@@ -453,7 +453,7 @@ begin
     '	#if answer != ''127.0.0.1'':'#13#10+
     '	#	db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
     '	if isArpa == False:'#13#10+
-    '		print ''%s; %s; %s; %s;EOL;'' % (heure, addr[0], answer, dnss.domain)'#13#10+
+    '		print ''%s; %s; %s; %s; %s;EOL;'' % (heure, config_dnsip, addr[0], answer, dnss.domain)'#13#10+
     '	sys.stdout.flush()'#13#10+
     ''#13#10+
     '	'#13#10+
@@ -473,7 +473,7 @@ begin
     ''#13#10+
     ''#13#10+
     'if __name__ == ''__main__'':'#13#10+
-    '	print ''Started;EOL;'''#13#10+
+    '	print ''Started ''+config_dnsip+'';EOL;'''#13#10+
     '	sys.stdout.flush()'#13#10+
     '	if config_cache_sql == 1:'#13#10+
     '		db = SQLConnexion(config_dbhost, config_dbport, config_dbuser, config_dbpasswd, config_dbname, config_dbtable) # SQL Connexion'#13#10+

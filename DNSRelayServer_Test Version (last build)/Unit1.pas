@@ -444,7 +444,7 @@ var
   isNew, isRepeated: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
-  date, time, ipclient, ipdomain, domain, ip, logs, tab, status:string;
+  date, time, ipserver, ipclient, ipdomain, domain, ip, logs, tab, status:string;
   FormAlert: TFormAlert;
 begin
 
@@ -465,9 +465,11 @@ begin
   begin
     date := onlyChars(sl.Strings[0]);
     time := onlyChars(sl.Strings[1]);
-    ipclient := onlyChars(sl.Strings[2]);
-    ipdomain := onlyChars(sl.Strings[3]);
-    domain := onlyChars(sl.Strings[4]);
+    ipserver := onlyChars(sl.Strings[2]);
+    ipclient := onlyChars(sl.Strings[3]);
+    ipdomain := onlyChars(sl.Strings[4]);
+    domain := onlyChars(sl.Strings[5]);
+
     SetLength(domain, Length(domain)-1);
 
 
@@ -510,7 +512,7 @@ begin
       if ipdomain = '127.0.0.3' then status := 'BLOCKED by Block ALL';
       if ipdomain = '127.0.0.4' then status := 'BLOCKED by DNS Master fail';
       if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
-      logs := '['+date+' '+time+'] '+ipclient+' -> '+domain+tab+#9+' ['+status+'] -> ('+ipdomain+')';
+      logs := '['+date+' '+time+'] '+ipserver+' '+ipclient+' -> '+domain+tab+#9+' ['+status+'] -> ('+ipdomain+')';
       form1.MemoLogs.Lines.Add(logs);
     end;
     if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
@@ -829,8 +831,7 @@ end;
 procedure TForm1.setDNSOnBoot(enabled: Boolean);
 var
   Reg: TRegistry;
-var
-  scriptVBS, scriptBAT, dirPath: string;
+  scriptVBS, dirPath: string;
 begin
   dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
 
@@ -972,8 +973,9 @@ end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
-  i: Integer;
+  i, j: Integer;
   filepath, dns, script, config_use_host, config_use_blackhost, config_block_all: string;
+  net: tNetworkInterfaceList;
 begin
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
@@ -1106,64 +1108,77 @@ begin
     exit;
   end;
 
-  i := Length(listThreads);
-  SetLength(listThreads, i+1);
-  listThreads[0] := Unit1.TSauvegarde.Create(True);
-  listThreads[0].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CBoxDNSServerSlaveIP.Text+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
-  //MemoLogs.Lines.Add(listThreads[i].cmd);
-  listThreads[0].output := TStringList.Create;
-  listThreads[0].EnMemo := MemoLogs;
-  listThreads[0].indexThread := i;
-  listThreads[0].Suspended := False;
 
-  //MemoLogs.Lines.Add('Flushdns');
+
+  if GetNetworkInterfaces(net) then
+  begin
+    for i := 0 to High(net) do
+    begin
+      if net[i].AddrIP <> '127.0.0.1' then
+      begin
+        j := Length(listThreads);
+        SetLength(listThreads, j+1);
+        listThreads[j] := Unit1.TSauvegarde.Create(True);
+        listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+net[i].AddrIP+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
+        listThreads[j].output := TStringList.Create;
+        listThreads[j].EnMemo := MemoLogs;
+        listThreads[j].indexThread := i;
+        listThreads[j].Suspended := False;
+      end;
+    end;
+  end;
+
+
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
-
-  //ToolButton11.Enabled := False;
-  //Notebook1.PageIndex := 3;
-  //ToolButton6.Down := True;
-
-
-  {
-  listThreads[1] := Unit1.TSauvegarde.Create(True);
-  listThreads[1].cmd := 'ipconfig.exe /flushdns';
-  listThreads[1].EnMemo := nil;
-  listThreads[1].Suspended := False;
-   }
-  //listThreads[0].Terminate;
-
 end;
 
 
 
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  CanClose := False;
+  //CanClose := False;
   if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();
   ButtonCloseClick(Sender);
-  KillTask(ExtractFileName(Application.ExeName));
+  //KillTask(ExtractFileName(Application.ExeName));
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
 var
-  i, max: Integer;
+  i: Integer;
 begin
+  Timer1.Enabled := False;
   PanelRestart.Visible := False;
+  KillTask('python.exe');
+  Application.ProcessMessages;
   //Notebook1.PageIndex := 4;
-  max := Length(listThreads)-1;
-  for i:=0 to max do
+  i := 0;
+  while (i < Length(listThreads)) and (listThreads[i] <> nil) do
   begin
+    listThreads[i].Terminate;
+    //listThreads[i] := nil;
+    Inc(i);
+  {
+  for i:=Length(listThreads)-1 downto 0 do
+  begin
+    listThreads[i].Terminate;
+    //listThreads[i].Free;
+    {
     if (listThreads[i] <> nil) and not (listThreads[i].Terminated) then
     begin
       try
         DestroyProcess(listThreads[i].h);
       except
         On E : EOSError do
-          exit;
+          Application.ProcessMessages;
       end;
     end;
+  }
+
   end;
+
+  SetLength(listThreads, 0);
+
  {
   for i:=0 to Length(listThreads) do
   begin
@@ -1288,7 +1303,6 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
   param: string;
-  net: tNetworkInterfaceList;
   canClose: Boolean;
   autostarted: Boolean;
 begin
@@ -1323,6 +1337,8 @@ begin
     ExecAndBringToFront(Application.ExeName, param);
     canClose := True;
     FormCloseQuery(nil, canClose);
+    //KillTask(ExtractFileName(Application.ExeName));
+    KillProcess(Self.Handle);
     Application.Terminate;
   end;
 
@@ -1997,7 +2013,6 @@ procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
 var
   ListItem:TListItem;
   CurPos:TPoint;
-  TopOffset, LeftOffset:integer;
 begin
   // Si on clique dans la case à cocher, on séléctionne la ligne
   // Donc on récupère la position de la souris sur l'écran
@@ -2049,17 +2064,23 @@ begin
 end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
-var i: Integer;
+var i, j: Integer;
 begin
   Timer1.Enabled := False;
   if listThreads = nil then exit;
   if Length(listThreads) = 0 then exit;
-  if listThreads[0].output.Count = 0 then exit;
-  for i := 0 to listThreads[0].output.Count -1 do
-  begin
-    OnOutput(listThreads[0].output[i]);
+  for j := 0 to Length(listThreads) - 1 do
+  begin                                    
+    if j >= Length(listThreads) then exit;
+    if listThreads[j] = nil then exit;
+    if listThreads[j].Terminated then exit;
+    if listThreads[j].output.Count = 0 then exit;
+    for i := 0 to listThreads[j].output.Count - 1 do
+    begin
+      OnOutput(listThreads[j].output[i]);
+    end;
+    listThreads[j].output := TStringList.Create;
   end;
-  listThreads[0].output := TStringList.Create;
 end;
 
 
@@ -2129,23 +2150,9 @@ end;
 
 procedure TUpdate.DoUpdate(isSilent: Boolean);
 var
-  lastversion, lastverFile, url, wget, msg: string;
+  lastversion, lastverFile, url, msg: string;
   canClose: Boolean;
 begin
- {
-  if FormInstall = nil then
-  begin
-    FormInstall := TFormInstall.Create(Form1);
-  end;
-  FormInstall.CheckInstallation;
-  if not FormInstall.isWgetInstalled
-  then begin
-    FormInstall.ButtonInstallClick(Self);
-    exit;
-  end;
-   }
-  //if isSilent then Form1.MemoLogs.Lines.Add('Recherche de Mise à jour...');
-
   //url := 'https://raw.gith4ubusercontent.com/ddeeproton/DNSRelayServer-DelphiPython/master/Special version/BlackEdition/lastversion.txt';
   url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt?'+DateTimeToStr(Now);
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
@@ -2331,6 +2338,10 @@ end;
 
 
 procedure TForm1.ButtonNetCardIntegrationClick(Sender: TObject);
+var
+  i: Integer;
+  dnslist: String;
+  net: tNetworkInterfaceList;
 begin
   if Sender <> nil then
   begin
@@ -2340,7 +2351,21 @@ begin
   end;
   setIPToDHCP();
   MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
-  setDNS(CBoxDNSServerSlaveIP.Text);
+
+  dnslist := '';
+  if GetNetworkInterfaces(net) then
+  begin
+    for i := 0 to High(net) do
+    begin
+      if net[i].AddrIP <> '127.0.0.1' then
+      begin
+        if dnslist <> '' then dnslist := dnslist + ' ';
+        dnslist := dnslist + net[i].AddrIP;
+      end;
+    end;
+  end;
+  //setDNS(CBoxDNSServerSlaveIP.Text);
+  setDNS(dnslist);
   setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 end;
 
@@ -2714,10 +2739,7 @@ end;
 procedure TForm1.Supprimer3Click(Sender: TObject);
 var
   i: Integer;
-  ThemesList, s:TStringList;
-  txt :String;
-  c: TColor;
-  fr,fg,fb,br,bg,bb:string;
+  ThemesList:TStringList;
 begin
   if MessageDlg(PChar('Effacer le theme ['+ComboBoxCurrentTheme.Text+']?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   if ComboBoxCurrentTheme.Items.Count <= 1 then
@@ -2766,7 +2788,7 @@ end;
 procedure TForm1.ButtonUpdateThemeClick(Sender: TObject);
 var
   i: Integer;
-  ThemesList, s:TStringList;
+  ThemesList:TStringList;
   txt :String;
   c: TColor;
   fr,fg,fb,br,bg,bb:string;
@@ -2798,7 +2820,7 @@ begin
   bb := IntToStr(getBValue(ColorToRGB(c)));
 
   txt := fr+','+fg+','+fb+','+br+','+bg+','+bb;
-
+  i := 0;
   if GroupBoxUpdateTheme.Hint = 'add' then
   begin
     ThemesList.Add(txt);
@@ -3138,8 +3160,7 @@ end;
 
 procedure TForm1.AjouterBlackworkds1Click(Sender: TObject);
 var
-  i, j:integer;
-  txt, domain: string;
+  domain: string;
 begin
   if not Assigned(SelectedListItem) then exit;
   domain := SelectedListItem.Caption; //SelectedListItem.SubItems.Strings[0];

@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 199
   Top = 112
-  Width = 476
+  Width = 470
   Height = 622
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 502
-    Width = 460
+    Width = 454
     Height = 10
     Cursor = crVSplit
     Align = alBottom
@@ -125,8 +125,8 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet4
-            TabIndex = 3
+            ActivePage = TabSheet1
+            TabIndex = 0
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -137,15 +137,15 @@ object Form1: TForm1
                 295)
               object Label1: TLabel
                 Left = 8
-                Top = 8
-                Width = 51
+                Top = 24
+                Width = 222
                 Height = 13
-                Caption = 'Adresse IP'
+                Caption = 'Adresse IP (toutes les adresses seront utilis'#233'es)'
                 Transparent = True
               end
               object SpeedButtonRefreshNetCard: TSpeedButton
                 Left = 160
-                Top = 24
+                Top = 40
                 Width = 23
                 Height = 22
                 Hint = 'Rafraichir les Adresses IP'
@@ -181,16 +181,16 @@ object Form1: TForm1
                 OnClick = ButtonRefreshNetCardClick
               end
               object Label2: TLabel
-                Left = 192
-                Top = 8
+                Left = 8
+                Top = 88
                 Width = 19
                 Height = 13
                 Caption = 'Port'
                 Transparent = True
               end
               object Label4: TLabel
-                Left = 192
-                Top = 48
+                Left = 8
+                Top = 128
                 Width = 58
                 Height = 13
                 Caption = 'Exemple: 53'
@@ -198,7 +198,7 @@ object Form1: TForm1
               end
               object Label3: TLabel
                 Left = 8
-                Top = 48
+                Top = 64
                 Width = 79
                 Height = 13
                 Caption = 'Exemple: 0.0.0.0'
@@ -206,7 +206,7 @@ object Form1: TForm1
               end
               object Label5: TLabel
                 Left = 8
-                Top = 72
+                Top = 152
                 Width = 56
                 Height = 13
                 Caption = 'Fichier Host'
@@ -214,7 +214,7 @@ object Form1: TForm1
               end
               object Label6: TLabel
                 Left = 27
-                Top = 122
+                Top = 202
                 Width = 239
                 Height = 13
                 Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
@@ -231,7 +231,7 @@ object Form1: TForm1
               end
               object Label8: TLabel
                 Left = 27
-                Top = 144
+                Top = 224
                 Width = 294
                 Height = 13
                 Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
@@ -242,7 +242,7 @@ object Form1: TForm1
               end
               object CBoxDNSServerSlaveIP: TComboBox
                 Left = 8
-                Top = 24
+                Top = 40
                 Width = 145
                 Height = 21
                 Color = clWhite
@@ -252,8 +252,8 @@ object Form1: TForm1
                 OnChange = EditFilehostChange
               end
               object SpinPort: TSpinEdit
-                Left = 192
-                Top = 24
+                Left = 8
+                Top = 104
                 Width = 97
                 Height = 22
                 Color = clWhite
@@ -265,7 +265,7 @@ object Form1: TForm1
               end
               object EditFilehost: TEdit
                 Left = 8
-                Top = 88
+                Top = 168
                 Width = 249
                 Height = 21
                 Anchors = [akLeft, akTop, akRight]
@@ -281,7 +281,7 @@ object Form1: TForm1
               end
               object CheckBoxAutostartDNSOnBoot: TCheckBox
                 Left = 8
-                Top = 144
+                Top = 224
                 Width = 19
                 Height = 17
                 TabOrder = 4
@@ -289,7 +289,7 @@ object Form1: TForm1
               end
               object CheckBoxStartWithWindows: TCheckBox
                 Left = 8
-                Top = 120
+                Top = 200
                 Width = 17
                 Height = 17
                 TabOrder = 3
@@ -297,7 +297,7 @@ object Form1: TForm1
               end
               object Button1: TButton
                 Left = 260
-                Top = 87
+                Top = 143
                 Width = 35
                 Height = 23
                 Anchors = [akTop, akRight]
@@ -1205,7 +1205,7 @@ object Form1: TForm1
   object GroupBox5: TGroupBox
     Left = 0
     Top = 512
-    Width = 460
+    Width = 454
     Height = 75
     Align = alBottom
     Caption = '           '
@@ -1227,7 +1227,7 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 39
-      Width = 456
+      Width = 450
       Height = 34
       Align = alClient
       Color = clWhite
@@ -1237,7 +1237,7 @@ object Form1: TForm1
       Font.Name = 'Courier New'
       Font.Style = []
       ParentFont = False
-      ScrollBars = ssVertical
+      ScrollBars = ssBoth
       TabOrder = 0
       WordWrap = False
       OnChange = MemoLogsChange
@@ -1245,7 +1245,7 @@ object Form1: TForm1
     object Panel7: TPanel
       Left = 2
       Top = 15
-      Width = 456
+      Width = 450
       Height = 24
       Align = alTop
       BevelOuter = bvNone
@@ -1289,7 +1289,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 460
+    Width = 454
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1390,15 +1390,15 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 460
+    Width = 454
     Height = 33
     Align = alTop
     TabOrder = 3
     DesignSize = (
-      460
+      454
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 433
+      Left = 427
       Top = 6
       Width = 22
       Height = 22
