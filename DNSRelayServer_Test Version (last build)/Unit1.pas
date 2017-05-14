@@ -7,9 +7,10 @@ uses
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
-  UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
+  UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
+  CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.169';
+var CurrentApplicationVersion: string = '0.4.170';
 
 type
   TForm1 = class(TForm)
@@ -92,9 +93,7 @@ type
     SpeedButtonRefreshNetCard: TSpeedButton;
     Label2: TLabel;
     Label4: TLabel;
-    Label3: TLabel;
     Label5: TLabel;
-    CBoxDNSServerSlaveIP: TComboBox;
     SpinPort: TSpinEdit;
     EditFilehost: TEdit;
     CheckBoxStartWithWindows: TCheckBox;
@@ -223,6 +222,7 @@ type
     PanelMessage: TPanel;
     SpeedButtonCloseMessage: TSpeedButton;
     LabelMessage: TLabel;
+    CheckListBoxDNSRelayIP: TCheckListBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -367,6 +367,7 @@ type
     procedure SpinEditAlertDurationChange(Sender: TObject);
     procedure SpeedButtonCloseMessageClick(Sender: TObject);
     procedure TimerHideMessageTimer(Sender: TObject);
+    procedure CheckListBoxDNSRelayIPClickCheck(Sender: TObject);
   private
     { Private declarations }
   public
@@ -984,9 +985,9 @@ end;
 
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
-  i, j: Integer;
+  i, j, count: Integer;
   filepath, dns, script, config_use_host, config_use_blackhost, config_block_all: string;
-  net: tNetworkInterfaceList;
+  //net: tNetworkInterfaceList;
 begin
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
@@ -1052,6 +1053,24 @@ begin
     exit;
   end;
 
+  count := 0;
+  for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
+  begin
+    if CheckListBoxDNSRelayIP.Checked[i] then inc(count);
+  end;
+  if count = 0 then
+  begin
+    MemoLogs.Lines.Add('Erreur: Lancement annulé');
+    MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur.');
+
+    ToolButton11.Enabled := True;
+    ToolButton8Click(ToolButton8);
+    PageControl1.TabIndex := 0;
+    PageControl1.ActivePageIndex := PageControl1.TabIndex;
+    ToolButton11.ImageIndex := 7;
+    //if ServerDoStart then TimerRestart.Enabled := True;
+    exit;
+  end;
 
 
 
@@ -1125,21 +1144,20 @@ begin
     ButtonNetCardIntegrationClick(nil);
   end;
 
-  if GetNetworkInterfaces(net) then
+
+  for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
   begin
-    for i := 0 to High(net) do
+    if CheckListBoxDNSRelayIP.Checked[i]
+    and (CheckListBoxDNSRelayIP.Items.Strings[i] <> '127.0.0.1') then
     begin
-      if net[i].AddrIP <> '127.0.0.1' then
-      begin
-        j := Length(listThreads);
-        SetLength(listThreads, j+1);
-        listThreads[j] := Unit1.TSauvegarde.Create(True);
-        listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+net[i].AddrIP+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
-        listThreads[j].output := TStringList.Create;
-        listThreads[j].EnMemo := MemoLogs;
-        listThreads[j].indexThread := i;
-        listThreads[j].Suspended := False;
-      end;
+      j := Length(listThreads);
+      SetLength(listThreads, j+1);
+      listThreads[j] := Unit1.TSauvegarde.Create(True);
+      listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
+      listThreads[j].output := TStringList.Create;
+      listThreads[j].EnMemo := MemoLogs;
+      listThreads[j].indexThread := i;
+      listThreads[j].Suspended := False;
     end;
   end;
 
@@ -1423,8 +1441,9 @@ begin
   if FileExists(FilehostPathConfig) then
     EditFilehost.Text := ReadFromFile(FilehostPathConfig);
 
-  if FileExists(SlaveDNSIPConfig) then
-    CBoxDNSServerSlaveIP.Text := ReadFromFile(SlaveDNSIPConfig);
+  //if FileExists(SlaveDNSIPConfig) then
+  //  CheckListBoxDNSRelayIP.Items.LoadFromFile(SlaveDNSIPConfig);
+  //CBoxDNSServerSlaveIP.Text := ReadFromFile(SlaveDNSIPConfig);
 
   //SpinEditAlertDuration.Value := 10;
   if FileExists(DataDirectoryPath + 'alertDisplayDuration.cfg') then
@@ -1607,7 +1626,7 @@ begin
   MemoLogs.Color := bg;
   ListBoxIpClients.Color := bg;
   ListBoxDNSMaster.Color := bg;
-  CBoxDNSServerSlaveIP.Color := bg;
+  CheckListBoxDNSRelayIP.Color := bg;
   SpinPort.Color := bg;
   EditFilehost.Color := bg;
   SpinTimeCheckUpdate.Color := bg;
@@ -1625,7 +1644,7 @@ begin
   ComboBoxCurrentTheme.Font.Color := color;
   Label1.Font.Color := color;
   Label2.Font.Color := color;
-  Label3.Font.Color := color;
+  //Label3.Font.Color := color;
   Label4.Font.Color := color;
   Label5.Font.Color := color;
   Label6.Font.Color := color;
@@ -1653,7 +1672,7 @@ begin
   MemoLogs.Font.Color := color;
   ListBoxIpClients.Font.Color := color;
   ListBoxDNSMaster.Font.Color := color;
-  CBoxDNSServerSlaveIP.Font.Color := color;
+  CheckListBoxDNSRelayIP.Font.Color := color;
   SpinPort.Font.Color := color;
   EditFilehost.Font.Color := color;
   GroupBox2.Font.Color := color;
@@ -1985,7 +2004,8 @@ procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   WriteInFile(FilehostPathConfig, EditFilehost.Text);
-  WriteInFile(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
+  //CheckListBoxDNSRelayIP.Items.SaveToFile(SlaveDNSIPConfig);
+  //WriteInFile(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
   WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
   WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
   WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
@@ -2307,18 +2327,18 @@ var
   i: Integer;
   net: tNetworkInterfaceList;
 begin
-  CBoxDNSServerSlaveIP.Clear;
+  CheckListBoxDNSRelayIP.Clear;
   if GetNetworkInterfaces(net) then
   begin
     for i := 0 to High (net) do
     begin
       if net[i].AddrIP <> '127.0.0.1' then
-        CBoxDNSServerSlaveIP.Items.Add(net[i].AddrIP);
+      begin
+        CheckListBoxDNSRelayIP.Items.Add(net[i].AddrIP);
+        CheckListBoxDNSRelayIP.Checked[CheckListBoxDNSRelayIP.Items.Count -1] := True;
+      end;
     end;
   end;
-  if CBoxDNSServerSlaveIP.Items.Count > 0 then
-    CBoxDNSServerSlaveIP.ItemIndex := 0;
-
 end;
 
 procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
@@ -2411,7 +2431,7 @@ procedure TForm1.ButtonNetCardIntegrationClick(Sender: TObject);
 var
   i: Integer;
   dnslist: String;
-  net: tNetworkInterfaceList;
+  //net: tNetworkInterfaceList;
 begin
   if Sender <> nil then
   begin
@@ -2423,17 +2443,16 @@ begin
 
 
   dnslist := '';
-  if GetNetworkInterfaces(net) then
+  for i := 0 to CheckListBoxDNSRelayIP.Items.Count - 1 do
   begin
-    for i := 0 to High(net) do
+    if CheckListBoxDNSRelayIP.Checked[i]
+    and (CheckListBoxDNSRelayIP.Items.Strings[i] <> '127.0.0.1') then
     begin
-      if net[i].AddrIP <> '127.0.0.1' then
-      begin
-        if dnslist <> '' then dnslist := dnslist + ' ';
-        dnslist := dnslist + net[i].AddrIP;
-      end;
-    end;
+      if dnslist <> '' then dnslist := dnslist + ' ';
+      dnslist := dnslist + CheckListBoxDNSRelayIP.Items.Strings[i];
+    end
   end;
+  
   //setDNS(CBoxDNSServerSlaveIP.Text);
   MemoLogs.Lines.Add('Set DNS '+dnslist);
   setDNS(dnslist);
@@ -3405,6 +3424,11 @@ procedure TForm1.TimerHideMessageTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   PanelMessage.Visible := False;
+end;
+
+procedure TForm1.CheckListBoxDNSRelayIPClickCheck(Sender: TObject);
+begin
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 end.

@@ -125,27 +125,33 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet6
-            TabIndex = 5
+            ActivePage = TabSheet1
+            TabIndex = 0
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
             object TabSheet1: TTabSheet
               Caption = 'Serveur DNS'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               DesignSize = (
                 303
                 295)
               object Label1: TLabel
                 Left = 8
-                Top = 24
-                Width = 222
+                Top = 8
+                Width = 280
                 Height = 13
-                Caption = 'Adresse IP (toutes les adresses seront utilis'#233'es)'
+                Caption = 'Adresse(s) IP du serveur DNS (ne sauvegarde pas le choix)'
                 Transparent = True
               end
               object SpeedButtonRefreshNetCard: TSpeedButton
-                Left = 160
-                Top = 40
+                Left = 128
+                Top = 24
                 Width = 23
                 Height = 22
                 Hint = 'Rafraichir les Adresses IP'
@@ -196,14 +202,6 @@ object Form1: TForm1
                 Caption = 'Exemple: 53'
                 Transparent = True
               end
-              object Label3: TLabel
-                Left = 8
-                Top = 64
-                Width = 79
-                Height = 13
-                Caption = 'Exemple: 0.0.0.0'
-                Transparent = True
-              end
               object Label5: TLabel
                 Left = 8
                 Top = 152
@@ -240,17 +238,6 @@ object Form1: TForm1
                 OnMouseEnter = LabelCheckboxMouseEnter
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
-              object CBoxDNSServerSlaveIP: TComboBox
-                Left = 8
-                Top = 40
-                Width = 145
-                Height = 21
-                Color = clWhite
-                ItemHeight = 13
-                TabOrder = 0
-                Text = 'CBoxDNSServerSlaveIP'
-                OnChange = EditFilehostChange
-              end
               object SpinPort: TSpinEdit
                 Left = 8
                 Top = 104
@@ -259,7 +246,7 @@ object Form1: TForm1
                 Color = clWhite
                 MaxValue = 0
                 MinValue = 0
-                TabOrder = 1
+                TabOrder = 0
                 Value = 53
                 OnChange = EditFilehostChange
               end
@@ -276,7 +263,7 @@ object Form1: TForm1
                 Font.Name = 'MS Sans Serif'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 2
+                TabOrder = 1
                 OnChange = EditFilehostChange
               end
               object CheckBoxAutostartDNSOnBoot: TCheckBox
@@ -284,7 +271,7 @@ object Form1: TForm1
                 Top = 224
                 Width = 19
                 Height = 17
-                TabOrder = 4
+                TabOrder = 3
                 OnClick = CheckBoxAutostartDNSOnBootClick
               end
               object CheckBoxStartWithWindows: TCheckBox
@@ -292,7 +279,7 @@ object Form1: TForm1
                 Top = 200
                 Width = 17
                 Height = 17
-                TabOrder = 3
+                TabOrder = 2
                 OnClick = CheckBoxStartWithWindowsClick
               end
               object Button1: TButton
@@ -302,8 +289,17 @@ object Form1: TForm1
                 Height = 23
                 Anchors = [akTop, akRight]
                 Caption = '...'
-                TabOrder = 5
+                TabOrder = 4
                 OnClick = ButtonSelectFilehostClick
+              end
+              object CheckListBoxDNSRelayIP: TCheckListBox
+                Left = 8
+                Top = 24
+                Width = 113
+                Height = 57
+                OnClickCheck = CheckListBoxDNSRelayIPClickCheck
+                ItemHeight = 13
+                TabOrder = 5
               end
             end
             object TabSheet2: TTabSheet
@@ -16054,7 +16050,7 @@ object Form1: TForm1
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
-    Interval = 100
+    Interval = 500
     OnTimer = TimerAfterFormCreateTimer
     Left = 387
     Top = 171
