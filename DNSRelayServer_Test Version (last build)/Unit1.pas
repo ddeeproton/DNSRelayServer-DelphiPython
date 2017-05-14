@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.163';
+var CurrentApplicationVersion: string = '0.4.164';
 
 type
   TForm1 = class(TForm)
@@ -491,8 +491,7 @@ begin
       ip := ipdomain;
       ip := onlyChars(ip);
       if ip = '' then imgIndex := 0
-      else if ip = '127.0.0.1' then imgIndex := 3
-      else if ip = ' 127.0.0.1' then imgIndex := 3
+      else if Pos('127.0.0.', ip) > 0 then imgIndex := 3
       else imgIndex := 1;
 
     if isNew then
