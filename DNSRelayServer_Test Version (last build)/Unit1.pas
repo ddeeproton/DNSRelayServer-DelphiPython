@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.160';
+var CurrentApplicationVersion: string = '0.4.161';
 
 type
   TForm1 = class(TForm)
