@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.168';
+var CurrentApplicationVersion: string = '0.4.169';
 
 type
   TForm1 = class(TForm)
@@ -217,6 +217,12 @@ type
     Affichage1: TMenuItem;
     Alertes2: TMenuItem;
     Relancerlapplication1: TMenuItem;
+    SpinEditAlertDuration: TSpinEdit;
+    Label31: TLabel;
+    TimerHideMessage: TTimer;
+    PanelMessage: TPanel;
+    SpeedButtonCloseMessage: TSpeedButton;
+    LabelMessage: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -358,6 +364,9 @@ type
     procedure Alertes2Click(Sender: TObject);
     procedure Config1Click(Sender: TObject);
     procedure Relancerlapplication1Click(Sender: TObject);
+    procedure SpinEditAlertDurationChange(Sender: TObject);
+    procedure SpeedButtonCloseMessageClick(Sender: TObject);
+    procedure TimerHideMessageTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -520,9 +529,11 @@ begin
     if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
     begin
         FormAlertLastShow := domain;
+        if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
         if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
         begin
           FormAlert := TFormAlert.Create(nil);
+          FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
           FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
           FormAlert.Label1.Caption := domain;
@@ -550,6 +561,7 @@ begin
         if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
         begin
           FormAlert := TFormAlert.Create(nil);
+          FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
           FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
           FormAlert.Label1.Caption := domain;
@@ -576,6 +588,7 @@ begin
         if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
         begin
           FormAlert := TFormAlert.Create(nil);
+          FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
           FormAlert.PanelAllowed.Visible := False;
           FormAlert.PanelDisallowed.Visible := True;
           FormAlert.Label1.Caption := domain;
@@ -1413,6 +1426,13 @@ begin
   if FileExists(SlaveDNSIPConfig) then
     CBoxDNSServerSlaveIP.Text := ReadFromFile(SlaveDNSIPConfig);
 
+  //SpinEditAlertDuration.Value := 10;
+  if FileExists(DataDirectoryPath + 'alertDisplayDuration.cfg') then
+    SpinEditAlertDuration.Value := StrToInt(ReadFromFile(DataDirectoryPath + 'alertDisplayDuration.cfg'))
+  else SpinEditAlertDuration.Value := 10;
+  if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
+
+
   if FileExists(SlaveDNSPortConfig) then
     SpinPort.Value := StrToInt(ReadFromFile(SlaveDNSPortConfig));
 
@@ -1566,6 +1586,9 @@ begin
   Panel5.Color := bg;
   Panel6.Color := bg;
   Panel7.Color := bg;
+  PanelMessage.Color := bg;
+
+
   ToolBar1.Color := bg;
   ToolBar2.Color := bg;
   ToolBar3.Color := bg;
@@ -1575,6 +1598,7 @@ begin
   PanelRestart.Color := bg;
   ShapeColorBackground.Brush.Color := bg;
   Label11.Color := bg;
+  LabelMessage.Color := bg;
 
   bg := changeColor(bg, SpinEditContraste.Position, SpinEditContraste.Position, SpinEditContraste.Position);
 
@@ -1587,6 +1611,7 @@ begin
   SpinPort.Color := bg;
   EditFilehost.Color := bg;
   SpinTimeCheckUpdate.Color := bg;
+  SpinEditAlertDuration.Color := bg;
   ComboBoxCurrentTheme.Color := bg;
   EditThemeName.Color := bg;
   ListBoxBlacklist.Color := bg;
@@ -1598,7 +1623,14 @@ begin
   ShapeColorText.Brush.Color := color;
   EditThemeName.Font.Color := color;
   ComboBoxCurrentTheme.Font.Color := color;
+  Label1.Font.Color := color;
+  Label2.Font.Color := color;
+  Label3.Font.Color := color;
+  Label4.Font.Color := color;
+  Label5.Font.Color := color;
   Label6.Font.Color := color;
+  Label7.Font.Color := color;
+  Label9.Font.Color := color;
   Label8.Font.Color := color;
   Label10.Font.Color := color;
   Label12.Font.Color := color;
@@ -1607,11 +1639,13 @@ begin
   Label17.Font.Color := color;
   Label18.Font.Color := color;
   Label11.Font.Color := color;
+  LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
   GroupBox2.Font.Color := color;
   Panel1.Font.Color := color;
   Panel3.Font.Color := color;
+  PanelMessage.Font.Color := color;
   Form1.Font.Color := color;
   ToolBar4.Font.Color := color;
   ListView1.Font.Color := color;
@@ -1628,22 +1662,16 @@ begin
   GroupBox5.Font.Color := color;
   GroupBox6.Font.Color := color;
   GroupBox7.Font.Color := color;
-  Label1.Font.Color := color;
-  Label2.Font.Color := color;
-  Label3.Font.Color := color;
-  Label4.Font.Color := color;
-  Label5.Font.Color := color;
-  //Label6.Font.Color := color;
-  Label7.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
   CheckBoxUpdate.Font.Color := color;
   CheckBoxUpdateIntervall.Font.Color := color;
   SpinTimeCheckUpdate.Font.Color := color;
+  SpinEditAlertDuration.Font.Color := color;
   CheckBoxUpdateSilent.Font.Color := color;
   CheckBoxAllowModifyNetCard.Font.Color := color;
-  Label9.Font.Color := color;
-  Label7.Font.Color := color;
+
+
   ListBoxBlacklist.Font.Color := color;
   ComboBoxPosLogs.Font.Color := color;
 end;
@@ -1893,6 +1921,9 @@ begin
     Reg.Free;
   end;
 
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 procedure TForm1.ButtonSelectFilehostClick(Sender: TObject);
@@ -1944,6 +1975,10 @@ begin
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
   PanelRestart.Visible := True;
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
@@ -1953,6 +1988,10 @@ begin
   WriteInFile(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
   WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
   WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
+  WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 procedure TForm1.ToolButton10Click(Sender: TObject);
@@ -2239,6 +2278,10 @@ begin
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
 
   setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 procedure TForm1.TimerUpdateOnLoadTimer(Sender: TObject);
@@ -2285,6 +2328,9 @@ begin
   PanelRestart.Visible := False;
   ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
   SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
+  TimerHideMessage.Enabled := False;
+  PanelMessage.Visible := False;
+  TimerSaveChange.Enabled := False;
   if startedInBackground then exit;
   Afficher1Click(nil);
   {
@@ -2308,6 +2354,9 @@ begin
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   TimerCheckUpdate.Enabled := TCheckBox(Sender).Checked;
 
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 procedure TForm1.CheckBoxUpdateSilentClick(Sender: TObject);
@@ -2316,6 +2365,11 @@ begin
     WriteInFile(DataDirectoryPath + 'checkupdateSilent.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdateSilent.cfg');
+
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 procedure TForm1.SpinTimeCheckUpdateChange(Sender: TObject);
@@ -2332,6 +2386,10 @@ begin
     WriteInFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 
@@ -2341,6 +2399,11 @@ begin
     WriteInFile(DataDirectoryPath + 'checkAutostartDNS.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAutostartDNS.cfg');
+
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 
@@ -2478,6 +2541,9 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
   connus1.Checked := CheckBoxAlertEventsKnown.Checked;
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 procedure TForm1.CheckBoxAlertEventsUnknownClick(Sender: TObject);
@@ -2488,6 +2554,9 @@ begin
     DeleteFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
 
   inconnus1.Checked := CheckBoxAlertEventsUnknown.Checked;
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 procedure TForm1.CheckBoxAlertEventDisallowedClick(Sender: TObject);
@@ -2496,7 +2565,10 @@ begin
     WriteInFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
-  bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;
+  bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;   
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 
@@ -2734,6 +2806,9 @@ begin
   WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(ComboBoxCurrentTheme.ItemIndex));
 
 
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 
@@ -3312,6 +3387,24 @@ begin
   //KillTask(ExtractFileName(Application.ExeName));
   KillProcess(Self.Handle);
   Application.Terminate;
+end;
+
+procedure TForm1.SpinEditAlertDurationChange(Sender: TObject);
+begin
+  TimerSaveChange.Enabled := False;
+  TimerSaveChange.Enabled := True;
+  if TSpinEdit(Sender).Value < 3 then TSpinEdit(Sender).Value := 3; 
+end;
+
+procedure TForm1.SpeedButtonCloseMessageClick(Sender: TObject);
+begin
+  PanelMessage.Visible := False;
+end;
+
+procedure TForm1.TimerHideMessageTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+  PanelMessage.Visible := False;
 end;
 
 end.

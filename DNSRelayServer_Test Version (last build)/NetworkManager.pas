@@ -3,7 +3,7 @@ unit NetworkManager;
 Interface
 
 Uses Windows, Winsock;
-
+     
 {
 // Use
 procedure TForm1.FormCreate(Sender: TObject);

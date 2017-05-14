@@ -85,14 +85,6 @@ begin
 end;
 
 function ReadBinaryData(RootKey: HKey; Path:string; DataName:string): string;
-var
-  Registre : TRegistry;
-  //buf: Untyped;
-  bufsize: Integer;
-  //FileStream1: TFileStream;
-  MyString: String;
-
-
 const 
   KeyName: string = 'System\CurrentControlSet\control\TimeZoneInformation';
   ValName: string = 'DaylightStart';
@@ -124,7 +116,7 @@ begin
         Delete(tmpStr, Length(tmpStr), 1);
         result := tmpStr;
       end;
-
+            
     end; 
   finally 
     regKey.Free; 
@@ -157,7 +149,7 @@ end;
 
 function ReadTypeTReg(RootKey: HKey; Path:string; DataName:string): TRegDataType;
 var Registre : TRegistry;
-DType: TRegDataType;
+//DType: TRegDataType;
 begin
   Registre := TRegistry.Create;
   Registre.RootKey := RootKey;
@@ -170,6 +162,7 @@ end;
 function ReadInteger(RootKey: HKey; Path:string; DataName:string): integer;
 var Registre : TRegistry;
 begin
+  result := -1;
   Registre := TRegistry.Create;
   Registre.RootKey := RootKey;
   if Registre.openkey(Path,False) and Registre.ValueExists(DataName) then
@@ -181,6 +174,7 @@ end;
 function ReadBoolean(RootKey: HKey; Path:string; DataName:string): boolean;
 var Registre : TRegistry;
 begin
+  result := False;
   Registre := TRegistry.Create;
   Registre.RootKey := RootKey;
   if Registre.openkey(Path,False) and Registre.ValueExists(DataName) then

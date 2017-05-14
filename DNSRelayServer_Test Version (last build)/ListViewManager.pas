@@ -185,14 +185,15 @@ end;
 
 // Coche la ligne selectionnee si on double clique dessus
 procedure ListView1DblClick(Sender: TObject);
-var i: integer;
-Begin
-  exit;
+//var i: integer;
+begin
+{
   // Si aucune ligne selectionnee, on sort de la procedure
   if TListView(Sender).SelCount = 0 then exit;
   // Recupere la ligne selectionnee
   i := TListView(Sender).Selected.Index;
   //txt := TListView(Sender).Items.Item[i].Caption;
+}
 end;
 
 
