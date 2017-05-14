@@ -2040,16 +2040,17 @@ begin
   begin
             {
     //ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
-    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].Caption);
+
 
     //ip := onlyChars(ip);
     //ShowMessage('"'+ip+'"');
     if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
     else }
+    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].Caption);
     ipdomain := ListView1.Items.Item[i].SubItems.Strings[0];
     if Pos('127.0.0.', ipdomain) > 0 then ListView1.Items.Item[i].ImageIndex := 3
+    else if ip = '' then ListView1.Items.Item[i].ImageIndex := 2
     else ListView1.Items.Item[i].ImageIndex := 1;
-
     // On coche la case du proxy actuel (si actif) et decoche les autres
     ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
   end;
