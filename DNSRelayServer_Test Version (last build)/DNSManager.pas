@@ -79,7 +79,7 @@ begin
     ''#13#10+
     'sub GetAdminPrivilege()'#13#10+
     '  Dim WMI, OS, Value, Shell'#13#10+
-    '  do while WScript.Arguments.Count = 0 and WScript.Version >= 5.7'#13#10+
+    '  do while WScript.Arguments.Count = 0 ''and WScript.Version >= 5.7'#13#10+
     '    Set WMI = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
     '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
     '    For Each Value in OS'#13#10+
