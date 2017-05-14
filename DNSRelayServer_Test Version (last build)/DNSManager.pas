@@ -32,7 +32,7 @@ uses Unit1;
 
 procedure setDNS(Servers: string);
 var
-  scriptVBS, scriptBAT, dirPath: string;
+  scriptVBS, dirPath: string;
 begin
   dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
 

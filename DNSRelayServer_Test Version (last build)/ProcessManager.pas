@@ -13,8 +13,8 @@ uses Windows, SysUtils, Messages,
 
 
 
-function ExecAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
-function ExecAndBringToFront(sExe, sFile: String): Boolean;
+procedure ExecAndWait(sExe, sFile: String; wShowWin: Word);
+procedure ExecAndBringToFront(sExe, sFile: String);
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean; //wShowWin => SW_SHOWNORMAL | SW_HIDE
 
 function KillTask(ExeFileName: string): Integer;
@@ -28,26 +28,28 @@ function IsUserAnAdmin(): Boolean; external shell32;
 procedure downloadFile(url, filepath: string);
 
 function ExecAndRead(Que:String):string;
-  
+
 implementation
 uses UnitInstallation;
 
-function ExecAndWait(sExe, sFile: string; wShowWin: Word): Boolean;
+procedure ExecAndWait(sExe, sFile: string; wShowWin: Word);
 var
   h: Cardinal;
   operation: PChar;
 begin
   if IsUserAnAdmin() then operation := 'open' else operation := 'runas';
+  h := 0;
   ShellExecute(h, operation, PChar(sExe), PChar(sFile), nil,wShowWin);
   WaitForSingleObject(h, INFINITE);
 end;
 
-function ExecAndBringToFront(sExe, sFile: String): Boolean;
+procedure ExecAndBringToFront(sExe, sFile: String);
 var
   h: Cardinal;
   operation: PChar;
 begin
   if IsUserAnAdmin() then operation := 'open' else operation := 'runas';
+  h := 0;
   ShellExecute(h, operation, PChar(sExe), PChar(sFile), nil, SW_SHOW);
   FlashWindow(findwindow(nil,PChar(sExe)),true);
   ShowWindow(findwindow(nil,PChar(sExe)), SW_SHOW);
@@ -57,8 +59,6 @@ end;
 
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean;
 var
-  cExe: array [0..255] of Char;
-  pcFile: PChar;
   StartInfo: TStartupInfo;
   ProcessInfo: TProcessInformation;
 begin
@@ -82,8 +82,8 @@ var
   FSnapshotHandle: THandle;
   FProcessEntry32: TProcessEntry32;
 begin
+  Result := 0;
   try
-    Result := 0;
     FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     FProcessEntry32.dwSize := SizeOf(FProcessEntry32);
     ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);
@@ -123,9 +123,9 @@ var
   FSnapshotHandle: THandle;
   FProcessEntry32: TProcessEntry32;
 begin
+  Result := 0;
   try
     i := 0;
-    Result := 0;
     FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     FProcessEntry32.dwSize := SizeOf(FProcessEntry32);
     ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);

@@ -2355,6 +2355,10 @@ object Form1: TForm1
     object N1: TMenuItem
       Caption = '-'
     end
+    object Relancerlapplication1: TMenuItem
+      Caption = 'Relancer l'#39'application'
+      OnClick = Relancerlapplication1Click
+    end
     object Quitter1: TMenuItem
       Caption = 'Quitter'
       OnClick = Quitter1Click

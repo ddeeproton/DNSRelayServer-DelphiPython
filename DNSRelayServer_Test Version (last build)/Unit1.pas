@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.162';
+var CurrentApplicationVersion: string = '0.4.163';
 
 type
   TForm1 = class(TForm)
@@ -216,6 +216,7 @@ type
     Carterseau1: TMenuItem;
     Affichage1: TMenuItem;
     Alertes2: TMenuItem;
+    Relancerlapplication1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -356,6 +357,7 @@ type
     procedure Affichage1Click(Sender: TObject);
     procedure Alertes2Click(Sender: TObject);
     procedure Config1Click(Sender: TObject);
+    procedure Relancerlapplication1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -772,10 +774,6 @@ end;
 
 procedure TForm1.onServerDNSStart();
 begin
-  if CheckBoxAllowModifyNetCard.Checked then
-  begin
-    ButtonNetCardIntegrationClick(nil);
-  end;
   ImageList4.GetIcon(3, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   ToolButton11.ImageIndex := 8;
@@ -1109,6 +1107,10 @@ begin
   end;
 
 
+  if CheckBoxAllowModifyNetCard.Checked then
+  begin
+    ButtonNetCardIntegrationClick(nil);
+  end;
 
   if GetNetworkInterfaces(net) then
   begin
@@ -1323,7 +1325,7 @@ begin
 
   Form1.Top := Screen.WorkAreaHeight - Form1.Height;
   Form1.Left := Screen.WorkAreaWidth - Form1.Width;
-  
+
   //GroupBox5.Height := Form1.Height div 2;
   //GroupBox5.Width := Form1.Width div 2;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
@@ -2350,7 +2352,7 @@ begin
     ToolButton6Click(nil);
   end;
   //setIPToDHCP();
-  MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
+
 
   dnslist := '';
   if GetNetworkInterfaces(net) then
@@ -2365,6 +2367,7 @@ begin
     end;
   end;
   //setDNS(CBoxDNSServerSlaveIP.Text);
+  MemoLogs.Lines.Add('Set DNS '+dnslist);
   setDNS(dnslist);
   setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 end;
@@ -3287,6 +3290,23 @@ procedure TForm1.Config1Click(Sender: TObject);
 begin
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
+end;
+
+procedure TForm1.Relancerlapplication1Click(Sender: TObject);
+var
+  i: Integer;
+  param: string;
+  canclose: Boolean;
+begin
+  param := '';
+  for i:=1 to ParamCount() do
+    param := param +' '+ParamStr(i);
+  ExecAndBringToFront(Application.ExeName, param);
+  canClose := True;
+  FormCloseQuery(nil, canClose);
+  //KillTask(ExtractFileName(Application.ExeName));
+  KillProcess(Self.Handle);
+  Application.Terminate;
 end;
 
 end.
