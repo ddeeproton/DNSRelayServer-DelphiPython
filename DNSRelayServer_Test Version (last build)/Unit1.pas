@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.161';
+var CurrentApplicationVersion: string = '0.4.162';
 
 type
   TForm1 = class(TForm)
@@ -2370,6 +2370,9 @@ begin
 end;
 
 procedure TForm1.ButtonNetCardDesintegrationClick(Sender: TObject);
+var
+  i: Integer;
+  dns: string;
 begin
   if Sender <> nil then
   begin
@@ -2378,7 +2381,14 @@ begin
     ToolButton6Click(nil);
   end;
   MemoLogs.Lines.Add('Go to DHCP');
-  setDNS('');
+  dns := '';
+  for i := 0 to ListBoxDNSMaster.Items.Count - 1 do
+  begin
+    if dns <> '' then dns := dns + ' ';
+    dns := dns + ListBoxDNSMaster.Items[i];
+  end;
+  setDNS(dns);
+  //setDNS('');
   setDNSOnBoot(False);
   //setIPToDHCP();
 end;

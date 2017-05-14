@@ -21,7 +21,6 @@ implementation
 
 
 procedure ListViewCreate(ListView: TListView);
-var HauteurMinimum, HauteurMaximum: integer;
 begin
   // On créer la première colone dans ListView1
   AjouterUneColone(ListView.Columns.Add,
@@ -188,6 +187,7 @@ end;
 procedure ListView1DblClick(Sender: TObject);
 var i: integer;
 Begin
+  exit;
   // Si aucune ligne selectionnee, on sort de la procedure
   if TListView(Sender).SelCount = 0 then exit;
   // Recupere la ligne selectionnee
