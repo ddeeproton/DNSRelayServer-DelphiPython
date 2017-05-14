@@ -56,7 +56,7 @@ begin
     for i := 0 to ListView.items.count - 1 do
     begin
       // On coche la case du proxy actuel (si actif) et decoche les autres
-      ListView.Items.Item[i].Checked := (ListView.Items.Item[i].Caption = CurrProxy) and ProxyActive;
+      ListView.Items.Item[i].Checked := (Pos('127.0.0.', ListView.Items.Item[i].Caption) > 0) and ProxyActive;
     end;
   end;
   Application.ProcessMessages;

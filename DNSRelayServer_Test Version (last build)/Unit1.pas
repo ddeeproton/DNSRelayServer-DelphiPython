@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager;
 
-var CurrentApplicationVersion: string = '0.4.164';
+var CurrentApplicationVersion: string = '0.4.165';
 
 type
   TForm1 = class(TForm)
@@ -490,9 +490,10 @@ begin
       //ip := getDomain(Form1.EditFilehost.Text, domain);
       ip := ipdomain;
       ip := onlyChars(ip);
-      if ip = '' then imgIndex := 0
-      else if Pos('127.0.0.', ip) > 0 then imgIndex := 3
-      else imgIndex := 1;
+      //if ipdomain = '' then imgIndex := 0
+      //else
+      if Pos('127.0.0', ipdomain) >= 0 then imgIndex := 3
+      else imgIndex := 0;
 
     if isNew then
     begin
@@ -2033,16 +2034,20 @@ end;
 procedure TForm1.refreshListView1Click();
 var
   i:integer;
-  ip:string;
+  ip, ipdomain:string;
 begin
   for i := 0 to ListView1.items.count - 1 do
   begin
+            {
+    //ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
+    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].Caption);
 
-    ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
-    ip := onlyChars(ip);
+    //ip := onlyChars(ip);
     //ShowMessage('"'+ip+'"');
     if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
-    else if ip = '127.0.0.1' then ListView1.Items.Item[i].ImageIndex := 3
+    else }
+    ipdomain := ListView1.Items.Item[i].SubItems.Strings[0];
+    if Pos('127.0.0.', ipdomain) > 0 then ListView1.Items.Item[i].ImageIndex := 3
     else ListView1.Items.Item[i].ImageIndex := 1;
 
     // On coche la case du proxy actuel (si actif) et decoche les autres
