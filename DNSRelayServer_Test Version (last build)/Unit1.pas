@@ -2349,7 +2349,7 @@ begin
     //ToolButton3.Down := True;
     ToolButton6Click(nil);
   end;
-  setIPToDHCP();
+  //setIPToDHCP();
   MemoLogs.Lines.Add('Set DNS '+CBoxDNSServerSlaveIP.Text);
 
   dnslist := '';
@@ -2380,7 +2380,7 @@ begin
   MemoLogs.Lines.Add('Go to DHCP');
   setDNS('');
   setDNSOnBoot(False);
-  setIPToDHCP();
+  //setIPToDHCP();
 end;
 
 procedure TForm1.TimerCheckUpdateTimer(Sender: TObject);
