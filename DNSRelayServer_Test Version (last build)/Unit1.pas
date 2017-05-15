@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.172';
+var CurrentApplicationVersion: string = '0.4.173';
 
 type
   TForm1 = class(TForm)

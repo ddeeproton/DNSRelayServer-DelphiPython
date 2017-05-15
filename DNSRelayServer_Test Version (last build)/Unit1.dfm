@@ -125,8 +125,8 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet5
-            TabIndex = 4
+            ActivePage = TabSheet1
+            TabIndex = 0
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -187,16 +187,16 @@ object Form1: TForm1
                 OnClick = ButtonRefreshNetCardClick
               end
               object Label2: TLabel
-                Left = 8
-                Top = 88
+                Left = 176
+                Top = 24
                 Width = 19
                 Height = 13
                 Caption = 'Port'
                 Transparent = True
               end
               object Label4: TLabel
-                Left = 8
-                Top = 128
+                Left = 176
+                Top = 64
                 Width = 58
                 Height = 13
                 Caption = 'Exemple: 53'
@@ -204,7 +204,7 @@ object Form1: TForm1
               end
               object Label5: TLabel
                 Left = 8
-                Top = 152
+                Top = 96
                 Width = 56
                 Height = 13
                 Caption = 'Fichier Host'
@@ -212,7 +212,7 @@ object Form1: TForm1
               end
               object Label6: TLabel
                 Left = 27
-                Top = 202
+                Top = 146
                 Width = 239
                 Height = 13
                 Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
@@ -229,7 +229,7 @@ object Form1: TForm1
               end
               object Label8: TLabel
                 Left = 27
-                Top = 224
+                Top = 168
                 Width = 294
                 Height = 13
                 Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
@@ -239,8 +239,8 @@ object Form1: TForm1
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
               object SpinPort: TSpinEdit
-                Left = 8
-                Top = 104
+                Left = 176
+                Top = 40
                 Width = 97
                 Height = 22
                 Color = clWhite
@@ -252,7 +252,7 @@ object Form1: TForm1
               end
               object EditFilehost: TEdit
                 Left = 8
-                Top = 168
+                Top = 112
                 Width = 249
                 Height = 21
                 Anchors = [akLeft, akTop, akRight]
@@ -268,7 +268,7 @@ object Form1: TForm1
               end
               object CheckBoxAutostartDNSOnBoot: TCheckBox
                 Left = 8
-                Top = 224
+                Top = 168
                 Width = 19
                 Height = 17
                 TabOrder = 3
@@ -276,7 +276,7 @@ object Form1: TForm1
               end
               object CheckBoxStartWithWindows: TCheckBox
                 Left = 8
-                Top = 200
+                Top = 144
                 Width = 17
                 Height = 17
                 TabOrder = 2
@@ -284,7 +284,7 @@ object Form1: TForm1
               end
               object Button1: TButton
                 Left = 260
-                Top = 167
+                Top = 111
                 Width = 35
                 Height = 23
                 Anchors = [akTop, akRight]
