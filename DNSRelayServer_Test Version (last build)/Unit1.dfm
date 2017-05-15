@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 538
-  Top = 98
-  Width = 470
+  Left = 215
+  Top = 107
+  Width = 473
   Height = 645
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -66,11 +66,11 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 525
-    Width = 454
+    Top = 114
+    Width = 457
     Height = 10
     Cursor = crVSplit
-    Align = alBottom
+    Align = alTop
     Color = clWhite
     MinSize = 1
     ParentColor = False
@@ -78,9 +78,9 @@ object Form1: TForm1
     OnMoved = FormResize
   end
   object Panel1: TPanel
-    Left = 1
-    Top = 117
-    Width = 368
+    Left = 0
+    Top = 130
+    Width = 369
     Height = 388
     BevelOuter = bvNone
     Color = clWhite
@@ -125,8 +125,8 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
-            TabIndex = 0
+            ActivePage = TabSheet5
+            TabIndex = 4
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -1219,10 +1219,9 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 535
-    Width = 454
-    Height = 75
-    Align = alBottom
+    Top = 528
+    Width = 377
+    Height = 82
     Caption = '           '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -1242,8 +1241,8 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 39
-      Width = 450
-      Height = 34
+      Width = 373
+      Height = 41
       Align = alClient
       Color = clWhite
       Font.Charset = ANSI_CHARSET
@@ -1260,7 +1259,7 @@ object Form1: TForm1
     object Panel7: TPanel
       Left = 2
       Top = 15
-      Width = 450
+      Width = 373
       Height = 24
       Align = alTop
       BevelOuter = bvNone
@@ -1304,7 +1303,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 454
+    Width = 457
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1405,15 +1404,15 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 454
+    Width = 457
     Height = 33
     Align = alTop
     TabOrder = 3
     DesignSize = (
-      454
+      457
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 427
+      Left = 430
       Top = 6
       Width = 22
       Height = 22
@@ -1451,16 +1450,16 @@ object Form1: TForm1
   object PanelMessage: TPanel
     Left = 0
     Top = 81
-    Width = 454
+    Width = 457
     Height = 33
     Align = alTop
     TabOrder = 4
     Visible = False
     DesignSize = (
-      454
+      457
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 427
+      Left = 430
       Top = 6
       Width = 22
       Height = 22

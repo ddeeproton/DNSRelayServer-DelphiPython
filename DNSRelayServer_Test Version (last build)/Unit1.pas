@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.170';
+var CurrentApplicationVersion: string = '0.4.171';
 
 type
   TForm1 = class(TForm)
@@ -1842,6 +1842,23 @@ end;
 
 procedure TForm1.ToolButton8Click(Sender: TObject);
 begin
+  ToolButton8.Down := False;
+  ToolButton4.Down := False;
+  ToolButtonBlackwords.Down := False;
+  ToolButton6.Down := False;
+  if Panel1.Visible then
+    GroupBox5.Align := alClient
+  else begin
+    Splitter1.Align := alBottom;
+    GroupBox5.Align := alBottom;
+    GroupBox5.Height := 100;
+    ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  end;
+  Panel1.Visible := not Panel1.Visible;
+  Splitter1.Visible := not Splitter1.Visible;
+
+  ToolButton8.Down := Panel1.Visible;
+
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
 end;
@@ -1886,22 +1903,90 @@ end;
 
 procedure TForm1.ToolButton4Click(Sender: TObject);
 begin
+  ToolButton8.Down := False;
+  ToolButton4.Down := False;
+  ToolButtonBlackwords.Down := False;
+  ToolButton6.Down := False;
+  if Panel1.Visible then
+    GroupBox5.Align := alClient
+  else begin
+    Splitter1.Align := alBottom;
+    GroupBox5.Align := alBottom;
+    GroupBox5.Height := 100;
+    ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  end;
+  Panel1.Visible := not Panel1.Visible;
+  Splitter1.Visible := not Splitter1.Visible;
+
+  ToolButton4.Down := Panel1.Visible;
+
   Notebook1.PageIndex := 2;
 end;
 
 procedure TForm1.ToolButton6Click(Sender: TObject);
 begin
+  ToolButton8.Down := False;
+  ToolButton4.Down := False;
+  ToolButtonBlackwords.Down := False;
+  ToolButton6.Down := False;
+  if Panel1.Visible then
+    GroupBox5.Align := alClient
+  else begin
+    Splitter1.Align := alBottom;
+    GroupBox5.Align := alBottom;
+    GroupBox5.Height := 100;
+    ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  end;
+  Panel1.Visible := not Panel1.Visible;
+  Splitter1.Visible := not Splitter1.Visible;
+  
+  ToolButton6.Down := Panel1.Visible;
   Notebook1.PageIndex := 3;
-  Form1.Resize;
 end;
 
 procedure TForm1.ToolButton3Click(Sender: TObject);
 begin
+  ToolButton8.Down := False;
+  ToolButton4.Down := False;
+  ToolButtonBlackwords.Down := False;
+  ToolButton6.Down := False;
+
+  if Notebook1.PageIndex = 4 then
+  begin
+    if Panel1.Visible then
+      GroupBox5.Align := alClient
+    else begin
+      Splitter1.Align := alBottom;
+      GroupBox5.Align := alBottom;
+      GroupBox5.Height := 100;
+      ComboBoxPosLogsSelect(ComboBoxPosLogs);
+    end;
+    Panel1.Visible := not Panel1.Visible;
+    Splitter1.Visible := not Splitter1.Visible;
+    ToolButton8.Down := Panel1.Visible;
+  end;
+
   Notebook1.PageIndex := 4;
 end;
 
 procedure TForm1.ToolButtonBlackwordsClick(Sender: TObject);
 begin
+  ToolButton8.Down := False;
+  ToolButton4.Down := False;
+  ToolButtonBlackwords.Down := False;
+  ToolButton6.Down := False;
+  if Panel1.Visible then
+    GroupBox5.Align := alClient
+  else begin
+    Splitter1.Align := alBottom;
+    GroupBox5.Align := alBottom;
+    GroupBox5.Height := 100;
+    ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  end;
+  Panel1.Visible := not Panel1.Visible;
+  Splitter1.Visible := not Splitter1.Visible;
+  ToolButtonBlackwords.Down := Panel1.Visible;
+
   Notebook1.PageIndex := 1;
 end;
 
