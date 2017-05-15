@@ -993,7 +993,7 @@ begin
   GroupBox5.Visible := True;
 
   Application.ProcessMessages;
-  ComboBoxPosLogsSelect(nil);
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
 
   if Form1.WindowState = wsNormal then
@@ -2937,6 +2937,7 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+
 end;
 
 
@@ -3140,6 +3141,11 @@ end;
 
 procedure TForm1.ComboBoxPosLogsSelect(Sender: TObject);
 begin
+  if Sender = nil then
+  begin
+    Panel1.Visible := True;
+    Splitter1.Visible := True;
+  end;
   if ComboBoxPosLogs.ItemIndex = 0 then
   begin
     GroupBox5.Align := alTop;
@@ -3403,25 +3409,25 @@ end;
 procedure TForm1.Afficherenhaut1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 0;
-  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  ComboBoxPosLogsSelect(nil);
 end;
 
 procedure TForm1.Afficherenbas1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 1;
-  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  ComboBoxPosLogsSelect(nil);
 end;
 
 procedure TForm1.Affichergauche1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 2;
-  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  ComboBoxPosLogsSelect(nil);
 end;
 
 procedure TForm1.Afficherdroite1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 3;
-  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  ComboBoxPosLogsSelect(nil);
 end;
 
 procedure TForm1.Activertouteslesalertes1Click(Sender: TObject);
@@ -3448,61 +3454,61 @@ end;
 
 procedure TForm1.DNS1Click(Sender: TObject);
 begin
+  Panel1.Visible := False;
+  Splitter1.Visible := False;
   ToolButton8Click(nil);
   PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Notebook1.PageIndex := 0;
-  ResizePanelConfig();
   Afficher1Click(nil);
 end;
 
 procedure TForm1.DNSMatres1Click(Sender: TObject);
-begin
+begin                     
+  Panel1.Visible := False;
+  Splitter1.Visible := False;
   ToolButton8Click(nil);
   PageControl1.TabIndex := 1;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Notebook1.PageIndex := 0;
-  ResizePanelConfig();
   Afficher1Click(nil);
 end;
 
 procedure TForm1.Misejour1Click(Sender: TObject);
-begin
+begin                                        
+  Panel1.Visible := False;
+  Splitter1.Visible := False;
   ToolButton8Click(nil);
   PageControl1.TabIndex := 2;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Notebook1.PageIndex := 0;
-  ResizePanelConfig();
   Afficher1Click(nil);
 end;
 
 procedure TForm1.Carterseau1Click(Sender: TObject);
-begin
+begin                             
+  Panel1.Visible := False;
+  Splitter1.Visible := False;
   ToolButton8Click(nil);
   PageControl1.TabIndex := 3;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Notebook1.PageIndex := 0;
-  ResizePanelConfig();
   Afficher1Click(nil);
 end;
 
 procedure TForm1.Affichage1Click(Sender: TObject);
-begin
+begin                                   
+  Panel1.Visible := False;
+  Splitter1.Visible := False;
   ToolButton8Click(nil);
   PageControl1.TabIndex := 4;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Notebook1.PageIndex := 0;
-  ResizePanelConfig();
   Afficher1Click(nil);
 end;
 
 procedure TForm1.Alertes2Click(Sender: TObject);
-begin
+begin                          
+  Panel1.Visible := False;
+  Splitter1.Visible := False;
   ToolButton8Click(nil);
   PageControl1.TabIndex := 5;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Notebook1.PageIndex := 0;
-  ResizePanelConfig();
   Afficher1Click(nil);
 end;
 
