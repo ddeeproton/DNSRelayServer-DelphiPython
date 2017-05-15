@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.171';
+var CurrentApplicationVersion: string = '0.4.172';
 
 type
   TForm1 = class(TForm)
@@ -514,16 +514,17 @@ begin
 
     if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
     begin
-      if Length(domain) <= 11 then tab := #9 else tab := '';
-      if Length(domain) <= 19 then tab := tab+#9;
-      if Length(domain) <= 27 then tab := tab+#9;
-      if Length(domain) <= 36 then tab := tab+#9;
+      logs := '['+date+' '+time+'] '+ipserver+' '+ipclient+' -> '+domain;
+      if Length(logs) <= 55 then tab := #9 else tab := '';
+      if Length(logs) <= 63 then tab := tab+#9;
+      if Length(logs) <= 71 then tab := tab+#9;
+      if Length(logs) <= 79 then tab := tab+#9;
       status := 'OK';
       if ipdomain = '127.0.0.1' then status := 'BLOCKED by HostFile';
       if ipdomain = '127.0.0.3' then status := 'BLOCKED by Block ALL';
       if ipdomain = '127.0.0.4' then status := 'BLOCKED by DNS Master fail';
       if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
-      logs := '['+date+' '+time+'] '+ipserver+' '+ipclient+' -> '+domain+tab+#9+' ['+status+'] -> ('+ipdomain+')';
+      logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
       form1.MemoLogs.Lines.Add(logs);
     end;
     if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
