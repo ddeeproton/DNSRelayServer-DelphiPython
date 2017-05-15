@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 215
-  Top = 107
+  Left = 144
+  Top = 106
   Width = 473
   Height = 645
   Caption = 'DNS Relay Server'
@@ -2359,7 +2359,6 @@ object Form1: TForm1
     end
     object Config1: TMenuItem
       Caption = 'Config'
-      OnClick = Config1Click
       object DNS1: TMenuItem
         Caption = 'Serveur DNS'
         OnClick = DNS1Click

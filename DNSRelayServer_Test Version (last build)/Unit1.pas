@@ -362,7 +362,6 @@ type
     procedure Carterseau1Click(Sender: TObject);
     procedure Affichage1Click(Sender: TObject);
     procedure Alertes2Click(Sender: TObject);
-    procedure Config1Click(Sender: TObject);
     procedure Relancerlapplication1Click(Sender: TObject);
     procedure SpinEditAlertDurationChange(Sender: TObject);
     procedure SpeedButtonCloseMessageClick(Sender: TObject);
@@ -1842,6 +1841,13 @@ end;
 
 procedure TForm1.ToolButton8Click(Sender: TObject);
 begin
+
+  if Notebook1.PageIndex <> 0 then
+  begin
+    Panel1.Visible := False;
+    Splitter1.Visible := False;
+  end;
+
   ToolButton8.Down := False;
   ToolButton4.Down := False;
   ToolButtonBlackwords.Down := False;
@@ -1903,6 +1909,12 @@ end;
 
 procedure TForm1.ToolButton4Click(Sender: TObject);
 begin
+  if Notebook1.PageIndex <> 2 then
+  begin
+    Panel1.Visible := False;
+    Splitter1.Visible := False;
+  end;
+
   ToolButton8.Down := False;
   ToolButton4.Down := False;
   ToolButtonBlackwords.Down := False;
@@ -1925,6 +1937,12 @@ end;
 
 procedure TForm1.ToolButton6Click(Sender: TObject);
 begin
+  if Notebook1.PageIndex <> 3 then
+  begin
+    Panel1.Visible := False;
+    Splitter1.Visible := False;
+  end;
+
   ToolButton8.Down := False;
   ToolButton4.Down := False;
   ToolButtonBlackwords.Down := False;
@@ -1971,6 +1989,12 @@ end;
 
 procedure TForm1.ToolButtonBlackwordsClick(Sender: TObject);
 begin
+  if Notebook1.PageIndex <> 1 then
+  begin
+    Panel1.Visible := False;
+    Splitter1.Visible := False;
+  end;
+
   ToolButton8.Down := False;
   ToolButton4.Down := False;
   ToolButtonBlackwords.Down := False;
@@ -3424,56 +3448,62 @@ end;
 
 procedure TForm1.DNS1Click(Sender: TObject);
 begin
-  PageControl1.TabIndex := 0;                           
+  ToolButton8Click(nil);
+  PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
+  Afficher1Click(nil);
 end;
 
 procedure TForm1.DNSMatres1Click(Sender: TObject);
 begin
+  ToolButton8Click(nil);
   PageControl1.TabIndex := 1;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
+  Afficher1Click(nil);
 end;
 
 procedure TForm1.Misejour1Click(Sender: TObject);
 begin
+  ToolButton8Click(nil);
   PageControl1.TabIndex := 2;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
+  Afficher1Click(nil);
 end;
 
 procedure TForm1.Carterseau1Click(Sender: TObject);
 begin
+  ToolButton8Click(nil);
   PageControl1.TabIndex := 3;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
+  Afficher1Click(nil);
 end;
 
 procedure TForm1.Affichage1Click(Sender: TObject);
 begin
+  ToolButton8Click(nil);
   PageControl1.TabIndex := 4;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
+  Afficher1Click(nil);
 end;
 
 procedure TForm1.Alertes2Click(Sender: TObject);
 begin
+  ToolButton8Click(nil);
   PageControl1.TabIndex := 5;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 0;
   ResizePanelConfig();
-end;
-
-procedure TForm1.Config1Click(Sender: TObject);
-begin
-  Notebook1.PageIndex := 0;
-  ResizePanelConfig();
+  Afficher1Click(nil);
 end;
 
 procedure TForm1.Relancerlapplication1Click(Sender: TObject);
