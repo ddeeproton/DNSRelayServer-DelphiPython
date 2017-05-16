@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.174';
+var CurrentApplicationVersion: string = '0.4.175';
 
 type
   TForm1 = class(TForm)
@@ -2391,6 +2391,8 @@ begin
 
           canClose := True;
           Form1.FormCloseQuery(nil, canClose);
+          KillTask('python.exe');
+          KillTask(ExtractFileName(Application.ExeName));
           Application.Terminate;
 
         //end;
