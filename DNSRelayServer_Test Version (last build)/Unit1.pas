@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.181';
+var CurrentApplicationVersion: string = '0.4.182';
 
 type
   TForm1 = class(TForm)
@@ -1029,10 +1029,10 @@ begin
     FormInstall.ButtonInstallClick(nil);
     ToolButton11.Enabled := True;
     FormInstall.TimerWatchThread.Enabled := True;
-    if ServerDoStart then TimerRestart.Enabled := True;
+    //if ServerDoStart then TimerRestart.Enabled := True;
     exit;
-  end
-  else begin
+  end else
+  begin
     FormInstall.Close;
   end;
 
@@ -1082,7 +1082,6 @@ begin
     //if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
-
 
 
   ToolButton11.Enabled := True;
@@ -1400,6 +1399,28 @@ begin
     for i:=1 to ParamCount() do
       param := param +' '+ParamStr(i);
     ExecAndBringToFront(Application.ExeName, param);
+    canClose := True;
+    FormCloseQuery(nil, canClose);
+    //KillTask(ExtractFileName(Application.ExeName));
+    KillProcess(Self.Handle);
+    Application.Terminate;
+  end;
+
+  if (ParamCount() >= 1) and (ParamStr(1) = '/inst_background') then
+  begin
+    SetCurrentDir(ExtractFileDir(Application.ExeName));
+    ExecAndBringToFront(Application.ExeName, '/background');
+    canClose := True;
+    FormCloseQuery(nil, canClose);
+    //KillTask(ExtractFileName(Application.ExeName));
+    KillProcess(Self.Handle);
+    Application.Terminate;
+  end;
+
+  if (ParamCount() >= 1) and (ParamStr(1) = '/inst_autostart') then
+  begin
+    SetCurrentDir(ExtractFileDir(Application.ExeName));
+    ExecAndBringToFront(Application.ExeName, '/autostart');
     canClose := True;
     FormCloseQuery(nil, canClose);
     //KillTask(ExtractFileName(Application.ExeName));

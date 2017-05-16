@@ -120,11 +120,11 @@ Section "" ;No components page, name is not important
 
   StrCmp $0 1 goSilent2 goNotSilent2
   goSilent2:
-	  Exec 'DNSRelayServer.exe /background' # equivaut à IF is silent /S
+	  Exec 'DNSRelayServer.exe /inst_background' # equivaut à IF is silent /S
 	  Quit
 	  
   goNotSilent2:
-  Exec 'DNSRelayServer.exe /autostart'
+  Exec 'DNSRelayServer.exe /inst_autostart'
   Quit
 SectionEnd ; end the section
 
@@ -161,7 +161,7 @@ Section "Uninstall"
 	FSkip2:
 
 
-	  MessageBox MB_YESNO "Effacer le dossier d'installation des setup d'installation et composants?" IDNO FSkip3
+	  MessageBox MB_YESNO "Effacer les fichiers d'installation téléchargés?" IDNO FSkip3
 
 	  RMDir /r "$INSTDIR\setup"
 
@@ -169,7 +169,7 @@ Section "Uninstall"
 
 
 
-	  MessageBox MB_YESNO "Effacer les sources du serveur?" IDNO FSkip4
+	  MessageBox MB_YESNO "Effacer les sources?" IDNO FSkip4
 
 	  Delete "$INSTDIR\DNSRelayServer_*_Source.zip"
 

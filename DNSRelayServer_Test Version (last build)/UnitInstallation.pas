@@ -153,7 +153,7 @@ begin
     else
       r := installThread.LabelSetuptools;
   LabelSetuptools.Caption := PChar(r);
-
+  Application.ProcessMessages;
   if (installThread <> nil) and not installThread.Terminated then
   begin
     installThread.LabelWget := LabelWget.Caption;
@@ -165,40 +165,50 @@ end;
 
 procedure TInstall.Execute;
 begin
+  //ShowMessage('Execute');
   FormInstall.CheckInstallation();
   FormInstall.DoInstall();
 //FormInstall.LabelDNSResolver.Caption := PChar('a5');
-  installThread.Terminate;
+  //installThread.Terminate;
 end;
 
 procedure TFormInstall.ButtonInstallClick(Sender: TObject);
 begin
+  //ShowMessage('ButtonInstallClick');
   //if ButtonInstall.Enabled = False then exit;
   //ButtonInstall.Enabled := False;
-  TimerWatchThread.Enabled := True;
-  installThread := TInstall.Create(False);
+  //installThread := TInstall.Create(False);
+  //TimerWatchThread.Enabled := True;
 
+  DoInstall();
+
+  {
   if (installThread <> nil) and not installThread.Terminated then
   begin
     installThread.LabelWget := LabelWget.Caption;
     installThread.LabelPython := LabelPython.Caption;
     installThread.LabelDNSResolver := LabelDNSResolver.Caption;
     installThread.LabelSetuptools := LabelSetuptools.Caption;
-
   end;
+  }
 end;
 
 procedure TFormInstall.DoInstall();
 begin
-  TimerWatchThread.Enabled := True;
+  //ShowMessage('DoInstall');
+  //TimerWatchThread.Enabled := True;
   CheckInstallation();
+  installWget();
+  //installPython();
+  {
   if not isWgetInstalled      then installWget();
   if not isWgetInstalled      then begin installThread.LabelWget := Pchar('Err DoInstall() 1'); Application.ProcessMessages; exit; end;
   if not isPythonInstalled    then installPython();
   if not isPythonInstalled    then begin installThread.LabelWget := Pchar('Err DoInstall() 2'); Application.ProcessMessages; exit; end;
   if not isSetuptoolInstalled then installSetuptools();
   if not isDNSInstalled       then installDNS();
-  TimerWatchThread.Enabled := False;
+  }
+  //TimerWatchThread.Enabled := False;
 end;
 
 
@@ -206,18 +216,42 @@ procedure TFormInstall.installWget();
 var
   exePath, url: string;
 begin
-  installThread.LabelWget := PChar('Downloading...');
+  if isWgetInstalled then
+  begin
+    //ShowMessage('installWget -> isWgetInstalled');
+    CheckInstallation();
+    installPython();
+    exit;
+  end;
+  //
+  //installThread.LabelWget := PChar('Downloading...');
+  LabelWget.Caption := PChar('Downloading...');
+  //ShowMessage('Downloading 2');
+  Application.ProcessMessages;
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
     makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
   url := 'http://eternallybored.org/misc/wget/current/wget.exe';
   if URLDownloadToFile(nil, PChar(url), PChar(exePath), 0 , nil) <> 0 then
-    if not FileExists(exePath) then
-      installThread.LabelWget := 'Error';
+  begin
+    //Error
+  end
+  else begin
+
+  end;
+  if not FileExists(exePath) then
+  begin
+    LabelWget.Caption := 'Error: Not connected?';
+    Application.ProcessMessages;
+    Form1.ButtonNetCardDesintegrationClick(Form1.ButtonNetCardDesintegration);
+    Sleep(2000);
+    installWget();
+    exit;
+  end;
   Sleep(2000);
   Application.ProcessMessages;
   CheckInstallation();
-  DoInstall();
+  installPython();
       //Notebook1.PageIndex := 1;
 end;
 
@@ -226,28 +260,48 @@ procedure TFormInstall.installPython();
 var
   exePath, url, wget: string;
 begin
+  if isPythonInstalled then
+  begin
+    CheckInstallation();
+    installSetuptools();
+    exit;
+  end;
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'python-2.7.13.msi';
   url := 'https://www.python.org/ftp/python/2.7.13/python-2.7.13.msi';
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
     makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
-  if not FileExists(exePath) then
+  if not FileExists(exePath) or (FileSize(exePath) = 0) then
   begin
-    installThread.LabelPython := PChar('Downloading...');
+    if FileExists(exePath) then DeleteFile(exePath);
+    LabelPython.Caption := PChar('Downloading...');
+    Application.ProcessMessages;
     wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
     if not FileExists(wget) then begin CheckInstallation(); exit; end;
-    LaunchAndWait(wget, ' -O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
+    //LaunchAndWait(wget, ' -O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
     //'"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate'
-    //ecrireDansUnFichier(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadPython.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
-    //LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadPython.bat',  launchAndWWindow);
+    WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadPython.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
+    LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadPython.bat', '', launchAndWWindow);
   end;
-  installThread.LabelPython := PChar('Installation... [1)');
+  if not FileExists(exePath) or (FileSize(exePath) = 0) then
+  begin
+    LabelPython.Caption := PChar('Error: Not connected?');
+    DeleteFile(exePath);
+    Form1.ButtonNetCardDesintegrationClick(Form1.ButtonNetCardDesintegration);
+    Application.ProcessMessages;
+    Sleep(2000);
+    installPython();
+    exit;
+  end;
+  LabelPython.Caption := PChar('Installation... 1/3');
+  Application.ProcessMessages;
   if not FileExists(exePath) then begin CheckInstallation(); exit; end;
-  installThread.LabelPython := PChar('Installation... [2)');
+  LabelPython.Caption := PChar('Installation... 2/3');
+  Application.ProcessMessages;
   //ExecAndWait('msiexec.exe', '/i "'+exePath+'" TARGETDIR="c:\Python27" /qb', launchAndWWindow);
   WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installPython27.bat', 'msiexec /i "'+exePath+'" TARGETDIR="c:\Python27" /qb');
-  LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installPython27.bat','', launchAndWWindow);
-  installThread.LabelPython := PChar('Installation... [3)');
-
+  LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installPython27.bat', '', launchAndWWindow);
+  LabelPython.Caption := PChar('Installation... 3/3');
+  Application.ProcessMessages;
   // msiexec /i "python-2.7.13.msi" TARGETDIR="c:\Python27" /qb!
   // https://www.python.org/downloads/
   {
@@ -261,7 +315,7 @@ begin
   /qb+ - Like /qb, but display "Completed" dialog at the end
   }
   CheckInstallation();
-  DoInstall();
+  installSetuptools();
 end;
 
 
@@ -270,8 +324,14 @@ procedure TFormInstall.installSetuptools();
 var
   exePath, url, wget, vbs, outdir, bat: string;
 begin
-  installThread.LabelSetuptools := PChar('cheking...');
+  if isSetuptoolInstalled then
+  begin
+    CheckInstallation();
+    installDNS();
+    exit;
+  end;
 
+  LabelSetuptools.Caption := PChar('cheking...');
   Application.ProcessMessages;
 
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'setuptools-20.0.zip';
@@ -287,7 +347,7 @@ begin
   if not FileExists(exePath) or (FileSize(exePath) = 0) then
   begin
     if FileExists(exePath) then DeleteFile(exePath);
-    installThread.LabelSetuptools := PChar('Downloading...');
+    LabelSetuptools.Caption := PChar('Downloading...');
     Application.ProcessMessages;
 
     //LaunchAndWait(wget, '-O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
@@ -296,18 +356,20 @@ begin
       ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadsetuptools.bat',
       '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate'
     );
-    LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadsetuptools.bat','', launchAndWWindow);
+    ExecAndRead(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloadsetuptools.bat');
   end;
 
   if FileExists(exePath) and (FileSize(exePath) = 0) then DeleteFile(exePath);
 
   if not FileExists(exePath) or (FileSize(exePath) = 0) then begin
-    installThread.LabelSetuptools := PChar('Downloaded file not found.');
+    LabelSetuptools.Caption := PChar('Downloaded file not found.');
+    Application.ProcessMessages;
     exit;
   end;
 
 
-  installThread.LabelSetuptools := PChar('Unzipping...');
+  LabelSetuptools.Caption := PChar('Unzipping...');
+  Application.ProcessMessages;
   vbs := 'Sub UnZip(ZipFile, ExtractTo)'#13#10+
     '	Set fso = CreateObject("Scripting.FileSystemObject")'#13#10+
     '	If NOT fso.FolderExists(ExtractTo) Then'#13#10+
@@ -330,7 +392,7 @@ begin
   LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs.bat','', launchAndWWindow);
 
   end;
-  
+
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath+'setuptools-20.0\setuptools-20.0') then begin
     if FileExists(exePath) then DeleteFile(exePath);
     installSetuptools();
@@ -338,7 +400,8 @@ begin
   end;
 
 
-  installThread.LabelSetuptools := PChar('Installation...');
+  LabelSetuptools.Caption := PChar('Installation...');
+  Application.ProcessMessages;
   if FileExists(exePath) or (FileSize(exePath) = 0) then
   begin
     //SetCurrentDir(ExtractFilePath(Application.ExeName)+installDirectoryPath+'setuptools-20.0\setuptools-20.0');
@@ -354,7 +417,7 @@ begin
 
   end;
   CheckInstallation();
-  DoInstall();
+  installDNS();
 end;
 
 
@@ -364,8 +427,14 @@ procedure TFormInstall.installDNS();
 var
   exePath, url, wget, vbs, outdir, bat: string;
 begin
+  if isDNSInstalled then
+  begin
+    CheckInstallation();
+    Form1.ButtonStartClick(nil);
+    exit;
+  end;
 
-  installThread.LabelDNSResolver := PChar('cheking...');
+  LabelDNSResolver.Caption := PChar('cheking...');
   Application.ProcessMessages;
 
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0.zip';
@@ -379,14 +448,15 @@ begin
     wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
     if not FileExists(wget) or (FileSize(wget) = 0) then begin
       CheckInstallation();
-      installThread.LabelDNSResolver := PChar('wget.exe not found');
+      LabelDNSResolver.Caption := PChar('wget.exe not found');
+      Application.ProcessMessages;
       exit;
     end;
 
     if not FileExists(exePath) or (FileSize(exePath) = 0) then
     begin
       if FileExists(exePath) then DeleteFile(exePath);
-      installThread.LabelDNSResolver := PChar('Downloading...');
+      LabelDNSResolver.Caption := PChar('Downloading...');
       Application.ProcessMessages;
       //LaunchAndWait(wget, '-O "'+exePath+'" "'+url+'" --no-check-certificate', launchAndWWindow);
       WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'downloaddns.bat', '"'+wget+'" -O "'+exePath+'" "'+url+'" --no-check-certificate');
@@ -397,7 +467,8 @@ begin
     if not FileExists(exePath) or (FileSize(exePath) = 0) then exit;
 
     Sleep(2000);
-    installThread.LabelDNSResolver := PChar('Unzipping... 1');
+    LabelDNSResolver.Caption := PChar('Unzipping... 1/3');
+    Application.ProcessMessages;
     vbs := 'Sub UnZip(ZipFile, ExtractTo)'#13#10+
     '	Set fso = CreateObject("Scripting.FileSystemObject")'#13#10+
     '	If NOT fso.FolderExists(ExtractTo) Then'#13#10+
@@ -412,9 +483,11 @@ begin
     'UnZip WScript.Arguments(0), WScript.Arguments(1)'#13#10;
     WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs', vbs);
     WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', 'wscript.exe "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs" "'+exePath+'" "'+outdir+'"'+#13#10+'@rem pause');
-    installThread.LabelDNSResolver := PChar('Unzipping... 2');
+    LabelDNSResolver.Caption := PChar('Unzipping... 2/3');
+    Application.ProcessMessages;
     LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat', '', launchAndWWindow);
-    installThread.LabelDNSResolver := PChar('Unzipping... 3');
+    LabelDNSResolver.Caption := PChar('Unzipping... 3/3');
+    Application.ProcessMessages;
     //LaunchAndWait('wscript.exe', '"'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs" "'+exePath+'" "'+outdir+'"', launchAndWWindow);
 
     {
@@ -423,19 +496,20 @@ begin
       exit;
     end;
     }
-    installThread.LabelDNSResolver := PChar('Unzip done...');
+    LabelDNSResolver.Caption := PChar('Unzip done...');
+    Application.ProcessMessages;
     Sleep(2000);
   end;
 
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0') then begin
     if FileExists(exePath) then DeleteFile(exePath);
       installDNS();
-    installThread.LabelDNSResolver := PChar('error not found lib dir "dnspython"');
+    LabelDNSResolver.Caption := PChar('error not found lib dir "dnspython"');
     ShowMessage(PChar('error not found lib dir "dnspython"'));
     exit;
   end;
 
-  installThread.LabelDNSResolver := PChar('Installation...');
+  LabelDNSResolver.Caption := PChar('Installation...');
   if FileExists(exePath) or (FileSize(exePath) = 0) then
   begin
     //SetCurrentDir(ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0');
@@ -444,7 +518,8 @@ begin
 
     bat := 'cd  "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0"'#13#10+
       '"'+PythonPath+'python.exe" "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'dnspython-1.15.0\dnspython-1.15.0\setup.py" install';
-    if isDebug then bat := bat + #13#10 + '@pause';
+    //if isDebug then bat := bat + #13#10 + '@pause';
+
     WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installDNS.bat', bat);
     LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'installDNS.bat','', launchAndWWindow);
     Sleep(2000);
@@ -482,16 +557,29 @@ end;
 
 procedure TFormInstall.TimerWatchThreadTimer(Sender: TObject);
 begin
+  exit;
+
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
     makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
   //ButtonInstall.Enabled := installThread.Terminated;
-  if installThread.Terminated then TTimer(Sender).Enabled := False;
+
+  //if installThread.Terminated then TTimer(Sender).Enabled := False;
+
   if installThread.Terminated and (installThread.LabelWget = 'Error') then
   begin
     Notebook1.PageIndex := 1;
     installThread.LabelWget := 'Non installé';
   end;
-  CheckInstallation();
+
+  if not isWgetInstalled
+  or not isPythonInstalled
+  or not isSetuptoolInstalled
+  or not isDNSInstalled       then CheckInstallation();
+
+  TTimer(Sender).Enabled := not isWgetInstalled
+  or not isPythonInstalled
+  or not isSetuptoolInstalled
+  or not isDNSInstalled;
   {
   LabelWget.Caption := PChar(installThread.LabelWget);
   LabelPython.Caption := PChar(installThread.LabelPython);
