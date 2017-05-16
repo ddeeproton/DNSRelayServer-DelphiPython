@@ -7,7 +7,7 @@ Veuillez lire les modalités et les conditions suivantes avant l'utilisation de c
 Dans aucun cas, l'auteur de ce logiciel ne sera jugé responsable de la perte de données, des dommages, du manque à gagner ou de n'importe quel autre genre de perte par l'utilisation correcte ou non de ce logiciel. 
 
 Le logiciel peut être modifié. Le code source est fourni dans le setup d'installation.
-
+ 
 2. Licence
 
 "DNS Relay Server" est fourni en tant que logiciel open source. 
