@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.178';
+var CurrentApplicationVersion: string = '0.4.179';
 
 type
   TForm1 = class(TForm)
@@ -2140,7 +2140,6 @@ procedure TForm1.EditFilehostChange(Sender: TObject);
 begin
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
-  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
@@ -2155,6 +2154,7 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.ToolButton10Click(Sender: TObject);
@@ -3631,6 +3631,7 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+  PanelRestart.Visible := True;
 end;
 
 procedure TForm1.CheckBoxNoCacheDNSClick(Sender: TObject);
@@ -3644,6 +3645,7 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+  PanelRestart.Visible := True;
 end;
 
 end.
