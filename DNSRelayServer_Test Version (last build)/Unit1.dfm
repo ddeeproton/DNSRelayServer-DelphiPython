@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 269
   Top = 38
-  Width = 473
+  Width = 468
   Height = 645
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 114
-    Width = 457
+    Width = 452
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -1047,6 +1047,7 @@ object Form1: TForm1
             ViewStyle = vsReport
             OnChange = ListView1Change
             OnContextPopup = ListView1ContextPopup
+            OnKeyUp = ListView1KeyUp
           end
           object Panel6: TPanel
             Left = 2
@@ -1303,7 +1304,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 457
+    Width = 452
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1404,15 +1405,15 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 457
+    Width = 452
     Height = 33
     Align = alTop
     TabOrder = 3
     DesignSize = (
-      457
+      452
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 430
+      Left = 425
       Top = 6
       Width = 22
       Height = 22
@@ -1450,16 +1451,16 @@ object Form1: TForm1
   object PanelMessage: TPanel
     Left = 0
     Top = 81
-    Width = 457
+    Width = 452
     Height = 33
     Align = alTop
     TabOrder = 4
     Visible = False
     DesignSize = (
-      457
+      452
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 430
+      Left = 425
       Top = 6
       Width = 22
       Height = 22
@@ -7149,6 +7150,7 @@ object Form1: TForm1
       Caption = 'Autoriser'
       SubMenuImages = ImageList3
       ImageIndex = 0
+      ShortCut = 45
       OnClick = Autoriser1Click
     end
     object Modifier1: TMenuItem
@@ -7184,6 +7186,7 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFF00}
       Caption = 'Modifier'
+      ShortCut = 8237
       OnClick = Modifier1Click
     end
     object Bloquerledomaine1: TMenuItem
@@ -7219,6 +7222,7 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFF00}
       Caption = 'Bloquer'
+      ShortCut = 46
       OnClick = Bloquerledomaine1Click
     end
     object N9: TMenuItem
@@ -7226,6 +7230,7 @@ object Form1: TForm1
     end
     object AjouterBlackworkds1: TMenuItem
       Caption = 'Ajouter (Blackworkds)'
+      ShortCut = 8238
       OnClick = AjouterBlackworkds1Click
     end
   end
@@ -16065,14 +16070,17 @@ object Form1: TForm1
     Top = 295
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
+      ShortCut = 45
       OnClick = ToolButton1Click
     end
     object Modifier2: TMenuItem
       Caption = 'Modifier'
+      ShortCut = 8237
       OnClick = ToolButtonUpdateDNSMasterClick
     end
     object Supprimer1: TMenuItem
       Caption = 'Supprimer'
+      ShortCut = 46
       OnClick = ToolButtonEraseDNSMasterClick
     end
     object N4: TMenuItem
@@ -16080,10 +16088,12 @@ object Form1: TForm1
     end
     object Monter1: TMenuItem
       Caption = 'Monter'
+      ShortCut = 16469
       OnClick = ToolButtonUpDNSMasterClick
     end
     object Descendre1: TMenuItem
       Caption = 'Descendre'
+      ShortCut = 16452
       OnClick = ToolButtonDownDNSMasterClick
     end
   end
@@ -16112,14 +16122,17 @@ object Form1: TForm1
     Top = 323
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
+      ShortCut = 45
       OnClick = Ajouter2Click
     end
     object Modifier3: TMenuItem
       Caption = 'Modifier'
+      ShortCut = 8237
       OnClick = Modifier3Click
     end
     object Supprimer2: TMenuItem
       Caption = 'Supprimer'
+      ShortCut = 46
       OnClick = Supprimer2Click
     end
   end

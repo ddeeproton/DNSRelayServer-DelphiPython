@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.173';
+var CurrentApplicationVersion: string = '0.4.174';
 
 type
   TForm1 = class(TForm)
@@ -367,6 +367,8 @@ type
     procedure SpeedButtonCloseMessageClick(Sender: TObject);
     procedure TimerHideMessageTimer(Sender: TObject);
     procedure CheckListBoxDNSRelayIPClickCheck(Sender: TObject);
+    procedure ListView1KeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -2135,6 +2137,7 @@ end;
 
 procedure TForm1.Bloquerledomaine1Click(Sender: TObject);
 begin
+  SelectedListItem := ListView1.Selected;
   if not Assigned(SelectedListItem) then exit;
   //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
   setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
@@ -2149,6 +2152,7 @@ end;
 
 procedure TForm1.Autoriser1Click(Sender: TObject);
 begin
+  SelectedListItem := ListView1.Selected;
   if not Assigned(SelectedListItem) then exit;
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
   //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
@@ -2166,6 +2170,7 @@ procedure TForm1.Modifier1Click(Sender: TObject);
 var
   ip:string;
 begin
+  SelectedListItem := ListView1.Selected;
   if not Assigned(SelectedListItem) then exit;
   //txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]);
   ip := SelectedListItem.SubItems.Strings[0];
@@ -2799,8 +2804,7 @@ end;
 procedure TForm1.ListBoxBlacklistKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = 46 then
-    Supprimer2Click(nil);
+  if Key = 46 then Supprimer2Click(nil);
 end;
 
 procedure TForm1.ButtonClosePanelRestartClick(Sender: TObject);
@@ -3390,6 +3394,7 @@ procedure TForm1.AjouterBlackworkds1Click(Sender: TObject);
 var
   domain: string;
 begin
+  SelectedListItem := ListView1.Selected;
   if not Assigned(SelectedListItem) then exit;
   domain := SelectedListItem.Caption; //SelectedListItem.SubItems.Strings[0];
   //txt := InputBox('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain);
@@ -3551,6 +3556,35 @@ end;
 procedure TForm1.CheckListBoxDNSRelayIPClickCheck(Sender: TObject);
 begin
   if isServerStarted then PanelRestart.Visible := True;
+end;
+
+procedure TForm1.ListView1KeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+  //MemoLogs.Lines.Add(inttostr(Key));
+  // 46 = key Del
+  if (Key = 46) and (Shift = []) then
+  begin
+    if MessageDlg(PChar('Bloquer ['+ListView1.Selected.Caption+']?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    begin
+      Bloquerledomaine1Click(Bloquerledomaine1);
+    end;
+  end;     
+  // 46 = key Ins
+  if (Key = 45) and (Shift = []) then
+  begin
+    if MessageDlg(PChar('Autoriser ['+ListView1.Selected.Caption+']?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+    begin
+      Autoriser1Click(Autoriser1);
+    end;
+  end;
+
+  // Del + Shift
+  if (Key = 46) and (Shift = [ssShift]) then AjouterBlackworkds1Click(AjouterBlackworkds1);
+  // Ins + Shift
+  if (Key = 45) and (Shift = [ssShift]) then Modifier1Click(Modifier1);
+
 end;
 
 end.
