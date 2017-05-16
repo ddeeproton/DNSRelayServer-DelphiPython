@@ -17,7 +17,13 @@ OutFile "..\..\Setup installation\DNSRelayServerSetup_${VERSION}.exe"
 ; The default installation directory
 ;InstallDir "$PROGRAMFILES\DNSRelayServer"
 InstallDir "C:\DNSRelayServer"
+InstallDirRegKey HKLM "SOFTWARE\DNSRelayServer" ""
+
 ShowInstDetails show
+ShowUninstDetails show
+
+
+
 ; Set to silent mode
 ;SilentInstall silent
 ; Request application privileges for Windows Vista
@@ -28,12 +34,16 @@ BGGradient 000000 000080 FFFFFF
 InstallColors 8080FF 000030 
 XPStyle on
 
+SetCompressor bzip2
+
 ;--------------------------------
 ;Interface Settings
 
 !define MUI_ABORTWARNING
 
 !define MUI_ICON "..\images\server3.ico"
+!define MUI_UNICON "..\images\server3.ico"
+
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "..\images\NSISBanner.bmp"
 !define MUI_HEADERIMAGE_LEFT
@@ -61,7 +71,7 @@ XPStyle on
   !insertmacro MUI_PAGE_INSTFILES
   #!insertmacro MUI_PAGE_FINISH
 
-  !insertmacro MUI_UNPAGE_WELCOME
+  #!insertmacro MUI_UNPAGE_WELCOME
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
   #!insertmacro MUI_UNPAGE_FINISH
@@ -82,14 +92,26 @@ Section "" ;No components page, name is not important
   
   ; Put file there
   File "..\DNSRelayServer.exe"
-  File "..\DNSRelayServer_${VERSION}_Source.zip"
+  File "..\DNSRelayServer_${VERSION}_Source.zip"  
+  WriteUninstaller "uninstall_DNSRelayServer.exe"
+
+  
   CreateDirectory "$INSTDIR\setup"
+  SetOutPath "$INSTDIR\setup"
   File "..\setup\wget.exe"
+  SetOutPath $INSTDIR
+
+  
+  WriteRegStr HKLM "SOFTWARE\DNSRelayServer" "" $INSTDIR
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\DNSRelayServer" "DisplayName" "DNSRelayServer (remove only)"
+
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\DNSRelayServer" "UninstallString" '"$INSTDIR\uninstall_DNSRelayServer.exe"'
+  
   
   CreateDirectory "$SMPROGRAMS\DNS Relay Server"
-  #CreateShortCut "$SMPROGRAMS\DNSRelayServer\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\DNS Relay Server\DNS Relay Server.lnk" "$INSTDIR\DNSRelayServer.exe" "" "$INSTDIR\DNSRelayServer.exe" 0
   CreateShortCut "$DESKTOP\DNS Relay Server.lnk" "$INSTDIR\DNSRelayServer.exe" "" "$INSTDIR\DNSRelayServer.exe" 0
+  CreateShortCut "$SMPROGRAMS\DNS Relay Server\Uninstall.lnk" "$INSTDIR\uninstall_DNSRelayServer.exe" "" "$INSTDIR\uninstall_DNSRelayServer.exe" 0
 
   
   #ExecShell "open"  '"${NSISDIR}\DNSRelayServer_TestVersion.exe"'
@@ -106,6 +128,76 @@ Section "" ;No components page, name is not important
   Quit
 SectionEnd ; end the section
 
+
+
+
+# Uninstall section.
+
+Section "Uninstall"
+
+
+
+	IfFileExists "C:\Python27\python.exe" AskRemovePython FSkip
+
+	  
+
+	AskRemovePython:
+
+	  MessageBox MB_YESNO "Souhaitez-vous désinstaller Python 2.7?" IDNO FSkip
+	  
+	  ExecWait '"$WINDIR\system32\msiexec.exe" /x{4A656C6C-D24A-473F-9747-3A8D00907A03}'
+	  
+	FSkip:
+
+
+
+	  MessageBox MB_YESNO "Effacer vos fichiers de configuration?" IDNO FSkip2
+
+
+	  RMDir /r "$INSTDIR\DNSRelayServer"
+	  
+
+	  
+	FSkip2:
+
+
+	  MessageBox MB_YESNO "Effacer le dossier d'installation des setup d'installation et composants?" IDNO FSkip3
+
+	  RMDir /r "$INSTDIR\setup"
+
+	FSkip3:
+
+
+
+	  MessageBox MB_YESNO "Effacer les sources du serveur?" IDNO FSkip4
+
+	  Delete "$INSTDIR\DNSRelayServer_*_Source.zip"
+
+	  
+	FSkip4:
+
+
+
+	  DeleteRegKey HKLM "SOFTWARE\DNSRelayServer"
+	  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\DNSRelayServer"
+
+	  RMDir /r "$SMPROGRAMS\DNS Relay Server"
+
+
+	  Delete "$INSTDIR\wget.exe"
+	  Delete "$INSTDIR\DNSRelayServer.exe"
+	  Delete "$INSTDIR\uninstall_DNSRelayServer.exe"
+
+
+	  RMDir $INSTDIR
+
+
+
+SectionEnd
+
+
+
+
 Function .onInit
 
   !insertmacro MUI_LANGDLL_DISPLAY
@@ -115,11 +207,6 @@ FunctionEnd
 
 
 
- 
-Section
-  # do stuff
-SectionEnd
- 
 Function IsSilent
   Push $0
   Push $CMDLINE
