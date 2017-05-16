@@ -229,7 +229,7 @@ object Form1: TForm1
               end
               object Label8: TLabel
                 Left = 27
-                Top = 168
+                Top = 170
                 Width = 294
                 Height = 13
                 Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
@@ -239,8 +239,8 @@ object Form1: TForm1
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
               object Label3: TLabel
-                Left = 24
-                Top = 192
+                Left = 27
+                Top = 194
                 Width = 276
                 Height = 13
                 Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres (au d'#233'marrage du serveur)'
@@ -250,8 +250,8 @@ object Form1: TForm1
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
               object Label32: TLabel
-                Left = 24
-                Top = 216
+                Left = 27
+                Top = 218
                 Width = 184
                 Height = 13
                 Caption = 'Ne pas utiliser le cache DNS (plus lent)'
