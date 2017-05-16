@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.179';
+var CurrentApplicationVersion: string = '0.4.180';
 
 type
   TForm1 = class(TForm)
@@ -3631,7 +3631,6 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
-  PanelRestart.Visible := True;
 end;
 
 procedure TForm1.CheckBoxNoCacheDNSClick(Sender: TObject);
