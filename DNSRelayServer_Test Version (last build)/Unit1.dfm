@@ -241,9 +241,9 @@ object Form1: TForm1
               object Label3: TLabel
                 Left = 24
                 Top = 192
-                Width = 270
+                Width = 276
                 Height = 13
-                Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres au d'#233'marrage du serveur'
+                Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres (au d'#233'marrage du serveur)'
                 FocusControl = CheckBoxNoTestDNSMaster
                 OnClick = LabelToCheckboxClick
                 OnMouseEnter = LabelCheckboxMouseEnter
