@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 269
-  Top = 38
+  Left = 363
+  Top = 115
   Width = 468
   Height = 645
   Caption = 'DNS Relay Server'
@@ -125,8 +125,8 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet3
-            TabIndex = 2
+            ActivePage = TabSheet1
+            TabIndex = 0
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -238,6 +238,30 @@ object Form1: TForm1
                 OnMouseEnter = LabelCheckboxMouseEnter
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
+              object Label3: TLabel
+                Left = 24
+                Top = 192
+                Width = 270
+                Height = 13
+                Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres au d'#233'marrage du serveur'
+                FocusControl = CheckBoxNoTestDNSMaster
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
+              object Label32: TLabel
+                Left = 24
+                Top = 216
+                Width = 370
+                Height = 13
+                Caption = 
+                  'Ne pas utiliser le cache DNS (plus lent mais ne n'#233'cessite plus d' +
+                  'e red'#233'marrage)'
+                FocusControl = CheckBoxNoCacheDNS
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
               object SpinPort: TSpinEdit
                 Left = 176
                 Top = 40
@@ -300,6 +324,22 @@ object Form1: TForm1
                 OnClickCheck = CheckListBoxDNSRelayIPClickCheck
                 ItemHeight = 13
                 TabOrder = 5
+              end
+              object CheckBoxNoTestDNSMaster: TCheckBox
+                Left = 8
+                Top = 192
+                Width = 17
+                Height = 17
+                TabOrder = 6
+                OnClick = CheckBoxNoTestDNSMasterClick
+              end
+              object CheckBoxNoCacheDNS: TCheckBox
+                Left = 8
+                Top = 216
+                Width = 16
+                Height = 17
+                TabOrder = 7
+                OnClick = CheckBoxNoCacheDNSClick
               end
             end
             object TabSheet2: TTabSheet

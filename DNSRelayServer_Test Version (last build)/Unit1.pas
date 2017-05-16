@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.175';
+var CurrentApplicationVersion: string = '0.4.176';
 
 type
   TForm1 = class(TForm)
@@ -223,6 +223,10 @@ type
     SpeedButtonCloseMessage: TSpeedButton;
     LabelMessage: TLabel;
     CheckListBoxDNSRelayIP: TCheckListBox;
+    CheckBoxNoTestDNSMaster: TCheckBox;
+    CheckBoxNoCacheDNS: TCheckBox;
+    Label3: TLabel;
+    Label32: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -369,6 +373,8 @@ type
     procedure CheckListBoxDNSRelayIPClickCheck(Sender: TObject);
     procedure ListView1KeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure CheckBoxNoTestDNSMasterClick(Sender: TObject);
+    procedure CheckBoxNoCacheDNSClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -985,10 +991,13 @@ end;
 
 
 
+
+
+
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i, j, count: Integer;
-  filepath, dns, script, config_use_host, config_use_blackhost, config_block_all: string;
+  filepath, dns, script, config_use_host, config_use_blackhost, config_block_all, config_cache_memory: string;
   //net: tNetworkInterfaceList;
 begin
   PanelRestart.Visible := False;
@@ -1077,27 +1086,46 @@ begin
 
 
   ToolButton11.Enabled := True;
-  MemoLogs.Lines.Add('Test DNS Master...');
+
   DNSMasterSerialized := '';
   for i := 0 to ListBoxDNSMaster.Items.Count -1 do
   begin
     dns := ListBoxDNSMaster.Items.Strings[i];
-    MemoLogs.Lines.Add('Master '+ dns +'... ');
-    if resolveDNSByPython('a.root-servers.net', dns) = '' then
-    begin
-      DNSMasterSerialized := '';
-      MemoLogs.Lines.Add('Erreur: Lancement annulé.');
-      MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
-      MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
-      MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
-      if ServerDoStart then TimerRestart.Enabled := True;
-      exit;
-    end;
     if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
     DNSMasterSerialized := DNSMasterSerialized + dns;
-    MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
-    MemoLogs.Lines.Add('Master '+ dns +'... OK');
   end;
+
+
+  if not CheckBoxNoTestDNSMaster.Checked then
+  begin
+    DNSMasterSerialized := '';
+    MemoLogs.Lines.Add('Test DNS Master...');
+    DNSMasterSerialized := '';
+    for i := 0 to ListBoxDNSMaster.Items.Count -1 do
+    begin
+      dns := ListBoxDNSMaster.Items.Strings[i];
+      MemoLogs.Lines.Add('Master '+ dns +'... ');
+      if resolveDNSByPython('a.root-servers.net', dns) = '' then
+      begin
+        DNSMasterSerialized := '';
+        MemoLogs.Lines.Add('Erreur: Lancement annulé.');
+        MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
+        MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
+        MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
+        if ServerDoStart then TimerRestart.Enabled := True;
+        exit;
+      end;
+      if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
+      DNSMasterSerialized := DNSMasterSerialized + dns;
+      MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
+      MemoLogs.Lines.Add('Master '+ dns +'... OK');
+    end;
+  end;
+
+
+
+
+
   //ToolButton11.Enabled := False;
 
   if DNSMasterSerialized = '' then
@@ -1115,11 +1143,13 @@ begin
   config_use_host := '1';
   config_use_blackhost := '1';
   config_block_all := '0';
+  config_cache_memory := '1';
   if ButtonDisableBlackhost.Down then config_use_blackhost := '0';
   if ButtonDisableHost.Down then config_use_host := '0';
   if ToolButtonBlockAll.Down then config_block_all := '1';
+  if CheckBoxNoCacheDNS.Checked then config_cache_memory := '0';
 
-  createVBScript(config_use_host, config_use_blackhost, config_block_all);
+  createVBScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory);
 
   if PythonPath = '' then PythonPath := getPythonPath();
 
@@ -1526,6 +1556,10 @@ begin
                       and not Toutnormale1.Checked;
   Toutnormal1.Checked := Toutnormale1.Checked;
 
+  CheckBoxNoTestDNSMaster.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
+  CheckBoxNoCacheDNS.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
+
+
 
   startedInBackground := False;
   autostarted := False;
@@ -1646,7 +1680,7 @@ begin
   ComboBoxCurrentTheme.Font.Color := color;
   Label1.Font.Color := color;
   Label2.Font.Color := color;
-  //Label3.Font.Color := color;
+  Label3.Font.Color := color;
   Label4.Font.Color := color;
   Label5.Font.Color := color;
   Label6.Font.Color := color;
@@ -1654,12 +1688,13 @@ begin
   Label9.Font.Color := color;
   Label8.Font.Color := color;
   Label10.Font.Color := color;
+  Label11.Font.Color := color;
   Label12.Font.Color := color;
   Label13.Font.Color := color;
   Label16.Font.Color := color;
   Label17.Font.Color := color;
   Label18.Font.Color := color;
-  Label11.Font.Color := color;
+  Label32.Font.Color := color;
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
@@ -2105,11 +2140,7 @@ procedure TForm1.EditFilehostChange(Sender: TObject);
 begin
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
-  PanelRestart.Visible := True;
-
-  LabelMessage.Caption := PChar('Sauvé!');
-  PanelMessage.Visible := True;
-  TimerHideMessage.Enabled := True;
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
@@ -3587,6 +3618,32 @@ begin
   // Ins + Shift
   if (Key = 45) and (Shift = [ssShift]) then Modifier1Click(Modifier1);
 
+end;
+
+procedure TForm1.CheckBoxNoTestDNSMasterClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
+
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.CheckBoxNoCacheDNSClick(Sender: TObject);
+begin
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
+
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 end.
