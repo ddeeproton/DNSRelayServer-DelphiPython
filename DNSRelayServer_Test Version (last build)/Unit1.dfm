@@ -252,11 +252,9 @@ object Form1: TForm1
               object Label32: TLabel
                 Left = 24
                 Top = 216
-                Width = 370
+                Width = 184
                 Height = 13
-                Caption = 
-                  'Ne pas utiliser le cache DNS (plus lent mais ne n'#233'cessite plus d' +
-                  'e red'#233'marrage)'
+                Caption = 'Ne pas utiliser le cache DNS (plus lent)'
                 FocusControl = CheckBoxNoCacheDNS
                 OnClick = LabelToCheckboxClick
                 OnMouseEnter = LabelCheckboxMouseEnter
