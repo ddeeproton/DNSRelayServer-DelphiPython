@@ -1,0 +1,9 @@
+
+Python ne se lance pas avec le message d'erreur suivant:
+L'application n'a pas pu démarrer car sa configuration côte-à-côte est incorrecte.
+
+Solution: 
+Installer 
+Package redistribuable Microsoft Visual C++ 2008 (x86) 
+http://www.microsoft.com/fr-fr/download/details.aspx?id=29
+fichier: "vcredist_x86.exe"
