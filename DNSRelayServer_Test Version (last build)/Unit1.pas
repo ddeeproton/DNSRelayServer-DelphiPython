@@ -6,11 +6,11 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
-  Spin, Buttons, NetworkManager, DNSManager, UnitAlert, PythonDNS,
+  Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.184';
+var CurrentApplicationVersion: string = '0.4.185';
 
 type
   TForm1 = class(TForm)
@@ -227,6 +227,7 @@ type
     CheckBoxNoCacheDNS: TCheckBox;
     Label3: TLabel;
     Label32: TLabel;
+    Button3: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -415,6 +416,7 @@ type
 var
   Form1: TForm1;
   FormHost: TFormHost;
+  FormNetConfig: TFormNetConfig;
   FormInstall:  TFormInstall = nil;
   listThreads: array of TSauvegarde;
   ThreadUpdate: TUpdate;
@@ -771,11 +773,17 @@ begin
         exit
     end;
 
-    Form1.onServerDNSStop();
 
 
-    if EnMemo <> nil then
-      EnMemo.Lines.Add(String('Stoped'));
+    try
+      if Assigned(EnMemo) and (EnMemo <> nil) then
+        EnMemo.Lines.Add(String('Stoped'));
+      Form1.onServerDNSStop();
+    except
+      On E : EAccessViolation do Application.Terminate;
+      On E : EListError do Application.Terminate;
+    end;
+
 
   end;
 
@@ -786,7 +794,12 @@ procedure TSauvegarde.Execute();
 begin
   //RunDosInMemo('ping.exe 127.0.0.1', Form1.Memo1MemoLogs);
   Sleep(1000);
-  RunDosInMemo(cmd, EnMemo);
+  try
+    RunDosInMemo(cmd, EnMemo);
+  except
+    On E : EOSError do Application.Terminate;
+    On E : EAccessViolation do Application.Terminate;
+  end;
 end;
 
 procedure TSauvegarde.Execute2(cmd:String; EnMemo:TMemo);
@@ -810,6 +823,7 @@ end;
 
 procedure TForm1.onServerDNSStop();
 begin
+
   if ServerDoStart then
   begin
     ImageList4.GetIcon(2, Application.Icon);
@@ -1204,6 +1218,8 @@ begin
   if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();
   ButtonCloseClick(Sender);
+  //Application.ProcessMessages;
+  //Sleep(2000);
   //KillTask(ExtractFileName(Application.ExeName));
 end;
 
@@ -1220,25 +1236,15 @@ begin
   while (i < Length(listThreads)) and (listThreads[i] <> nil) do
   begin
     listThreads[i].Terminate;
-    //listThreads[i] := nil;
     Inc(i);
-  {
-  for i:=Length(listThreads)-1 downto 0 do
-  begin
-    listThreads[i].Terminate;
-    //listThreads[i].Free;
-    {
-    if (listThreads[i] <> nil) and not (listThreads[i].Terminated) then
-    begin
-      try
-        DestroyProcess(listThreads[i].h);
-      except
-        On E : EOSError do
-          Application.ProcessMessages;
-      end;
-    end;
-  }
+  end;
 
+
+  i := 0;
+  while (i < Length(listThreads)) and (listThreads[i] <> nil) do
+  begin
+    listThreads[i].Free;
+    Inc(i);
   end;
 
   SetLength(listThreads, 0);
@@ -1370,7 +1376,8 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
-
+  //FormNetConfig := TFormNetConfig.Create(Self);
+  //FormNetConfig.Show;
   TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;

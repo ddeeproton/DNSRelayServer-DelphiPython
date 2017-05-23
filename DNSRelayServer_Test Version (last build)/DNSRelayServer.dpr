@@ -14,7 +14,8 @@ uses
   PythonDNS in 'PythonDNS.pas',
   DNSManager in 'DNSManager.pas',
   UnitAlert in 'UnitAlert.pas' {FormAlert},
-  WindowsManager in 'WindowsManager.pas';
+  WindowsManager in 'WindowsManager.pas',
+  UnitNetConfig in 'UnitNetConfig.pas' {FormNetConfig};
 
 {$R *.res}
 
@@ -25,5 +26,6 @@ begin
   Application.CreateForm(TFormHost, FormHost);
   Application.CreateForm(TFormInstall, FormInstall);
   Application.CreateForm(TFormAlert, FormAlert);
+  Application.CreateForm(TFormNetConfig, FormNetConfig);
   Application.Run;
 end.

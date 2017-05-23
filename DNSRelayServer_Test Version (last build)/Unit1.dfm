@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 363
   Top = 115
-  Width = 468
+  Width = 484
   Height = 645
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 114
-    Width = 452
+    Width = 468
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -495,13 +495,13 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 209
+                Height = 265
                 Align = alTop
                 Caption = '                                     '
                 TabOrder = 0
                 DesignSize = (
                   303
-                  209)
+                  265)
                 object Label7: TLabel
                   Left = 8
                   Top = 63
@@ -528,7 +528,7 @@ object Form1: TForm1
                   Left = 56
                   Top = 170
                   Width = 193
-                  Height = 31
+                  Height = 55
                   Anchors = [akTop]
                   BevelOuter = bvNone
                   Color = clWhite
@@ -550,6 +550,14 @@ object Form1: TForm1
                     Caption = 'D'#233'sinstaller'
                     TabOrder = 1
                     OnClick = ButtonNetCardDesintegrationClick
+                  end
+                  object Button3: TButton
+                    Left = 61
+                    Top = 29
+                    Width = 75
+                    Height = 25
+                    Caption = 'Modifier'
+                    TabOrder = 2
                   end
                 end
                 object Panel2: TPanel
@@ -1342,7 +1350,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 452
+    Width = 468
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1443,15 +1451,15 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 452
+    Width = 468
     Height = 33
     Align = alTop
     TabOrder = 3
     DesignSize = (
-      452
+      468
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 425
+      Left = 441
       Top = 6
       Width = 22
       Height = 22
@@ -1489,16 +1497,16 @@ object Form1: TForm1
   object PanelMessage: TPanel
     Left = 0
     Top = 81
-    Width = 452
+    Width = 468
     Height = 33
     Align = alTop
     TabOrder = 4
     Visible = False
     DesignSize = (
-      452
+      468
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 425
+      Left = 441
       Top = 6
       Width = 22
       Height = 22
