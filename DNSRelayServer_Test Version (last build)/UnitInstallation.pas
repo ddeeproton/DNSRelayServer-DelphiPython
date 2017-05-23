@@ -57,6 +57,12 @@ type
     procedure ButtonContinueWgetManuallyDownloadClick(Sender: TObject);
     procedure DoInstall();
     procedure TimerWatchThreadTimer(Sender: TObject);
+
+    function ExecBat(bat:string):Boolean;
+
+    function Download(url,path:string):Boolean;
+    function InstallPythonComponent(path:string):Boolean;
+    function Unzip(path, destination:string):Boolean;
   private
     { Private declarations }
   public
@@ -65,7 +71,7 @@ type
     isDNSInstalled: bool;
     isSetuptoolInstalled: bool;
     isWgetInstalled: bool;
-    procedure CheckInstallation();    
+    procedure CheckInstallation();
   end;
 
   TInstall = class(TThread)
@@ -91,6 +97,58 @@ implementation
 uses Unit1;
 
 {$R *.dfm}
+
+
+
+function TFormInstall.ExecBat(bat:string):Boolean;
+var batFile: string;
+begin
+  batFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'batch.bat';
+  if FileExists(batFile) then DeleteFile(batFile);
+  WriteInFile(batFile, bat);
+  LaunchAndWait(batFile, '', launchAndWWindow);
+end;
+
+function TFormInstall.Download(url,path:string):Boolean;
+var wget: string;
+begin
+  wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
+  ExecBat('"'+wget+'" -O "'+path+'" "'+url+'" --no-check-certificate');
+end;
+
+
+
+function TFormInstall.InstallPythonComponent(path:string):Boolean;
+begin
+//
+end;
+
+
+function TFormInstall.Unzip(path, destination:string):Boolean;
+var vbs, vbsFile, bat, batFile: string;
+begin
+  result := True;
+  vbs := 'Sub UnZip(ZipFile, ExtractTo)'#13#10+
+    '	Set fso = CreateObject("Scripting.FileSystemObject")'#13#10+
+    '	If NOT fso.FolderExists(ExtractTo) Then'#13#10+
+    '		fso.CreateFolder(ExtractTo)'#13#10+
+    '	End If'#13#10+
+    '	set objShell = CreateObject("Shell.Application")'#13#10+
+    '	set FilesInZip=objShell.NameSpace(ZipFile).items'#13#10+
+    '	objShell.NameSpace(ExtractTo).CopyHere(FilesInZip)'#13#10+
+    '	Set fso = Nothing'#13#10+
+    '	Set objShell = Nothing'#13#10+
+    'End Sub'#13#10+
+    'UnZip WScript.Arguments(0), WScript.Arguments(1)'#13#10;
+  vbsFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs';
+  batFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzip.vbs.bat';
+  bat := 'wscript.exe "'+ExtractFilePath(Application.ExeName)+installDirectoryPath+'unzipst.vbs" "'+path+'" "'+destination+'"';
+  if DirectoryExists(destination) then RemoveDir(destination);
+  WriteInFile(vbsFile, vbs);
+  WriteInFile(batFile, bat);
+  LaunchAndWait(batFile,'', launchAndWWindow);
+end;
+
 
 function TFormInstall.getPythonPath():string;
 begin
