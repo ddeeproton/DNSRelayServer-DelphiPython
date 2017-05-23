@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.185';
+var CurrentApplicationVersion: string = '0.4.186';
 
 type
   TForm1 = class(TForm)
@@ -1376,8 +1376,8 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
-  //FormNetConfig := TFormNetConfig.Create(Self);
-  //FormNetConfig.Show;
+  FormNetConfig := TFormNetConfig.Create(Self);
+  FormNetConfig.Show;
   TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;
