@@ -32,6 +32,7 @@ object FormNetConfig: TFormNetConfig
     Height = 25
     Caption = 'OK'
     TabOrder = 0
+    OnClick = Button1Click
   end
   object Button2: TButton
     Left = 272
@@ -40,6 +41,7 @@ object FormNetConfig: TFormNetConfig
     Height = 25
     Caption = 'Annuler'
     TabOrder = 1
+    OnClick = Button2Click
   end
   object Panel1: TPanel
     Left = 8

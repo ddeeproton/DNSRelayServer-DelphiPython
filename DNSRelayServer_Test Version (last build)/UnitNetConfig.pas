@@ -58,6 +58,8 @@ type
     procedure RadioButtonCUSTOM_IPClick(Sender: TObject);
     procedure RadioButtonDHCP_DNSClick(Sender: TObject);
     procedure RadioButtonCUSTOM_DNSClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Déclarations privées }
   public
@@ -99,6 +101,16 @@ end;
 procedure TFormNetConfig.RadioButtonCUSTOM_DNSClick(Sender: TObject);
 begin
 //
+end;
+
+procedure TFormNetConfig.Button2Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFormNetConfig.Button1Click(Sender: TObject);
+begin
+  Close;
 end;
 
 end.
