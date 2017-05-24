@@ -125,8 +125,8 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet3
-            TabIndex = 2
+            ActivePage = TabSheet4
+            TabIndex = 3
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -558,6 +558,7 @@ object Form1: TForm1
                     Height = 25
                     Caption = 'Modifier'
                     TabOrder = 2
+                    OnClick = Button3Click
                   end
                 end
                 object Panel2: TPanel

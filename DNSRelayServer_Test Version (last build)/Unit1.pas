@@ -376,6 +376,7 @@ type
       Shift: TShiftState);
     procedure CheckBoxNoTestDNSMasterClick(Sender: TObject);
     procedure CheckBoxNoCacheDNSClick(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1376,8 +1377,7 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
-  FormNetConfig := TFormNetConfig.Create(Self);
-  FormNetConfig.Show;
+
   TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;
@@ -3673,6 +3673,14 @@ begin
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
   PanelRestart.Visible := True;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  ShowMessage('En cours d''implémentation :)');
+  if FormNetConfig = nil then
+    FormNetConfig := TFormNetConfig.Create(Self);
+  FormNetConfig.Show;
 end;
 
 end.
