@@ -1,0 +1,1 @@
+-quand on arrête le serveur (après un moment), le titre et le contenu de l'onglet DNS Master disparaît
