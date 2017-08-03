@@ -1015,11 +1015,13 @@ var
   filepath, dns, script, config_use_host, config_use_blackhost, config_block_all, config_cache_memory: string;
   //net: tNetworkInterfaceList;
 begin
+{
   PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
 
   Application.ProcessMessages;
+   }
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
 

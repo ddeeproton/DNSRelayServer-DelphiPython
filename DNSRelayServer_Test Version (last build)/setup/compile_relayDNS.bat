@@ -1,1 +1,1 @@
-"c:\Python27\python.exe" -O -m py_compile "C:\!Share\Programmation\Delphi\DNS 2\trunk\DNSRelayServer_Test Version (last build)\DNSRelayServer\relayDNS.py"
+"c:\Python27\python.exe" -O -m py_compile "C:\!Share\!Programmation\Delphi\(essais)\DNS Server\trunk\DNSRelayServer_Test Version (last build)\DNSRelayServer\relayDNS.py"

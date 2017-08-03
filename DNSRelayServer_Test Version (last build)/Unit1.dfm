@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 114
-    Width = 468
+    Width = 476
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -126,7 +126,6 @@ object Form1: TForm1
             Width = 311
             Height = 323
             ActivePage = TabSheet4
-            TabIndex = 3
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -833,13 +832,8 @@ object Form1: TForm1
                 Anchors = [akLeft, akTop, akRight]
                 Max = 255
                 Min = -255
-                Orientation = trHorizontal
-                Frequency = 1
                 Position = 30
-                SelEnd = 0
-                SelStart = 0
                 TabOrder = 4
-                TickMarks = tmBottomRight
                 TickStyle = tsNone
               end
             end
@@ -1351,7 +1345,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 468
+    Width = 476
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1452,12 +1446,12 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 468
+    Width = 476
     Height = 33
     Align = alTop
     TabOrder = 3
     DesignSize = (
-      468
+      476
       33)
     object ButtonClosePanelRestart: TSpeedButton
       Left = 441
@@ -1498,13 +1492,13 @@ object Form1: TForm1
   object PanelMessage: TPanel
     Left = 0
     Top = 81
-    Width = 468
+    Width = 476
     Height = 33
     Align = alTop
     TabOrder = 4
     Visible = False
     DesignSize = (
-      468
+      476
       33)
     object SpeedButtonCloseMessage: TSpeedButton
       Left = 441
@@ -16184,7 +16178,6 @@ object Form1: TForm1
     end
   end
   object ColorDialog1: TColorDialog
-    Ctl3D = True
     Left = 414
     Top = 451
   end
