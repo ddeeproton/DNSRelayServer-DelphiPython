@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.189';
+var CurrentApplicationVersion: string = '0.4.190';
 
 type
   TForm1 = class(TForm)
@@ -2375,6 +2375,8 @@ begin
 
     //end;
   end;
+  Application.ProcessMessages;
+  Sleep(1000);
 end;
 
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
