@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.188';
+var CurrentApplicationVersion: string = '0.4.189';
 
 type
   TForm1 = class(TForm)
@@ -1239,13 +1239,16 @@ begin
   KillTask('python.exe');
   Application.ProcessMessages;
   //Notebook1.PageIndex := 4;
+
+  {
+  // bug?
   i := 0;
   while (i < Length(listThreads)) and (listThreads[i] <> nil) do
   begin
     listThreads[i].Terminate;
     Inc(i);
   end;
-
+  }
 
   i := 0;
   while (i < Length(listThreads)) and (listThreads[i] <> nil) do
