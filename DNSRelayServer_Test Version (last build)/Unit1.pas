@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.186';
+var CurrentApplicationVersion: string = '0.4.187';
 
 type
   TForm1 = class(TForm)
@@ -1093,8 +1093,11 @@ begin
 
     ToolButton11.Enabled := True;
     ToolButton8Click(ToolButton8);
-    PageControl1.TabIndex := 0;
-    PageControl1.ActivePageIndex := PageControl1.TabIndex;
+
+    // bug ?
+    //PageControl1.TabIndex := 0;
+    //PageControl1.ActivePageIndex := PageControl1.TabIndex;
+
     ToolButton11.ImageIndex := 7;
     //if ServerDoStart then TimerRestart.Enabled := True;
     exit;

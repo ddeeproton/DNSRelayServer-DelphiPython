@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 246
-  Top = 93
+  Left = 477
+  Top = 113
   Width = 484
   Height = 645
   Caption = 'DNS Relay Server'
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet4
+            ActivePage = TabSheet3
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
