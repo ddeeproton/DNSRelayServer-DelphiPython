@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.187';
+var CurrentApplicationVersion: string = '0.4.188';
 
 type
   TForm1 = class(TForm)
@@ -1234,7 +1234,8 @@ var
   i: Integer;
 begin
   Timer1.Enabled := False;
-  PanelRestart.Visible := False;
+  // bug?
+  //PanelRestart.Visible := False;
   KillTask('python.exe');
   Application.ProcessMessages;
   //Notebook1.PageIndex := 4;
