@@ -1059,6 +1059,8 @@ begin
   closeProcessCreated;
   KillTask('python.exe');
 
+  Application.ProcessMessages;
+
   filepath := String(EditFilehost.Text);
   if FileExists(filepath) = False then
     WriteInFile(filepath, '127.0.0.1	localhost');
@@ -1192,9 +1194,10 @@ begin
 
   if CheckBoxAllowModifyNetCard.Checked then
   begin
-    ButtonNetCardIntegrationClick(nil);
+    ButtonNetCardIntegrationClick(ButtonNetCardIntegration);
   end;
 
+  Application.ProcessMessages;
 
   for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
   begin
