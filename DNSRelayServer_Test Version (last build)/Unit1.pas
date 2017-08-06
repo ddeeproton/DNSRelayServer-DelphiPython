@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.198';
+var CurrentApplicationVersion: string = '0.4.199';
 
 type
   TForm1 = class(TForm)
@@ -574,8 +574,8 @@ begin
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
           FormAlert.Show;
-          Application.Restore;
-          Application.BringToFront;
+          //Application.Restore;
+          //Application.BringToFront;
         end;
         if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
         begin
@@ -600,8 +600,8 @@ begin
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
           FormAlert.Show;
-          Application.Restore;
-          Application.BringToFront;
+          //Application.Restore;
+          //Application.BringToFront;
         end;
         if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
         begin
@@ -626,8 +626,8 @@ begin
           FormAlert.Top := LastPositionFormAlertTop;
           FormAlert.FormCreate(nil);
           FormAlert.Show;
-          Application.Restore;
-          Application.BringToFront;
+          //Application.Restore;
+          //Application.BringToFront;
         end;
 
      end;
