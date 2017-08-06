@@ -64,6 +64,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    opacity: Integer;
   end;
 
 var
@@ -401,14 +402,12 @@ end;
 procedure TFormAlert.TimerFadeInTimer(Sender: TObject);
 begin
   SetFormOpacity(Self.Handle, opacity);
-  //Application.ProcessMessages;
   if opacity < 100 then Inc(opacity) else TTimer(Sender).Enabled := False;
 end;
 
 procedure TFormAlert.TimerFadeOutTimer(Sender: TObject);
-begin                                               
+begin
   SetFormOpacity(Self.Handle, opacity);
-  //Application.ProcessMessages;
   if opacity > 0 then
     Dec(opacity)
   else

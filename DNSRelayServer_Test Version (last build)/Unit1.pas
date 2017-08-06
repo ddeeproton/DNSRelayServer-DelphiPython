@@ -399,6 +399,7 @@ type
   protected
     procedure Execute(); override;
   public
+
     procedure onCreate();
     procedure Execute2(cmd:String; EnMemo:TMemo);
     procedure RunDosInMemo(Que:String;EnMemo:TMemo);
@@ -421,6 +422,7 @@ var
   listThreads: array of TSauvegarde;
   ThreadUpdate: TUpdate;
   ConfigDNSMaster: TStringList;
+
 
   MasterDNSFile: string = 'MasterDNSFile.cfg';
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
@@ -540,11 +542,16 @@ begin
     end;
     if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
     begin
+        //iAlert := Length(ListFormAlert);
+        //SetLength(ListFormAlert, iAlert + 1);
+        FormAlert := TFormAlert.Create(nil);
+
         FormAlertLastShow := domain;
         if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
         if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
         begin
-          FormAlert := TFormAlert.Create(nil);
+
+
           FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
           FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
@@ -572,7 +579,6 @@ begin
         end;
         if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
         begin
-          FormAlert := TFormAlert.Create(nil);
           FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
           FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
@@ -599,7 +605,6 @@ begin
         end;
         if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
         begin
-          FormAlert := TFormAlert.Create(nil);
           FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
           FormAlert.PanelAllowed.Visible := False;
           FormAlert.PanelDisallowed.Visible := True;
@@ -624,6 +629,7 @@ begin
           Application.Restore;
           Application.BringToFront;
         end;
+
      end;
   end
   else begin
