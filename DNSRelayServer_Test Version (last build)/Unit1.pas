@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.193';
+var CurrentApplicationVersion: string = '0.4.194';
 
 type
   TForm1 = class(TForm)
@@ -2349,6 +2349,7 @@ end;
 
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
+  if not TToolButton(Sender).Enabled then exit;
   TToolButton(Sender).Enabled := False;
   if not ServerDoStart then
   begin
@@ -3326,7 +3327,8 @@ end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
 begin
-  ResizePanelConfig();
+  // bug?
+  //ResizePanelConfig();
 end;
 
 
