@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.194';
+var CurrentApplicationVersion: string = '0.4.195';
 
 type
   TForm1 = class(TForm)
@@ -421,6 +421,7 @@ var
   FormInstall:  TFormInstall = nil;
   listThreads: array of TSauvegarde;
   ThreadUpdate: TUpdate;
+  ConfigDNSMaster: TStringList;
 
   MasterDNSFile: string = 'MasterDNSFile.cfg';
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
@@ -1108,12 +1109,21 @@ begin
 
   ToolButton11.Enabled := True;
 
+  {
   DNSMasterSerialized := '';
   for i := 0 to ListBoxDNSMaster.Items.Count -1 do
   begin
     dns := ListBoxDNSMaster.Items.Strings[i];
     if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
     DNSMasterSerialized := DNSMasterSerialized + dns;
+  end;
+  }
+
+  DNSMasterSerialized := '';
+  for i := 0 to ConfigDNSMaster.Count -1 do
+  begin
+    if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
+    DNSMasterSerialized := DNSMasterSerialized + ConfigDNSMaster[i];
   end;
 
 
@@ -1122,9 +1132,9 @@ begin
     DNSMasterSerialized := '';
     MemoLogs.Lines.Add('Test DNS Master...');
     DNSMasterSerialized := '';
-    for i := 0 to ListBoxDNSMaster.Items.Count -1 do
+    for i := 0 to ConfigDNSMaster.Count -1 do
     begin
-      dns := ListBoxDNSMaster.Items.Strings[i];
+      dns := ConfigDNSMaster[i];
       MemoLogs.Lines.Add('Master '+ dns +'... ');
       if resolveDNSByPython('a.root-servers.net', dns) = '' then
       begin
@@ -1289,6 +1299,7 @@ var dns: string;
 begin
   dns := '';
   if not InputQuery('Add DNS Master', 'Exemple 209.244.0.3', dns) then exit;
+  ConfigDNSMaster.Add(dns);
   ListBoxDNSMaster.Items.Add(dns);
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
   if isServerStarted then PanelRestart.Visible := True;
@@ -1310,6 +1321,7 @@ begin
   MessageBeep(MB_OK);
   if MessageDlg(Pchar('Effacer "' + txt + '"?'),mtConfirmation, mbOKCancel, 0)  = mrOK then
   begin
+    ConfigDNSMaster.Delete(i);
     ListBoxDNSMaster.DeleteSelected;
     ListBoxDNSMaster.ItemIndex := 1 - 1;
     ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
@@ -1334,6 +1346,7 @@ begin
   //txt := InputBox('Update DNS Master', 'Exemple 209.244.0.3', txt);
   if not InputQuery('Update DNS Master', 'Exemple 209.244.0.3', dns) then exit;
   ListBoxDNSMaster.Items.Strings[i] := dns;
+  ConfigDNSMaster[i] := dns;
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
   if isServerStarted then PanelRestart.Visible := True;
 end;
@@ -1348,8 +1361,9 @@ begin
     exit;
   end;
   if i >= ListBoxDNSMaster.Items.Count -1 then exit;
-  ListBoxDNSMaster.Items.Move(i, i +1);
-  ListBoxDNSMaster.ItemIndex := i +1;
+  ConfigDNSMaster.Exchange(i, i + 1);
+  ListBoxDNSMaster.Items.Move(i, i + 1);
+  ListBoxDNSMaster.ItemIndex := i + 1;
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
   if isServerStarted then PanelRestart.Visible := True;
 end;
@@ -1364,6 +1378,7 @@ begin
     exit;
   end;
   if i > ListBoxDNSMaster.Items.Count -1 then exit;
+  ConfigDNSMaster.Exchange(i, i - 1);
   ListBoxDNSMaster.Items.Move(i, i - 1);
   ListBoxDNSMaster.ItemIndex := i - 1;
   ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
@@ -1511,8 +1526,14 @@ begin
   if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
 
   PythonPath := getPythonPath();
+
+
   if FileExists(MasterDNSFile) then
     ListBoxDNSMaster.Items.LoadFromFile(MasterDNSFile);
+
+  ConfigDNSMaster := TStringList.Create;
+  for i := 0 to ListBoxDNSMaster.Items.Count - 1 do
+    ConfigDNSMaster.Add(ListBoxDNSMaster.Items.Strings[i]);
 
   if FileExists(FilehostPathConfig) then
     EditFilehost.Text := ReadFromFile(FilehostPathConfig);
@@ -2671,10 +2692,10 @@ begin
   end;
   MemoLogs.Lines.Add('Go to DHCP');
   dns := '';
-  for i := 0 to ListBoxDNSMaster.Items.Count - 1 do
+  for i := 0 to ConfigDNSMaster.Count - 1 do
   begin
     if dns <> '' then dns := dns + ' ';
-    dns := dns + ListBoxDNSMaster.Items[i];
+    dns := dns + ConfigDNSMaster[i];
   end;
   setDNS(dns);
   //setDNS('');
@@ -2910,6 +2931,16 @@ begin
   begin
     Control.Canvas.TextOut (Rect.Left +6, Rect.Top +5, (Control as
 TPageControl).Pages[TabIndex].Caption);
+  end
+  else
+    Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as
+TPageControl).Pages[TabIndex].Caption);
+{
+  Control.Canvas.Brush.Color := Color;
+  if Active then
+  begin
+    Control.Canvas.TextOut (Rect.Left +6, Rect.Top +5, (Control as
+TPageControl).Pages[TabIndex].Caption);
     Control.Canvas.Pen.Color := Color;
     Control.Canvas.MoveTo (Rect.Left +1, Rect.Bottom -2);
     Control.Canvas.LineTo (Rect.Right,   Rect.Bottom -2);
@@ -2917,7 +2948,7 @@ TPageControl).Pages[TabIndex].Caption);
   else
     Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as
 TPageControl).Pages[TabIndex].Caption);
-  
+} 
 end;
 
 
