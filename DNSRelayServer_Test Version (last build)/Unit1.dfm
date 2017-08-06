@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet2
+            ActivePage = TabSheet1
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -143,9 +143,9 @@ object Form1: TForm1
               object Label1: TLabel
                 Left = 8
                 Top = 8
-                Width = 280
+                Width = 141
                 Height = 13
-                Caption = 'Adresse(s) IP du serveur DNS (ne sauvegarde pas le choix)'
+                Caption = 'Adresse(s) IP du serveur DNS'
                 Transparent = True
               end
               object SpeedButtonRefreshNetCard: TSpeedButton
@@ -186,16 +186,16 @@ object Form1: TForm1
                 OnClick = ButtonRefreshNetCardClick
               end
               object Label2: TLabel
-                Left = 176
-                Top = 24
+                Left = 168
+                Top = 8
                 Width = 19
                 Height = 13
                 Caption = 'Port'
                 Transparent = True
               end
               object Label4: TLabel
-                Left = 176
-                Top = 64
+                Left = 168
+                Top = 48
                 Width = 58
                 Height = 13
                 Caption = 'Exemple: 53'
@@ -260,8 +260,8 @@ object Form1: TForm1
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
               object SpinPort: TSpinEdit
-                Left = 176
-                Top = 40
+                Left = 168
+                Top = 24
                 Width = 97
                 Height = 22
                 Color = clWhite

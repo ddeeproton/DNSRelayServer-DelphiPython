@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.195';
+var CurrentApplicationVersion: string = '0.4.196';
 
 type
   TForm1 = class(TForm)
@@ -2208,6 +2208,9 @@ begin
 end;
 
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
+var
+  i: Integer;
+  txt: String;
 begin
   TTimer(Sender).Enabled := False;
   WriteInFile(FilehostPathConfig, EditFilehost.Text);
@@ -2216,6 +2219,17 @@ begin
   WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
   WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
   WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
+
+  txt := #13#10;
+  for i := 0 to CheckListBoxDNSRelayIP.Count - 1 do
+  begin
+    if not CheckListBoxDNSRelayIP.Checked[i] then
+    begin
+      txt := CheckListBoxDNSRelayIP.Items.Strings[i]+#13#10;
+    end;
+  end;
+  WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
+
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2546,7 +2560,21 @@ procedure TForm1.ButtonRefreshNetCardClick(Sender: TObject);
 var
   i: Integer;
   net: tNetworkInterfaceList;
+  txt: String;
 begin
+{
+  txt := #13#10;
+  for i := 0 to CheckListBoxDNSRelayIP.Count - 1 do
+  begin
+    if not CheckListBoxDNSRelayIP.Checked[i] then
+    begin
+      txt := CheckListBoxDNSRelayIP.Items.Strings[i]+#13#10;
+    end;
+  end;
+  WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
+  }
+  txt := ReadFromFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg');
+
   CheckListBoxDNSRelayIP.Clear;
   if GetNetworkInterfaces(net) then
   begin
@@ -2555,7 +2583,7 @@ begin
       if net[i].AddrIP <> '127.0.0.1' then
       begin
         CheckListBoxDNSRelayIP.Items.Add(net[i].AddrIP);
-        CheckListBoxDNSRelayIP.Checked[CheckListBoxDNSRelayIP.Items.Count -1] := True;
+        CheckListBoxDNSRelayIP.Checked[CheckListBoxDNSRelayIP.Items.Count -1] := Pos(net[i].AddrIP, txt) = 0;
       end;
     end;
   end;
@@ -3672,6 +3700,7 @@ end;
 procedure TForm1.CheckListBoxDNSRelayIPClickCheck(Sender: TObject);
 begin
   if isServerStarted then PanelRestart.Visible := True;
+  TimerSaveChange.Enabled := True;
 end;
 
 procedure TForm1.ListView1KeyUp(Sender: TObject; var Key: Word;
