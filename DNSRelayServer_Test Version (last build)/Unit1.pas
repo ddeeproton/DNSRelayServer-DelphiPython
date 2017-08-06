@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.190';
+var CurrentApplicationVersion: string = '0.4.191';
 
 type
   TForm1 = class(TForm)
@@ -1165,6 +1165,7 @@ begin
   config_use_blackhost := '1';
   config_block_all := '0';
   config_cache_memory := '1';
+
   if ButtonDisableBlackhost.Down then config_use_blackhost := '0';
   if ButtonDisableHost.Down then config_use_host := '0';
   if ToolButtonBlockAll.Down then config_block_all := '1';
@@ -1252,7 +1253,7 @@ begin
     Inc(i);
   end;
   }
-
+  Sleep(1000);
   i := 0;
   while (i < Length(listThreads)) and (listThreads[i] <> nil) do
   begin
@@ -1261,6 +1262,9 @@ begin
   end;
 
   SetLength(listThreads, 0);
+  
+  Sleep(1000); 
+  Application.ProcessMessages;
 
  {
   for i:=0 to Length(listThreads) do
@@ -2356,6 +2360,7 @@ begin
       ToolButton11.Enabled := True;
       ToolButton11.Hint := 'Arrêter le serveur DNS';
       ServerDoStart := True;
+      Application.ProcessMessages;
       ButtonStartClick(nil);
     //end;
   end
@@ -2365,7 +2370,8 @@ begin
       ServerDoStart := False;
       //ToolButton11.Enabled := False;
       TimerRestart.Enabled := False;
-
+                                  
+      Application.ProcessMessages;
       ButtonCloseClick(nil);
 
       if ToolButton11.ImageIndex = 13 then

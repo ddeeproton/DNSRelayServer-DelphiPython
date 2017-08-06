@@ -81,7 +81,7 @@ var
   domain, txt: string;
 begin
 
-  Self.FormStyle := fsStayOnTop;
+  //Self.FormStyle := fsStayOnTop;
   //Self.Show;
   //Systray.EnleveIconeTray;
   //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
