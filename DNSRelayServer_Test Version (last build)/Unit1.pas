@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.191';
+var CurrentApplicationVersion: string = '0.4.193';
 
 type
   TForm1 = class(TForm)
@@ -2349,6 +2349,7 @@ end;
 
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
+  TToolButton(Sender).Enabled := False;
   if not ServerDoStart then
   begin
     //if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
@@ -2370,7 +2371,7 @@ begin
       ServerDoStart := False;
       //ToolButton11.Enabled := False;
       TimerRestart.Enabled := False;
-                                  
+
       Application.ProcessMessages;
       ButtonCloseClick(nil);
 
@@ -2386,6 +2387,7 @@ begin
   end;
   Application.ProcessMessages;
   Sleep(1000);
+  TToolButton(Sender).Enabled := True;
 end;
 
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
