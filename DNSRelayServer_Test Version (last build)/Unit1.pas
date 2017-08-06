@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.197';
+var CurrentApplicationVersion: string = '0.4.198';
 
 type
   TForm1 = class(TForm)
@@ -215,7 +215,6 @@ type
     Carterseau1: TMenuItem;
     Affichage1: TMenuItem;
     Alertes2: TMenuItem;
-    Relancerlapplication1: TMenuItem;
     SpinEditAlertDuration: TSpinEdit;
     Label31: TLabel;
     TimerHideMessage: TTimer;
