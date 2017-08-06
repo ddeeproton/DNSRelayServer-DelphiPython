@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.196';
+var CurrentApplicationVersion: string = '0.4.197';
 
 type
   TForm1 = class(TForm)
@@ -2225,7 +2225,7 @@ begin
   begin
     if not CheckListBoxDNSRelayIP.Checked[i] then
     begin
-      txt := CheckListBoxDNSRelayIP.Items.Strings[i]+#13#10;
+      txt := txt + CheckListBoxDNSRelayIP.Items.Strings[i]+#13#10;
     end;
   end;
   WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
@@ -2562,17 +2562,6 @@ var
   net: tNetworkInterfaceList;
   txt: String;
 begin
-{
-  txt := #13#10;
-  for i := 0 to CheckListBoxDNSRelayIP.Count - 1 do
-  begin
-    if not CheckListBoxDNSRelayIP.Checked[i] then
-    begin
-      txt := CheckListBoxDNSRelayIP.Items.Strings[i]+#13#10;
-    end;
-  end;
-  WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
-  }
   txt := ReadFromFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg');
 
   CheckListBoxDNSRelayIP.Clear;
