@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.199';
+var CurrentApplicationVersion: string = '0.4.200';
 
 type
   TForm1 = class(TForm)
@@ -227,6 +227,31 @@ type
     Label3: TLabel;
     Label32: TLabel;
     Button3: TButton;
+    ToolButtonShowAdvancedLogs: TToolButton;
+    ScrollBox1: TScrollBox;
+    Panel8: TPanel;
+    Edit1: TEdit;
+    Image1: TImage;
+    ButtonPlusAdvLog: TButton;
+    Label33: TLabel;
+    Label35: TLabel;
+    Label36: TLabel;
+    Label37: TLabel;
+    PopupMenuForAllowed: TPopupMenu;
+    Bloquerparfichierhost1: TMenuItem;
+    BloquerparfichierBlackwords1: TMenuItem;
+    Bloquertout1: TMenuItem;
+    MenuItem1: TMenuItem;
+    Dsactiverlesalertespourlesdomainesautoriss1: TMenuItem;
+    PopupMenuForDisallowed: TPopupMenu;
+    AutoriserledomainedufichierHost1: TMenuItem;
+    AutoriserledomaineBlackwords1: TMenuItem;
+    MenuItem2: TMenuItem;
+    ButtonDisableBlockHost: TMenuItem;
+    ButtonDisableBlockBlackwords: TMenuItem;
+    Desactiverlebloquagedetouslesdomaines1: TMenuItem;
+    MenuItem3: TMenuItem;
+    DisableAlertDisallowed: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -376,6 +401,13 @@ type
     procedure CheckBoxNoTestDNSMasterClick(Sender: TObject);
     procedure CheckBoxNoCacheDNSClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure ToolButtonShowAdvancedLogsClick(Sender: TObject);
+    procedure AddAdvancedLog(domain, ipdomain, ipclient, date, time: string; iconIndex: Integer);
+    procedure ButtonPlusAdvLogClick(Sender: TObject);
+    procedure Action_Modifierledomaine(domain: String; ip: String);
+    procedure Action_Autoriserledomaine(domain: String);
+    procedure Action_Bloquerledomaine(domain: String);
+    procedure Bloquerparfichierhost1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -539,9 +571,16 @@ begin
       if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
       form1.MemoLogs.Lines.Add(logs);
+
+      if status = 'OK' then i := 1 else i := 3;
+      AddAdvancedLog(domain, ipdomain, ipclient, date, time, i);
     end;
     if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
     begin
+
+
+
+
         //iAlert := Length(ListFormAlert);
         //SetLength(ListFormAlert, iAlert + 1);
         FormAlert := TFormAlert.Create(nil);
@@ -1406,6 +1445,8 @@ begin
   FormHost.Load();
 end;
 
+
+
 procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
@@ -1413,6 +1454,9 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
+  ScrollBox1.Controls[0].Destroy;
+  //AddAdvancedLog('yoo', '255.255.255.255', '192.168.0.1', '31.12.2000', '11:11:11', 1);
+  //AddAdvancedLog('yoo', '255.255.255.255', '192.168.0.1', '31.12.2000', '11:11:11', 3);
 
   TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
@@ -1741,6 +1785,7 @@ begin
   EditThemeName.Color := bg;
   ListBoxBlacklist.Color := bg;
   ComboBoxPosLogs.Color := bg;
+  ScrollBox1.Color := bg;
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
@@ -1800,6 +1845,7 @@ begin
 
   ListBoxBlacklist.Font.Color := color;
   ComboBoxPosLogs.Font.Color := color;
+  ScrollBox1.Font.Color := color;
 end;
 
 procedure TUpdate.Execute;
@@ -2255,6 +2301,9 @@ begin
   SelectedListItem := ListView1.Selected;
   if not Assigned(SelectedListItem) then exit;
   //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
+  Action_Bloquerledomaine(SelectedListItem.Caption);
+  SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
+  {
   setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
   SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
   MemoLogs.Lines.Add('Bloquage de '+SelectedListItem.Caption);
@@ -2263,7 +2312,9 @@ begin
   begin
     PanelRestart.Visible := True;
   end;
+  }
 end;
+
 
 procedure TForm1.Autoriser1Click(Sender: TObject);
 begin
@@ -2271,7 +2322,10 @@ begin
   if not Assigned(SelectedListItem) then exit;
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
   //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
-  delDomain(EditFilehost.Text, SelectedListItem.Caption);     
+  SelectedListItem.Delete;
+  Action_Bloquerledomaine(SelectedListItem.Caption);
+  {
+  delDomain(EditFilehost.Text, SelectedListItem.Caption);
   MemoLogs.Lines.Add('Débloquage de '+SelectedListItem.Caption);
   SelectedListItem.Delete;
   refreshListView1Click();
@@ -2279,6 +2333,7 @@ begin
   begin
     PanelRestart.Visible := True;
   end;
+  }
 end;
 
 procedure TForm1.Modifier1Click(Sender: TObject);
@@ -2289,6 +2344,9 @@ begin
   if not Assigned(SelectedListItem) then exit;
   //txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]);
   ip := SelectedListItem.SubItems.Strings[0];
+  SelectedListItem.SubItems.Strings[0] := ip;
+  Action_Modifierledomaine(SelectedListItem.Caption, ip);
+  {
   if not InputQuery('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', ip) then exit;
   setDomain( EditFilehost.Text, SelectedListItem.Caption, ip);
   SelectedListItem.SubItems.Strings[0] := ip;
@@ -2297,7 +2355,58 @@ begin
   begin
     PanelRestart.Visible := True;
   end;
+  }
 end;
+
+
+
+
+procedure TForm1.Action_Modifierledomaine(domain: String; ip: String);
+begin
+  if domain = '' then exit;
+  //if ip = '' then exit;
+  //txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]);
+  //ip := SelectedListItem.SubItems.Strings[0];
+  if not InputQuery('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', ip) then exit;
+  setDomain( EditFilehost.Text, domain, ip);
+  //SelectedListItem.SubItems.Strings[0] := ip;
+  refreshListView1Click();
+  if isServerStarted then
+  begin
+    PanelRestart.Visible := True;
+  end;
+end;
+
+procedure TForm1.Action_Autoriserledomaine(domain: String);
+begin
+  if domain = '' then exit;
+  //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
+  delDomain(EditFilehost.Text, domain);
+  MemoLogs.Lines.Add('Débloquage de '+domain);
+  //SelectedListItem.Delete;
+  refreshListView1Click();
+  if isServerStarted then
+  begin
+    PanelRestart.Visible := True;
+  end;
+end;
+
+
+
+procedure TForm1.Action_Bloquerledomaine(domain: String);
+begin
+  if domain = '' then exit;
+  setDomain(EditFilehost.Text, domain, '127.0.0.1');
+  //SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
+  MemoLogs.Lines.Add('Bloquage de '+domain);
+  refreshListView1Click();
+  if isServerStarted then
+  begin
+    PanelRestart.Visible := True;
+  end;
+end;
+
+
 
 procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
@@ -3759,6 +3868,247 @@ begin
   if FormNetConfig = nil then
     FormNetConfig := TFormNetConfig.Create(Self);
   FormNetConfig.Show;
+end;
+
+procedure TForm1.ToolButtonShowAdvancedLogsClick(Sender: TObject);
+begin
+  if Notebook1.PageIndex <> 4 then
+  begin
+    Panel1.Visible := False;
+    Splitter1.Visible := False;
+  end;
+
+  ToolButton8.Down := False;
+  ToolButton4.Down := False;
+  ToolButtonBlackwords.Down := False;
+  ToolButton6.Down := False;
+  if Panel1.Visible then
+    GroupBox5.Align := alClient
+  else begin
+    Splitter1.Align := alBottom;
+    GroupBox5.Align := alBottom;
+    GroupBox5.Height := 100;
+    ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  end;
+  Panel1.Visible := not Panel1.Visible;
+  Splitter1.Visible := not Splitter1.Visible;
+
+  ToolButtonShowAdvancedLogs.Down := Panel1.Visible;
+  Notebook1.PageIndex := 4;
+end;
+
+
+
+procedure TForm1.AddAdvancedLog(domain, ipdomain, ipclient, date, time: string; iconIndex: Integer);
+var
+  NewPanel: TPanel;
+  NewEdit: TEdit;
+  NImage: TImage;
+  NLabel_IP_Client,
+  NLabel_IP_DNS,
+  NLabel_Date,
+  NLabel_Time: TLabel;
+  NButton: TButton;
+begin
+  //if ScrollBox1.ControlCount > 20 then
+  //  ScrollBox1.Controls[0].Destroy;
+
+  NewPanel := TPanel.Create(nil);
+  NewPanel.Parent := ScrollBox1;
+  NewPanel.Align := alBottom;
+  Application.ProcessMessages;
+  NewPanel.Align := alTop;
+  NewPanel.Height := 47;
+  NewPanel.Name := 'Panel1';
+  NewPanel.Caption := PChar('');
+  NewPanel.ParentColor := True;
+  NewPanel.ParentBackground := True;
+
+  NewEdit := TEdit.Create(nil); 
+  NewEdit.Parent := ScrollBox1;
+  NewEdit.Name := 'Edit1';
+  NewEdit.Parent := NewPanel;
+  NewEdit.Left := 32;
+  NewEdit.Top := 6;
+  NewEdit.Width := 249;
+  NewEdit.Anchors := [akLeft,akTop,akRight];
+  NewEdit.ReadOnly := True;
+  NewEdit.Font.Color := clBlack;
+  NewEdit.Text := domain;
+  
+  NImage := TImage.Create(nil);  
+  NImage.Parent := NewPanel;
+  NImage.Name := 'Image1';
+  NImage.Height := 17;
+  NImage.Width := 17;
+  NImage.Left := 8;
+  NImage.Top := 6;
+  NImage.Transparent := True;
+  NImage.Hint := IntToStr(iconIndex);
+  ImageList3.GetIcon(iconIndex, NImage.Picture.Icon);
+
+  NLabel_IP_Client := TLabel.Create(nil);
+  NLabel_IP_Client.Parent := NewPanel;
+  NLabel_IP_Client.Name := 'Label_IP_Client1';
+  NLabel_IP_Client.Height := 13;
+  NLabel_IP_Client.Width := 81;
+  NLabel_IP_Client.Left := 32;
+  NLabel_IP_Client.Top := 29;
+  NLabel_IP_Client.Caption := PChar(ipclient);
+
+  NLabel_IP_DNS := TLabel.Create(nil); 
+  NLabel_IP_DNS.Parent := NewPanel;
+  NLabel_IP_DNS.Name := 'Label_IP_DNS1';
+  NLabel_IP_DNS.Height := 13;
+  NLabel_IP_DNS.Width := 81;
+  NLabel_IP_DNS.Left := 128;
+  NLabel_IP_DNS.Top := 29;
+  NLabel_IP_DNS.Caption := PChar(ipdomain);
+
+  NLabel_Date := TLabel.Create(nil); 
+  NLabel_Date.Parent := NewPanel;
+  NLabel_Date.Name := 'Label_Date1';
+  NLabel_Date.Height := 13;
+  NLabel_Date.Width := 42;
+  NLabel_Date.Left := 280;
+  NLabel_Date.Top := 29;
+  NLabel_Date.Caption := PChar(date);
+
+  NLabel_Time := TLabel.Create(nil);
+  NLabel_Time.Parent := NewPanel;
+  NLabel_Time.Name := 'Label_Time1';
+  NLabel_Time.Height := 13;
+  NLabel_Time.Width := 42;
+  NLabel_Time.Left := 226;
+  NLabel_Time.Top := 29;
+  NLabel_Time.Caption := PChar(time);
+
+  NButton := TButton.Create(nil); 
+  NButton.Caption := PChar(' + ');
+  NButton.Parent := NewPanel;
+  NButton.Name := 'Button1';
+  NButton.Height := 22;
+  NButton.Width := 25;
+  NButton.Left := 232;
+  NButton.Top := 6;
+  NButton.Anchors := [akTop,akRight];
+  NButton.Hint := inttostr( ScrollBox1.ControlCount - 1 );
+  NButton.OnClick := ButtonPlusAdvLogClick;
+  Application.ProcessMessages;
+
+
+  NButton.Left := NewPanel.Width - NButton.Width - 10;
+  NewEdit.Width := NewPanel.Width - NewEdit.Left - NButton.Width - 20;
+
+  ScrollBox1.ScrollInView(NewPanel);
+  //NewEdit.Text := TEdit(TPanel(ScrollBox1.Controls[0]).FindChildControl('Edit1')).Text;
+end;
+
+procedure TForm1.ButtonPlusAdvLogClick(Sender: TObject);
+var
+  domain, ipclient, ipdns, txt: String;
+  indexAdvLog, indexImage, i: Integer;
+  CursorPos:TPoint;
+  panel: TPanel;
+  image: TImage;
+  edit: TEdit;
+  labelIPDNS, labelIPClient: TLabel;
+begin
+
+
+
+  GetCursorPos(CursorPos);
+  indexAdvLog := -1;
+  TryStrToInt(TButton(Sender).Hint, indexAdvLog);
+  panel := TPanel(TButton(Sender).Parent);
+  Application.ProcessMessages;
+  Sleep(1);
+  if panel.ControlCount < 3 then exit;
+  image := TImage(panel.Controls[0]);
+  edit := TEdit(panel.FindChildControl('Edit1'));
+  labelIPClient := TLabel(panel.Controls[1]);
+  labelIPDNS := TLabel(panel.Controls[2]);
+
+  domain := edit.Text;
+  indexImage := StrToInt(image.Hint);
+  ipdns := labelIPDNS.Caption;
+  ipclient := labelIPClient.Caption;
+
+
+
+
+
+
+  AutoriserledomainedufichierHost1.Visible := False;
+  AutoriserledomaineBlackwords1.Visible := False;
+  ButtonDisableBlockHost.Visible := False;
+  ButtonDisableBlockBlackwords.Visible := False;
+  //domain := Label1.Caption;
+  if domain <> '' then
+  begin
+    txt := ReadFromFile(form1.EditFilehost.Text);
+    if Pos('127.0.0.1	'+domain, txt) > 0 then
+    begin
+      AutoriserledomainedufichierHost1.Visible := True;
+      if not ButtonDisableHost.Down then ButtonDisableBlockHost.Visible := True;
+    end;
+
+    for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+    begin
+      txt := ListBoxBlacklist.Items.Strings[i];
+      if Pos(txt, domain) > 0 then
+      begin
+        AutoriserledomaineBlackwords1.Visible := True;
+        if not Form1.ButtonDisableBlackhost.Down then ButtonDisableBlockBlackwords.Visible := True;
+      end;
+    end;
+
+
+  end;
+
+
+
+
+
+  if indexImage = 1 then
+  begin
+    for i := 0 to PopupMenuForAllowed.Items.Count - 1 do
+      PopupMenuForAllowed.Items.Items[i].Hint := IntToStr(indexAdvLog);
+    PopupMenuForAllowed.Popup(CursorPos.X, CursorPos.Y);
+  end;
+
+  if indexImage = 3 then
+  begin    
+    for i := 0 to PopupMenuForDisallowed.Items.Count - 1 do
+      PopupMenuForDisallowed.Items.Items[i].Hint := IntToStr(indexAdvLog);
+    PopupMenuForDisallowed.Popup(CursorPos.X, CursorPos.Y);
+  end;
+end;
+
+procedure TForm1.Bloquerparfichierhost1Click(Sender: TObject);
+var
+  indexAdvLog: Integer;
+  domain: String;
+  panel: TPanel;
+  image: TImage;
+  edit: TEdit;
+  labelIPDNS, labelIPClient: TLabel;
+begin
+  indexAdvLog := StrToInt(TMenuItem(Sender).Hint);
+
+  panel := TPanel(ScrollBox1.Controls[indexAdvLog]);
+  image := TImage(panel.Controls[0]);
+  edit := TEdit(panel.FindChildControl('Edit1'));
+  //labelIPClient := TLabel(panel.Controls[1]);
+  //labelIPDNS := TLabel(panel.Controls[2]);
+
+  domain := edit.Text;
+  image.Hint := '3';
+  ImageList3.GetIcon(3, image.Picture.Icon);
+  //ipdns := labelIPDNS.Caption;
+  //ipclient := labelIPClient.Caption;
+
+  Action_Bloquerledomaine(domain);
 end;
 
 end.

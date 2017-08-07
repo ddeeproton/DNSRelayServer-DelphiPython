@@ -107,6 +107,7 @@ begin
   if FileExists(batFile) then DeleteFile(batFile);
   WriteInFile(batFile, bat);
   LaunchAndWait(batFile, '', launchAndWWindow);
+  result := True;
 end;
 
 function TFormInstall.Download(url,path:string):Boolean;
@@ -114,13 +115,14 @@ var wget: string;
 begin
   wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
   ExecBat('"'+wget+'" -O "'+path+'" "'+url+'" --no-check-certificate');
+  result := True;
 end;
 
 
 
 function TFormInstall.InstallPythonComponent(path:string):Boolean;
 begin
-//
+  result := True;
 end;
 
 
