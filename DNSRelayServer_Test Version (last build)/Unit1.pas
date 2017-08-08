@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.5.0.alpha';
+var CurrentApplicationVersion: string = '0.5.0.alpha.1';
 
 type
   TForm1 = class(TForm)
@@ -3933,9 +3933,12 @@ begin
   NewEdit.Width := 249;
   NewEdit.Anchors := [akLeft,akTop,akRight];
   NewEdit.ReadOnly := True;
-  NewEdit.Font.Color := clBlack;
+  //NewEdit.Font.Color := clBlack;
   NewEdit.Text := domain;
-  
+  NewEdit.ParentColor := True;
+  NewEdit.ParentFont := True;
+  NewEdit.BorderStyle := bsNone;
+
   NImage := TImage.Create(nil);  
   NImage.Parent := NewPanel;
   NImage.Name := 'Image1';

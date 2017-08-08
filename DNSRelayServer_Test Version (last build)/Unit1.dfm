@@ -1305,6 +1305,7 @@ object Form1: TForm1
               Width = 249
               Height = 21
               Anchors = [akLeft, akTop, akRight]
+              BorderStyle = bsNone
               TabOrder = 0
               Text = 'Edit1'
             end
@@ -7391,7 +7392,7 @@ object Form1: TForm1
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 500
+    Interval = 2000
     OnTimer = Timer1Timer
     Left = 415
     Top = 115
