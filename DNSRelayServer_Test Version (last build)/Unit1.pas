@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.201';
+var CurrentApplicationVersion: string = '0.4.202';
 
 type
   TForm1 = class(TForm)
@@ -1774,6 +1774,7 @@ begin
   Label17.Font.Color := color;
   Label18.Font.Color := color;
   Label32.Font.Color := color;
+  Label33.Font.Color := color;
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
@@ -2003,10 +2004,10 @@ begin
 
   if Splitter1.Visible then
   begin
-    if Form1.Height < 440 then
+    if Form1.Height < 540 then
     begin
-      GroupBox5.Height := 80;
-      Form1.Height := 440;
+      GroupBox5.Height := 100;
+      Form1.Height := 540;
 
     end;
   end else begin
