@@ -452,7 +452,7 @@ begin
     '	#else:'#13#10+
     '	#if answer != ''127.0.0.1'':'#13#10+
     '	#	db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
-    '	if isArpa == False:'#13#10+
+    '	if isArpa == False and config_display == True:'#13#10+
     '		print ''%s; %s; %s; %s; %s;EOL;'' % (heure, config_dnsip, addr[0], answer, dnss.domain)'#13#10+
     '	sys.stdout.flush()'#13#10+
     ''#13#10+

@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.200';
+var CurrentApplicationVersion: string = '0.4.201';
 
 type
   TForm1 = class(TForm)
@@ -680,7 +680,7 @@ var
     sl: TStringList;
     txt: string;
   begin
-    if Form1.CheckBoxPureServer.Checked then exit;
+    //if Form1.CheckBoxPureServer.Checked then exit;
 
     repeat
 
