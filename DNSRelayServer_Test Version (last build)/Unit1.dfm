@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 191
-  Top = 105
-  Width = 484
+  Top = 100
+  Width = 458
   Height = 645
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 114
-    Width = 476
+    Width = 450
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -259,6 +259,17 @@ object Form1: TForm1
                 OnMouseEnter = LabelCheckboxMouseEnter
                 OnMouseLeave = LabelCheckboxMouseLeave
               end
+              object Label33: TLabel
+                Left = 27
+                Top = 242
+                Width = 231
+                Height = 13
+                Caption = 'Pure server (ultra rapide mais pas d'#39'affichage log)'
+                FocusControl = CheckBoxPureServer
+                OnClick = LabelToCheckboxClick
+                OnMouseEnter = LabelCheckboxMouseEnter
+                OnMouseLeave = LabelCheckboxMouseLeave
+              end
               object SpinPort: TSpinEdit
                 Left = 168
                 Top = 24
@@ -337,6 +348,14 @@ object Form1: TForm1
                 Height = 17
                 TabOrder = 7
                 OnClick = CheckBoxNoCacheDNSClick
+              end
+              object CheckBoxPureServer: TCheckBox
+                Left = 8
+                Top = 240
+                Width = 17
+                Height = 17
+                TabOrder = 8
+                OnClick = CheckBoxPureServerClick
               end
             end
             object TabSheet2: TTabSheet
@@ -1345,7 +1364,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 476
+    Width = 450
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1446,15 +1465,15 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 476
+    Width = 450
     Height = 33
     Align = alTop
     TabOrder = 3
     DesignSize = (
-      476
+      450
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 441
+      Left = 415
       Top = 6
       Width = 22
       Height = 22
@@ -1492,16 +1511,16 @@ object Form1: TForm1
   object PanelMessage: TPanel
     Left = 0
     Top = 81
-    Width = 476
+    Width = 450
     Height = 33
     Align = alTop
     TabOrder = 4
     Visible = False
     DesignSize = (
-      476
+      450
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 441
+      Left = 415
       Top = 6
       Width = 22
       Height = 22

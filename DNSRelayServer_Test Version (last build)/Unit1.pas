@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.199';
+var CurrentApplicationVersion: string = '0.4.200';
 
 type
   TForm1 = class(TForm)
@@ -227,6 +227,8 @@ type
     Label3: TLabel;
     Label32: TLabel;
     Button3: TButton;
+    CheckBoxPureServer: TCheckBox;
+    Label33: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -376,6 +378,7 @@ type
     procedure CheckBoxNoTestDNSMasterClick(Sender: TObject);
     procedure CheckBoxNoCacheDNSClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure CheckBoxPureServerClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -677,6 +680,8 @@ var
     sl: TStringList;
     txt: string;
   begin
+    if Form1.CheckBoxPureServer.Checked then exit;
+
     repeat
 
       BytesRead := 0;
@@ -1018,7 +1023,8 @@ end;
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i, j, count: Integer;
-  filepath, dns, script, config_use_host, config_use_blackhost, config_block_all, config_cache_memory: string;
+  filepath, dns, script, config_use_host, config_use_blackhost,
+  config_block_all, config_cache_memory, config_display_log: string;
   //net: tNetworkInterfaceList;
 begin
 
@@ -1180,13 +1186,17 @@ begin
   config_use_blackhost := '1';
   config_block_all := '0';
   config_cache_memory := '1';
+  config_display_log := 'True';
 
   if ButtonDisableBlackhost.Down then config_use_blackhost := '0';
   if ButtonDisableHost.Down then config_use_host := '0';
   if ToolButtonBlockAll.Down then config_block_all := '1';
   if CheckBoxNoCacheDNS.Checked then config_cache_memory := '0';
+  if CheckBoxPureServer.Checked then config_display_log := 'False';
 
-  createVBScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory);
+
+
+  createVBScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log);
 
   if PythonPath = '' then PythonPath := getPythonPath();
 
@@ -1628,8 +1638,7 @@ begin
 
   CheckBoxNoTestDNSMaster.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
   CheckBoxNoCacheDNS.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
-
-
+  CheckBoxPureServer.Checked := FileExists(DataDirectoryPath + 'CheckBoxPureServer.cfg');
 
   startedInBackground := False;
   autostarted := False;
@@ -3753,6 +3762,22 @@ begin
   PanelRestart.Visible := True;
 end;
 
+
+procedure TForm1.CheckBoxPureServerClick(Sender: TObject);
+begin
+
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxPureServer.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxPureServer.cfg');
+
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+  PanelRestart.Visible := True;
+end;
+
 procedure TForm1.Button3Click(Sender: TObject);
 begin
   ShowMessage('En cours d''implémentation :)');
@@ -3760,6 +3785,7 @@ begin
     FormNetConfig := TFormNetConfig.Create(Self);
   FormNetConfig.Show;
 end;
+
 
 end.
 

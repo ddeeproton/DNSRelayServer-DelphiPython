@@ -4,14 +4,14 @@ interface
 
 uses FilesManager;
 
-procedure createVBScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory: string);
+procedure createVBScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log: string);
 
 implementation
 
 uses Unit1, SysUtils;
 
 
-procedure createVBScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory: string);
+procedure createVBScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log: string);
 var
   i: integer;
   script, dnsMaster: string;
@@ -105,7 +105,7 @@ begin
     'config_dnsport = '+IntToStr(Form1.SpinPort.Value)+#13#10+
     'config_delayerror = 1'#13#10+
     ''#13#10+
-    'config_display = True'#13#10+
+    'config_display = '+config_display_log+#13#10+
     ''#13#10+
     '# Banned countries'#13#10+
     '#config_banned_countries = [''us'',''uk'',''il'',''ie'']'#13#10+
