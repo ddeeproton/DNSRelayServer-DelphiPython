@@ -137,225 +137,233 @@ object Form1: TForm1
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              DesignSize = (
-                303
-                295)
-              object Label1: TLabel
+              object ScrollBox1: TScrollBox
                 Left = 8
                 Top = 8
-                Width = 141
-                Height = 13
-                Caption = 'Adresse(s) IP du serveur DNS'
-                Transparent = True
-              end
-              object SpeedButtonRefreshNetCard: TSpeedButton
-                Left = 128
-                Top = 24
-                Width = 23
-                Height = 22
-                Hint = 'Rafraichir les Adresses IP'
-                Flat = True
-                Glyph.Data = {
-                  06030000424D06030000000000003600000028000000100000000F0000000100
-                  180000000000D002000000000000000000000000000000000000FFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
-                  FEA02FBF90FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFF1AB27700DE8C00E0B400F0CB00FFC14CB122FFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200D76000D18C00D4A400
-                  DCAD00E8C800E2A700CC01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFF00CF4100C17803D15200DD0000D58F00E3B300D93CFFFFFFFFFFFF4CB1
-                  22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200BC5401DC5214CB3DFFFFFF00
-                  E58C00F686FFFFFFFFFFFFFFFFFF00FDAD4CB122FFFFFFFFFFFFFFFFFFFFFFFF
-                  00B63A00D2640FC456FFFFFFFFFFFF41A39BFFFFFFFFFFFFFFFFFFFFFFFF00FF
-                  9A1F8845FFFFFFFFFFFFFFFFFFFFFFFF00BB2000F97CFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFF1AC77C00D35F5A6575FFFFFFFFFFFFFFFFFFFFFFFF
-                  00E25B3FB693FFFFFFFFFFFFFFFFFF35A497FFFFFFFFFFFF677D8300EE7000BA
-                  2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF96FFFFFFFFFFFFFFFFFF16B56F00
-                  FFAEFFFFFF697E7C00EB4600BE6000BA3CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFF14AB4800E38C00E0BF00D31802DC3B00C47500C85D4CB1
-                  22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0AAC2400D25800EBD200
-                  DFB200D9AC00D29A00D77A07BF4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFF4CB12200E9A500FECD00E3BA00DBA400D4794CB122FFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
-                  F79200EB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                  FFFFFFFFFFFFFFFFFFFF}
-                ParentShowHint = False
-                ShowHint = True
-                OnClick = ButtonRefreshNetCardClick
-              end
-              object Label2: TLabel
-                Left = 168
-                Top = 8
-                Width = 19
-                Height = 13
-                Caption = 'Port'
-                Transparent = True
-              end
-              object Label4: TLabel
-                Left = 168
-                Top = 48
-                Width = 58
-                Height = 13
-                Caption = 'Exemple: 53'
-                Transparent = True
-              end
-              object Label5: TLabel
-                Left = 8
-                Top = 96
-                Width = 56
-                Height = 13
-                Caption = 'Fichier Host'
-                Transparent = True
-              end
-              object Label6: TLabel
-                Left = 27
-                Top = 146
-                Width = 239
-                Height = 13
-                Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
-                FocusControl = CheckBoxStartWithWindows
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Height = -11
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentFont = False
-                OnClick = LabelToCheckboxClick
-                OnMouseEnter = LabelCheckboxMouseEnter
-                OnMouseLeave = LabelCheckboxMouseLeave
-              end
-              object Label8: TLabel
-                Left = 27
-                Top = 170
-                Width = 294
-                Height = 13
-                Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
-                FocusControl = CheckBoxAutostartDNSOnBoot
-                OnClick = LabelToCheckboxClick
-                OnMouseEnter = LabelCheckboxMouseEnter
-                OnMouseLeave = LabelCheckboxMouseLeave
-              end
-              object Label3: TLabel
-                Left = 27
-                Top = 194
-                Width = 276
-                Height = 13
-                Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres (au d'#233'marrage du serveur)'
-                FocusControl = CheckBoxNoTestDNSMaster
-                OnClick = LabelToCheckboxClick
-                OnMouseEnter = LabelCheckboxMouseEnter
-                OnMouseLeave = LabelCheckboxMouseLeave
-              end
-              object Label32: TLabel
-                Left = 27
-                Top = 218
-                Width = 184
-                Height = 13
-                Caption = 'Ne pas utiliser le cache DNS (plus lent)'
-                FocusControl = CheckBoxNoCacheDNS
-                OnClick = LabelToCheckboxClick
-                OnMouseEnter = LabelCheckboxMouseEnter
-                OnMouseLeave = LabelCheckboxMouseLeave
-              end
-              object Label33: TLabel
-                Left = 27
-                Top = 242
-                Width = 231
-                Height = 13
-                Caption = 'Pure server (ultra rapide mais pas d'#39'affichage log)'
-                FocusControl = CheckBoxPureServer
-                OnClick = LabelToCheckboxClick
-                OnMouseEnter = LabelCheckboxMouseEnter
-                OnMouseLeave = LabelCheckboxMouseLeave
-              end
-              object SpinPort: TSpinEdit
-                Left = 168
-                Top = 24
-                Width = 97
-                Height = 22
-                Color = clWhite
-                MaxValue = 0
-                MinValue = 0
+                Width = 289
+                Height = 281
+                BorderStyle = bsNone
                 TabOrder = 0
-                Value = 53
-                OnChange = EditFilehostChange
-              end
-              object EditFilehost: TEdit
-                Left = 8
-                Top = 112
-                Width = 249
-                Height = 21
-                Anchors = [akLeft, akTop, akRight]
-                Color = clWhite
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clBlack
-                Font.Height = -11
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentFont = False
-                TabOrder = 1
-                OnChange = EditFilehostChange
-              end
-              object CheckBoxAutostartDNSOnBoot: TCheckBox
-                Left = 8
-                Top = 168
-                Width = 19
-                Height = 17
-                TabOrder = 3
-                OnClick = CheckBoxAutostartDNSOnBootClick
-              end
-              object CheckBoxStartWithWindows: TCheckBox
-                Left = 8
-                Top = 144
-                Width = 17
-                Height = 17
-                TabOrder = 2
-                OnClick = CheckBoxStartWithWindowsClick
-              end
-              object Button1: TButton
-                Left = 260
-                Top = 111
-                Width = 35
-                Height = 23
-                Anchors = [akTop, akRight]
-                Caption = '...'
-                TabOrder = 4
-                OnClick = ButtonSelectFilehostClick
-              end
-              object CheckListBoxDNSRelayIP: TCheckListBox
-                Left = 8
-                Top = 24
-                Width = 113
-                Height = 57
-                OnClickCheck = CheckListBoxDNSRelayIPClickCheck
-                ItemHeight = 13
-                TabOrder = 5
-              end
-              object CheckBoxNoTestDNSMaster: TCheckBox
-                Left = 8
-                Top = 192
-                Width = 17
-                Height = 17
-                TabOrder = 6
-                OnClick = CheckBoxNoTestDNSMasterClick
-              end
-              object CheckBoxNoCacheDNS: TCheckBox
-                Left = 8
-                Top = 216
-                Width = 16
-                Height = 17
-                TabOrder = 7
-                OnClick = CheckBoxNoCacheDNSClick
-              end
-              object CheckBoxPureServer: TCheckBox
-                Left = 8
-                Top = 240
-                Width = 17
-                Height = 17
-                TabOrder = 8
-                OnClick = CheckBoxPureServerClick
+                DesignSize = (
+                  289
+                  265)
+                object Label33: TLabel
+                  Left = 27
+                  Top = 242
+                  Width = 231
+                  Height = 13
+                  Caption = 'Pure server (ultra rapide mais pas d'#39'affichage log)'
+                  FocusControl = CheckBoxPureServer
+                  OnClick = LabelToCheckboxClick
+                  OnMouseEnter = LabelCheckboxMouseEnter
+                  OnMouseLeave = LabelCheckboxMouseLeave
+                end
+                object Label32: TLabel
+                  Left = 27
+                  Top = 218
+                  Width = 184
+                  Height = 13
+                  Caption = 'Ne pas utiliser le cache DNS (plus lent)'
+                  FocusControl = CheckBoxNoCacheDNS
+                  OnClick = LabelToCheckboxClick
+                  OnMouseEnter = LabelCheckboxMouseEnter
+                  OnMouseLeave = LabelCheckboxMouseLeave
+                end
+                object Label3: TLabel
+                  Left = 9
+                  Top = 194
+                  Width = 276
+                  Height = 13
+                  Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres (au d'#233'marrage du serveur)'
+                  FocusControl = CheckBoxNoTestDNSMaster
+                  OnClick = LabelToCheckboxClick
+                  OnMouseEnter = LabelCheckboxMouseEnter
+                  OnMouseLeave = LabelCheckboxMouseLeave
+                end
+                object Label8: TLabel
+                  Left = 29
+                  Top = 170
+                  Width = 294
+                  Height = 13
+                  Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
+                  FocusControl = CheckBoxAutostartDNSOnBoot
+                  OnClick = LabelToCheckboxClick
+                  OnMouseEnter = LabelCheckboxMouseEnter
+                  OnMouseLeave = LabelCheckboxMouseLeave
+                end
+                object Label6: TLabel
+                  Left = 27
+                  Top = 146
+                  Width = 239
+                  Height = 13
+                  Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
+                  FocusControl = CheckBoxStartWithWindows
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clBlack
+                  Font.Height = -11
+                  Font.Name = 'MS Sans Serif'
+                  Font.Style = []
+                  ParentFont = False
+                  OnClick = LabelToCheckboxClick
+                  OnMouseEnter = LabelCheckboxMouseEnter
+                  OnMouseLeave = LabelCheckboxMouseLeave
+                end
+                object Label5: TLabel
+                  Left = 8
+                  Top = 96
+                  Width = 56
+                  Height = 13
+                  Caption = 'Fichier Host'
+                  Transparent = True
+                end
+                object SpeedButtonRefreshNetCard: TSpeedButton
+                  Left = 128
+                  Top = 24
+                  Width = 23
+                  Height = 22
+                  Hint = 'Rafraichir les Adresses IP'
+                  Flat = True
+                  Glyph.Data = {
+                    06030000424D06030000000000003600000028000000100000000F0000000100
+                    180000000000D002000000000000000000000000000000000000FFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
+                    FEA02FBF90FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFF1AB27700DE8C00E0B400F0CB00FFC14CB122FFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200D76000D18C00D4A400
+                    DCAD00E8C800E2A700CC01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFF00CF4100C17803D15200DD0000D58F00E3B300D93CFFFFFFFFFFFF4CB1
+                    22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200BC5401DC5214CB3DFFFFFF00
+                    E58C00F686FFFFFFFFFFFFFFFFFF00FDAD4CB122FFFFFFFFFFFFFFFFFFFFFFFF
+                    00B63A00D2640FC456FFFFFFFFFFFF41A39BFFFFFFFFFFFFFFFFFFFFFFFF00FF
+                    9A1F8845FFFFFFFFFFFFFFFFFFFFFFFF00BB2000F97CFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFF1AC77C00D35F5A6575FFFFFFFFFFFFFFFFFFFFFFFF
+                    00E25B3FB693FFFFFFFFFFFFFFFFFF35A497FFFFFFFFFFFF677D8300EE7000BA
+                    2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF96FFFFFFFFFFFFFFFFFF16B56F00
+                    FFAEFFFFFF697E7C00EB4600BE6000BA3CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFF14AB4800E38C00E0BF00D31802DC3B00C47500C85D4CB1
+                    22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0AAC2400D25800EBD200
+                    DFB200D9AC00D29A00D77A07BF4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFF4CB12200E9A500FECD00E3BA00DBA400D4794CB122FFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
+                    F79200EB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    FFFFFFFFFFFFFFFFFFFF}
+                  ParentShowHint = False
+                  ShowHint = True
+                  OnClick = ButtonRefreshNetCardClick
+                end
+                object Label4: TLabel
+                  Left = 168
+                  Top = 48
+                  Width = 58
+                  Height = 13
+                  Caption = 'Exemple: 53'
+                  Transparent = True
+                end
+                object Label2: TLabel
+                  Left = 168
+                  Top = 8
+                  Width = 19
+                  Height = 13
+                  Caption = 'Port'
+                  Transparent = True
+                end
+                object Label1: TLabel
+                  Left = 8
+                  Top = 8
+                  Width = 141
+                  Height = 13
+                  Caption = 'Adresse(s) IP du serveur DNS'
+                  Transparent = True
+                end
+                object CheckBoxPureServer: TCheckBox
+                  Left = 8
+                  Top = 240
+                  Width = 17
+                  Height = 17
+                  TabOrder = 0
+                  OnClick = CheckBoxPureServerClick
+                end
+                object CheckBoxNoCacheDNS: TCheckBox
+                  Left = 8
+                  Top = 216
+                  Width = 16
+                  Height = 17
+                  TabOrder = 1
+                  OnClick = CheckBoxNoCacheDNSClick
+                end
+                object CheckBoxNoTestDNSMaster: TCheckBox
+                  Left = 8
+                  Top = 192
+                  Width = 17
+                  Height = 17
+                  TabOrder = 2
+                  OnClick = CheckBoxNoTestDNSMasterClick
+                end
+                object CheckBoxAutostartDNSOnBoot: TCheckBox
+                  Left = 8
+                  Top = 168
+                  Width = 19
+                  Height = 17
+                  TabOrder = 3
+                  OnClick = CheckBoxAutostartDNSOnBootClick
+                end
+                object CheckBoxStartWithWindows: TCheckBox
+                  Left = 8
+                  Top = 144
+                  Width = 17
+                  Height = 17
+                  TabOrder = 4
+                  OnClick = CheckBoxStartWithWindowsClick
+                end
+                object EditFilehost: TEdit
+                  Left = 8
+                  Top = 112
+                  Width = 233
+                  Height = 21
+                  Anchors = [akLeft, akTop, akRight]
+                  Color = clWhite
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clBlack
+                  Font.Height = -11
+                  Font.Name = 'MS Sans Serif'
+                  Font.Style = []
+                  ParentFont = False
+                  TabOrder = 5
+                  OnChange = EditFilehostChange
+                end
+                object Button1: TButton
+                  Left = 246
+                  Top = 111
+                  Width = 35
+                  Height = 23
+                  Anchors = [akTop, akRight]
+                  Caption = '...'
+                  TabOrder = 6
+                  OnClick = ButtonSelectFilehostClick
+                end
+                object CheckListBoxDNSRelayIP: TCheckListBox
+                  Left = 8
+                  Top = 24
+                  Width = 113
+                  Height = 57
+                  OnClickCheck = CheckListBoxDNSRelayIPClickCheck
+                  ItemHeight = 13
+                  TabOrder = 7
+                end
+                object SpinPort: TSpinEdit
+                  Left = 168
+                  Top = 24
+                  Width = 97
+                  Height = 22
+                  Color = clWhite
+                  MaxValue = 0
+                  MinValue = 0
+                  TabOrder = 8
+                  Value = 53
+                  OnChange = EditFilehostChange
+                end
               end
             end
             object TabSheet2: TTabSheet

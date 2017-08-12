@@ -89,15 +89,6 @@ type
     ButtonClosePanelRestart: TSpeedButton;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
-    Label1: TLabel;
-    SpeedButtonRefreshNetCard: TSpeedButton;
-    Label2: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    SpinPort: TSpinEdit;
-    EditFilehost: TEdit;
-    CheckBoxStartWithWindows: TCheckBox;
-    CheckBoxAutostartDNSOnBoot: TCheckBox;
     TabSheet2: TTabSheet;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
@@ -119,8 +110,6 @@ type
     Label9: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
     TabSheet5: TTabSheet;
-    Label6: TLabel;
-    Label8: TLabel;
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
@@ -136,7 +125,6 @@ type
     ButtonUpdate: TButton;
     ButtonNetCardIntegration: TButton;
     ButtonNetCardDesintegration: TButton;
-    Button1: TButton;
     ColorDialog1: TColorDialog;
     TabSheet6: TTabSheet;
     Label16: TLabel;
@@ -221,14 +209,27 @@ type
     PanelMessage: TPanel;
     SpeedButtonCloseMessage: TSpeedButton;
     LabelMessage: TLabel;
-    CheckListBoxDNSRelayIP: TCheckListBox;
-    CheckBoxNoTestDNSMaster: TCheckBox;
-    CheckBoxNoCacheDNS: TCheckBox;
-    Label3: TLabel;
-    Label32: TLabel;
     Button3: TButton;
+    ScrollBox1: TScrollBox;
     CheckBoxPureServer: TCheckBox;
     Label33: TLabel;
+    CheckBoxNoCacheDNS: TCheckBox;
+    Label32: TLabel;
+    CheckBoxNoTestDNSMaster: TCheckBox;
+    Label3: TLabel;
+    CheckBoxAutostartDNSOnBoot: TCheckBox;
+    Label8: TLabel;
+    CheckBoxStartWithWindows: TCheckBox;
+    Label6: TLabel;
+    EditFilehost: TEdit;
+    Button1: TButton;
+    Label5: TLabel;
+    CheckListBoxDNSRelayIP: TCheckListBox;
+    SpeedButtonRefreshNetCard: TSpeedButton;
+    SpinPort: TSpinEdit;
+    Label4: TLabel;
+    Label2: TLabel;
+    Label1: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1520,6 +1521,7 @@ begin
   Notebook1.Align := alClient;
   PageControl1.Align := alClient;
   ListBoxBlacklist.Align := alClient;
+  ScrollBox1.Align := alClient;
 
 
   PageControl1.TabIndex := 0;
