@@ -140,17 +140,19 @@ object Form1: TForm1
               object ScrollBox1: TScrollBox
                 Left = 8
                 Top = 8
-                Width = 315
+                Width = 280
                 Height = 265
                 HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 DesignSize = (
-                  315
-                  265)
+                  280
+                  249)
                 object Label33: TLabel
-                  Left = 19
+                  Left = 27
                   Top = 234
                   Width = 230
                   Height = 13
@@ -161,7 +163,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label32: TLabel
-                  Left = 19
+                  Left = 27
                   Top = 210
                   Width = 184
                   Height = 13
@@ -172,7 +174,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label3: TLabel
-                  Left = 1
+                  Left = 9
                   Top = 186
                   Width = 276
                   Height = 13
@@ -183,7 +185,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label8: TLabel
-                  Left = 21
+                  Left = 29
                   Top = 162
                   Width = 294
                   Height = 13
@@ -194,7 +196,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label6: TLabel
-                  Left = 19
+                  Left = 27
                   Top = 138
                   Width = 239
                   Height = 13
@@ -211,7 +213,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label5: TLabel
-                  Left = 0
+                  Left = 8
                   Top = 88
                   Width = 56
                   Height = 13
@@ -219,7 +221,7 @@ object Form1: TForm1
                   Transparent = True
                 end
                 object SpeedButtonRefreshNetCard: TSpeedButton
-                  Left = 120
+                  Left = 128
                   Top = 16
                   Width = 23
                   Height = 22
@@ -256,7 +258,7 @@ object Form1: TForm1
                   OnClick = ButtonRefreshNetCardClick
                 end
                 object Label4: TLabel
-                  Left = 160
+                  Left = 168
                   Top = 40
                   Width = 58
                   Height = 13
@@ -264,7 +266,7 @@ object Form1: TForm1
                   Transparent = True
                 end
                 object Label2: TLabel
-                  Left = 160
+                  Left = 168
                   Top = 0
                   Width = 19
                   Height = 13
@@ -272,7 +274,7 @@ object Form1: TForm1
                   Transparent = True
                 end
                 object Label1: TLabel
-                  Left = 0
+                  Left = 8
                   Top = 0
                   Width = 141
                   Height = 13
@@ -280,7 +282,7 @@ object Form1: TForm1
                   Transparent = True
                 end
                 object CheckBoxPureServer: TCheckBox
-                  Left = 0
+                  Left = 8
                   Top = 232
                   Width = 17
                   Height = 17
@@ -288,7 +290,7 @@ object Form1: TForm1
                   OnClick = CheckBoxPureServerClick
                 end
                 object CheckBoxNoCacheDNS: TCheckBox
-                  Left = 0
+                  Left = 8
                   Top = 208
                   Width = 16
                   Height = 17
@@ -296,7 +298,7 @@ object Form1: TForm1
                   OnClick = CheckBoxNoCacheDNSClick
                 end
                 object CheckBoxNoTestDNSMaster: TCheckBox
-                  Left = 0
+                  Left = 8
                   Top = 184
                   Width = 17
                   Height = 17
@@ -304,7 +306,7 @@ object Form1: TForm1
                   OnClick = CheckBoxNoTestDNSMasterClick
                 end
                 object CheckBoxAutostartDNSOnBoot: TCheckBox
-                  Left = 0
+                  Left = 8
                   Top = 160
                   Width = 19
                   Height = 17
@@ -312,7 +314,7 @@ object Form1: TForm1
                   OnClick = CheckBoxAutostartDNSOnBootClick
                 end
                 object CheckBoxStartWithWindows: TCheckBox
-                  Left = 0
+                  Left = 8
                   Top = 136
                   Width = 17
                   Height = 17
@@ -320,9 +322,9 @@ object Form1: TForm1
                   OnClick = CheckBoxStartWithWindowsClick
                 end
                 object EditFilehost: TEdit
-                  Left = 0
+                  Left = 8
                   Top = 104
-                  Width = 217
+                  Width = 224
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -336,7 +338,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 222
+                  Left = 229
                   Top = 103
                   Width = 35
                   Height = 23
@@ -346,7 +348,7 @@ object Form1: TForm1
                   OnClick = ButtonSelectFilehostClick
                 end
                 object CheckListBoxDNSRelayIP: TCheckListBox
-                  Left = 0
+                  Left = 8
                   Top = 16
                   Width = 113
                   Height = 57
@@ -355,7 +357,7 @@ object Form1: TForm1
                   TabOrder = 7
                 end
                 object SpinPort: TSpinEdit
-                  Left = 160
+                  Left = 168
                   Top = 16
                   Width = 97
                   Height = 22
@@ -444,7 +446,9 @@ object Form1: TForm1
                 Width = 289
                 Height = 241
                 HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object Label12: TLabel
@@ -535,7 +539,9 @@ object Form1: TForm1
                 Width = 290
                 Height = 286
                 HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox7: TGroupBox
@@ -662,7 +668,9 @@ object Form1: TForm1
                 Width = 286
                 Height = 276
                 HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 DesignSize = (
@@ -905,7 +913,9 @@ object Form1: TForm1
                 Width = 289
                 Height = 273
                 HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object Label31: TLabel
