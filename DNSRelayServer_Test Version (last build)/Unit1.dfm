@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet6
+            ActivePage = TabSheet1
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -150,9 +150,9 @@ object Form1: TForm1
                 object Label33: TLabel
                   Left = 27
                   Top = 242
-                  Width = 231
+                  Width = 230
                   Height = 13
-                  Caption = 'Pure server (ultra rapide mais pas d'#39'affichage log)'
+                  Caption = 'Pure server (plus rapide mais pas d'#39'affichage log)'
                   FocusControl = CheckBoxPureServer
                   OnClick = LabelToCheckboxClick
                   OnMouseEnter = LabelCheckboxMouseEnter
