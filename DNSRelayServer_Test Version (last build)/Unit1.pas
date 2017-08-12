@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.203';
+var CurrentApplicationVersion: string = '0.4.204';
 
 type
   TForm1 = class(TForm)
@@ -393,7 +393,7 @@ type
     SelectedListItem:TListItem;
   end;
 
-  TSauvegarde = class(TThread)
+  ThreadProcess = class(TThread)
     cmd:String;
     EnMemo:TMemo;
     h: Cardinal;
@@ -422,7 +422,7 @@ var
   FormHost: TFormHost;
   FormNetConfig: TFormNetConfig;
   FormInstall:  TFormInstall = nil;
-  listThreads: array of TSauvegarde;
+  listThreads: array of ThreadProcess;
   ThreadUpdate: TUpdate;
   ConfigDNSMaster: TStringList;
 
@@ -656,12 +656,12 @@ begin
     sl.Free;
 end;
 
-procedure TSauvegarde.onCreate;
+procedure ThreadProcess.onCreate;
 begin
 //
 end;
 
-procedure TSauvegarde.RunDosInMemo(Que:String;EnMemo:TMemo);
+procedure ThreadProcess.RunDosInMemo(Que:String;EnMemo:TMemo);
 const
   CUANTOBUFFER = 2000;
 var
@@ -802,7 +802,7 @@ begin
 end;
 
 
-procedure TSauvegarde.Execute();
+procedure ThreadProcess.Execute();
 begin
   //RunDosInMemo('ping.exe 127.0.0.1', Form1.Memo1MemoLogs);
   Sleep(1000);
@@ -814,7 +814,7 @@ begin
   end;
 end;
 
-procedure TSauvegarde.Execute2(cmd:String; EnMemo:TMemo);
+procedure ThreadProcess.Execute2(cmd:String; EnMemo:TMemo);
 begin
   RunDosInMemo(cmd, EnMemo);
 end;
@@ -1232,7 +1232,7 @@ begin
     begin
       j := Length(listThreads);
       SetLength(listThreads, j+1);
-      listThreads[j] := Unit1.TSauvegarde.Create(True);
+      listThreads[j] := Unit1.ThreadProcess.Create(True);
       listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
       listThreads[j].output := TStringList.Create;
       listThreads[j].EnMemo := MemoLogs;
