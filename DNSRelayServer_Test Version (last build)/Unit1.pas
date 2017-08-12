@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.202';
+var CurrentApplicationVersion: string = '0.4.203';
 
 type
   TForm1 = class(TForm)
@@ -2685,12 +2685,12 @@ var
   dnslist: String;
   //net: tNetworkInterfaceList;
 begin
-  if Sender <> nil then
-  begin
-    ToolButton8.Down := False;
+  //if Sender <> nil then
+  //begin
+    //ToolButton8.Down := False;
     //ToolButton3.Down := True;
-    ToolButton6Click(nil);
-  end;
+    //ToolButton6Click(nil);
+  //end;
   //setIPToDHCP();
 
 
