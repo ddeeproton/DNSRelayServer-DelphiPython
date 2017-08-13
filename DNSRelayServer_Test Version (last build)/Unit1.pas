@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.207';
+var CurrentApplicationVersion: string = '0.4.208';
 
 type
   TForm1 = class(TForm)
@@ -1257,7 +1257,7 @@ begin
   //CanClose := False;
   if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();
-  ButtonCloseClick(Sender);
+  if ServerDoStart then ButtonCloseClick(Sender);
   //Application.ProcessMessages;
   //Sleep(2000);
   //KillTask(ExtractFileName(Application.ExeName));
