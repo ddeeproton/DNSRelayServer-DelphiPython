@@ -1352,6 +1352,9 @@ object Form1: TForm1
     ParentFont = False
     TabOrder = 1
     Visible = False
+    DesignSize = (
+      377
+      82)
     object Label21: TLabel
       Left = 13
       Top = 0
@@ -1364,7 +1367,7 @@ object Form1: TForm1
       Top = 39
       Width = 373
       Height = 41
-      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlack
@@ -1380,11 +1383,10 @@ object Form1: TForm1
     object Panel7: TPanel
       Left = 2
       Top = 15
-      Width = 373
+      Width = 191
       Height = 24
-      Align = alTop
       BevelOuter = bvNone
-      BorderWidth = 1
+      BorderWidth = 10
       Color = clWhite
       TabOrder = 1
       object ToolBar5: TToolBar
