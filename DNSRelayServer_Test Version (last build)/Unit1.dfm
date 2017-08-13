@@ -90,7 +90,6 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
-      PageIndex = 5
       TabOrder = 0
       object TPage
         Left = 0
@@ -126,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet5
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -325,7 +324,7 @@ object Form1: TForm1
                 object EditFilehost: TEdit
                   Left = 8
                   Top = 112
-                  Width = 207
+                  Width = 190
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -339,7 +338,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 212
+                  Left = 195
                   Top = 111
                   Width = 35
                   Height = 23
@@ -2549,7 +2548,7 @@ object Form1: TForm1
     Left = 415
     Top = 390
     Bitmap = {
-      494C010110001300040028002800FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -6678,7 +6677,8 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFFE00001FFFFFC003FFFFFFFFFFFFFFFFFFFFFFFF
       FFC000FFFFFFC007FFFFFFFFFFFFFFFFFFFFFFFFFFF003FFFFFFE00FFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]

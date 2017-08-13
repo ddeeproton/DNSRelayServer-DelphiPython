@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst;
 
-var CurrentApplicationVersion: string = '0.4.209';
+var CurrentApplicationVersion: string = '0.4.210';
 
 type
   TForm1 = class(TForm)
@@ -1712,6 +1712,7 @@ begin
 end;
 
 procedure TForm1.setThemeBg(bg:TColor);
+var bg2:TColor;
 begin
 
   Form1.Color := bg;
@@ -1744,29 +1745,44 @@ begin
   Label11.Color := bg;
   LabelMessage.Color := bg;
 
-  bg := changeColor(bg, SpinEditContraste.Position, SpinEditContraste.Position, SpinEditContraste.Position);
+  bg2 := changeColor(bg, SpinEditContraste.Position, SpinEditContraste.Position, SpinEditContraste.Position);
 
-  ListView1.Color := bg;
-  Memo1.Color := bg;
-  MemoLogs.Color := bg;
-  ListBoxIpClients.Color := bg;
-  ListBoxDNSMaster.Color := bg;
-  CheckListBoxDNSRelayIP.Color := bg;
-  SpinPort.Color := bg;
-  EditFilehost.Color := bg;
-  SpinTimeCheckUpdate.Color := bg;
-  SpinEditAlertDuration.Color := bg;
-  ComboBoxCurrentTheme.Color := bg;
-  EditThemeName.Color := bg;
-  ListBoxBlacklist.Color := bg;
-  ComboBoxPosLogs.Color := bg;
+  ListView1.Color := bg2;
+  Memo1.Color := bg2;
+  MemoLogs.Color := bg2;
+  ListBoxIpClients.Color := bg2;
+  ListBoxDNSMaster.Color := bg2;
+  CheckListBoxDNSRelayIP.Color := bg2;
+  SpinPort.Color := bg2;
+  EditFilehost.Color := bg2;
+  SpinTimeCheckUpdate.Color := bg2;
+  SpinEditAlertDuration.Color := bg2;
+  ComboBoxCurrentTheme.Color := bg2;
+  EditThemeName.Color := bg2;
+  ListBoxBlacklist.Color := bg2;
+  ComboBoxPosLogs.Color := bg2;
+
+  bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
+
+  ListView1.Font.Color := bg2;
+  Memo1.Font.Color := bg2;
+  MemoLogs.Font.Color := bg2;
+  ListBoxIpClients.Font.Color := bg2;
+  ListBoxDNSMaster.Font.Color := bg2;
+  CheckListBoxDNSRelayIP.Font.Color := bg2;
+  SpinPort.Font.Color := bg2;
+  EditFilehost.Font.Color := bg2;
+  SpinTimeCheckUpdate.Font.Color := bg2;
+  SpinEditAlertDuration.Font.Color := bg2;
+  ComboBoxCurrentTheme.Font.Color := bg2;
+  EditThemeName.Font.Color := bg2;
+  ListBoxBlacklist.Font.Color := bg2;
+  ComboBoxPosLogs.Font.Color := bg2;
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
   LabelUpdateTheme.Font.Color := color;
   ShapeColorText.Brush.Color := color;
-  EditThemeName.Font.Color := color;
-  ComboBoxCurrentTheme.Font.Color := color;
   Label1.Font.Color := color;
   Label2.Font.Color := color;
   Label3.Font.Color := color;
@@ -1794,14 +1810,6 @@ begin
   PanelMessage.Font.Color := color;
   Form1.Font.Color := color;
   ToolBar4.Font.Color := color;
-  ListView1.Font.Color := color;
-  Memo1.Font.Color := color;
-  MemoLogs.Font.Color := color;
-  ListBoxIpClients.Font.Color := color;
-  ListBoxDNSMaster.Font.Color := color;
-  CheckListBoxDNSRelayIP.Font.Color := color;
-  SpinPort.Font.Color := color;
-  EditFilehost.Font.Color := color;
   GroupBox2.Font.Color := color;
   GroupBox3.Font.Color := color;
   GroupBox4.Font.Color := color;
@@ -1817,9 +1825,20 @@ begin
   CheckBoxUpdateSilent.Font.Color := color;
   CheckBoxAllowModifyNetCard.Font.Color := color;
 
-
+  {
   ListBoxBlacklist.Font.Color := color;
-  ComboBoxPosLogs.Font.Color := color;
+  ComboBoxPosLogs.Font.Color := color;      
+  CheckListBoxDNSRelayIP.Font.Color := color;
+  SpinPort.Font.Color := color;
+  ListView1.Font.Color := color;
+  Memo1.Font.Color := color;
+  MemoLogs.Font.Color := color;
+  EditThemeName.Font.Color := color;
+  ComboBoxCurrentTheme.Font.Color := color;
+  ListBoxIpClients.Font.Color := color;
+  ListBoxDNSMaster.Font.Color := color;
+  EditFilehost.Font.Color := color;
+  }
 end;
 
 procedure TUpdate.Execute;
