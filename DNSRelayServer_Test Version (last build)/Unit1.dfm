@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 189
   Top = 105
   Width = 458
-  Height = 645
+  Height = 652
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -90,6 +90,7 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
+      PageIndex = 5
       TabOrder = 0
       object TPage
         Left = 0
@@ -149,8 +150,8 @@ object Form1: TForm1
                 BorderStyle = bsNone
                 TabOrder = 0
                 DesignSize = (
-                  264
-                  249)
+                  263
+                  248)
                 object Label33: TLabel
                   Left = 27
                   Top = 242
@@ -324,7 +325,7 @@ object Form1: TForm1
                 object EditFilehost: TEdit
                   Left = 8
                   Top = 112
-                  Width = 208
+                  Width = 207
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -338,7 +339,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 213
+                  Left = 212
                   Top = 111
                   Width = 35
                   Height = 23
@@ -1310,9 +1311,9 @@ object Form1: TForm1
           object Label25: TLabel
             Left = 13
             Top = 0
-            Width = 53
+            Width = 87
             Height = 13
-            Caption = 'DNS Relay'
+            Caption = 'DNS Relay Server'
           end
           object Memo1: TMemo
             Left = 2
