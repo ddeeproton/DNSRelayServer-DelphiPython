@@ -232,10 +232,10 @@ type
     ShapeColorBackground: TShape;
     EditThemeName: TEdit;
     ButtonUpdateTheme: TButton;
+    Button2: TButton;
     GroupBox9: TGroupBox;
     SpeedButtonClosePanelUpdateTheme: TSpeedButton;
     LabelUpdateTheme: TLabel;
-    Button2: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
