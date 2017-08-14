@@ -130,6 +130,7 @@ object FormAlert: TFormAlert
       ParentShowHint = False
       ShowHint = True
       OnClick = PanelAllowedClick
+      OnDblClick = SpeedButton1DblClick
     end
     object CheckBoxStay: TCheckBox
       Left = 198
@@ -256,6 +257,7 @@ object FormAlert: TFormAlert
       ParentShowHint = False
       ShowHint = True
       OnClick = PanelAllowedClick
+      OnDblClick = SpeedButton1DblClick
     end
     object CheckBoxStay2: TCheckBox
       Left = 198

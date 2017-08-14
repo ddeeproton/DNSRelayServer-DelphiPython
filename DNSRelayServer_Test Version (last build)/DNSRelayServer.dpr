@@ -16,7 +16,8 @@ uses
   UnitAlert in 'UnitAlert.pas' {FormAlert},
   WindowsManager in 'WindowsManager.pas',
   UnitNetConfig in 'UnitNetConfig.pas' {FormNetConfig},
-  StringManager in 'StringManager.pas';
+  StringManager in 'StringManager.pas',
+  UnitRestartAlert in 'UnitRestartAlert.pas' {FormRestart};
 
 {$R *.res}
 
@@ -28,5 +29,6 @@ begin
   Application.CreateForm(TFormInstall, FormInstall);
   Application.CreateForm(TFormAlert, FormAlert);
   Application.CreateForm(TFormNetConfig, FormNetConfig);
+  Application.CreateForm(TFormRestart, FormRestart);
   Application.Run;
 end.

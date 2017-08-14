@@ -1,5 +1,5 @@
 unit Unit1;
-
+             
 interface
 
 uses
@@ -8,9 +8,9 @@ uses
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
-  CheckLst, StringManager;
+  CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.217';
+var CurrentApplicationVersion: string = '0.4.218';
 
 type
   TForm1 = class(TForm)
@@ -431,6 +431,7 @@ var
   FormHost: TFormHost;
   FormNetConfig: TFormNetConfig;
   FormInstall:  TFormInstall = nil;
+  FormRestart: TFormRestart;
   listThreads: array of ThreadProcess;
   ThreadUpdate: TUpdate;
   ConfigDNSMaster: TStringList;
@@ -553,7 +554,7 @@ begin
       FormAlert.PanelDisallowed.Color := Form1.Color;
       LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
       if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
-        LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
+        LastPositionFormAlertTop := Screen.WorkAreaHeight - ( FormAlert.Height * 2);
       FormAlert.Top := LastPositionFormAlertTop;
       FormAlert.FormCreate(nil);
 

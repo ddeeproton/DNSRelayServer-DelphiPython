@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls,
-  HostParser, Buttons, ImgList, Menus, FilesManager, WindowsManager;
+  HostParser, Buttons, ImgList, Menus, FilesManager, WindowsManager, UnitRestartAlert;
 
 type
   TFormAlert = class(TForm)
@@ -59,7 +59,9 @@ type
     procedure Label2Click(Sender: TObject);
     procedure Edit1Enter(Sender: TObject);
     procedure TimerFadeInTimer(Sender: TObject);
-    procedure TimerFadeOutTimer(Sender: TObject);
+    procedure TimerFadeOutTimer(Sender: TObject);  
+    procedure RestartRequired();
+    procedure SpeedButton1DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -76,12 +78,13 @@ implementation
 
 uses Unit1;
 
+
+
 procedure TFormAlert.FormCreate(Sender: TObject);
 var
   i: integer;
   domain, txt: string;
 begin
-
   //Self.FormStyle := fsStayOnTop;
   //Self.Show;
   //Systray.EnleveIconeTray;
@@ -152,6 +155,25 @@ begin
   TimerFadeIn.Enabled := True;
 end;
 
+
+procedure TFormAlert.RestartRequired();
+begin
+  //Form1.TimerRestart.Enabled := False;
+  // Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
+  try
+    if not Form1.isServerStarted then exit;
+    if (FormRestart = nil) or not Assigned(FormRestart) or not FormRestart.Visible then
+      FormRestart := TFormRestart.Create(nil);
+
+    FormRestart.Show;
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
+end;
+
+
+
 procedure TFormAlert.PanelAllowedClick(Sender: TObject);
 begin
   opacity := 100;
@@ -187,8 +209,7 @@ begin
         form1.ListView1.Items[i].Delete;
         form1.MemoLogs.Lines.Add('Débloquage de '+domain);
         delDomain(form1.EditFilehost.Text, domain);
-        Form1.TimerRestart.Enabled := False;
-        if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
+        RestartRequired();
       except
         On E :   EOSError do
           exit;
@@ -219,8 +240,9 @@ begin
   setDomain(Form1.EditFilehost.Text, domain, '127.0.0.1');
   Form1.MemoLogs.Lines.Add('Bloquage de '+domain);
   Form1.refreshListView1Click();
-  Form1.TimerRestart.Enabled := False;
-  if Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
+  PanelAllowed.Visible := not PanelAllowed.Visible;
+  PanelDisallowed.Visible := not PanelDisallowed.Visible;
+  RestartRequired();
   FormCreate(nil);
 end;
 
@@ -232,8 +254,10 @@ begin
   begin
     if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain) then exit;
     ListBoxBlacklist.Items.Add(domain);
-    ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-    TimerRestart.Enabled := isServerStarted;
+    ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);    
+    PanelAllowed.Visible := not PanelAllowed.Visible;
+    PanelDisallowed.Visible := not PanelDisallowed.Visible;
+    RestartRequired();
   end;
   FormCreate(nil);
   TimerAfterCreate.Enabled := False;
@@ -264,9 +288,10 @@ begin
             callRestart := True;
             ListBoxBlacklist.ItemIndex := i;
             ListBoxBlacklist.DeleteSelected;
-            ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-            Form1.TimerRestart.Enabled := False;
-            if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
+            ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);  
+            PanelAllowed.Visible := not PanelAllowed.Visible;
+            PanelDisallowed.Visible := not PanelDisallowed.Visible;
+            RestartRequired();            
          end else
          begin
            Inc(i);
@@ -293,9 +318,9 @@ begin
   TimerAfterCreate.Enabled := False;
   CheckBoxStay.Checked := True;
   CheckBoxStay2.Checked := True;
+  FormCreate(nil);
   GetCursorPos(Pos);
   PopupMenuForDisallowed.Popup(Pos.X,Pos.Y);
-  FormCreate(nil);
 end;
 
 procedure TFormAlert.ButtonMenuForAllowedClick(Sender: TObject);
@@ -305,9 +330,10 @@ begin
   TimerAfterCreate.Enabled := False;
   CheckBoxStay.Checked := True;
   CheckBoxStay2.Checked := True;
+  FormCreate(nil);
   GetCursorPos(Pos);
   PopupMenuForAllowed.Popup(Pos.X,Pos.Y);
-  FormCreate(nil);
+
 end;
 
 
@@ -326,9 +352,10 @@ begin
   Form1.MemoLogs.Lines.Add('Bloquage de tous les domaines [désactivé].');
   DeleteFile(Form1.DataDirectoryPath + 'disableAll.cfg');
   Form1.ToolButtonBlockAll.Down := False;
-  Desactiverlebloquagedetouslesdomaines1.Checked := False;
-  Form1.TimerRestart.Enabled := False;
-  if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
+  Desactiverlebloquagedetouslesdomaines1.Checked := False; 
+  PanelAllowed.Visible := not PanelAllowed.Visible;
+  PanelDisallowed.Visible := not PanelDisallowed.Visible;
+  RestartRequired();
   FormCreate(nil);
 end;
 
@@ -355,9 +382,10 @@ begin
   begin
     ButtonDisableHost.Down := False;
     MemoLogs.Lines.Add('Activation du du fichier Host.');
-    DeleteFile(DataDirectoryPath + 'disableHost.cfg');
-    Form1.TimerRestart.Enabled := False;
-    if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
+    DeleteFile(DataDirectoryPath + 'disableHost.cfg');  
+    PanelAllowed.Visible := not PanelAllowed.Visible;
+    PanelDisallowed.Visible := not PanelDisallowed.Visible;
+    RestartRequired();
   end;
   FormCreate(nil);
 end;
@@ -368,9 +396,10 @@ begin
   begin
     ButtonDisableBlackhost.Down := False;
     MemoLogs.Lines.Add('Activation du filtre Blackwords.');
-    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
-    Form1.TimerRestart.Enabled := False;
-    if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
+    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');  
+    PanelAllowed.Visible := not PanelAllowed.Visible;
+    PanelDisallowed.Visible := not PanelDisallowed.Visible;
+    RestartRequired();
   end;
   FormCreate(nil);
 end;
@@ -381,8 +410,10 @@ begin
   begin
     ToolButtonBlockAll.Down := True;
     ToolButtonBlockAllClick(ToolButtonBlockAll);
-    Form1.TimerRestart.Enabled := False;
-    if Form1.isServerStarted then Form1.TimerRestart.Enabled := True;
+    
+    PanelAllowed.Visible := not PanelAllowed.Visible;
+    PanelDisallowed.Visible := not PanelDisallowed.Visible;
+    RestartRequired();
   end;
   FormCreate(nil);
 end;
@@ -420,6 +451,11 @@ begin
     Self.Close;
     Self.Free;
   end;
+end;
+
+procedure TFormAlert.SpeedButton1DblClick(Sender: TObject);
+begin
+  Close;
 end;
 
 end.
