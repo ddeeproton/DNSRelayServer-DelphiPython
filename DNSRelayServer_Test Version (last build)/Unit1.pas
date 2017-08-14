@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.218';
+var CurrentApplicationVersion: string = '0.4.219';
 
 type
   TForm1 = class(TForm)
@@ -236,6 +236,7 @@ type
     GroupBox9: TGroupBox;
     SpeedButtonClosePanelUpdateTheme: TSpeedButton;
     LabelUpdateTheme: TLabel;
+    N10: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -974,6 +975,14 @@ var
   //net: tNetworkInterfaceList;
 begin
 
+  if Notebook1.PageIndex = 5 then
+  begin
+    Panel1.Visible := False;
+    Splitter1.Visible := False;
+    GroupBox5.Align := alClient;
+    ResizePanelConfig();
+  end;
+
   //PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
@@ -1618,10 +1627,14 @@ begin
   if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
   begin
     ServerDoStart := True;
+    ButtonStartClick(nil);
+  {
+    ServerDoStart := True;
     ImageList4.GetIcon(2, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
     ToolButton11.ImageIndex := 13;
     TimerRestart.Enabled := True;
+   }
   end;
 
 
@@ -1960,6 +1973,18 @@ begin
 
   if Form1.Left > Screen.WorkAreaWidth - Form1.Width then
     Form1.Left := Screen.WorkAreaWidth - Form1.Width;
+
+  // Main
+  if  GroupBox5.Visible or Panel1.Visible then
+  begin
+    Form1.Constraints.MinHeight := 300;
+  end else
+  begin
+    Form1.Constraints.MinHeight := ToolBar3.Height + 40;
+    Form1.Height := Form1.Constraints.MinHeight;
+    Form1.Width := Form1.Constraints.MinWidth;
+  end;
+
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);
@@ -1968,8 +1993,6 @@ begin
 end;
 
 procedure TForm1.GotoMainPage(inexPage: Integer);
-var
-  isLogVisible: Boolean;
 begin
 
   if Notebook1.PageIndex <> inexPage then
@@ -1986,9 +2009,8 @@ begin
     GroupBox5.Height := 100;
     ComboBoxPosLogsSelect(ComboBoxPosLogs);
   end;
-  isLogVisible := GroupBox5.Visible;
   Panel1.Visible := not Panel1.Visible;    
-  Splitter1.Visible := isLogVisible and Panel1.Visible;
+  Splitter1.Visible := GroupBox5.Visible and Panel1.Visible;
 
   ToolButton8.Down := Panel1.Visible and (inexPage = 0);
   ToolButtonBlackwords.Down := Panel1.Visible and (inexPage = 1);
@@ -1999,16 +2021,7 @@ begin
 
   Notebook1.PageIndex := inexPage;
   ResizePanelConfig();
-
-  if isLogVisible or Panel1.Visible then
-  begin
-    Form1.Constraints.MinHeight := 300;
-  end else
-  begin
-    Form1.Constraints.MinHeight := ToolBar3.Height + 40;
-    Form1.Height := Form1.Constraints.MinHeight;
-    Form1.Width := Form1.Constraints.MinWidth;
-  end;
+  PanelMessage.Visible := False;
 end;
 
 procedure TForm1.ToolButton8Click(Sender: TObject);
@@ -2304,6 +2317,8 @@ end;
 
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
+
+
   if not TToolButton(Sender).Enabled then exit;
   TToolButton(Sender).Enabled := False;
   if not ServerDoStart then
@@ -2341,6 +2356,10 @@ begin
 
     //end;
   end;
+
+
+
+
   Application.ProcessMessages;
   Sleep(1000);
   TToolButton(Sender).Enabled := True;

@@ -53,6 +53,7 @@ begin
     opacity := 0;
     SetFormOpacity(Self.Handle, opacity);
     TimerFadeIn.Enabled := True;
+    if Sender = nil then Form1.PanelRestart.Visible := True;
   except
     On E : EOSError do exit;  
     On E : EAccessViolation do exit;

@@ -150,6 +150,7 @@ begin
   Edit1.Width := Label1.Width + 5;
   Edit1.Text := Label1.Caption;
 
+  if Sender = nil then exit;
   opacity := 0;
   SetFormOpacity(Self.Handle, opacity);
   TimerFadeIn.Enabled := True;
@@ -161,6 +162,9 @@ begin
   //Form1.TimerRestart.Enabled := False;
   // Form1.isServerStarted then Form1.TimerRestart.Enabled := True; //Form1.ButtonStartClick(nil);
   try
+    PanelAllowed.Visible := not PanelAllowed.Visible;
+    PanelDisallowed.Visible := not PanelDisallowed.Visible;
+    FormCreate(nil);
     if not Form1.isServerStarted then exit;
     if (FormRestart = nil) or not Assigned(FormRestart) or not FormRestart.Visible then
       FormRestart := TFormRestart.Create(nil);
@@ -220,7 +224,7 @@ begin
     end;
   end;
 
-  FormCreate(nil);
+  //FormCreate(nil);
   TimerAfterCreate.Enabled := True;
   CheckBoxStay.Checked := False;
   CheckBoxStay2.Checked := False;
@@ -240,8 +244,6 @@ begin
   setDomain(Form1.EditFilehost.Text, domain, '127.0.0.1');
   Form1.MemoLogs.Lines.Add('Bloquage de '+domain);
   Form1.refreshListView1Click();
-  PanelAllowed.Visible := not PanelAllowed.Visible;
-  PanelDisallowed.Visible := not PanelDisallowed.Visible;
   RestartRequired();
   FormCreate(nil);
 end;
@@ -255,11 +257,8 @@ begin
     if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain) then exit;
     ListBoxBlacklist.Items.Add(domain);
     ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);    
-    PanelAllowed.Visible := not PanelAllowed.Visible;
-    PanelDisallowed.Visible := not PanelDisallowed.Visible;
     RestartRequired();
   end;
-  FormCreate(nil);
   TimerAfterCreate.Enabled := False;
   CheckBoxStay.Checked := True;
   CheckBoxStay2.Checked := True;
@@ -289,8 +288,6 @@ begin
             ListBoxBlacklist.ItemIndex := i;
             ListBoxBlacklist.DeleteSelected;
             ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);  
-            PanelAllowed.Visible := not PanelAllowed.Visible;
-            PanelDisallowed.Visible := not PanelDisallowed.Visible;
             RestartRequired();            
          end else
          begin
@@ -304,7 +301,7 @@ begin
     if callRestart then TimerRestart.Enabled := True;  //and isServerStarted
     if not isFound then ShowMessage('Pas de bloquage trouvé');
   end;
-  FormCreate(nil);
+  //FormCreate(nil);
   TimerAfterCreate.Enabled := True;
   CheckBoxStay.Checked := False;
   CheckBoxStay2.Checked := False;
@@ -318,7 +315,7 @@ begin
   TimerAfterCreate.Enabled := False;
   CheckBoxStay.Checked := True;
   CheckBoxStay2.Checked := True;
-  FormCreate(nil);
+  //FormCreate(nil);
   GetCursorPos(Pos);
   PopupMenuForDisallowed.Popup(Pos.X,Pos.Y);
 end;
@@ -330,7 +327,7 @@ begin
   TimerAfterCreate.Enabled := False;
   CheckBoxStay.Checked := True;
   CheckBoxStay2.Checked := True;
-  FormCreate(nil);
+  //FormCreate(nil);
   GetCursorPos(Pos);
   PopupMenuForAllowed.Popup(Pos.X,Pos.Y);
 
@@ -342,7 +339,7 @@ begin
   TimerAfterCreate.Enabled := not TCheckBox(Sender).Checked;
   CheckBoxStay.Checked := not TimerAfterCreate.Enabled;
   CheckBoxStay2.Checked := not TimerAfterCreate.Enabled;
-  FormCreate(nil);
+  //FormCreate(nil);
 end;
 
 
@@ -352,9 +349,7 @@ begin
   Form1.MemoLogs.Lines.Add('Bloquage de tous les domaines [désactivé].');
   DeleteFile(Form1.DataDirectoryPath + 'disableAll.cfg');
   Form1.ToolButtonBlockAll.Down := False;
-  Desactiverlebloquagedetouslesdomaines1.Checked := False; 
-  PanelAllowed.Visible := not PanelAllowed.Visible;
-  PanelDisallowed.Visible := not PanelDisallowed.Visible;
+  Desactiverlebloquagedetouslesdomaines1.Checked := False;
   RestartRequired();
   FormCreate(nil);
 end;
@@ -382,9 +377,7 @@ begin
   begin
     ButtonDisableHost.Down := False;
     MemoLogs.Lines.Add('Activation du du fichier Host.');
-    DeleteFile(DataDirectoryPath + 'disableHost.cfg');  
-    PanelAllowed.Visible := not PanelAllowed.Visible;
-    PanelDisallowed.Visible := not PanelDisallowed.Visible;
+    DeleteFile(DataDirectoryPath + 'disableHost.cfg');
     RestartRequired();
   end;
   FormCreate(nil);
@@ -396,9 +389,7 @@ begin
   begin
     ButtonDisableBlackhost.Down := False;
     MemoLogs.Lines.Add('Activation du filtre Blackwords.');
-    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');  
-    PanelAllowed.Visible := not PanelAllowed.Visible;
-    PanelDisallowed.Visible := not PanelDisallowed.Visible;
+    DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
     RestartRequired();
   end;
   FormCreate(nil);

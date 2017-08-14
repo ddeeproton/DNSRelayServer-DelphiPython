@@ -90,6 +90,7 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
+      PageIndex = 5
       TabOrder = 0
       object TPage
         Left = 0
@@ -16316,10 +16317,6 @@ object Form1: TForm1
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
     end
-    object Afficherenbas1: TMenuItem
-      Caption = 'Afficher en bas'
-      OnClick = Afficherenbas1Click
-    end
     object Affichergauche1: TMenuItem
       Caption = 'Afficher '#224' gauche'
       OnClick = Affichergauche1Click
@@ -16327,6 +16324,13 @@ object Form1: TForm1
     object Afficherdroite1: TMenuItem
       Caption = 'Afficher '#224' droite'
       OnClick = Afficherdroite1Click
+    end
+    object Afficherenbas1: TMenuItem
+      Caption = 'Afficher en bas'
+      OnClick = Afficherenbas1Click
+    end
+    object N10: TMenuItem
+      Caption = '-'
     end
     object Masquer2: TMenuItem
       Caption = 'Masquer'
