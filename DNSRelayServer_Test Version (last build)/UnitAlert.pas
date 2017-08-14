@@ -97,18 +97,22 @@ begin
     + Label1.Left;
   Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
 
-  PanelAllowed.Visible := True;
-  PanelDisallowed.Visible := False;
+  //PanelAllowed.Visible := True;
+  //PanelDisallowed.Visible := False;
+  
   //Self.Top := Screen.WorkAreaHeight - Self.Height;
   //Self.SendToBack;
 
   Desactiverlebloquagedetouslesdomaines1.Visible := Form1.ToolButtonBlockAll.Down;
+
+  {
   if Form1.ToolButtonBlockAll.Down then
   begin
     PanelAllowed.Visible := False;
     PanelDisallowed.Visible := True;
   end;
-
+  }
+  
   AutoriserledomainedufichierHost1.Visible := False;
   AutoriserledomaineBlackwords1.Visible := False;
   ButtonDisableBlockHost.Visible := False;
@@ -120,8 +124,8 @@ begin
     if Pos('127.0.0.1	'+domain, txt) > 0 then
     begin
       AutoriserledomainedufichierHost1.Visible := True;
-      PanelAllowed.Visible := False;
-      PanelDisallowed.Visible := True;
+      //PanelAllowed.Visible := False;
+      //PanelDisallowed.Visible := True;
       if not Form1.ButtonDisableHost.Down then ButtonDisableBlockHost.Visible := True;
     end;
     with Form1 do
@@ -132,8 +136,8 @@ begin
         if Pos(txt, domain) > 0 then
         begin
           AutoriserledomaineBlackwords1.Visible := True;
-          PanelAllowed.Visible := False;
-          PanelDisallowed.Visible := True;
+          //PanelAllowed.Visible := False;
+          //PanelDisallowed.Visible := True;
           if not Form1.ButtonDisableBlackhost.Down then ButtonDisableBlockBlackwords.Visible := True;
         end;
       end;

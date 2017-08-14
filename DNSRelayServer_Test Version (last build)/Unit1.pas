@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager;
 
-var CurrentApplicationVersion: string = '0.4.216';
+var CurrentApplicationVersion: string = '0.4.217';
 
 type
   TForm1 = class(TForm)
@@ -503,12 +503,12 @@ begin
     end;
 
       //ip := getDomain(Form1.EditFilehost.Text, domain);
-      ip := ipdomain;
-      ip := onlyChars(ip);
+    ip := ipdomain;
+    ip := onlyChars(ip);
       //if ipdomain = '' then imgIndex := 0
       //else
-      if Pos('127.0.0', ipdomain) >= 0 then imgIndex := 3
-      else imgIndex := 0;
+    if Pos('127.0.0', ip) = 0 then imgIndex := 0
+    else imgIndex := 3;
 
     if isNew then
     begin
@@ -518,7 +518,7 @@ begin
       Form1.refreshListView1Click();
     end;
 
-    if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
+    if not isRepeated and (FormAlertLastShow <> domain) then  // (imgIndex > 0) and     
     begin
       logs := '['+date+' '+time+'] '+ipserver+' '+ipclient+' -> '+domain;
       if Length(logs) <= 55 then tab := #9 else tab := '';
