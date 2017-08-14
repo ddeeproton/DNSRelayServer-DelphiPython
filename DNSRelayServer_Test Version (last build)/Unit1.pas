@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager;
 
-var CurrentApplicationVersion: string = '0.4.214';
+var CurrentApplicationVersion: string = '0.4.215';
 
 type
   TForm1 = class(TForm)
@@ -531,7 +531,7 @@ begin
       if ipdomain = '127.0.0.4' then status := 'BLOCKED by DNS Master fail';
       if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
-      form1.MemoLogs.Lines.Add(logs);
+      if form1.MemoLogs.Visible then form1.MemoLogs.Lines.Add(logs);
 
 
       FormAlert := TFormAlert.Create(nil);
