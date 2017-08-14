@@ -15,7 +15,8 @@ uses
   DNSManager in 'DNSManager.pas',
   UnitAlert in 'UnitAlert.pas' {FormAlert},
   WindowsManager in 'WindowsManager.pas',
-  UnitNetConfig in 'UnitNetConfig.pas' {FormNetConfig};
+  UnitNetConfig in 'UnitNetConfig.pas' {FormNetConfig},
+  StringManager in 'StringManager.pas';
 
 {$R *.res}
 

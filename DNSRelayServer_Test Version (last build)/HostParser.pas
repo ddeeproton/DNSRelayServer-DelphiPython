@@ -2,23 +2,14 @@ unit HostParser;
 
 interface
 
-uses SysUtils, StrUtils, Classes, ComCtrls;
+uses SysUtils, StrUtils, Classes, ComCtrls, StringManager;
 
 procedure setDomain(hostfile, domain, ip: string);
 procedure getDomains(hostfile: string; ListView:TListView);
 function getDomain(hostfile, domain: string):string;
 procedure delDomain(hostfile, domain: string);
-function onlyChars(txt: string):string;
 
 implementation
-
-function onlyChars(txt: string):string;
-begin
-  txt := AnsiReplaceStr(txt, #9, '');
-  txt := AnsiReplaceStr(txt, #10, '');
-  txt := AnsiReplaceStr(txt, #13, '');
-  result := AnsiReplaceStr(txt, ' ', '');
-end;
 
 procedure delDomain(hostfile, domain: string);
 var

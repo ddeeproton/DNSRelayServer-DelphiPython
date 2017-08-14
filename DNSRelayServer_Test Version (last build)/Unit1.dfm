@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 189
-  Top = 105
+  Left = 190
+  Top = 113
   Width = 458
   Height = 652
   Caption = 'DNS Relay Server'
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet5
+            ActivePage = TabSheet1
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -324,7 +324,7 @@ object Form1: TForm1
                 object EditFilehost: TEdit
                   Left = 8
                   Top = 112
-                  Width = 190
+                  Width = 156
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -338,7 +338,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 195
+                  Left = 161
                   Top = 111
                   Width = 35
                   Height = 23

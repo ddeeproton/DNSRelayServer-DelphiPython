@@ -8,9 +8,9 @@ uses
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
-  CheckLst;
+  CheckLst, StringManager;
 
-var CurrentApplicationVersion: string = '0.4.210';
+var CurrentApplicationVersion: string = '0.4.211';
 
 type
   TForm1 = class(TForm)
@@ -452,22 +452,6 @@ implementation
 {$R *.dfm}
 
 
-procedure SplitStr(const Source, Delimiter: String; var DelimitedList: TStringList);
-var
-  s: PChar;
-  DelimiterIndex: Integer;
-  Item: String;
-begin
-  s:=PChar(Source);
-  repeat
-    DelimiterIndex:=Pos(Delimiter, s);
-    if DelimiterIndex=0 then Break;
-    Item:=Copy(s, 1, DelimiterIndex-1);
-    DelimitedList.Add(Item);
-    inc(s, DelimiterIndex + Length(Delimiter)-1);
-  until DelimiterIndex = 0;
-  DelimitedList.Add(s);
-end;
 
 
 procedure TForm1.OnOutput(txt:String);
@@ -484,15 +468,12 @@ begin
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
 
-
   isRepeated := lastLogOutput = txt;
   lastLogOutput := txt;
 
-  //MemoLogs.Text := MemoLogs.Text + txt;
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
   //form1.MemoLogs.Lines.Add(sl.Text);
-  //form1.MemoLogs.Lines.Add(IntToStr(sl.Count));
   if sl.Count >= 5 then
   begin
     date := onlyChars(sl.Strings[0]);
@@ -547,98 +528,49 @@ begin
       if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
       form1.MemoLogs.Lines.Add(logs);
+
+      FormAlert := TFormAlert.Create(nil);
+
+      FormAlertLastShow := domain;
+      if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
+
+      FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
+      FormAlert.Label1.Caption := domain;
+      FormAlert.Label2.Caption := domain;
+      FormAlert.Color := Form1.Color;
+      FormAlert.Label1.Font.Color := Form1.Font.Color;
+      FormAlert.Label2.Font.Color := Form1.Font.Color;
+
+      if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
+      begin
+        FormAlert.PanelAllowed.Visible := True;
+        FormAlert.PanelDisallowed.Visible := False;
+      end;
+      if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
+      begin
+        FormAlert.PanelAllowed.Visible := True;
+        FormAlert.PanelDisallowed.Visible := False;
+      end;
+      if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
+      begin
+        FormAlert.PanelAllowed.Visible := False;
+        FormAlert.PanelDisallowed.Visible := True;
+      end;
+
+      TimerResetAlertPosition.Enabled := False;
+      TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
+      TimerResetAlertPosition.Enabled := True;
+      FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
+      FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
+      FormAlert.PanelAllowed.Color := Form1.Color;
+      FormAlert.PanelDisallowed.Color := Form1.Color;
+      LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
+      if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
+        LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
+      FormAlert.Top := LastPositionFormAlertTop;
+      FormAlert.FormCreate(nil);
+      FormAlert.Show;
     end;
-    if not isRepeated and (imgIndex > 0) and (FormAlertLastShow <> domain) then
-    begin
-        //iAlert := Length(ListFormAlert);
-        //SetLength(ListFormAlert, iAlert + 1);
-        FormAlert := TFormAlert.Create(nil);
-
-        FormAlertLastShow := domain;
-        if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
-        if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
-        begin
-
-
-          FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
-          FormAlert.PanelAllowed.Visible := True;
-          FormAlert.PanelDisallowed.Visible := False;
-          FormAlert.Label1.Caption := domain;
-          FormAlert.Label2.Caption := domain;
-
-          TimerResetAlertPosition.Enabled := False;
-          TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1;
-          TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := Form1.Color;
-          FormAlert.Label1.Font.Color := Form1.Font.Color;
-          FormAlert.Label2.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
-          FormAlert.PanelAllowed.Color := Form1.Color;
-          FormAlert.PanelDisallowed.Color := Form1.Color;
-          LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
-          if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
-            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
-          FormAlert.Top := LastPositionFormAlertTop;
-          FormAlert.FormCreate(nil);
-          FormAlert.Show;
-          //Application.Restore;
-          //Application.BringToFront;
-        end;
-        if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
-        begin
-          FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
-          FormAlert.PanelAllowed.Visible := True;
-          FormAlert.PanelDisallowed.Visible := False;
-          FormAlert.Label1.Caption := domain;
-          FormAlert.Label2.Caption := domain;
-          TimerResetAlertPosition.Enabled := False;
-          TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
-          TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := Form1.Color;
-          FormAlert.Label1.Font.Color := Form1.Font.Color;
-          FormAlert.Label2.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
-          FormAlert.PanelAllowed.Color := Form1.Color;
-          FormAlert.PanelDisallowed.Color := Form1.Color;
-          LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
-          if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
-            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
-          FormAlert.Top := LastPositionFormAlertTop;
-          FormAlert.FormCreate(nil);
-          FormAlert.Show;
-          //Application.Restore;
-          //Application.BringToFront;
-        end;
-        if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
-        begin
-          FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
-          FormAlert.PanelAllowed.Visible := False;
-          FormAlert.PanelDisallowed.Visible := True;
-          FormAlert.Label1.Caption := domain;
-          FormAlert.Label2.Caption := domain;
-          TimerResetAlertPosition.Enabled := False;
-          TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
-          TimerResetAlertPosition.Enabled := True;
-          FormAlert.Color := Form1.Color;
-          FormAlert.Label1.Font.Color := Form1.Font.Color;
-          FormAlert.Label2.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
-          FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
-          FormAlert.PanelAllowed.Color := Form1.Color;
-          FormAlert.PanelDisallowed.Color := Form1.Color;
-          LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
-          if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
-            LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
-          FormAlert.Top := LastPositionFormAlertTop;
-          FormAlert.FormCreate(nil);
-          FormAlert.Show;
-          //Application.Restore;
-          //Application.BringToFront;
-        end;
-
-     end;
   end
   else begin
     if Pos('Error: Port  53  already used', txt) > 0 then
