@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.225';
+var CurrentApplicationVersion: string = '0.4.226';
 
 type
   TForm1 = class(TForm)
@@ -1262,7 +1262,7 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   i: Integer;
 begin
-  ButtonCloseClick(Sender);
+  ButtonCloseClick(nil);
   for i := 0 to Form1.ControlCount - 1 do
   begin
     if Form1.Controls[i].ClassName = 'TTimer' then
@@ -1275,6 +1275,7 @@ begin
   //if ServerDoStart or isServerStarted then ButtonCloseClick(Sender);
   //Application.ProcessMessages;
   //Sleep(2000);
+  Application.Terminate;
   ProcessManager.DestroyProcess(Application.Handle);
 end;
 
@@ -1300,7 +1301,7 @@ begin
       Application.ProcessMessages;
       Inc(i);
     end;
-    //Sleep(1000);
+    Sleep(1000);
 
     i := 0;
     while (i < Length(listThreads)) and (listThreads[i] <> nil) do
@@ -2437,7 +2438,7 @@ begin
   end;
   PanelRestart.Visible := False;
   Application.ProcessMessages;
-  Sleep(500);
+  Sleep(1000);
   TToolButton(Sender).Enabled := True;
 end;
 
