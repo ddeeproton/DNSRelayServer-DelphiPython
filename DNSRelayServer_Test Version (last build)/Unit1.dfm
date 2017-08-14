@@ -1,5 +1,5 @@
 object Form1: TForm1
-  Left = 236
+  Left = 195
   Top = 109
   Width = 458
   Height = 652
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet6
+            ActivePage = TabSheet1
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -144,6 +144,7 @@ object Form1: TForm1
                 Height = 265
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 9
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
@@ -153,10 +154,10 @@ object Form1: TForm1
                   248)
                 object Label33: TLabel
                   Left = 27
-                  Top = 242
-                  Width = 230
+                  Top = 233
+                  Width = 150
                   Height = 13
-                  Caption = 'Pure server (plus rapide mais pas d'#39'affichage log)'
+                  Caption = 'Pas d'#39'affichage log (plus rapide)'
                   FocusControl = CheckBoxPureServer
                   OnClick = LabelToCheckboxClick
                   OnMouseEnter = LabelCheckboxMouseEnter
@@ -164,7 +165,7 @@ object Form1: TForm1
                 end
                 object Label32: TLabel
                   Left = 27
-                  Top = 218
+                  Top = 209
                   Width = 184
                   Height = 13
                   Caption = 'Ne pas utiliser le cache DNS (plus lent)'
@@ -174,8 +175,8 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label3: TLabel
-                  Left = 9
-                  Top = 194
+                  Left = 29
+                  Top = 185
                   Width = 276
                   Height = 13
                   Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres (au d'#233'marrage du serveur)'
@@ -186,7 +187,7 @@ object Form1: TForm1
                 end
                 object Label8: TLabel
                   Left = 29
-                  Top = 170
+                  Top = 161
                   Width = 294
                   Height = 13
                   Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
@@ -197,7 +198,7 @@ object Form1: TForm1
                 end
                 object Label6: TLabel
                   Left = 27
-                  Top = 146
+                  Top = 137
                   Width = 239
                   Height = 13
                   Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
@@ -214,7 +215,7 @@ object Form1: TForm1
                 end
                 object Label5: TLabel
                   Left = 8
-                  Top = 96
+                  Top = 87
                   Width = 56
                   Height = 13
                   Caption = 'Fichier Host'
@@ -222,7 +223,7 @@ object Form1: TForm1
                 end
                 object SpeedButtonRefreshNetCard: TSpeedButton
                   Left = 128
-                  Top = 24
+                  Top = 15
                   Width = 23
                   Height = 22
                   Hint = 'Rafraichir les Adresses IP'
@@ -259,7 +260,7 @@ object Form1: TForm1
                 end
                 object Label4: TLabel
                   Left = 168
-                  Top = 48
+                  Top = 39
                   Width = 58
                   Height = 13
                   Caption = 'Exemple: 53'
@@ -267,7 +268,7 @@ object Form1: TForm1
                 end
                 object Label2: TLabel
                   Left = 168
-                  Top = 8
+                  Top = -1
                   Width = 19
                   Height = 13
                   Caption = 'Port'
@@ -275,7 +276,7 @@ object Form1: TForm1
                 end
                 object Label1: TLabel
                   Left = 8
-                  Top = 8
+                  Top = -1
                   Width = 141
                   Height = 13
                   Caption = 'Adresse(s) IP du serveur DNS'
@@ -283,7 +284,7 @@ object Form1: TForm1
                 end
                 object CheckBoxPureServer: TCheckBox
                   Left = 8
-                  Top = 240
+                  Top = 231
                   Width = 17
                   Height = 17
                   TabOrder = 0
@@ -291,7 +292,7 @@ object Form1: TForm1
                 end
                 object CheckBoxNoCacheDNS: TCheckBox
                   Left = 8
-                  Top = 216
+                  Top = 207
                   Width = 16
                   Height = 17
                   TabOrder = 1
@@ -299,7 +300,7 @@ object Form1: TForm1
                 end
                 object CheckBoxNoTestDNSMaster: TCheckBox
                   Left = 8
-                  Top = 192
+                  Top = 183
                   Width = 17
                   Height = 17
                   TabOrder = 2
@@ -307,7 +308,7 @@ object Form1: TForm1
                 end
                 object CheckBoxAutostartDNSOnBoot: TCheckBox
                   Left = 8
-                  Top = 168
+                  Top = 159
                   Width = 19
                   Height = 17
                   TabOrder = 3
@@ -315,7 +316,7 @@ object Form1: TForm1
                 end
                 object CheckBoxStartWithWindows: TCheckBox
                   Left = 8
-                  Top = 144
+                  Top = 135
                   Width = 17
                   Height = 17
                   TabOrder = 4
@@ -323,8 +324,8 @@ object Form1: TForm1
                 end
                 object EditFilehost: TEdit
                   Left = 8
-                  Top = 112
-                  Width = 139
+                  Top = 103
+                  Width = 122
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -338,8 +339,8 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 144
-                  Top = 111
+                  Left = 127
+                  Top = 102
                   Width = 35
                   Height = 23
                   Anchors = [akTop, akRight]
@@ -349,7 +350,7 @@ object Form1: TForm1
                 end
                 object CheckListBoxDNSRelayIP: TCheckListBox
                   Left = 8
-                  Top = 24
+                  Top = 15
                   Width = 113
                   Height = 57
                   OnClickCheck = CheckListBoxDNSRelayIPClickCheck
@@ -358,7 +359,7 @@ object Form1: TForm1
                 end
                 object SpinPort: TSpinEdit
                   Left = 168
-                  Top = 24
+                  Top = 15
                   Width = 97
                   Height = 22
                   Color = clWhite
