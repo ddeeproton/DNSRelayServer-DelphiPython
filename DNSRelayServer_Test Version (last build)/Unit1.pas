@@ -3265,8 +3265,8 @@ end;
 
 procedure TForm1.ComboBoxPosLogsSelect(Sender: TObject);
 begin
-WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
-  if not Panel1.Visible then exit;
+  WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
+
 {
   if Sender = nil then
   begin
@@ -3351,6 +3351,7 @@ WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.Ite
   begin
     GroupBox5.Visible := False;
     Splitter1.Visible := False;
+    
   end;
   Form1.Height := Form1.Height + 1;
   Form1.Height := Form1.Height - 1;
