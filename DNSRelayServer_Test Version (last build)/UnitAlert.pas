@@ -86,9 +86,11 @@ var
   domain, txt: string;
 begin
 
-
-  // Masque la fenêtre de la taskbar
-  SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+  if Form1.Visible then
+    // Masque la fenêtre de la taskbar
+    SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW)
+  else
+    SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
 
   //Self.FormStyle := fsStayOnTop;

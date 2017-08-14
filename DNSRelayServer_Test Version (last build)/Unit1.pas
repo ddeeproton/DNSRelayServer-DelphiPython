@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.221';
+var CurrentApplicationVersion: string = '0.4.222';
 
 type
   TForm1 = class(TForm)
@@ -1263,7 +1263,7 @@ begin
   //CanClose := False;
   if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();
-  if ServerDoStart then ButtonCloseClick(Sender);
+  if ServerDoStart or isServerStarted then ButtonCloseClick(Sender);
   //Application.ProcessMessages;
   //Sleep(2000);
   //KillTask(ExtractFileName(Application.ExeName));
@@ -1273,50 +1273,54 @@ procedure TForm1.ButtonCloseClick(Sender: TObject);
 var
   i: Integer;
 begin
-
-  ImageList4.GetIcon(2, Application.Icon);
-  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  
-  Timer1.Enabled := False;
-  // bug?
-  //PanelRestart.Visible := False;
-  KillTask('python.exe');
-  Application.ProcessMessages;
-  //Notebook1.PageIndex := 4;
-
   try
+    ImageList4.GetIcon(2, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+
+    Timer1.Enabled := False;
+    // bug?
+    //PanelRestart.Visible := False;
+    Application.ProcessMessages;
+    //Notebook1.PageIndex := 4;
+
+
     i := 0;
     while (i < Length(listThreads)) and (listThreads[i] <> nil) do
     begin
-      listThreads[i].Terminate;
+      DestroyProcess(listThreads[i].h);
+      Application.ProcessMessages;
       Inc(i);
     end;
-    Application.ProcessMessages;
-    Sleep(1000);
+    //Sleep(1000);
+
     i := 0;
     while (i < Length(listThreads)) and (listThreads[i] <> nil) do
     begin
+      //listThreads[i].Terminate;
+      Application.ProcessMessages;
       listThreads[i].Free;
       Inc(i);
     end;
 
     SetLength(listThreads, 0);
+
+    //KillTask('python.exe');
+
+                        
+    Application.ProcessMessages;
+    Sleep(1000);
+
+    //if ToolButton11.ImageIndex = 13 then
+    //begin
+      ToolButton11.ImageIndex := 7;
+      ToolButton11.Caption := 'Démarrer';
+      ToolButton11.Enabled := True;
+      ToolButton11.Hint := 'Démarrer le serveur DNS';
+    //end;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
   end;
-
-  Sleep(1000);
-  Application.ProcessMessages;
-
-  if ToolButton11.ImageIndex = 13 then
-  begin
-    ToolButton11.ImageIndex := 7;
-    ToolButton11.Caption := 'Démarrer';
-    ToolButton11.Enabled := True;
-    ToolButton11.Hint := 'Démarrer le serveur DNS';
-  end;
-
  {
   for i:=0 to Length(listThreads) do
   begin

@@ -107,8 +107,8 @@ begin
 
     CloseHandle(FSnapshotHandle);
   except
-    On E : EOSError do
-      exit;
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
   end;
 end;
 
@@ -146,8 +146,8 @@ begin
 
     CloseHandle(FSnapshotHandle);
   except
-    On E : EOSError do
-      exit;
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
   end;
 end;
 
@@ -165,8 +165,8 @@ begin
       CloseHandle(ProcessHandle);
     end;
   except
-    On E : EOSError do
-      exit;
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
   end;
 end;
 
