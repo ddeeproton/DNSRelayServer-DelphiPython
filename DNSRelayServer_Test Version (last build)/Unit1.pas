@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager;
 
-var CurrentApplicationVersion: string = '0.4.211';
+var CurrentApplicationVersion: string = '0.4.212';
 
 type
   TForm1 = class(TForm)
@@ -204,12 +204,24 @@ type
     Label13: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
     ScrollBox4: TScrollBox;
+    ScrollBox5: TScrollBox;
+    SpinEditAlertDuration: TSpinEdit;
+    Label31: TLabel;
+    Label18: TLabel;
+    CheckBoxAlertEventDisallowed: TCheckBox;
+    CheckBoxAlertEventsUnknown: TCheckBox;
+    Label17: TLabel;
+    CheckBoxAlertEventsKnown: TCheckBox;
+    Label16: TLabel;
+    Masquer2: TMenuItem;
+    GroupBox8: TGroupBox;
     Label30: TLabel;
     ComboBoxCurrentTheme: TComboBox;
     ButtonMenuTheme: TButton;
     ComboBoxPosLogs: TComboBox;
-    SpinEditContraste: TTrackBar;
+    Label15: TLabel;
     Label26: TLabel;
+    SpinEditContraste: TTrackBar;
     GroupBoxUpdateTheme: TGroupBox;
     Shape2: TShape;
     Label29: TLabel;
@@ -224,16 +236,6 @@ type
     SpeedButtonClosePanelUpdateTheme: TSpeedButton;
     LabelUpdateTheme: TLabel;
     Button2: TButton;
-    Label15: TLabel;
-    ScrollBox5: TScrollBox;
-    SpinEditAlertDuration: TSpinEdit;
-    Label31: TLabel;
-    Label18: TLabel;
-    CheckBoxAlertEventDisallowed: TCheckBox;
-    CheckBoxAlertEventsUnknown: TCheckBox;
-    Label17: TLabel;
-    CheckBoxAlertEventsKnown: TCheckBox;
-    Label16: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -384,6 +386,7 @@ type
     procedure CheckBoxNoCacheDNSClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure CheckBoxPureServerClick(Sender: TObject);
+    procedure Masquer2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1728,9 +1731,13 @@ begin
   Label11.Font.Color := color;
   Label12.Font.Color := color;
   Label13.Font.Color := color;
+  Label15.Font.Color := color;
   Label16.Font.Color := color;
   Label17.Font.Color := color;
   Label18.Font.Color := color;
+  Label26.Font.Color := color;
+  Label30.Font.Color := color;
+  Label31.Font.Color := color;
   Label32.Font.Color := color;
   Label33.Font.Color := color;
   LabelMessage.Font.Color := color;
@@ -3264,6 +3271,8 @@ begin
     GroupBox5.Align := alTop;
     Splitter1.Align := alTop;
 
+    GroupBox5.Visible := True;
+    Splitter1.Visible := True;
     GroupBox5.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
     GroupBox5.Width := Form1.Width;
     Panel1.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
@@ -3280,6 +3289,8 @@ begin
     GroupBox5.Align := alBottom;
     Splitter1.Align := alBottom;
 
+    GroupBox5.Visible := True;
+    Splitter1.Visible := True;
     GroupBox5.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
     GroupBox5.Width := Form1.Width;
     Panel1.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
@@ -3296,6 +3307,8 @@ begin
     Splitter1.Align := alLeft;
     GroupBox5.Align := alLeft;
 
+    GroupBox5.Visible := True;
+    Splitter1.Visible := True;
     GroupBox5.Width := (Form1.Width div 2) - Splitter1.Width;
     GroupBox5.Height := Form1.height - Panel5.Height;
     Panel1.Width := GroupBox5.Width;
@@ -3312,6 +3325,8 @@ begin
     GroupBox5.Align := alRight;
     Splitter1.Align := alRight;
 
+    GroupBox5.Visible := True;
+    Splitter1.Visible := True;
     GroupBox5.Width := (Form1.Width div 2) - Splitter1.Width;
     GroupBox5.Height := Form1.height - Panel5.Height;
     Panel1.Width := GroupBox5.Width;
@@ -3323,6 +3338,11 @@ begin
       Splitter1.Visible := False;
       Splitter1.Visible := True;
     end;
+  end;
+  if ComboBoxPosLogs.ItemIndex = 4 then
+  begin
+    GroupBox5.Visible := False;
+    Splitter1.Visible := False;
   end;
   Form1.Height := Form1.Height + 1;
   Form1.Height := Form1.Height - 1;
@@ -3545,6 +3565,13 @@ begin
   ComboBoxPosLogsSelect(nil);
 end;
 
+
+procedure TForm1.Masquer2Click(Sender: TObject);
+begin
+  ComboBoxPosLogs.ItemIndex := 4;
+  ComboBoxPosLogsSelect(nil);
+end;
+
 procedure TForm1.Activertouteslesalertes1Click(Sender: TObject);
 begin
   CheckBoxAlertEventsUnknown.Checked := True;
@@ -3747,6 +3774,7 @@ begin
     FormNetConfig := TFormNetConfig.Create(Self);
   FormNetConfig.Show;
 end;
+
 
 
 end.
