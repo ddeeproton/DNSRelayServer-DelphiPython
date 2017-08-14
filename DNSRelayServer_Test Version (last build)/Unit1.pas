@@ -1979,10 +1979,6 @@ begin
     Splitter1.Visible := False;
   end;
 
-  ToolButton8.Down := False;
-  ToolButton4.Down := False;
-  ToolButtonBlackwords.Down := False;
-  ToolButton6.Down := False;
   if Panel1.Visible then
     GroupBox5.Align := alClient
   else begin
@@ -1991,14 +1987,29 @@ begin
     GroupBox5.Height := 100;
     ComboBoxPosLogsSelect(ComboBoxPosLogs);
   end;
-  Panel1.Visible := not Panel1.Visible;
-  Splitter1.Visible := not Splitter1.Visible and isLogVisible;
+  isLogVisible := GroupBox5.Visible;
+  Panel1.Visible := not Panel1.Visible;    
+  Splitter1.Visible := isLogVisible and Panel1.Visible;
 
-  ToolButton8.Down := Panel1.Visible;
+  ToolButton8.Down := Panel1.Visible and (inexPage = 0);
+  ToolButtonBlackwords.Down := Panel1.Visible and (inexPage = 1);
+  ToolButton4.Down := Panel1.Visible and (inexPage = 2);
+  ToolButton6.Down := Panel1.Visible and (inexPage = 3);
+  ToolButton3.Down := Panel1.Visible and (inexPage = 4);
 
-  
+
   Notebook1.PageIndex := inexPage;
   ResizePanelConfig();
+
+  if isLogVisible or Panel1.Visible then
+  begin
+    Form1.Constraints.MinHeight := 300;
+  end else
+  begin
+    Form1.Constraints.MinHeight := ToolBar3.Height + 40;
+    Form1.Height := Form1.Constraints.MinHeight;
+    Form1.Width := Form1.Constraints.MinWidth;
+  end;
 end;
 
 procedure TForm1.ToolButton8Click(Sender: TObject);
