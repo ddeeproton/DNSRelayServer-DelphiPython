@@ -532,33 +532,16 @@ begin
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
       form1.MemoLogs.Lines.Add(logs);
 
-      FormAlert := TFormAlert.Create(nil);
 
+      FormAlert := TFormAlert.Create(nil);
       FormAlertLastShow := domain;
       if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
-
       FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
       FormAlert.Label1.Caption := domain;
       FormAlert.Label2.Caption := domain;
       FormAlert.Color := Form1.Color;
       FormAlert.Label1.Font.Color := Form1.Font.Color;
       FormAlert.Label2.Font.Color := Form1.Font.Color;
-
-      if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
-      begin
-        FormAlert.PanelAllowed.Visible := True;
-        FormAlert.PanelDisallowed.Visible := False;
-      end;
-      if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
-      begin
-        FormAlert.PanelAllowed.Visible := True;
-        FormAlert.PanelDisallowed.Visible := False;
-      end;
-      if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
-      begin
-        FormAlert.PanelAllowed.Visible := False;
-        FormAlert.PanelDisallowed.Visible := True;
-      end;
 
       TimerResetAlertPosition.Enabled := False;
       TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
@@ -572,7 +555,28 @@ begin
         LastPositionFormAlertTop := Screen.WorkAreaHeight - FormAlert.Height;
       FormAlert.Top := LastPositionFormAlertTop;
       FormAlert.FormCreate(nil);
-      FormAlert.Show;
+
+      if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
+      begin
+        FormAlert.PanelAllowed.Visible := True;
+        FormAlert.PanelDisallowed.Visible := False;
+        FormAlert.Show;
+      end;
+      if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
+      begin
+        FormAlert.PanelAllowed.Visible := True;
+        FormAlert.PanelDisallowed.Visible := False;
+        FormAlert.Show;
+      end;
+      if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
+      begin
+        FormAlert.PanelAllowed.Visible := False;
+        FormAlert.PanelDisallowed.Visible := True;
+        FormAlert.Show;
+      end;
+
+
+
     end;
   end
   else begin

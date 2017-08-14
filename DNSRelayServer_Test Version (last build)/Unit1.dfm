@@ -1,5 +1,5 @@
 object Form1: TForm1
-  Left = 261
+  Left = 236
   Top = 109
   Width = 458
   Height = 652
@@ -90,7 +90,6 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -126,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet4
+            ActivePage = TabSheet6
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -325,7 +324,7 @@ object Form1: TForm1
                 object EditFilehost: TEdit
                   Left = 8
                   Top = 112
-                  Width = 156
+                  Width = 139
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -339,7 +338,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 161
+                  Left = 144
                   Top = 111
                   Width = 35
                   Height = 23
