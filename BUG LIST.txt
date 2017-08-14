@@ -1,0 +1,6 @@
+-Le système d'alerte plante si on banni un domaine pendant qu'il redémarre
+	-> solution 1: faire une alerte pour redémarrer manuellement à la place
+	-> solution 2: bloquer / retarder les alertes pendant le reboot
+	-> solution 3: ?
+
+-Pouvoir configurer la configuration des cartes réseaux à mettre lors du start/stop du serveur.
