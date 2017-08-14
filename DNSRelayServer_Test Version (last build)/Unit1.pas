@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager;
 
-var CurrentApplicationVersion: string = '0.4.215';
+var CurrentApplicationVersion: string = '0.4.216';
 
 type
   TForm1 = class(TForm)
@@ -1764,8 +1764,6 @@ begin
   CheckBoxAutostartDNSOnBoot.Font.Color := color;
   CheckBoxUpdate.Font.Color := color;
   CheckBoxUpdateIntervall.Font.Color := color;
-  SpinTimeCheckUpdate.Font.Color := color;
-  SpinEditAlertDuration.Font.Color := color;
   CheckBoxUpdateSilent.Font.Color := color;
   CheckBoxAllowModifyNetCard.Font.Color := color;
 
