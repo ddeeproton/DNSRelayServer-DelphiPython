@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 232
-  Top = 123
+  Left = 174
+  Top = 114
   Width = 458
   Height = 652
   Caption = 'DNS Relay Server'
@@ -325,7 +325,7 @@ object Form1: TForm1
                 object EditFilehost: TEdit
                   Left = 8
                   Top = 103
-                  Width = 88
+                  Width = 54
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -339,7 +339,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 93
+                  Left = 59
                   Top = 102
                   Width = 35
                   Height = 23

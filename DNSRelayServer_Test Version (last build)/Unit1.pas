@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.223';
+var CurrentApplicationVersion: string = '0.4.224';
 
 type
   TForm1 = class(TForm)
@@ -1259,7 +1259,16 @@ end;
 
 
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+  i: Integer;
 begin
+
+  for i := 0 to Form1.ControlCount - 1 do
+  begin
+    if Form1.Controls[i].ClassName = 'TTimer' then
+      TTimer(Form1.Controls[i]).Enabled := False;
+  end;
+  Application.ProcessMessages;
   //CanClose := False;
   if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();
