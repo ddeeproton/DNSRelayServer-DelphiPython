@@ -90,6 +90,7 @@ object Form1: TForm1
       Top = 17
       Width = 344
       Height = 360
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -125,7 +126,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet5
+            ActivePage = TabSheet4
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -1141,7 +1142,7 @@ object Form1: TForm1
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 
             '                                                                ' +
-            '     '
+            '                          '
           Color = clWhite
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
