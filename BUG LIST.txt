@@ -1,2 +1,0 @@
-
--Pouvoir configurer la configuration des cartes réseaux à mettre lors du start/stop du serveur.
