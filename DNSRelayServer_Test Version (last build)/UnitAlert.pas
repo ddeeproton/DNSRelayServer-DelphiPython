@@ -85,12 +85,11 @@ var
   i: integer;
   domain, txt: string;
 begin
+  try
+  
 
-  if Form1.Visible then
-    // Masque la fenêtre de la taskbar
-    SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW)
-  else
-    SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+  // Masque la fenêtre de la taskbar
+  //SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
 
   //Self.FormStyle := fsStayOnTop;
@@ -162,6 +161,11 @@ begin
   opacity := 0;
   SetFormOpacity(Self.Handle, opacity);
   TimerFadeIn.Enabled := True;
+
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
 end;
 
 

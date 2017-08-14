@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.222';
+var CurrentApplicationVersion: string = '0.4.223';
 
 type
   TForm1 = class(TForm)
@@ -1453,7 +1453,9 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
-
+ // Masque la fenêtre de la taskbar
+  SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+  
   TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;
@@ -1985,11 +1987,15 @@ end;
 
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin
+
+ 
+  
   currentFormStyle := Self.FormStyle;
   Self.FormStyle := fsStayOnTop;
   Self.Hide;
   Systray.EnleveIconeTray;
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
@@ -2000,11 +2006,18 @@ begin
   Application.BringToFront;
   Systray.EnleveIconeTray;
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+  {
+  // Restaure la fenêtre de la taskbar
+  SetWindowLong(Application.Handle, GWL_EXSTYLE,
+      GetWindowLong(Application.Handle, GWL_EXSTYLE)
+      or WS_EX_TOOLWINDOW);
+      }
 end;
 
 procedure TForm1.Quitter1Click(Sender: TObject);
 var CanClose: Boolean;
 begin
+  if isServerStarted then ButtonCloseClick(nil);
   FormCloseQuery(Form1, CanClose);
   Application.Terminate;
 end;
