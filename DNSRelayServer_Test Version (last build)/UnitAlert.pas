@@ -85,6 +85,12 @@ var
   i: integer;
   domain, txt: string;
 begin
+
+
+  // Masque la fenêtre de la taskbar
+  SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+
+
   //Self.FormStyle := fsStayOnTop;
   //Self.Show;
   //Systray.EnleveIconeTray;

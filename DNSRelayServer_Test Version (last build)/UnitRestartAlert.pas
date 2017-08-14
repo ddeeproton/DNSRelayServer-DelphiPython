@@ -46,7 +46,10 @@ uses Unit1;
 
 procedure TFormRestart.FormCreate(Sender: TObject);
 begin
-  try
+  try                     
+    // Masque la fenêtre de la taskbar
+    SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+
     ButtonRestart.Align := alClient;
     Self.Left := Screen.WorkAreaWidth - Self.Width;
     Self.Top := Screen.WorkAreaHeight - Self.Height;

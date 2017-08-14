@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.219';
+var CurrentApplicationVersion: string = '0.4.220';
 
 type
   TForm1 = class(TForm)
@@ -520,7 +520,7 @@ begin
       Form1.refreshListView1Click();
     end;
 
-    if not isRepeated and (FormAlertLastShow <> domain) then  // (imgIndex > 0) and     
+    if not isRepeated and (FormAlertLastShow <> domain) then  // (imgIndex > 0) and
     begin
       logs := '['+date+' '+time+'] '+ipserver+' '+ipclient+' -> '+domain;
       if Length(logs) <= 55 then tab := #9 else tab := '';
@@ -975,19 +975,33 @@ var
   //net: tNetworkInterfaceList;
 begin
 
-  if Notebook1.PageIndex = 5 then
-  begin
-    Panel1.Visible := False;
-    Splitter1.Visible := False;
-    GroupBox5.Align := alClient;
-    ResizePanelConfig();
-  end;
+  ButtonCloseClick(nil);
+  closeProcessCreated;
+  
+  ImageList4.GetIcon(2, Application.Icon);
+  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+  ToolButton11.ImageIndex := 13;
+  ToolButton11.Caption := 'Arrêter';
+  ToolButton11.Enabled := True;
+  ToolButton11.Hint := 'Arrêter le serveur DNS';
+  ServerDoStart := True;
+
+
 
   //PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
 
+
+
   Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);
+    onServerDNSStop();
+    exit;
+  end;
+
 
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
@@ -1021,9 +1035,14 @@ begin
   end;
 
 
+  Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);    
+    onServerDNSStop();
+    exit;
+  end;
 
-  ButtonCloseClick(nil);
-  closeProcessCreated;
   KillTask('python.exe');
 
   Application.ProcessMessages;
@@ -1049,6 +1068,15 @@ begin
     if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
+
+  Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);   
+    onServerDNSStop();
+    exit;
+  end;
+
 
   count := 0;
   for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
@@ -1135,6 +1163,15 @@ begin
     exit;
   end;
 
+  Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);   
+    onServerDNSStop();
+    exit;
+  end;
+
+
   //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
   //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
   config_use_host := '1';
@@ -1179,6 +1216,12 @@ begin
   end;
 
   Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);    
+    onServerDNSStop();
+    exit;
+  end;
 
   for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
   begin
@@ -1198,6 +1241,17 @@ begin
 
 
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
+
+  if Notebook1.PageIndex = 5 then
+  begin
+    Panel1.Visible := False;
+    Splitter1.Visible := False;
+    GroupBox5.Align := alClient;
+    ResizePanelConfig();
+  end;
+
+  //if not Panel1.Visible then
+
 end;
 
 
@@ -1217,6 +1271,10 @@ procedure TForm1.ButtonCloseClick(Sender: TObject);
 var
   i: Integer;
 begin
+
+  ImageList4.GetIcon(2, Application.Icon);
+  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+  
   Timer1.Enabled := False;
   // bug?
   //PanelRestart.Visible := False;
@@ -1224,27 +1282,38 @@ begin
   Application.ProcessMessages;
   //Notebook1.PageIndex := 4;
 
-  {
-  // bug?
-  i := 0;
-  while (i < Length(listThreads)) and (listThreads[i] <> nil) do
-  begin
-    listThreads[i].Terminate;
-    Inc(i);
-  end;
-  }
-  Sleep(1000);
-  i := 0;
-  while (i < Length(listThreads)) and (listThreads[i] <> nil) do
-  begin
-    listThreads[i].Free;
-    Inc(i);
+  try
+    i := 0;
+    while (i < Length(listThreads)) and (listThreads[i] <> nil) do
+    begin
+      listThreads[i].Terminate;
+      Inc(i);
+    end;
+    Application.ProcessMessages;
+    Sleep(1000);
+    i := 0;
+    while (i < Length(listThreads)) and (listThreads[i] <> nil) do
+    begin
+      listThreads[i].Free;
+      Inc(i);
+    end;
+
+    SetLength(listThreads, 0);
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
   end;
 
-  SetLength(listThreads, 0);
-  
-  Sleep(1000); 
+  Sleep(1000);
   Application.ProcessMessages;
+
+  if ToolButton11.ImageIndex = 13 then
+  begin
+    ToolButton11.ImageIndex := 7;
+    ToolButton11.Caption := 'Démarrer';
+    ToolButton11.Enabled := True;
+    ToolButton11.Hint := 'Démarrer le serveur DNS';
+  end;
 
  {
   for i:=0 to Length(listThreads) do
@@ -1385,9 +1454,6 @@ begin
   ServerFailStartCount := 0;
   GroupBoxUpdateTheme.Visible := False;
 
-
-  // Masque la fenêtre de la taskbar
-  SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
 
   Form1.Width := Form1.Constraints.MinWidth;
@@ -2325,14 +2391,6 @@ begin
   begin
     //if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     //begin
-      ImageList4.GetIcon(2, Application.Icon);
-      Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-      ToolButton11.ImageIndex := 13;
-      ToolButton11.Caption := 'Arrêter';
-      ToolButton11.Enabled := True;
-      ToolButton11.Hint := 'Arrêter le serveur DNS';
-      ServerDoStart := True;
-      Application.ProcessMessages;
       ButtonStartClick(nil);
     //end;
   end
@@ -2345,23 +2403,13 @@ begin
 
       Application.ProcessMessages;
       ButtonCloseClick(nil);
-
-      if ToolButton11.ImageIndex = 13 then
-      begin
-        ToolButton11.ImageIndex := 7;
-        ToolButton11.Caption := 'Démarrer';
-        ToolButton11.Enabled := True;
-        ToolButton11.Hint := 'Démarrer le serveur DNS';
-      end;
+      
 
     //end;
   end;
-
-
-
-
+  PanelRestart.Visible := False;
   Application.ProcessMessages;
-  Sleep(1000);
+  Sleep(500);
   TToolButton(Sender).Enabled := True;
 end;
 
@@ -3217,11 +3265,15 @@ end;
 
 procedure TForm1.ComboBoxPosLogsSelect(Sender: TObject);
 begin
+WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
+  if not Panel1.Visible then exit;
+{
   if Sender = nil then
   begin
     Panel1.Visible := True;
     Splitter1.Visible := True;
   end;
+  }
   if ComboBoxPosLogs.ItemIndex = 0 then
   begin
     GroupBox5.Align := alTop;
@@ -3303,7 +3355,6 @@ begin
   Form1.Height := Form1.Height + 1;
   Form1.Height := Form1.Height - 1;
   Application.ProcessMessages;
-  WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
 end;
 
 procedure TForm1.DsactiverlefiltragedufichierHost1Click(Sender: TObject);
