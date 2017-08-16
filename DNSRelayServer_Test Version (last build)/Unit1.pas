@@ -1,6 +1,6 @@
 unit Unit1;
              
-interface
+interface                                                      
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.226';
+var CurrentApplicationVersion: string = '0.4.227';
 
 type
   TForm1 = class(TForm)
@@ -770,6 +770,8 @@ end;
 
 procedure TForm1.onServerDNSStart();
 begin
+  Application.ProcessMessages;
+  try
   ImageList4.GetIcon(3, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   ToolButton11.ImageIndex := 8;
@@ -779,12 +781,17 @@ begin
   ToolButton11.Hint := 'Arrêter le serveur DNS';
   ServerFailStartCount := 0;
   TimerRestart.Enabled := False;
-  ServerDoStart := True;
+  ServerDoStart := True;       
+  Application.ProcessMessages;
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
 end;
 
 procedure TForm1.onServerDNSStop();
 begin
-
+  try
   if ServerDoStart then
   begin
     ImageList4.GetIcon(2, Application.Icon);
@@ -793,6 +800,9 @@ begin
     ToolButton11.Caption := 'Arrêter';
     ToolButton11.Enabled := True;
     ToolButton11.Hint := 'Arrêter le serveur DNS';
+    inc(ServerFailStartCount);
+    TimerRestart.Enabled := True;
+    exit;
   end
   else begin
     ImageList4.GetIcon(1, Application.Icon);
@@ -803,12 +813,6 @@ begin
     ToolButton11.Hint := 'Démarrer le serveur DNS';
   end;
 
-  if ServerDoStart then
-  begin
-    inc(ServerFailStartCount);
-    TimerRestart.Enabled := True;
-    exit;
-  end;
   isServerStarted := False;
 
   if CheckBoxAllowModifyNetCard.Checked then
@@ -820,6 +824,11 @@ begin
 
   //end;
 
+  Application.ProcessMessages;
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
 end;
 
 
@@ -976,10 +985,10 @@ var
   config_block_all, config_cache_memory, config_display_log: string;
   //net: tNetworkInterfaceList;
 begin
-
+  try
   ButtonCloseClick(nil);
   closeProcessCreated;
-  
+
   ImageList4.GetIcon(2, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   ToolButton11.ImageIndex := 13;
@@ -1040,7 +1049,7 @@ begin
   Application.ProcessMessages;
   if not ServerDoStart then
   begin
-    ButtonCloseClick(nil);    
+    ButtonCloseClick(nil);
     onServerDNSStop();
     exit;
   end;
@@ -1074,7 +1083,7 @@ begin
   Application.ProcessMessages;
   if not ServerDoStart then
   begin
-    ButtonCloseClick(nil);   
+    ButtonCloseClick(nil);
     onServerDNSStop();
     exit;
   end;
@@ -1168,7 +1177,7 @@ begin
   Application.ProcessMessages;
   if not ServerDoStart then
   begin
-    ButtonCloseClick(nil);   
+    ButtonCloseClick(nil);
     onServerDNSStop();
     exit;
   end;
@@ -1220,7 +1229,7 @@ begin
   Application.ProcessMessages;
   if not ServerDoStart then
   begin
-    ButtonCloseClick(nil);    
+    ButtonCloseClick(nil);
     onServerDNSStop();
     exit;
   end;
@@ -1253,6 +1262,11 @@ begin
   end;
 
   //if not Panel1.Visible then
+  Application.ProcessMessages;
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
 
 end;
 
@@ -2624,7 +2638,7 @@ begin
     WriteInFile(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
   else DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
 
-  TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
+  TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 60 * 60;
   TimerCheckUpdate.Enabled := TCheckBox(Sender).Checked;
 
   LabelMessage.Caption := PChar('Sauvé!');
