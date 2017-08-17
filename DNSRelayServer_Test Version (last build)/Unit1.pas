@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.228';
+var CurrentApplicationVersion: string = '0.4.229';
 
 type
   TForm1 = class(TForm)
@@ -2012,30 +2012,35 @@ end;
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin
 
- 
-  
-  currentFormStyle := Self.FormStyle;
-  Self.FormStyle := fsStayOnTop;
+
+
+  //currentFormStyle := Self.FormStyle;
+  //Self.FormStyle := fsStayOnTop;
   Self.Hide;
-  Systray.EnleveIconeTray;
-  Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+  //Systray.EnleveIconeTray;
+  //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
-  Self.FormStyle := currentFormStyle;
+  try
+  //Self.FormStyle := currentFormStyle;
   Self.Show;
   Application.Restore;
   Application.BringToFront;
-  Systray.EnleveIconeTray;
-  Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+  //Systray.EnleveIconeTray;
+  //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   {
   // Restaure la fenêtre de la taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE,
       GetWindowLong(Application.Handle, GWL_EXSTYLE)
       or WS_EX_TOOLWINDOW);
       }
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
 end;
 
 procedure TForm1.Quitter1Click(Sender: TObject);
@@ -2799,8 +2804,8 @@ begin
   toujoursenavant1.Checked := not toujoursenavant1.Checked;
   if toujoursenavant1.Checked then Form1.FormStyle := fsStayOnTop
   else Form1.FormStyle := fsNormal;
-  Systray.EnleveIconeTray;
-  Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+  //Systray.EnleveIconeTray;
+  //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 end;
 
 procedure TForm1.CheckBoxSwitchThemeClick(Sender: TObject);
