@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert;
 
-var CurrentApplicationVersion: string = '0.4.227';
+var CurrentApplicationVersion: string = '0.4.228';
 
 type
   TForm1 = class(TForm)
@@ -2638,7 +2638,7 @@ begin
     WriteInFile(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
   else DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
 
-  TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 60 * 60;
+  TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 60 * 60 * 1000;
   TimerCheckUpdate.Enabled := TCheckBox(Sender).Checked;
 
   LabelMessage.Caption := PChar('Sauvé!');
