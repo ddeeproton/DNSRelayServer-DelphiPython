@@ -17,7 +17,8 @@ uses
   WindowsManager in 'WindowsManager.pas',
   UnitNetConfig in 'UnitNetConfig.pas' {FormNetConfig},
   StringManager in 'StringManager.pas',
-  UnitRestartAlert in 'UnitRestartAlert.pas' {FormRestart};
+  UnitRestartAlert in 'UnitRestartAlert.pas' {FormRestart},
+  AlertManager in 'AlertManager.pas';
 
 {$R *.res}
 

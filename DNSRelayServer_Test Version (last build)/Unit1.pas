@@ -8,9 +8,9 @@ uses
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
-  CheckLst, StringManager, UnitRestartAlert;
+  CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.229';
+var CurrentApplicationVersion: string = '0.4.230';
 
 type
   TForm1 = class(TForm)
@@ -426,6 +426,8 @@ type
     procedure DoUpdate(isSilent: Boolean);
   end;
 
+
+
 var
   Form1: TForm1;
   FormHost: TFormHost;
@@ -450,11 +452,12 @@ var
   DNSMasterSerialized: string = '';
   LastPositionFormAlertTop: integer = 0;
   startedInBackground: Boolean = False;
-  currentFormStyle : TFormStyle;
+  //currentFormStyle : TFormStyle;
   lastLogOutput: string = '';
 implementation
 
 {$R *.dfm}
+
 
 
 procedure TForm1.OnOutput(txt:String);
@@ -465,6 +468,7 @@ var
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
   date, time, ipserver, ipclient, ipdomain, domain, ip, logs, tab, status:string;
   FormAlert: TFormAlert;
+  data: TRecordAlert;
 begin
 
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
@@ -532,6 +536,9 @@ begin
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
       if form1.MemoLogs.Visible then form1.MemoLogs.Lines.Add(logs);
 
+      data.domain := domain;
+      data.typeAlert := imgIndex;
+      AlertManager.AddAlert(MainListAlert, data);
 
 
       if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
@@ -555,7 +562,7 @@ begin
         FormAlert.PanelDisallowed.Visible := True;
         FormAlert.Show;
       end;
-
+      
 
 
     end;
