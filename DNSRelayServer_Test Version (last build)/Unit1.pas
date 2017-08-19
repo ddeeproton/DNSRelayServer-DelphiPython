@@ -2051,6 +2051,10 @@ begin
 end;
          
 
+var
+  ResizePanelConfig_oldHeight: Integer = 0;
+  ResizePanelConfig_oldWidth: Integer = 0;
+
 procedure TForm1.ResizePanelConfig();
 begin
   refreshCheckBox(CheckBoxStartWithWindows);
@@ -2084,16 +2088,24 @@ begin
     Form1.Left := Screen.WorkAreaWidth - Form1.Width;
   }
   // Main
-  if  GroupBox5.Visible or Panel1.Visible then
+  if GroupBox5.Visible or Panel1.Visible then
   begin
     Form1.Constraints.MinHeight := 300;
+    Form1.Height := ResizePanelConfig_oldHeight;
+    Form1.Width := ResizePanelConfig_oldWidth;
   end else
   begin
     Form1.Constraints.MinHeight := ToolBar3.Height + 40;
+    if Form1.Width <> Form1.Constraints.MinWidth then
+    begin
+      ResizePanelConfig_oldWidth := Form1.Width;
+      ResizePanelConfig_oldHeight := Form1.Height;
+    end;
     Form1.Height := Form1.Constraints.MinHeight;
     Form1.Width := Form1.Constraints.MinWidth;
   end;
-
+  Application.ProcessMessages;
+  //Sleep(1000);
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);

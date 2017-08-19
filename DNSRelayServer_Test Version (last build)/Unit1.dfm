@@ -142,6 +142,7 @@ object Form1: TForm1
                 Top = 8
                 Width = 280
                 Height = 265
+                HorzScrollBar.Position = 60
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Position = 9
@@ -153,7 +154,7 @@ object Form1: TForm1
                   263
                   248)
                 object Label33: TLabel
-                  Left = 27
+                  Left = -33
                   Top = 233
                   Width = 150
                   Height = 13
@@ -164,7 +165,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label32: TLabel
-                  Left = 27
+                  Left = -33
                   Top = 209
                   Width = 184
                   Height = 13
@@ -175,7 +176,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label3: TLabel
-                  Left = 29
+                  Left = -31
                   Top = 185
                   Width = 276
                   Height = 13
@@ -186,7 +187,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label8: TLabel
-                  Left = 29
+                  Left = -31
                   Top = 161
                   Width = 294
                   Height = 13
@@ -197,7 +198,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label6: TLabel
-                  Left = 27
+                  Left = -33
                   Top = 137
                   Width = 239
                   Height = 13
@@ -214,7 +215,7 @@ object Form1: TForm1
                   OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label5: TLabel
-                  Left = 8
+                  Left = -52
                   Top = 87
                   Width = 56
                   Height = 13
@@ -222,7 +223,7 @@ object Form1: TForm1
                   Transparent = True
                 end
                 object SpeedButtonRefreshNetCard: TSpeedButton
-                  Left = 128
+                  Left = 68
                   Top = 15
                   Width = 23
                   Height = 22
@@ -259,7 +260,7 @@ object Form1: TForm1
                   OnClick = ButtonRefreshNetCardClick
                 end
                 object Label4: TLabel
-                  Left = 168
+                  Left = 108
                   Top = 39
                   Width = 58
                   Height = 13
@@ -267,7 +268,7 @@ object Form1: TForm1
                   Transparent = True
                 end
                 object Label2: TLabel
-                  Left = 168
+                  Left = 108
                   Top = -1
                   Width = 19
                   Height = 13
@@ -275,7 +276,7 @@ object Form1: TForm1
                   Transparent = True
                 end
                 object Label1: TLabel
-                  Left = 8
+                  Left = -52
                   Top = -1
                   Width = 141
                   Height = 13
@@ -283,7 +284,7 @@ object Form1: TForm1
                   Transparent = True
                 end
                 object CheckBoxPureServer: TCheckBox
-                  Left = 8
+                  Left = -52
                   Top = 231
                   Width = 17
                   Height = 17
@@ -291,7 +292,7 @@ object Form1: TForm1
                   OnClick = CheckBoxPureServerClick
                 end
                 object CheckBoxNoCacheDNS: TCheckBox
-                  Left = 8
+                  Left = -52
                   Top = 207
                   Width = 16
                   Height = 17
@@ -299,7 +300,7 @@ object Form1: TForm1
                   OnClick = CheckBoxNoCacheDNSClick
                 end
                 object CheckBoxNoTestDNSMaster: TCheckBox
-                  Left = 8
+                  Left = -52
                   Top = 183
                   Width = 17
                   Height = 17
@@ -307,7 +308,7 @@ object Form1: TForm1
                   OnClick = CheckBoxNoTestDNSMasterClick
                 end
                 object CheckBoxAutostartDNSOnBoot: TCheckBox
-                  Left = 8
+                  Left = -52
                   Top = 159
                   Width = 19
                   Height = 17
@@ -315,7 +316,7 @@ object Form1: TForm1
                   OnClick = CheckBoxAutostartDNSOnBootClick
                 end
                 object CheckBoxStartWithWindows: TCheckBox
-                  Left = 8
+                  Left = -52
                   Top = 135
                   Width = 17
                   Height = 17
@@ -323,9 +324,9 @@ object Form1: TForm1
                   OnClick = CheckBoxStartWithWindowsClick
                 end
                 object EditFilehost: TEdit
-                  Left = 8
+                  Left = -52
                   Top = 103
-                  Width = 193
+                  Width = 245
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -339,7 +340,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 216
+                  Left = 212
                   Top = 102
                   Width = 35
                   Height = 23
@@ -349,7 +350,7 @@ object Form1: TForm1
                   OnClick = ButtonSelectFilehostClick
                 end
                 object CheckListBoxDNSRelayIP: TCheckListBox
-                  Left = 8
+                  Left = -52
                   Top = 15
                   Width = 113
                   Height = 57
@@ -358,7 +359,7 @@ object Form1: TForm1
                   TabOrder = 7
                 end
                 object SpinPort: TSpinEdit
-                  Left = 168
+                  Left = 108
                   Top = 15
                   Width = 97
                   Height = 22
