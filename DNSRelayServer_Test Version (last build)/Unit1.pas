@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.236';
+var CurrentApplicationVersion: string = '0.4.237';
 
 type
   TForm1 = class(TForm)
@@ -3399,7 +3399,7 @@ begin
   begin
     GroupBox5.Visible := False;
     Splitter1.Visible := False;
-    
+    ResizePanelConfig();
   end;
   Form1.Height := Form1.Height + 1;
   Form1.Height := Form1.Height - 1;

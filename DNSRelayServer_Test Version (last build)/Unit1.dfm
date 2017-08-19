@@ -325,7 +325,7 @@ object Form1: TForm1
                 object EditFilehost: TEdit
                   Left = 8
                   Top = 103
-                  Width = 37
+                  Width = 20
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -339,7 +339,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 42
+                  Left = 25
                   Top = 102
                   Width = 35
                   Height = 23
@@ -16184,7 +16184,6 @@ object Form1: TForm1
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
-    Interval = 500
     OnTimer = TimerAfterFormCreateTimer
     Left = 387
     Top = 171
