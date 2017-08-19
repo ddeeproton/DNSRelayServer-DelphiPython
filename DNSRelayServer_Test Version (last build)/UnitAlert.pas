@@ -349,9 +349,12 @@ end;
 
 procedure TFormAlert.CheckBoxStayClick(Sender: TObject);
 begin
+  TimerFadeOut.Enabled := False;
+  TimerFadeIn.Enabled := True;
   TimerAfterCreate.Enabled := not TCheckBox(Sender).Checked;
   CheckBoxStay.Checked := not TimerAfterCreate.Enabled;
   CheckBoxStay2.Checked := not TimerAfterCreate.Enabled;
+
   //FormCreate(nil);
 end;
 
