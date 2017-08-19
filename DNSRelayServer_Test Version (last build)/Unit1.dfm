@@ -326,7 +326,7 @@ object Form1: TForm1
                 object EditFilehost: TEdit
                   Left = -52
                   Top = 103
-                  Width = 245
+                  Width = 197
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
