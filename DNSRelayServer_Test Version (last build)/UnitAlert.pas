@@ -465,6 +465,7 @@ procedure TFormAlert.SpeedButton1DblClick(Sender: TObject);
 begin
   //if Self.Hint <> '' then AlertManager.EraseAlertIndex(AlertManager.MainListAlert, StrToInt(Self.Hint));
   Close;
+  Self.Free;
 end;
 
 end.

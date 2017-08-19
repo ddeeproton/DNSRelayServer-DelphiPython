@@ -65,13 +65,16 @@ end;
 
 procedure TFormRestart.ButtonRestartClick(Sender: TObject);
 begin
-  TimerFadeOut.Enabled := True;
-  ThreadRestart := TRestart.Create(False);
+  Form1.ButtonApplyChangesClick(nil);
+  Close;
+  Free;
+  //ThreadRestart := TRestart.Create(False);
 end;
 
 procedure TRestart.Execute();
 begin
   Form1.ButtonApplyChangesClick(nil);
+  FormRestart.TimerFadeOut.Enabled := True;
   ThreadRestart.Terminate;
 end;
 
