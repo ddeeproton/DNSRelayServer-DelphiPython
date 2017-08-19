@@ -2093,6 +2093,7 @@ begin
     Form1.Constraints.MinHeight := 300;
     Form1.Height := ResizePanelConfig_oldHeight;
     Form1.Width := ResizePanelConfig_oldWidth;
+    Afficher1Click(nil);
   end else
   begin
     Form1.Constraints.MinHeight := ToolBar3.Height + 40;
