@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.231';
+var CurrentApplicationVersion: string = '0.4.232';
 
 type
   TForm1 = class(TForm)
@@ -237,6 +237,7 @@ type
     SpeedButtonClosePanelUpdateTheme: TSpeedButton;
     LabelUpdateTheme: TLabel;
     N10: TMenuItem;
+    TimerAlert: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -389,7 +390,7 @@ type
     procedure CheckBoxPureServerClick(Sender: TObject);
     procedure Masquer2Click(Sender: TObject);
     procedure GotoMainPage(inexPage: Integer);
-    procedure createNewAlert(out FormAlert: TFormAlert; domain: String);
+    procedure TimerAlertTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -471,7 +472,6 @@ var
   FormAlert: TFormAlert;
   data: TRecordAlert;
 begin
-
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
@@ -537,34 +537,36 @@ begin
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
       if form1.MemoLogs.Visible then form1.MemoLogs.Lines.Add(logs);
 
-      {
+      
       data.domain := domain;
       data.typeAlert := imgIndex;
-      AlertManager.AddAlert(MainListAlert, data);
+      {
+      AlertManager.AddAlert(AlertManager.MainListAlert, data);
       }
+      //TimerAlert.Enabled := True;
 
       if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
       begin
-        createNewAlert(FormAlert, domain);
+        createNewAlert(FormAlert, data);
         FormAlert.PanelAllowed.Visible := True;
         FormAlert.PanelDisallowed.Visible := False;
         FormAlert.Show;
       end;
       if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
       begin
-        createNewAlert(FormAlert, domain);
+        createNewAlert(FormAlert, data);
         FormAlert.PanelAllowed.Visible := True;
         FormAlert.PanelDisallowed.Visible := False;
         FormAlert.Show;
       end;
       if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
       begin
-        createNewAlert(FormAlert, domain);
+        createNewAlert(FormAlert, data);
         FormAlert.PanelAllowed.Visible := False;
         FormAlert.PanelDisallowed.Visible := True;
         FormAlert.Show;
       end;
-      
+     
 
 
     end;
@@ -588,35 +590,10 @@ begin
   end;
   if sl <> nil then
     sl.Free;
+
+
 end;
 
-
-procedure TForm1.createNewAlert(out FormAlert: TFormAlert; domain: string);
-begin
-  FormAlert := TFormAlert.Create(nil);
-
-  if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
-  FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
-  FormAlert.Label1.Caption := domain;
-  FormAlert.Label2.Caption := domain;
-  FormAlertLastShow := domain;
-  FormAlert.Color := Form1.Color;
-  FormAlert.Label1.Font.Color := Form1.Font.Color;
-  FormAlert.Label2.Font.Color := Form1.Font.Color;
-
-  TimerResetAlertPosition.Enabled := False;
-  TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
-  TimerResetAlertPosition.Enabled := True;
-  FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
-  FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
-  FormAlert.PanelAllowed.Color := Form1.Color;
-  FormAlert.PanelDisallowed.Color := Form1.Color;
-  LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
-  if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
-    LastPositionFormAlertTop := Screen.WorkAreaHeight - ( FormAlert.Height * 2);
-  FormAlert.Top := LastPositionFormAlertTop;
-  FormAlert.FormCreate(nil);
-end;
 
 
 procedure ThreadProcess.RunDosInMemo(Que:String;EnMemo:TMemo);
@@ -1337,11 +1314,11 @@ begin
 
     SetLength(listThreads, 0);
 
-    //KillTask('python.exe');
+    KillTask('python.exe');
 
                         
     Application.ProcessMessages;
-    Sleep(1000);
+    Sleep(100);
 
     //if ToolButton11.ImageIndex = 13 then
     //begin
@@ -3853,6 +3830,13 @@ begin
 end;
 
 
+
+procedure TForm1.TimerAlertTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+  AlertManager.ShowAllAlert(AlertManager.MainListAlert);
+  TTimer(Sender).Enabled := True;
+end;
 
 end.
 

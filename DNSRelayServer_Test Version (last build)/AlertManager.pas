@@ -3,7 +3,7 @@ unit AlertManager;
 interface
 
 uses
-  UnitAlert;
+  Forms, UnitAlert;
 
 const
   TAILLE_MAX_PILE = 300;
@@ -25,9 +25,17 @@ var
 
 procedure AddAlert(out ListAlert: PAlert; data: TRecordAlert);
 procedure ShowAllAlert(ListAlert: PAlert);
+procedure EraseAlertIndex(out ListAlert: PAlert; i: Integer);
 function EraseAlert(ListAlert: PAlert): PAlert;
+procedure doAlert(data: TRecordAlert);
+procedure createNewAlert(out FormAlert: TFormAlert; data: TRecordAlert);
 
 implementation
+
+
+uses
+  Unit1, SysUtils;
+
 
 
 procedure AddAlert(out ListAlert: PAlert; data: TRecordAlert);
@@ -50,9 +58,73 @@ begin
   temp := ListAlert;
   while temp <> nil do
   begin
+    doAlert(temp.data);
+    //temp := EraseAlert(temp);
+    Application.ProcessMessages;
+    //Sleep(2000);
     //temp^.data.domain;
     temp := temp^.next;
   end;
+end;
+
+
+procedure createNewAlert(out FormAlert: TFormAlert; data: TRecordAlert);
+begin
+  with Form1 do begin
+  FormAlert := TFormAlert.Create(nil);
+  FormAlert.Hint := IntToStr(data.index);
+
+  if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
+  FormAlert.TimerAfterCreate.Interval := SpinEditAlertDuration.Value * 1000;
+  FormAlert.Label1.Caption := data.domain;
+  FormAlert.Label2.Caption := data.domain;
+  FormAlertLastShow := data.domain;
+  FormAlert.Color := Form1.Color;
+  FormAlert.Label1.Font.Color := Form1.Font.Color;
+  FormAlert.Label2.Font.Color := Form1.Font.Color;
+
+  TimerResetAlertPosition.Enabled := False;
+  TimerResetAlertPosition.Interval := FormAlert.TimerAfterCreate.Interval + 1000;
+  TimerResetAlertPosition.Enabled := True;
+  FormAlert.ButtonMenuForDisallowed.Font.Color := Form1.Font.Color;
+  FormAlert.ButtonMenuForAllowed.Font.Color := Form1.Font.Color;
+  FormAlert.PanelAllowed.Color := Form1.Color;
+  FormAlert.PanelDisallowed.Color := Form1.Color;
+  LastPositionFormAlertTop := LastPositionFormAlertTop - FormAlert.Height;
+  if LastPositionFormAlertTop <= Screen.WorkAreaHeight div 3 then
+    LastPositionFormAlertTop := Screen.WorkAreaHeight - ( FormAlert.Height * 2);
+  FormAlert.Top := LastPositionFormAlertTop;
+  FormAlert.FormCreate(nil);
+  end;
+end;
+
+
+procedure doAlert(data: TRecordAlert);
+var
+  temp: PAlert;
+begin
+
+      if (data.index = 0) and Form1.CheckBoxAlertEventsKnown.Checked then // inconnu
+      begin
+        createNewAlert(FormAlert, data);
+        FormAlert.PanelAllowed.Visible := True;
+        FormAlert.PanelDisallowed.Visible := False;
+        FormAlert.Show;
+      end;
+      if (data.index = 1) and Form1.CheckBoxAlertEventsUnknown.Checked then // connu
+      begin
+        createNewAlert(FormAlert, data);
+        FormAlert.PanelAllowed.Visible := True;
+        FormAlert.PanelDisallowed.Visible := False;
+        FormAlert.Show;
+      end;
+      if (data.index = 3) and Form1.CheckBoxAlertEventDisallowed.Checked then // bloqué
+      begin
+        createNewAlert(FormAlert, data);
+        FormAlert.PanelAllowed.Visible := False;
+        FormAlert.PanelDisallowed.Visible := True;
+        FormAlert.Show;
+      end;
 end;
         
 function EraseAlert(ListAlert: PAlert): PAlert;

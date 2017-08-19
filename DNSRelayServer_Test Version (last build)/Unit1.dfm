@@ -16344,4 +16344,11 @@ object Form1: TForm1
     Left = 415
     Top = 199
   end
+  object TimerAlert: TTimer
+    Enabled = False
+    Interval = 10000
+    OnTimer = TimerAlertTimer
+    Left = 387
+    Top = 227
+  end
 end

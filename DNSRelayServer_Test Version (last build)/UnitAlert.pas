@@ -76,7 +76,7 @@ implementation
 
 {$R *.dfm}
 
-uses Unit1;
+uses Unit1, AlertManager;
 
 
 
@@ -452,6 +452,7 @@ begin
   else
   begin
     TTimer(Sender).Enabled := False;
+    //if Self.Hint <> '' then AlertManager.EraseAlertIndex(AlertManager.MainListAlert, StrToInt(Self.Hint));
     Self.Close;
     Self.Free;
   end;
@@ -459,6 +460,7 @@ end;
 
 procedure TFormAlert.SpeedButton1DblClick(Sender: TObject);
 begin
+  //if Self.Hint <> '' then AlertManager.EraseAlertIndex(AlertManager.MainListAlert, StrToInt(Self.Hint));
   Close;
 end;
 
