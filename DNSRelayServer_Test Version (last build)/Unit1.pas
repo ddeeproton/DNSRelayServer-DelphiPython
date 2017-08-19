@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.230';
+var CurrentApplicationVersion: string = '0.4.231';
 
 type
   TForm1 = class(TForm)
@@ -2034,7 +2034,8 @@ begin
   try
   
   Top := Screen.WorkAreaHeight - Self.Height;
-  Left := Screen.WorkAreaWidth - Self.Width;
+  Left := Screen.WorkAreaWidth - Self.Width;    
+  Application.BringToFront;
   //Self.FormStyle := currentFormStyle;
   {
   Self.Show;
