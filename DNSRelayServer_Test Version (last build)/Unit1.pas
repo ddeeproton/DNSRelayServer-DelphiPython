@@ -454,6 +454,7 @@ var
   startedInBackground: Boolean = False;
   //currentFormStyle : TFormStyle;
   lastLogOutput: string = '';
+  isApplicationLoading: Boolean = True;
 implementation
 
 {$R *.dfm}
@@ -536,10 +537,11 @@ begin
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
       if form1.MemoLogs.Visible then form1.MemoLogs.Lines.Add(logs);
 
+      {
       data.domain := domain;
       data.typeAlert := imgIndex;
       AlertManager.AddAlert(MainListAlert, data);
-
+      }
 
       if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
       begin
@@ -1484,15 +1486,16 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
+
  // Masque la fenêtre de la taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
-  
+
   TimerAfterFormCreate.Enabled := True;
   PageControl1.OwnerDraw := True;
   ServerDoStart := False;
   ServerFailStartCount := 0;
   GroupBoxUpdateTheme.Visible := False;
-
+  PanelMessage.Visible := False;
 
 
   Form1.Width := Form1.Constraints.MinWidth;
@@ -2210,7 +2213,7 @@ begin
   finally
     Reg.Free;
   end;
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2288,7 +2291,7 @@ begin
     end;
   end;
   WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2579,7 +2582,7 @@ begin
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
 
   setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2635,8 +2638,10 @@ begin
   TimerHideMessage.Enabled := False;
   PanelMessage.Visible := False;
   TimerSaveChange.Enabled := False;
+  isApplicationLoading := False;
   if startedInBackground then exit;
   Afficher1Click(nil);
+
   {
   Application.ShowMainForm := true;
   Form1.BringToFront;
@@ -2657,7 +2662,7 @@ begin
 
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 60 * 60 * 1000;
   TimerCheckUpdate.Enabled := TCheckBox(Sender).Checked;
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2670,7 +2675,7 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'checkupdateSilent.cfg');
 
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2690,7 +2695,7 @@ begin
     WriteInFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2704,7 +2709,7 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'checkAutostartDNS.cfg');
 
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2844,6 +2849,8 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
   connus1.Checked := CheckBoxAlertEventsKnown.Checked;
+
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2857,6 +2864,7 @@ begin
     DeleteFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
 
   inconnus1.Checked := CheckBoxAlertEventsUnknown.Checked;
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2868,7 +2876,8 @@ begin
     WriteInFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
-  bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;   
+  bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;
+  if isApplicationLoading then exit; 
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3117,7 +3126,7 @@ begin
   WriteInFile(DataDirectoryPath + 'contrasteTextarea.cfg', IntToStr(SpinEditContraste.Position));
   WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(ComboBoxCurrentTheme.ItemIndex));
 
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3799,7 +3808,7 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
 
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3812,7 +3821,7 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
 
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3828,7 +3837,7 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxPureServer.cfg');
 
-
+  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;

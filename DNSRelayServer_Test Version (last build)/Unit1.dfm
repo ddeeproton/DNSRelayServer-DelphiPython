@@ -1542,6 +1542,7 @@ object Form1: TForm1
     Height = 33
     Align = alTop
     TabOrder = 3
+    Visible = False
     DesignSize = (
       450
       33)

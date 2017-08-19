@@ -182,6 +182,7 @@ begin
       FormRestart := TFormRestart.Create(nil);
 
     FormRestart.Show;
+    FormRestart.BringToFront;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
