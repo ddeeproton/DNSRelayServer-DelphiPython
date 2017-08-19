@@ -72,6 +72,7 @@ end;
 procedure TRestart.Execute();
 begin
   Form1.ButtonApplyChangesClick(nil);
+  ThreadRestart.Terminate;
 end;
 
 procedure TFormRestart.TimerFadeInTimer(Sender: TObject);
