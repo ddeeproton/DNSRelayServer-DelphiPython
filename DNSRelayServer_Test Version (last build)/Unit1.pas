@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.239';
+var CurrentApplicationVersion: string = '0.4.240';
 
 type
   TForm1 = class(TForm)
@@ -2014,9 +2014,11 @@ end;
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
   try
-  
-  Top := Screen.WorkAreaHeight - Self.Height;
-  Left := Screen.WorkAreaWidth - Self.Width;    
+
+  if Top > Screen.WorkAreaHeight - Self.Height then
+    Top := Screen.WorkAreaHeight - Self.Height;
+  if Left > Screen.WorkAreaWidth - Self.Width then
+    Left := Screen.WorkAreaWidth - Self.Width;
   Application.BringToFront;
   //Self.FormStyle := currentFormStyle;
   {
