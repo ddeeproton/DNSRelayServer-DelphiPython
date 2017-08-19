@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.235';
+var CurrentApplicationVersion: string = '0.4.236';
 
 type
   TForm1 = class(TForm)
@@ -972,8 +972,10 @@ var
   //net: tNetworkInterfaceList;
 begin
   try
+  //KillTask('python.exe');
   ButtonCloseClick(nil);
-  closeProcessCreated;
+  //closeProcessCreated;
+  Application.ProcessMessages;
 
   ImageList4.GetIcon(2, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
@@ -982,9 +984,6 @@ begin
   ToolButton11.Enabled := True;
   ToolButton11.Hint := 'Arrêter le serveur DNS';
   ServerDoStart := True;
-
-
-
   //PanelRestart.Visible := False;
   Splitter1.Visible := True;
   GroupBox5.Visible := True;
@@ -992,26 +991,29 @@ begin
 
 
   Application.ProcessMessages;
+  {
   if not ServerDoStart then
   begin
     ButtonCloseClick(nil);
     onServerDNSStop();
     exit;
   end;
-
+  }
 
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
-
+  {
   if Form1.WindowState = wsNormal then
   begin
     if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
       Form1.Top := Screen.WorkAreaHeight - Form1.Height;
   end;
+  }
   if FormInstall = nil then
   begin
     FormInstall := TFormInstall.Create(Self);
   end;
+  Application.ProcessMessages;
 
 
   FormInstall.CheckInstallation;
@@ -1040,7 +1042,7 @@ begin
     exit;
   end;
 
-  KillTask('python.exe');
+
 
   Application.ProcessMessages;
 
