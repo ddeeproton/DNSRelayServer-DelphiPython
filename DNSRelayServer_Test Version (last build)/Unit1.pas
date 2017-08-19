@@ -2018,12 +2018,12 @@ end;
 
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin
-
+  Top := Screen.Height;
 
 
   //currentFormStyle := Self.FormStyle;
   //Self.FormStyle := fsStayOnTop;
-  Self.Hide;
+  //Self.Hide;
   //Systray.EnleveIconeTray;
   //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 
@@ -2032,7 +2032,11 @@ end;
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
   try
+  
+  Top := Screen.WorkAreaHeight - Self.Height;
+  Left := Screen.WorkAreaWidth - Self.Width;
   //Self.FormStyle := currentFormStyle;
+  {
   Self.Show;
   Application.Restore;
   Application.BringToFront;

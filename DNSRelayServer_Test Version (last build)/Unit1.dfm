@@ -325,7 +325,7 @@ object Form1: TForm1
                 object EditFilehost: TEdit
                   Left = 8
                   Top = 103
-                  Width = 54
+                  Width = 37
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   Color = clWhite
@@ -339,7 +339,7 @@ object Form1: TForm1
                   OnChange = EditFilehostChange
                 end
                 object Button1: TButton
-                  Left = 59
+                  Left = 42
                   Top = 102
                   Width = 35
                   Height = 23
