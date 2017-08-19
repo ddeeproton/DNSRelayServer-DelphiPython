@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.237';
+var CurrentApplicationVersion: string = '0.4.238';
 
 type
   TForm1 = class(TForm)
@@ -2056,6 +2056,7 @@ begin
   refreshCheckBox(CheckBoxStartWithWindows);
 
   if Form1.WindowState = wsMaximized then exit;
+  {
   if GroupBox5.Visible and ((Splitter1.Align = alLeft) or (Splitter1.Align = alRight)) then
   begin
     if Form1.Width < 450 + GroupBox5.Width then
@@ -2081,7 +2082,7 @@ begin
 
   if Form1.Left > Screen.WorkAreaWidth - Form1.Width then
     Form1.Left := Screen.WorkAreaWidth - Form1.Width;
-
+  }
   // Main
   if  GroupBox5.Visible or Panel1.Visible then
   begin
@@ -2114,7 +2115,7 @@ begin
   else begin
     Splitter1.Align := alBottom;
     GroupBox5.Align := alBottom;
-    GroupBox5.Height := 100;
+    //GroupBox5.Height := 100;
     ComboBoxPosLogsSelect(ComboBoxPosLogs);
   end;
   Panel1.Visible := not Panel1.Visible;    
