@@ -456,6 +456,7 @@ begin
   begin
     TTimer(Sender).Enabled := False;
     //if Self.Hint <> '' then AlertManager.EraseAlertIndex(AlertManager.MainListAlert, StrToInt(Self.Hint));
+    dec(Unit1.CountFormAlert);
     Self.Close;
     Self.Free;
   end;
@@ -464,6 +465,7 @@ end;
 procedure TFormAlert.SpeedButton1DblClick(Sender: TObject);
 begin
   //if Self.Hint <> '' then AlertManager.EraseAlertIndex(AlertManager.MainListAlert, StrToInt(Self.Hint));
+  dec(Unit1.CountFormAlert);
   Close;
   Self.Free;
 end;

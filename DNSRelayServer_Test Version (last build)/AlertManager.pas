@@ -71,6 +71,8 @@ end;
 procedure createNewAlert(out FormAlert: TFormAlert; data: TRecordAlert);
 begin
   with Form1 do begin
+  if CountFormAlert > 20 then exit;
+  inc(CountFormAlert);
   FormAlert := TFormAlert.Create(nil);
   FormAlert.Hint := IntToStr(data.index);
 

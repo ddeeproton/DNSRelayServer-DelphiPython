@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.240';
+var CurrentApplicationVersion: string = '0.4.241';
 
 type
   TForm1 = class(TForm)
@@ -452,6 +452,7 @@ var
 
   DNSMasterSerialized: string = '';
   LastPositionFormAlertTop: integer = 0;
+  CountFormAlert: integer = 0;
   startedInBackground: Boolean = False;
   //currentFormStyle : TFormStyle;
   lastLogOutput: string = '';
@@ -547,24 +548,33 @@ begin
 
       if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
       begin
-        createNewAlert(FormAlert, data);
-        FormAlert.PanelAllowed.Visible := True;
-        FormAlert.PanelDisallowed.Visible := False;
-        FormAlert.Show;
+        AlertManager.createNewAlert(FormAlert, data);
+        if FormAlert <> nil then
+        begin
+          FormAlert.PanelAllowed.Visible := True;
+          FormAlert.PanelDisallowed.Visible := False;
+          FormAlert.Show;
+        end;
       end;
       if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
       begin
-        createNewAlert(FormAlert, data);
-        FormAlert.PanelAllowed.Visible := True;
-        FormAlert.PanelDisallowed.Visible := False;
-        FormAlert.Show;
+        AlertManager.createNewAlert(FormAlert, data);
+        if FormAlert <> nil then
+        begin
+          FormAlert.PanelAllowed.Visible := True;
+          FormAlert.PanelDisallowed.Visible := False;
+          FormAlert.Show;
+        end;
       end;
       if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
       begin
-        createNewAlert(FormAlert, data);
-        FormAlert.PanelAllowed.Visible := False;
-        FormAlert.PanelDisallowed.Visible := True;
-        FormAlert.Show;
+        AlertManager.createNewAlert(FormAlert, data);
+        if FormAlert <> nil then
+        begin
+          FormAlert.PanelAllowed.Visible := False;
+          FormAlert.PanelDisallowed.Visible := True;
+          FormAlert.Show;
+        end;
       end;
      
 
