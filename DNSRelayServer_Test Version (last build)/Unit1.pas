@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.245';
+var CurrentApplicationVersion: string = '0.4.246';
 
 type
   TForm1 = class(TForm)
@@ -241,6 +241,9 @@ type
     CheckBoxAlertEventDisallowed: TCheckBox;
     CheckBoxAlertEventsUnknown: TCheckBox;
     CheckBoxAlertEventsKnown: TCheckBox;
+    Clients1: TMenuItem;
+    Blacklist1: TMenuItem;
+    Hostfile1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
