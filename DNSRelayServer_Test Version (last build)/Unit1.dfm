@@ -2550,14 +2550,17 @@ object Form1: TForm1
     object Clients1: TMenuItem
       Caption = 'Clients'
       ImageIndex = 14
+      OnClick = ToolButton4Click
     end
     object Blacklist1: TMenuItem
       Caption = 'Blacklist'
       ImageIndex = 13
+      OnClick = ToolButtonBlackwordsClick
     end
     object Hostfile1: TMenuItem
       Caption = 'Web Filter (host file)'
       ImageIndex = 12
+      OnClick = ToolButton6Click
     end
     object N2: TMenuItem
       Caption = '-'
