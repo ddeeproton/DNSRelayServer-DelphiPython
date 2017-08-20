@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 174
   Top = 114
-  Width = 975
+  Width = 473
   Height = 652
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 114
-    Width = 967
+    Width = 465
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -1461,7 +1461,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 967
+    Width = 465
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1562,16 +1562,16 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 967
+    Width = 465
     Height = 33
     Align = alTop
     TabOrder = 3
     Visible = False
     DesignSize = (
-      967
+      465
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 932
+      Left = 430
       Top = 6
       Width = 22
       Height = 22
@@ -1609,16 +1609,16 @@ object Form1: TForm1
   object PanelMessage: TPanel
     Left = 0
     Top = 81
-    Width = 967
+    Width = 465
     Height = 33
     Align = alTop
     TabOrder = 4
     Visible = False
     DesignSize = (
-      967
+      465
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 932
+      Left = 430
       Top = 6
       Width = 22
       Height = 22

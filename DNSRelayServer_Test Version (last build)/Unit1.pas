@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager;
 
-var CurrentApplicationVersion: string = '0.4.242';
+var CurrentApplicationVersion: string = '0.4.243';
 
 type
   TForm1 = class(TForm)
@@ -2117,7 +2117,7 @@ begin
       ResizePanelConfig_oldWidth := Form1.Width;
       ResizePanelConfig_oldHeight := Form1.Height;
     end;
-    Form1.Height := Form1.Constraints.MinHeight;
+    Form1.Height := Form1.Constraints.MinHeight+2;
     Form1.Width := Form1.Constraints.MinWidth;
   end;
   Application.ProcessMessages;
