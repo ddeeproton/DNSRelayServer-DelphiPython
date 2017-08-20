@@ -71,14 +71,14 @@ type
 
 var
   FormAlert: TFormAlert;
-  opacity: Integer;
 implementation
 
 {$R *.dfm}
 
 uses Unit1, AlertManager;
 
-
+var 
+  opacity: Integer;
 
 procedure TFormAlert.FormCreate(Sender: TObject);
 var

@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 174
-  Top = 114
+  Left = 195
+  Top = 137
   Width = 473
   Height = 652
   Caption = 'DNS Relay Server'
@@ -1653,7 +1653,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 386
-    Top = 414
+    Top = 446
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2457,7 +2457,7 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Images = ImageList3
     Left = 386
-    Top = 290
+    Top = 322
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -2601,7 +2601,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 415
-    Top = 414
+    Top = 446
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -6738,13 +6738,13 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 387
-    Top = 475
+    Top = 507
   end
   object ImageList3: TImageList
     Left = 386
-    Top = 442
+    Top = 474
     Bitmap = {
-      494C010110001300040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -7408,7 +7408,8 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFF81FF81FF81FF81FF00FF00FF00FF00FE007E007E007E007
       E007E007E007E007E007E007E007E007E007E007E007E007E007E007E007E007
       E007E007E007E007F00FF00FF00FF00FF81FF81FF81FF81FFFFFFFFFFFFFFFFF
-      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
   end
   object TimerSaveChange: TTimer
     Enabled = False
@@ -7419,7 +7420,7 @@ object Form1: TForm1
   end
   object PopupMenuListView: TPopupMenu
     Left = 386
-    Top = 347
+    Top = 379
     object Autoriser1: TMenuItem
       Bitmap.Data = {
         AA030000424DAA03000000000000360000002800000011000000110000000100
@@ -7550,7 +7551,7 @@ object Form1: TForm1
     Height = 80
     Width = 71
     Left = 414
-    Top = 442
+    Top = 474
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -16371,7 +16372,7 @@ object Form1: TForm1
   end
   object PopupMenuDNSMaster: TPopupMenu
     Left = 386
-    Top = 319
+    Top = 351
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16423,7 +16424,7 @@ object Form1: TForm1
   end
   object PopupMenuBlacklist: TPopupMenu
     Left = 414
-    Top = 347
+    Top = 379
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16442,11 +16443,11 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 414
-    Top = 475
+    Top = 507
   end
   object PopupMenuTheme: TPopupMenu
     Left = 386
-    Top = 375
+    Top = 407
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -16469,7 +16470,7 @@ object Form1: TForm1
   end
   object PopupMenuForAllDNSRules: TPopupMenu
     Left = 414
-    Top = 375
+    Top = 407
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -16485,7 +16486,7 @@ object Form1: TForm1
   end
   object PopupMenuLogs: TPopupMenu
     Left = 414
-    Top = 320
+    Top = 352
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -16523,5 +16524,19 @@ object Form1: TForm1
     OnTimer = TimerAlertTimer
     Left = 387
     Top = 251
+  end
+  object TimerFadeIn: TTimer
+    Enabled = False
+    Interval = 1
+    OnTimer = TimerFadeInTimer
+    Left = 387
+    Top = 279
+  end
+  object TimerFadeOut: TTimer
+    Enabled = False
+    Interval = 1
+    OnTimer = TimerFadeOutTimer
+    Left = 415
+    Top = 279
   end
 end

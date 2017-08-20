@@ -34,7 +34,6 @@ type
 
 var
   FormRestart: TFormRestart;
-  opacity: Integer;
   ThreadRestart: TRestart;
 implementation
 
@@ -42,7 +41,8 @@ implementation
 
 uses Unit1;
 
-
+var
+  opacity: Integer;
 
 procedure TFormRestart.FormCreate(Sender: TObject);
 begin

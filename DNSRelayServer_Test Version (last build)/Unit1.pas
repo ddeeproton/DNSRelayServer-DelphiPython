@@ -8,9 +8,9 @@ uses
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
-  CheckLst, StringManager, UnitRestartAlert, AlertManager;
+  CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.246';
+var CurrentApplicationVersion: string = '0.4.247';
 
 type
   TForm1 = class(TForm)
@@ -244,6 +244,8 @@ type
     Clients1: TMenuItem;
     Blacklist1: TMenuItem;
     Hostfile1: TMenuItem;
+    TimerFadeIn: TTimer;
+    TimerFadeOut: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -397,6 +399,8 @@ type
     procedure Masquer2Click(Sender: TObject);
     procedure GotoMainPage(inexPage: Integer);
     procedure TimerAlertTimer(Sender: TObject);
+    procedure TimerFadeInTimer(Sender: TObject);
+    procedure TimerFadeOutTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -463,6 +467,7 @@ var
   //currentFormStyle : TFormStyle;
   lastLogOutput: string = '';
   isApplicationLoading: Boolean = True;
+  opacity: Integer = 0;
 implementation
 
 {$R *.dfm}
@@ -1280,6 +1285,11 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   i: Integer;
 begin
+  for i := opacity downto 0 do
+  begin
+    SetFormOpacity(Self.Handle, i);
+    Application.ProcessMessages;
+  end;
   ButtonCloseClick(nil);
   for i := 0 to Form1.ControlCount - 1 do
   begin
@@ -1290,11 +1300,13 @@ begin
   //CanClose := False;
   //if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();
+
   //if ServerDoStart or isServerStarted then ButtonCloseClick(Sender);
   //Application.ProcessMessages;
   //Sleep(2000);
-  Application.Terminate;
-  ProcessManager.DestroyProcess(Application.Handle);
+
+  //Application.Terminate;
+  //ProcessManager.DestroyProcess(Application.Handle);
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
@@ -2016,8 +2028,9 @@ end;
 
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin
-  Top := Screen.Height;
-
+  //Top := Screen.Height;       
+  TimerFadeIn.Enabled := False;
+  TimerFadeOut.Enabled := True;
 
   //currentFormStyle := Self.FormStyle;
   //Self.FormStyle := fsStayOnTop;
@@ -2028,7 +2041,9 @@ begin
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
-begin
+begin                         
+  TimerFadeOut.Enabled := False;
+  TimerFadeIn.Enabled := True;
   try
 
   if Top > Screen.WorkAreaHeight - Self.Height then
@@ -3870,6 +3885,27 @@ begin
   TTimer(Sender).Enabled := False;
   AlertManager.ShowAllAlert(AlertManager.MainListAlert);
   TTimer(Sender).Enabled := True;
+end;
+
+
+
+procedure TForm1.TimerFadeInTimer(Sender: TObject);
+begin     
+  SetFormOpacity(Self.Handle, opacity);
+  if opacity < 100 then Inc(opacity) else TTimer(Sender).Enabled := False;
+end;
+
+procedure TForm1.TimerFadeOutTimer(Sender: TObject);
+begin  
+  SetFormOpacity(Self.Handle, opacity);
+  if opacity > 0 then
+    Dec(opacity)
+  else
+  begin
+    Top := Screen.Height;
+    TTimer(Sender).Enabled := False;
+  end;
+
 end;
 
 end.
