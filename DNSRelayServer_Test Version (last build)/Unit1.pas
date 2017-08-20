@@ -3892,14 +3892,14 @@ end;
 procedure TForm1.TimerFadeInTimer(Sender: TObject);
 begin     
   SetFormOpacity(Self.Handle, opacity);
-  if opacity < 100 then Inc(opacity) else TTimer(Sender).Enabled := False;
+  if opacity < 100 then opacity := opacity + 2 else TTimer(Sender).Enabled := False;
 end;
 
 procedure TForm1.TimerFadeOutTimer(Sender: TObject);
 begin  
   SetFormOpacity(Self.Handle, opacity);
   if opacity > 0 then
-    Dec(opacity)
+    opacity := opacity - 2
   else
   begin
     Top := Screen.Height;
