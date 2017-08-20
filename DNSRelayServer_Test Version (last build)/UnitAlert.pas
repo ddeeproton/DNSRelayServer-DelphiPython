@@ -189,6 +189,10 @@ begin
       Unit1.FormRestart := TFormRestart.Create(nil);
     Unit1.FormRestart.Show;
     Unit1.FormRestart.BringToFront;
+                                      
+    TimerAfterCreate.Enabled := True;
+    CheckBoxStay.Checked := False;
+    CheckBoxStay2.Checked := False;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
