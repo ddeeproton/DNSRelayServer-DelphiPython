@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 174
   Top = 114
-  Width = 458
+  Width = 975
   Height = 652
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 114
-    Width = 450
+    Width = 967
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet6
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -142,233 +142,240 @@ object Form1: TForm1
                 Top = 8
                 Width = 280
                 Height = 265
-                HorzScrollBar.Position = 60
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
-                VertScrollBar.Position = 9
+                VertScrollBar.Position = 24
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
-                DesignSize = (
-                  263
-                  248)
-                object Label33: TLabel
-                  Left = -33
-                  Top = 233
-                  Width = 150
-                  Height = 13
-                  Caption = 'Pas d'#39'affichage log (plus rapide)'
-                  FocusControl = CheckBoxPureServer
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label32: TLabel
-                  Left = -33
-                  Top = 209
-                  Width = 184
-                  Height = 13
-                  Caption = 'Ne pas utiliser le cache DNS (plus lent)'
-                  FocusControl = CheckBoxNoCacheDNS
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label3: TLabel
-                  Left = -31
-                  Top = 185
-                  Width = 276
-                  Height = 13
-                  Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres (au d'#233'marrage du serveur)'
-                  FocusControl = CheckBoxNoTestDNSMaster
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label8: TLabel
-                  Left = -31
-                  Top = 161
-                  Width = 294
-                  Height = 13
-                  Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
-                  FocusControl = CheckBoxAutostartDNSOnBoot
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label6: TLabel
-                  Left = -33
-                  Top = 137
-                  Width = 239
-                  Height = 13
-                  Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
-                  FocusControl = CheckBoxStartWithWindows
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clBlack
-                  Font.Height = -11
-                  Font.Name = 'MS Sans Serif'
-                  Font.Style = []
-                  ParentFont = False
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label5: TLabel
-                  Left = -52
-                  Top = 87
-                  Width = 56
-                  Height = 13
-                  Caption = 'Fichier Host'
-                  Transparent = True
-                end
-                object SpeedButtonRefreshNetCard: TSpeedButton
-                  Left = 68
-                  Top = 15
-                  Width = 23
-                  Height = 22
-                  Hint = 'Rafraichir les Adresses IP'
-                  Flat = True
-                  Glyph.Data = {
-                    06030000424D06030000000000003600000028000000100000000F0000000100
-                    180000000000D002000000000000000000000000000000000000FFFFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
-                    FEA02FBF90FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFF1AB27700DE8C00E0B400F0CB00FFC14CB122FFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200D76000D18C00D4A400
-                    DCAD00E8C800E2A700CC01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                    FFFFFF00CF4100C17803D15200DD0000D58F00E3B300D93CFFFFFFFFFFFF4CB1
-                    22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200BC5401DC5214CB3DFFFFFF00
-                    E58C00F686FFFFFFFFFFFFFFFFFF00FDAD4CB122FFFFFFFFFFFFFFFFFFFFFFFF
-                    00B63A00D2640FC456FFFFFFFFFFFF41A39BFFFFFFFFFFFFFFFFFFFFFFFF00FF
-                    9A1F8845FFFFFFFFFFFFFFFFFFFFFFFF00BB2000F97CFFFFFFFFFFFFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFFFFFF1AC77C00D35F5A6575FFFFFFFFFFFFFFFFFFFFFFFF
-                    00E25B3FB693FFFFFFFFFFFFFFFFFF35A497FFFFFFFFFFFF677D8300EE7000BA
-                    2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF96FFFFFFFFFFFFFFFFFF16B56F00
-                    FFAEFFFFFF697E7C00EB4600BE6000BA3CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFF14AB4800E38C00E0BF00D31802DC3B00C47500C85D4CB1
-                    22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0AAC2400D25800EBD200
-                    DFB200D9AC00D29A00D77A07BF4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                    FFFFFFFFFFFF4CB12200E9A500FECD00E3BA00DBA400D4794CB122FFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
-                    F79200EB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                    FFFFFFFFFFFFFFFFFFFF}
-                  ParentShowHint = False
-                  ShowHint = True
-                  OnClick = ButtonRefreshNetCardClick
-                end
-                object Label4: TLabel
-                  Left = 108
-                  Top = 39
-                  Width = 58
-                  Height = 13
-                  Caption = 'Exemple: 53'
-                  Transparent = True
-                end
-                object Label2: TLabel
-                  Left = 108
-                  Top = -1
-                  Width = 19
-                  Height = 13
-                  Caption = 'Port'
-                  Transparent = True
-                end
-                object Label1: TLabel
-                  Left = -52
-                  Top = -1
-                  Width = 141
-                  Height = 13
-                  Caption = 'Adresse(s) IP du serveur DNS'
-                  Transparent = True
-                end
-                object CheckBoxPureServer: TCheckBox
-                  Left = -52
-                  Top = 231
-                  Width = 17
-                  Height = 17
+                object GroupBox10: TGroupBox
+                  Left = 0
+                  Top = -24
+                  Width = 263
+                  Height = 289
+                  Align = alTop
                   TabOrder = 0
-                  OnClick = CheckBoxPureServerClick
-                end
-                object CheckBoxNoCacheDNS: TCheckBox
-                  Left = -52
-                  Top = 207
-                  Width = 16
-                  Height = 17
-                  TabOrder = 1
-                  OnClick = CheckBoxNoCacheDNSClick
-                end
-                object CheckBoxNoTestDNSMaster: TCheckBox
-                  Left = -52
-                  Top = 183
-                  Width = 17
-                  Height = 17
-                  TabOrder = 2
-                  OnClick = CheckBoxNoTestDNSMasterClick
-                end
-                object CheckBoxAutostartDNSOnBoot: TCheckBox
-                  Left = -52
-                  Top = 159
-                  Width = 19
-                  Height = 17
-                  TabOrder = 3
-                  OnClick = CheckBoxAutostartDNSOnBootClick
-                end
-                object CheckBoxStartWithWindows: TCheckBox
-                  Left = -52
-                  Top = 135
-                  Width = 17
-                  Height = 17
-                  TabOrder = 4
-                  OnClick = CheckBoxStartWithWindowsClick
-                end
-                object EditFilehost: TEdit
-                  Left = -52
-                  Top = 103
-                  Width = 197
-                  Height = 21
-                  Anchors = [akLeft, akTop, akRight]
-                  Color = clWhite
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clBlack
-                  Font.Height = -11
-                  Font.Name = 'MS Sans Serif'
-                  Font.Style = []
-                  ParentFont = False
-                  TabOrder = 5
-                  OnChange = EditFilehostChange
-                end
-                object Button1: TButton
-                  Left = 212
-                  Top = 102
-                  Width = 35
-                  Height = 23
-                  Anchors = [akTop, akRight]
-                  Caption = '...'
-                  TabOrder = 6
-                  OnClick = ButtonSelectFilehostClick
-                end
-                object CheckListBoxDNSRelayIP: TCheckListBox
-                  Left = -52
-                  Top = 15
-                  Width = 113
-                  Height = 57
-                  OnClickCheck = CheckListBoxDNSRelayIPClickCheck
-                  ItemHeight = 13
-                  TabOrder = 7
-                end
-                object SpinPort: TSpinEdit
-                  Left = 108
-                  Top = 15
-                  Width = 97
-                  Height = 22
-                  Color = clWhite
-                  MaxValue = 0
-                  MinValue = 0
-                  TabOrder = 8
-                  Value = 53
-                  OnChange = EditFilehostChange
+                  DesignSize = (
+                    263
+                    289)
+                  object Label1: TLabel
+                    Left = 16
+                    Top = 23
+                    Width = 141
+                    Height = 13
+                    Caption = 'Adresse(s) IP du serveur DNS'
+                    Transparent = True
+                  end
+                  object SpeedButtonRefreshNetCard: TSpeedButton
+                    Left = 136
+                    Top = 39
+                    Width = 23
+                    Height = 22
+                    Hint = 'Rafraichir les Adresses IP'
+                    Flat = True
+                    Glyph.Data = {
+                      06030000424D06030000000000003600000028000000100000000F0000000100
+                      180000000000D002000000000000000000000000000000000000FFFFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
+                      FEA02FBF90FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFF1AB27700DE8C00E0B400F0CB00FFC14CB122FFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200D76000D18C00D4A400
+                      DCAD00E8C800E2A700CC01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                      FFFFFF00CF4100C17803D15200DD0000D58F00E3B300D93CFFFFFFFFFFFF4CB1
+                      22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200BC5401DC5214CB3DFFFFFF00
+                      E58C00F686FFFFFFFFFFFFFFFFFF00FDAD4CB122FFFFFFFFFFFFFFFFFFFFFFFF
+                      00B63A00D2640FC456FFFFFFFFFFFF41A39BFFFFFFFFFFFFFFFFFFFFFFFF00FF
+                      9A1F8845FFFFFFFFFFFFFFFFFFFFFFFF00BB2000F97CFFFFFFFFFFFFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFFFFFF1AC77C00D35F5A6575FFFFFFFFFFFFFFFFFFFFFFFF
+                      00E25B3FB693FFFFFFFFFFFFFFFFFF35A497FFFFFFFFFFFF677D8300EE7000BA
+                      2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF96FFFFFFFFFFFFFFFFFF16B56F00
+                      FFAEFFFFFF697E7C00EB4600BE6000BA3CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFF14AB4800E38C00E0BF00D31802DC3B00C47500C85D4CB1
+                      22FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0AAC2400D25800EBD200
+                      DFB200D9AC00D29A00D77A07BF4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                      FFFFFFFFFFFF4CB12200E9A500FECD00E3BA00DBA400D4794CB122FFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF4CB12200
+                      F79200EB8AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                      FFFFFFFFFFFFFFFFFFFF}
+                    ParentShowHint = False
+                    ShowHint = True
+                    OnClick = ButtonRefreshNetCardClick
+                  end
+                  object Label2: TLabel
+                    Left = 176
+                    Top = 23
+                    Width = 19
+                    Height = 13
+                    Caption = 'Port'
+                    Transparent = True
+                  end
+                  object Label4: TLabel
+                    Left = 176
+                    Top = 63
+                    Width = 58
+                    Height = 13
+                    Caption = 'Exemple: 53'
+                    Transparent = True
+                  end
+                  object Label5: TLabel
+                    Left = 16
+                    Top = 111
+                    Width = 56
+                    Height = 13
+                    Caption = 'Fichier Host'
+                    Transparent = True
+                  end
+                  object Label6: TLabel
+                    Left = 35
+                    Top = 161
+                    Width = 239
+                    Height = 13
+                    Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
+                    FocusControl = CheckBoxStartWithWindows
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clBlack
+                    Font.Height = -11
+                    Font.Name = 'MS Sans Serif'
+                    Font.Style = []
+                    ParentFont = False
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label8: TLabel
+                    Left = 35
+                    Top = 185
+                    Width = 294
+                    Height = 13
+                    Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
+                    FocusControl = CheckBoxAutostartDNSOnBoot
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label3: TLabel
+                    Left = 35
+                    Top = 209
+                    Width = 276
+                    Height = 13
+                    Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres (au d'#233'marrage du serveur)'
+                    FocusControl = CheckBoxNoTestDNSMaster
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label32: TLabel
+                    Left = 35
+                    Top = 233
+                    Width = 184
+                    Height = 13
+                    Caption = 'Ne pas utiliser le cache DNS (plus lent)'
+                    FocusControl = CheckBoxNoCacheDNS
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label33: TLabel
+                    Left = 35
+                    Top = 257
+                    Width = 150
+                    Height = 13
+                    Caption = 'Pas d'#39'affichage log (plus rapide)'
+                    FocusControl = CheckBoxPureServer
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object SpinPort: TSpinEdit
+                    Left = 176
+                    Top = 39
+                    Width = 97
+                    Height = 22
+                    Color = clWhite
+                    MaxValue = 0
+                    MinValue = 0
+                    TabOrder = 0
+                    Value = 53
+                    OnChange = EditFilehostChange
+                  end
+                  object EditFilehost: TEdit
+                    Left = 16
+                    Top = 127
+                    Width = 199
+                    Height = 21
+                    Anchors = [akLeft, akTop, akRight]
+                    Color = clWhite
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clBlack
+                    Font.Height = -11
+                    Font.Name = 'MS Sans Serif'
+                    Font.Style = []
+                    ParentFont = False
+                    TabOrder = 1
+                    OnChange = EditFilehostChange
+                  end
+                  object CheckBoxStartWithWindows: TCheckBox
+                    Left = 16
+                    Top = 159
+                    Width = 17
+                    Height = 17
+                    TabOrder = 2
+                    OnClick = CheckBoxStartWithWindowsClick
+                  end
+                  object CheckBoxAutostartDNSOnBoot: TCheckBox
+                    Left = 16
+                    Top = 183
+                    Width = 19
+                    Height = 17
+                    TabOrder = 3
+                    OnClick = CheckBoxAutostartDNSOnBootClick
+                  end
+                  object CheckBoxNoTestDNSMaster: TCheckBox
+                    Left = 16
+                    Top = 207
+                    Width = 17
+                    Height = 17
+                    TabOrder = 4
+                    OnClick = CheckBoxNoTestDNSMasterClick
+                  end
+                  object CheckBoxNoCacheDNS: TCheckBox
+                    Left = 16
+                    Top = 231
+                    Width = 16
+                    Height = 17
+                    TabOrder = 5
+                    OnClick = CheckBoxNoCacheDNSClick
+                  end
+                  object CheckBoxPureServer: TCheckBox
+                    Left = 16
+                    Top = 255
+                    Width = 17
+                    Height = 17
+                    TabOrder = 6
+                    OnClick = CheckBoxPureServerClick
+                  end
+                  object Button1: TButton
+                    Left = 222
+                    Top = 127
+                    Width = 35
+                    Height = 23
+                    Anchors = [akTop, akRight]
+                    Caption = '...'
+                    TabOrder = 7
+                    OnClick = ButtonSelectFilehostClick
+                  end
+                  object CheckListBoxDNSRelayIP: TCheckListBox
+                    Left = 16
+                    Top = 40
+                    Width = 113
+                    Height = 57
+                    OnClickCheck = CheckListBoxDNSRelayIPClickCheck
+                    ItemHeight = 13
+                    TabOrder = 8
+                  end
                 end
               end
             end
@@ -453,82 +460,90 @@ object Form1: TForm1
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
-                object Label12: TLabel
-                  Left = 26
-                  Top = 60
-                  Width = 238
-                  Height = 13
-                  Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
-                  FocusControl = CheckBoxUpdateSilent
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label11: TLabel
-                  Left = 26
-                  Top = 35
-                  Width = 175
-                  Height = 13
-                  Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
-                  FocusControl = CheckBoxUpdateIntervall
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label10: TLabel
-                  Left = 26
-                  Top = 10
-                  Width = 226
-                  Height = 13
-                  Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
-                  FocusControl = CheckBoxUpdate
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object ButtonUpdate: TButton
-                  Left = 8
-                  Top = 88
-                  Width = 75
-                  Height = 25
-                  Caption = 'Mettre '#224' jour'
+                object GroupBox11: TGroupBox
+                  Left = 0
+                  Top = 0
+                  Width = 289
+                  Height = 137
+                  Align = alTop
                   TabOrder = 0
-                  OnClick = ButtonUpdateClick
-                end
-                object CheckBoxUpdateSilent: TCheckBox
-                  Left = 8
-                  Top = 59
-                  Width = 17
-                  Height = 17
-                  TabOrder = 1
-                  OnClick = CheckBoxUpdateSilentClick
-                end
-                object CheckBoxUpdateIntervall: TCheckBox
-                  Left = 8
-                  Top = 34
-                  Width = 17
-                  Height = 17
-                  TabOrder = 2
-                  OnClick = CheckBoxUpdateIntervallClick
-                end
-                object SpinTimeCheckUpdate: TSpinEdit
-                  Left = 208
-                  Top = 32
-                  Width = 73
-                  Height = 22
-                  MaxValue = 0
-                  MinValue = 0
-                  TabOrder = 3
-                  Value = 24
-                  OnChange = SpinTimeCheckUpdateChange
-                end
-                object CheckBoxUpdate: TCheckBox
-                  Left = 8
-                  Top = 8
-                  Width = 17
-                  Height = 17
-                  TabOrder = 4
-                  OnClick = CheckBoxUpdateClick
+                  object Label12: TLabel
+                    Left = 26
+                    Top = 68
+                    Width = 238
+                    Height = 13
+                    Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
+                    FocusControl = CheckBoxUpdateSilent
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label11: TLabel
+                    Left = 26
+                    Top = 43
+                    Width = 175
+                    Height = 13
+                    Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
+                    FocusControl = CheckBoxUpdateIntervall
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label10: TLabel
+                    Left = 26
+                    Top = 18
+                    Width = 226
+                    Height = 13
+                    Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
+                    FocusControl = CheckBoxUpdate
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object ButtonUpdate: TButton
+                    Left = 8
+                    Top = 96
+                    Width = 75
+                    Height = 25
+                    Caption = 'Mettre '#224' jour'
+                    TabOrder = 0
+                    OnClick = ButtonUpdateClick
+                  end
+                  object CheckBoxUpdateSilent: TCheckBox
+                    Left = 8
+                    Top = 67
+                    Width = 17
+                    Height = 17
+                    TabOrder = 1
+                    OnClick = CheckBoxUpdateSilentClick
+                  end
+                  object CheckBoxUpdateIntervall: TCheckBox
+                    Left = 8
+                    Top = 42
+                    Width = 17
+                    Height = 17
+                    TabOrder = 2
+                    OnClick = CheckBoxUpdateIntervallClick
+                  end
+                  object CheckBoxUpdate: TCheckBox
+                    Left = 8
+                    Top = 16
+                    Width = 17
+                    Height = 17
+                    TabOrder = 3
+                    OnClick = CheckBoxUpdateClick
+                  end
+                  object SpinTimeCheckUpdate: TSpinEdit
+                    Left = 208
+                    Top = 40
+                    Width = 73
+                    Height = 22
+                    MaxValue = 0
+                    MinValue = 0
+                    TabOrder = 4
+                    Value = 24
+                    OnChange = SpinTimeCheckUpdateChange
+                  end
                 end
               end
             end
@@ -930,80 +945,88 @@ object Form1: TForm1
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
-                object Label31: TLabel
-                  Left = 8
-                  Top = 80
-                  Width = 189
-                  Height = 13
-                  Caption = 'Afficher le message pendant (secondes)'
-                end
-                object Label18: TLabel
-                  Left = 26
-                  Top = 57
-                  Width = 218
-                  Height = 13
-                  Caption = 'Afficher des alertes pour les domaines bloqu'#233's'
-                  FocusControl = CheckBoxAlertEventDisallowed
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label17: TLabel
-                  Left = 26
-                  Top = 34
-                  Width = 224
-                  Height = 13
-                  Caption = 'Afficher des alertes pour les domaines inconnus'
-                  FocusControl = CheckBoxAlertEventsUnknown
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object Label16: TLabel
-                  Left = 26
-                  Top = 9
-                  Width = 216
-                  Height = 13
-                  Caption = 'Afficher des alertes pour les domaines connus'
-                  FocusControl = CheckBoxAlertEventsKnown
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
-                end
-                object SpinEditAlertDuration: TSpinEdit
-                  Left = 8
-                  Top = 96
-                  Width = 121
-                  Height = 22
-                  MaxValue = 0
-                  MinValue = 0
+                object GroupBox12: TGroupBox
+                  Left = 0
+                  Top = 0
+                  Width = 289
+                  Height = 137
+                  Align = alTop
                   TabOrder = 0
-                  Value = 10
-                  OnChange = SpinEditAlertDurationChange
-                end
-                object CheckBoxAlertEventDisallowed: TCheckBox
-                  Left = 8
-                  Top = 56
-                  Width = 17
-                  Height = 17
-                  TabOrder = 1
-                  OnClick = CheckBoxAlertEventDisallowedClick
-                end
-                object CheckBoxAlertEventsUnknown: TCheckBox
-                  Left = 8
-                  Top = 32
-                  Width = 17
-                  Height = 17
-                  TabOrder = 2
-                  OnClick = CheckBoxAlertEventsUnknownClick
-                end
-                object CheckBoxAlertEventsKnown: TCheckBox
-                  Left = 8
-                  Top = 8
-                  Width = 17
-                  Height = 17
-                  TabOrder = 3
-                  OnClick = CheckBoxAlertEventsKnownClick
+                  object Label31: TLabel
+                    Left = 8
+                    Top = 88
+                    Width = 189
+                    Height = 13
+                    Caption = 'Afficher le message pendant (secondes)'
+                  end
+                  object Label18: TLabel
+                    Left = 26
+                    Top = 65
+                    Width = 218
+                    Height = 13
+                    Caption = 'Afficher des alertes pour les domaines bloqu'#233's'
+                    FocusControl = CheckBoxAlertEventDisallowed
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label17: TLabel
+                    Left = 26
+                    Top = 42
+                    Width = 224
+                    Height = 13
+                    Caption = 'Afficher des alertes pour les domaines inconnus'
+                    FocusControl = CheckBoxAlertEventsUnknown
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label16: TLabel
+                    Left = 26
+                    Top = 17
+                    Width = 216
+                    Height = 13
+                    Caption = 'Afficher des alertes pour les domaines connus'
+                    FocusControl = CheckBoxAlertEventsKnown
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object SpinEditAlertDuration: TSpinEdit
+                    Left = 8
+                    Top = 104
+                    Width = 121
+                    Height = 22
+                    MaxValue = 0
+                    MinValue = 0
+                    TabOrder = 0
+                    Value = 10
+                    OnChange = SpinEditAlertDurationChange
+                  end
+                  object CheckBoxAlertEventDisallowed: TCheckBox
+                    Left = 8
+                    Top = 64
+                    Width = 17
+                    Height = 17
+                    TabOrder = 1
+                    OnClick = CheckBoxAlertEventDisallowedClick
+                  end
+                  object CheckBoxAlertEventsUnknown: TCheckBox
+                    Left = 8
+                    Top = 40
+                    Width = 17
+                    Height = 17
+                    TabOrder = 2
+                    OnClick = CheckBoxAlertEventsUnknownClick
+                  end
+                  object CheckBoxAlertEventsKnown: TCheckBox
+                    Left = 8
+                    Top = 16
+                    Width = 17
+                    Height = 17
+                    TabOrder = 3
+                    OnClick = CheckBoxAlertEventsKnownClick
+                  end
                 end
               end
             end
@@ -1438,7 +1461,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 450
+    Width = 967
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1539,16 +1562,16 @@ object Form1: TForm1
   object PanelRestart: TPanel
     Left = 0
     Top = 48
-    Width = 450
+    Width = 967
     Height = 33
     Align = alTop
     TabOrder = 3
     Visible = False
     DesignSize = (
-      450
+      967
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 415
+      Left = 932
       Top = 6
       Width = 22
       Height = 22
@@ -1586,16 +1609,16 @@ object Form1: TForm1
   object PanelMessage: TPanel
     Left = 0
     Top = 81
-    Width = 450
+    Width = 967
     Height = 33
     Align = alTop
     TabOrder = 4
     Visible = False
     DesignSize = (
-      450
+      967
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 415
+      Left = 932
       Top = 6
       Width = 22
       Height = 22
