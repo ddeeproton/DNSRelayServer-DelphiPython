@@ -177,12 +177,18 @@ begin
     PanelAllowed.Visible := not PanelAllowed.Visible;
     PanelDisallowed.Visible := not PanelDisallowed.Visible;
     FormCreate(nil);
-    if not Form1.isServerStarted then exit;
-    if (FormRestart = nil) or not Assigned(FormRestart) or not FormRestart.Visible then
-      FormRestart := TFormRestart.Create(nil);
 
-    FormRestart.Show;
-    FormRestart.BringToFront;
+    //if not Form1.isServerStarted then exit;
+
+    
+    if (Unit1.FormRestart <> nil) then
+    begin
+      Unit1.FormRestart := nil;
+    end;
+    if (Unit1.FormRestart = nil) then
+      Unit1.FormRestart := TFormRestart.Create(nil);
+    Unit1.FormRestart.Show;
+    Unit1.FormRestart.BringToFront;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;

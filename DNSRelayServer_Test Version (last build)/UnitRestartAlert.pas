@@ -66,8 +66,8 @@ end;
 procedure TFormRestart.ButtonRestartClick(Sender: TObject);
 begin
   Form1.ButtonApplyChangesClick(nil);
-  Close;
-  Free;
+  Unit1.FormRestart.Close;
+  //Unit1.FormRestart.Free;
   //ThreadRestart := TRestart.Create(False);
 end;
 
@@ -98,8 +98,8 @@ begin
     else
     begin
       TTimer(Sender).Enabled := False;
-      Self.Close;
-      Self.Free;
+      Unit1.FormRestart.Close;
+      //Unit1.FormRestart.Free;
     end;
   except
     On E : EOSError do exit;   
@@ -114,7 +114,8 @@ end;
 
 procedure TFormRestart.SpeedButtonCloseDblClick(Sender: TObject);
 begin
-  Close;
+  Unit1.FormRestart.Close;
+  //Unit1.FormRestart.Free;
 end;
 
 end.
