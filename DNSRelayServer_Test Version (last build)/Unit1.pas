@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.247';
+var CurrentApplicationVersion: string = '0.4.248';
 
 type
   TForm1 = class(TForm)
@@ -3892,14 +3892,14 @@ end;
 procedure TForm1.TimerFadeInTimer(Sender: TObject);
 begin     
   SetFormOpacity(Self.Handle, opacity);
-  if opacity < 100 then opacity := opacity + 2 else TTimer(Sender).Enabled := False;
+  if opacity < 100 then opacity := opacity + 10 else TTimer(Sender).Enabled := False;
 end;
 
 procedure TForm1.TimerFadeOutTimer(Sender: TObject);
 begin  
   SetFormOpacity(Self.Handle, opacity);
   if opacity > 0 then
-    opacity := opacity - 2
+    opacity := opacity - 10
   else
   begin
     Top := Screen.Height;
