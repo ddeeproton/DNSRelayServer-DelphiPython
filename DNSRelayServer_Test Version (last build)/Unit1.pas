@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.248';
+var CurrentApplicationVersion: string = '0.4.249';
 
 type
   TForm1 = class(TForm)
@@ -1285,10 +1285,12 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   i: Integer;
 begin
-  for i := opacity downto 0 do
+  i := opacity;
+  while i >= 0 do
   begin
     SetFormOpacity(Self.Handle, i);
     Application.ProcessMessages;
+    i := i - 5;
   end;
   ButtonCloseClick(nil);
   for i := 0 to Form1.ControlCount - 1 do
