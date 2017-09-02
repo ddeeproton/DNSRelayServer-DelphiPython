@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 190
   Top = 114
   Width = 473
-  Height = 652
+  Height = 663
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -66,7 +66,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 114
+    Top = 81
     Width = 465
     Height = 10
     Cursor = crVSplit
@@ -78,8 +78,8 @@ object Form1: TForm1
     OnMoved = FormResize
   end
   object Panel1: TPanel
-    Left = 0
-    Top = 130
+    Left = 8
+    Top = 98
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -1375,9 +1375,10 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 528
-    Width = 377
+    Top = 547
+    Width = 465
     Height = 82
+    Align = alBottom
     Caption = '           '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -1388,7 +1389,7 @@ object Form1: TForm1
     TabOrder = 1
     Visible = False
     DesignSize = (
-      377
+      465
       82)
     object Label21: TLabel
       Left = 13
@@ -1400,7 +1401,7 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 39
-      Width = 373
+      Width = 461
       Height = 41
       Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
@@ -1608,10 +1609,10 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 0
-    Top = 81
+    Top = 514
     Width = 465
     Height = 33
-    Align = alTop
+    Align = alBottom
     TabOrder = 4
     Visible = False
     DesignSize = (
@@ -1644,16 +1645,22 @@ object Form1: TForm1
       OnClick = SpeedButtonCloseMessageClick
     end
     object LabelMessage: TLabel
-      Left = 9
-      Top = 10
-      Width = 31
-      Height = 13
-      Caption = 'Sauv'#233
+      Left = 8
+      Top = 8
+      Width = 102
+      Height = 20
+      Caption = 'Sauvegard'#233'!'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
   end
   object ImageList1: TImageList
     Left = 386
-    Top = 446
+    Top = 414
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2457,7 +2464,7 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Images = ImageList3
     Left = 386
-    Top = 322
+    Top = 290
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -2601,7 +2608,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 415
-    Top = 446
+    Top = 414
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -6738,11 +6745,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 387
-    Top = 507
+    Top = 475
   end
   object ImageList3: TImageList
     Left = 386
-    Top = 474
+    Top = 442
     Bitmap = {
       494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -7416,11 +7423,11 @@ object Form1: TForm1
     Interval = 2000
     OnTimer = TimerSaveChangeTimer
     Left = 387
-    Top = 223
+    Top = 191
   end
   object PopupMenuListView: TPopupMenu
     Left = 386
-    Top = 379
+    Top = 347
     object Autoriser1: TMenuItem
       Bitmap.Data = {
         AA030000424DAA03000000000000360000002800000011000000110000000100
@@ -7545,13 +7552,13 @@ object Form1: TForm1
     Interval = 500
     OnTimer = Timer1Timer
     Left = 415
-    Top = 139
+    Top = 107
   end
   object ImageList4: TImageList
     Height = 80
     Width = 71
     Left = 414
-    Top = 474
+    Top = 442
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -16355,24 +16362,24 @@ object Form1: TForm1
     Interval = 5000
     OnTimer = TimerUpdateOnLoadTimer
     Left = 387
-    Top = 167
+    Top = 135
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
     OnTimer = TimerAfterFormCreateTimer
     Left = 387
-    Top = 195
+    Top = 163
   end
   object TimerCheckUpdate: TTimer
     Enabled = False
     Interval = 120000
     OnTimer = TimerCheckUpdateTimer
     Left = 387
-    Top = 139
+    Top = 107
   end
   object PopupMenuDNSMaster: TPopupMenu
     Left = 386
-    Top = 351
+    Top = 319
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16407,24 +16414,24 @@ object Form1: TForm1
     Interval = 1
     OnTimer = TimerStartInBackgroundTimer
     Left = 415
-    Top = 195
+    Top = 163
   end
   object TimerRestart: TTimer
     Enabled = False
     Interval = 3000
     OnTimer = TimerRestartTimer
     Left = 415
-    Top = 167
+    Top = 135
   end
   object TimerResetAlertPosition: TTimer
     Enabled = False
     OnTimer = TimerResetAlertPositionTimer
     Left = 415
-    Top = 251
+    Top = 219
   end
   object PopupMenuBlacklist: TPopupMenu
     Left = 414
-    Top = 379
+    Top = 347
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16443,11 +16450,11 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 414
-    Top = 507
+    Top = 475
   end
   object PopupMenuTheme: TPopupMenu
     Left = 386
-    Top = 407
+    Top = 375
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -16470,7 +16477,7 @@ object Form1: TForm1
   end
   object PopupMenuForAllDNSRules: TPopupMenu
     Left = 414
-    Top = 407
+    Top = 375
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -16486,7 +16493,7 @@ object Form1: TForm1
   end
   object PopupMenuLogs: TPopupMenu
     Left = 414
-    Top = 352
+    Top = 320
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -16516,27 +16523,27 @@ object Form1: TForm1
     Interval = 2000
     OnTimer = TimerHideMessageTimer
     Left = 415
-    Top = 223
+    Top = 191
   end
   object TimerAlert: TTimer
     Enabled = False
     Interval = 10000
     OnTimer = TimerAlertTimer
     Left = 387
-    Top = 251
+    Top = 219
   end
   object TimerFadeIn: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeInTimer
     Left = 387
-    Top = 279
+    Top = 247
   end
   object TimerFadeOut: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeOutTimer
     Left = 415
-    Top = 279
+    Top = 247
   end
 end
