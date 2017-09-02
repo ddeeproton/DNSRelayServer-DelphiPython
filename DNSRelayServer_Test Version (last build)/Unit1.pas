@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.249';
+var CurrentApplicationVersion: string = '0.4.250';
 
 type
   TForm1 = class(TForm)
@@ -996,7 +996,6 @@ begin
   //KillTask('python.exe');
   ButtonCloseClick(nil);
   //closeProcessCreated;
-  Application.ProcessMessages;
 
   ImageList4.GetIcon(2, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
@@ -1011,6 +1010,8 @@ begin
 
 
 
+  Application.ProcessMessages;
+  Sleep(1000); 
   Application.ProcessMessages;
   {
   if not ServerDoStart then
