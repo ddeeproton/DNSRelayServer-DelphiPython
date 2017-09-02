@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.253';
+var CurrentApplicationVersion: string = '0.4.254';
 
 type
   TForm1 = class(TForm)
@@ -2161,24 +2161,37 @@ begin
 end;
 
 procedure TForm1.GotoMainPage(inexPage: Integer);
+var
+  isIndexChanged: Boolean;
+  isVisibleChanged: Boolean;
+  oldVisibility: Boolean;
 begin
-
+   {
   if Notebook1.PageIndex <> inexPage then
   begin
     Panel1.Visible := False;
     Splitter1.Visible := False;
   end;
+    }
+  isIndexChanged := Notebook1.PageIndex <> inexPage;
+  oldVisibility := Panel1.Visible;
 
-  if Panel1.Visible then
+  Panel1.Visible := not Panel1.Visible or isIndexChanged;
+  Splitter1.Visible := Panel1.Visible;
+
+  isVisibleChanged :=  Panel1.Visible <> oldVisibility;
+  //Splitter1.Visible := (GroupBox5.Visible and Panel1.Visible);
+
+  if not Panel1.Visible then
     GroupBox5.Align := alClient
   else begin
-    Splitter1.Align := alBottom;
-    GroupBox5.Align := alBottom;
+    //Splitter1.Align := alBottom;
+    //GroupBox5.Align := alBottom;
     //GroupBox5.Height := 100;
-    ComboBoxPosLogsSelect(ComboBoxPosLogs);
+    if isVisibleChanged then ComboBoxPosLogsSelect(ComboBoxPosLogs);
   end;
-  Panel1.Visible := not Panel1.Visible;    
-  Splitter1.Visible := GroupBox5.Visible and Panel1.Visible;
+
+
 
   ToolButton8.Down := Panel1.Visible and (inexPage = 0);
   ToolButtonBlackwords.Down := Panel1.Visible and (inexPage = 1);
@@ -2187,8 +2200,10 @@ begin
   ToolButton3.Down := Panel1.Visible and (inexPage = 4);
 
 
+
+
   Notebook1.PageIndex := inexPage;
-  ResizePanelConfig();
+  //ResizePanelConfig();
   PanelMessage.Visible := False;
 end;
 
