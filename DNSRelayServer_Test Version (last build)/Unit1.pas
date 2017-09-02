@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.254';
+var CurrentApplicationVersion: string = '0.4.255';
 
 type
   TForm1 = class(TForm)
@@ -2040,23 +2040,24 @@ end;
 
 
 procedure TForm1.Masquer1Click(Sender: TObject);
-begin
-  //Top := Screen.Height;       
-  TimerFadeIn.Enabled := False;
-  TimerFadeOut.Enabled := True;
-
+begin                                       
+  Self.Hide;
+  //TimerFadeIn.Enabled := False;
+  //TimerFadeOut.Enabled := True;
+                                         
+  //Top := Screen.Height;
   //currentFormStyle := Self.FormStyle;
   //Self.FormStyle := fsStayOnTop;
-  //Self.Hide;
   //Systray.EnleveIconeTray;
   //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
-begin                         
-  TimerFadeOut.Enabled := False;
-  TimerFadeIn.Enabled := True;
+begin
+  //TimerFadeOut.Enabled := False;
+  //TimerFadeIn.Enabled := True;  
+  Self.Show;
   try
 
   if Top > Screen.WorkAreaHeight - Self.Height then
@@ -2066,7 +2067,6 @@ begin
   Application.BringToFront;
   //Self.FormStyle := currentFormStyle;
   {
-  Self.Show;
   Application.Restore;
   Application.BringToFront;
   //Systray.EnleveIconeTray;
