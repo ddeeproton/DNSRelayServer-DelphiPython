@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.250';
+var CurrentApplicationVersion: string = '0.4.251';
 
 type
   TForm1 = class(TForm)
@@ -1339,7 +1339,14 @@ begin
     i := 0;
     while (i < Length(listThreads)) and (listThreads[i] <> nil) do
     begin
-      //listThreads[i].Terminate;
+      listThreads[i].Terminate;
+      Inc(i);
+    end;   
+    Sleep(1000);
+
+    i := 0;
+    while (i < Length(listThreads)) and (listThreads[i] <> nil) do
+    begin
       Application.ProcessMessages;
       listThreads[i].Free;
       Inc(i);
