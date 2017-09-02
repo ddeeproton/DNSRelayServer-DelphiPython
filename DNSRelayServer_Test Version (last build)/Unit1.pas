@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.251';
+var CurrentApplicationVersion: string = '0.4.252';
 
 type
   TForm1 = class(TForm)
@@ -1005,8 +1005,11 @@ begin
   ToolButton11.Hint := 'Arrêter le serveur DNS';
   ServerDoStart := True;
   //PanelRestart.Visible := False;
-  Splitter1.Visible := True;
-  GroupBox5.Visible := True;
+
+
+
+  //Splitter1.Visible := True;
+  //GroupBox5.Visible := True;
 
 
 
@@ -1022,7 +1025,7 @@ begin
   end;
   }
 
-  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  //ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
   {
   if Form1.WindowState = wsNormal then
