@@ -581,9 +581,9 @@ object Form1: TForm1
                     object Label35: TLabel
                       Left = 16
                       Top = 8
-                      Width = 142
+                      Width = 137
                       Height = 13
-                      Caption = 'Version instable (d'#233'veloppeur)'
+                      Caption = 'Version instable (test version)'
                     end
                     object ButtonUpdateDev: TButton
                       Left = 96

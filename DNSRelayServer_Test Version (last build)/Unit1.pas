@@ -2574,6 +2574,9 @@ end;
 
 procedure TForm1.ButtonUpdateDevClick(Sender: TObject);
 begin
+  if MessageDlg(PChar('Attention, cette mise à jour est destiné à son développement. Vous allez mettre à jour le serveur dans une version d''essai qui est potentiellement instable. Voulez-vous continuer?'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then exit;
+
+
   TButton(Sender).Enabled := False;
 
   if FormInstall = nil then
