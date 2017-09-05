@@ -255,6 +255,17 @@ type
     Label11: TLabel;
     CheckBoxUpdate: TCheckBox;
     Label10: TLabel;
+    TimerRemoteAccess: TTimer;
+    TabSheet7: TTabSheet;
+    ScrollBox6: TScrollBox;
+    GroupBox13: TGroupBox;
+    GroupBox14: TGroupBox;
+    Label37: TLabel;
+    Label38: TLabel;
+    CheckBoxRemoteAccess: TCheckBox;
+    Label36: TLabel;
+    ButtonInstallScriptWebAdmin: TButton;
+    Label39: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -414,6 +425,9 @@ type
     procedure CheckSystemChangesTimer(Sender: TObject);
     procedure TimerAfterFormCreateLongTimer(Sender: TObject);
     procedure ButtonUpdateDevClick(Sender: TObject);
+    procedure TimerRemoteAccessTimer(Sender: TObject);
+    procedure CheckBoxRemoteAccessClick(Sender: TObject);
+    procedure ButtonInstallScriptWebAdminClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1624,6 +1638,8 @@ begin
   ScrollBox3.Align := alClient;
   ScrollBox4.Align := alClient;
   ScrollBox5.Align := alClient;
+  ScrollBox6.Align := alClient;
+  ScrollBox6.VertScrollBar.Position := 0;
 
   PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
@@ -1742,6 +1758,11 @@ begin
   CheckBoxNoTestDNSMaster.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
   CheckBoxNoCacheDNS.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
   CheckBoxPureServer.Checked := FileExists(DataDirectoryPath + 'CheckBoxPureServer.cfg');
+  
+  CheckBoxRemoteAccess.Checked := FileExists(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg');
+  TimerRemoteAccess.Enabled := CheckBoxRemoteAccess.Checked;
+
+
 
   startedInBackground := False;
   autostarted := False;
@@ -1904,6 +1925,10 @@ begin
   Label33.Font.Color := color;
   Label34.Font.Color := color;
   Label35.Font.Color := color;
+  Label36.Font.Color := color; 
+  Label37.Font.Color := color;
+  Label38.Font.Color := color;
+  Label39.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
@@ -2272,6 +2297,8 @@ procedure TForm1.CheckBoxStartWithWindowsClick(Sender: TObject);
 var
   Reg: TRegistry;
 begin
+  if isApplicationLoading then exit;
+
   Reg := TRegistry.Create;
   Reg.RootKey := HKEY_CURRENT_USER;
   try
@@ -2286,7 +2313,7 @@ begin
   finally
     Reg.Free;
   end;
-  if isApplicationLoading then exit;
+
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2348,6 +2375,8 @@ var
   txt: String;
 begin
   TTimer(Sender).Enabled := False;
+  if isApplicationLoading then exit;
+  
   WriteInFile(FilehostPathConfig, EditFilehost.Text);
   //CheckListBoxDNSRelayIP.Items.SaveToFile(SlaveDNSIPConfig);
   //WriteInFile(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
@@ -2364,7 +2393,7 @@ begin
     end;
   end;
   WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
-  if isApplicationLoading then exit;                 
+
   if isServerStarted then PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -2699,13 +2728,15 @@ end;
 
 procedure TForm1.CheckBoxUpdateClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
+
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdate.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
 
   setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
-  if isApplicationLoading then exit;
+
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2778,13 +2809,14 @@ end;
 
 procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
   else DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
 
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 60 * 60 * 1000;
   TimerCheckUpdate.Enabled := TCheckBox(Sender).Checked;
-  if isApplicationLoading then exit;
+
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2792,12 +2824,12 @@ end;
 
 procedure TForm1.CheckBoxUpdateSilentClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdateSilent.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdateSilent.cfg');
 
-  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2813,11 +2845,12 @@ end;
 
 procedure TForm1.CheckBoxAllowModifyNetCardClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-  if isApplicationLoading then exit;
+
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2826,12 +2859,12 @@ end;
 
 procedure TForm1.CheckBoxAutostartDNSOnBootClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAutostartDNS.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAutostartDNS.cfg');
 
-  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2966,13 +2999,13 @@ end;
 
 procedure TForm1.CheckBoxAlertEventsKnownClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
   connus1.Checked := CheckBoxAlertEventsKnown.Checked;
 
-  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2980,13 +3013,14 @@ end;
 
 procedure TForm1.CheckBoxAlertEventsUnknownClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
 
   inconnus1.Checked := CheckBoxAlertEventsUnknown.Checked;
-  if isApplicationLoading then exit;
+
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2994,12 +3028,13 @@ end;
 
 procedure TForm1.CheckBoxAlertEventDisallowedClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
   bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;
-  if isApplicationLoading then exit; 
+
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3190,6 +3225,8 @@ var
   i:Integer;
   ThemesList, s:TStringList;
 begin
+
+
   i := ComboBoxCurrentTheme.ItemIndex;
   if i = -1 then exit;
 
@@ -3245,11 +3282,11 @@ begin
       end;
     end;
   end;
-
+  
+  if isApplicationLoading then exit;
   WriteInFile(DataDirectoryPath + 'contrasteTextarea.cfg', IntToStr(SpinEditContraste.Position));
   WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(ComboBoxCurrentTheme.ItemIndex));
 
-  if isApplicationLoading then exit;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3926,12 +3963,13 @@ end;
 
 procedure TForm1.CheckBoxNoTestDNSMasterClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
 
-  if isApplicationLoading then exit;
+
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3939,12 +3977,12 @@ end;
 
 procedure TForm1.CheckBoxNoCacheDNSClick(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
 
-  if isApplicationLoading then exit;        
   PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -3954,13 +3992,12 @@ end;
 
 procedure TForm1.CheckBoxPureServerClick(Sender: TObject);
 begin
-
+  if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxPureServer.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxPureServer.cfg');
-
-  if isApplicationLoading then exit;    
+    
   PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -4042,6 +4079,53 @@ begin
   isApplicationLoading := False;
 end;
 
+
+procedure TForm1.TimerRemoteAccessTimer(Sender: TObject);
+var
+  FileRemoteReload: string;
+begin
+  FileRemoteReload := DataDirectoryPath + 'action.remote_reload.txt';
+  if not FileExists(FileRemoteReload) then exit;
+  DeleteFile(FileRemoteReload);
+  FormCreate(nil);
+  ButtonApplyChangesClick(nil);
+end;
+
+     
+procedure TForm1.CheckBoxRemoteAccessClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  TimerRemoteAccess.Enabled := TCheckBox(Sender).Checked;
+
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg');
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.ButtonInstallScriptWebAdminClick(Sender: TObject);
+var PathScript: string;
+begin
+  ShowMessage('En cours d''implémentation :)');
+  if FileExists(DataDirectoryPath + 'PathScriptWebAdminPHP.cfg') then
+    PathScript := ReadFromFile(DataDirectoryPath + 'PathScriptWebAdminPHP.cfg')
+  else
+    PathScript := Application.ExeName;
+
+  if DirectoryExists(ExtractFilePath(PathScript)) then
+    SaveDialog1.InitialDir := ExtractFilePath(PathScript);
+
+  if SaveDialog1.Execute then
+  begin
+    PathScript := SaveDialog1.FileName;
+    WriteInFile(DataDirectoryPath + 'PathScriptWebAdminPHP.cfg', PathScript);
+    // todo
+  end;
+end;
 
 end.
 

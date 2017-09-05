@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 190
-  Top = 114
+  Left = 276
+  Top = 136
   Width = 504
   Height = 644
   Caption = 'DNS Relay Server'
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet7
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -1094,6 +1094,128 @@ object Form1: TForm1
                 end
               end
             end
+            object TabSheet7: TTabSheet
+              Caption = 'Web Admin'
+              ImageIndex = 6
+              object ScrollBox6: TScrollBox
+                Left = 8
+                Top = 8
+                Width = 289
+                Height = 273
+                HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
+                VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
+                BorderStyle = bsNone
+                TabOrder = 0
+                DesignSize = (
+                  272
+                  273)
+                object GroupBox13: TGroupBox
+                  Left = 0
+                  Top = 89
+                  Width = 272
+                  Height = 331
+                  Anchors = [akLeft, akTop, akRight]
+                  TabOrder = 0
+                  DesignSize = (
+                    272
+                    331)
+                  object Label36: TLabel
+                    Left = 8
+                    Top = 88
+                    Width = 248
+                    Height = 225
+                    Anchors = [akLeft, akTop, akRight]
+                    AutoSize = False
+                    Caption = 
+                      'Ce script permet de contr'#244'ler cette application depuis un serveu' +
+                      'r web PHP. Cette application doit pouvoir avoir un acc'#232's en '#233'cri' +
+                      'ture o'#249' sera install'#233' le script. Et le script a aussi besoin d'#39'u' +
+                      'n acc'#232's en '#233'criture o'#249' est install'#233' cette application. Lors de l' +
+                      #39'installation, l'#39'application va m'#233'moriser le chemin o'#249' est expor' +
+                      't'#233' le script. Veillez '#224' exporter dans le r'#233'p'#233'rtoire du serveur w' +
+                      'eb si vous voulez profiter des mises '#224' jour automatique du scrip' +
+                      't. Effacez le script ou exportez-le dans un r'#233'pertoire temporair' +
+                      'e si vous ne voulez pas de mise '#224' jour automatique du script. Po' +
+                      'ur le moment il n'#39'y a aucune s'#233'curit'#233' d'#39'acc'#232's au script. Install' +
+                      #233' tel quel, n'#39'importe qui qui acc'#232'de au serveur pourra changer e' +
+                      'nsuite les configurations de cette application. A vous de s'#233'curi' +
+                      'ser l'#39'acc'#232's au script (avec un .htaccess ou en placant uniquemen' +
+                      't sur un intranet local)'
+                    WordWrap = True
+                  end
+                  object Label39: TLabel
+                    Left = 16
+                    Top = 16
+                    Width = 248
+                    Height = 17
+                    Anchors = [akLeft, akTop, akRight]
+                    AutoSize = False
+                    Caption = 'Script Web Admin v0.1'
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clBlack
+                    Font.Height = -11
+                    Font.Name = 'MS Sans Serif'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                    WordWrap = True
+                  end
+                  object ButtonInstallScriptWebAdmin: TButton
+                    Left = 40
+                    Top = 40
+                    Width = 177
+                    Height = 25
+                    Anchors = [akTop]
+                    Caption = 'Installer le script Web Admin'
+                    TabOrder = 0
+                    OnClick = ButtonInstallScriptWebAdminClick
+                  end
+                end
+                object GroupBox14: TGroupBox
+                  Left = 0
+                  Top = 0
+                  Width = 272
+                  Height = 81
+                  Anchors = [akLeft, akTop, akRight]
+                  TabOrder = 1
+                  DesignSize = (
+                    272
+                    81)
+                  object Label37: TLabel
+                    Left = 26
+                    Top = 17
+                    Width = 137
+                    Height = 13
+                    Caption = 'Activer le contr'#244'le '#224' distance'
+                    FocusControl = CheckBoxRemoteAccess
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label38: TLabel
+                    Left = 8
+                    Top = 40
+                    Width = 248
+                    Height = 33
+                    Anchors = [akLeft, akTop, akRight]
+                    AutoSize = False
+                    Caption = 
+                      'Permet '#224' cette application d'#39#234'tre contr'#244'l'#233' par une application e' +
+                      'xterne ou un script. '
+                    WordWrap = True
+                  end
+                  object CheckBoxRemoteAccess: TCheckBox
+                    Left = 8
+                    Top = 16
+                    Width = 17
+                    Height = 17
+                    TabOrder = 0
+                    OnClick = CheckBoxRemoteAccessClick
+                  end
+                end
+              end
+            end
           end
         end
       end
@@ -1483,7 +1605,7 @@ object Form1: TForm1
     object Panel7: TPanel
       Left = 2
       Top = 15
-      Width = 191
+      Width = 79
       Height = 24
       BevelOuter = bvNone
       BorderWidth = 10
@@ -1492,7 +1614,7 @@ object Form1: TForm1
       object ToolBar5: TToolBar
         Left = 2
         Top = 1
-        Width = 87
+        Width = 63
         Height = 24
         Align = alNone
         ButtonWidth = 25
@@ -1722,7 +1844,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 386
-    Top = 342
+    Top = 262
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2526,7 +2648,7 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Images = ImageList3
     Left = 386
-    Top = 218
+    Top = 170
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -2670,7 +2792,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 415
-    Top = 342
+    Top = 262
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -6807,11 +6929,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 387
-    Top = 403
+    Top = 323
   end
   object ImageList3: TImageList
     Left = 386
-    Top = 370
+    Top = 290
     Bitmap = {
       494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -7489,7 +7611,7 @@ object Form1: TForm1
   end
   object PopupMenuListView: TPopupMenu
     Left = 386
-    Top = 275
+    Top = 226
     object Autoriser1: TMenuItem
       Bitmap.Data = {
         AA030000424DAA03000000000000360000002800000011000000110000000100
@@ -7619,8 +7741,8 @@ object Form1: TForm1
   object ImageList4: TImageList
     Height = 80
     Width = 71
-    Left = 414
-    Top = 370
+    Left = 444
+    Top = 262
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -16442,7 +16564,7 @@ object Form1: TForm1
   end
   object PopupMenuDNSMaster: TPopupMenu
     Left = 386
-    Top = 247
+    Top = 198
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16476,8 +16598,8 @@ object Form1: TForm1
     Enabled = False
     Interval = 1
     OnTimer = TimerStartInBackgroundTimer
-    Left = 415
-    Top = 179
+    Left = 443
+    Top = 11
   end
   object TimerRestart: TTimer
     Enabled = False
@@ -16494,7 +16616,7 @@ object Form1: TForm1
   end
   object PopupMenuBlacklist: TPopupMenu
     Left = 414
-    Top = 275
+    Top = 198
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16513,11 +16635,11 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 414
-    Top = 403
+    Top = 323
   end
   object PopupMenuTheme: TPopupMenu
-    Left = 386
-    Top = 303
+    Left = 442
+    Top = 198
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -16539,8 +16661,8 @@ object Form1: TForm1
     end
   end
   object PopupMenuForAllDNSRules: TPopupMenu
-    Left = 414
-    Top = 303
+    Left = 441
+    Top = 170
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -16556,7 +16678,7 @@ object Form1: TForm1
   end
   object PopupMenuLogs: TPopupMenu
     Left = 414
-    Top = 248
+    Top = 170
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -16599,27 +16721,33 @@ object Form1: TForm1
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeInTimer
-    Left = 387
-    Top = 151
+    Left = 443
+    Top = 67
   end
   object TimerFadeOut: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeOutTimer
-    Left = 415
-    Top = 151
+    Left = 444
+    Top = 95
   end
   object TimerCheckSystemChanges: TTimer
     Enabled = False
     Interval = 10000
     OnTimer = TimerCheckSystemChangesTimer
-    Left = 387
-    Top = 179
+    Left = 443
+    Top = 39
   end
   object TimerAfterFormCreateLong: TTimer
     Interval = 10000
     OnTimer = TimerAfterFormCreateLongTimer
     Left = 416
-    Top = 69
+    Top = 67
+  end
+  object TimerRemoteAccess: TTimer
+    Enabled = False
+    OnTimer = TimerRemoteAccessTimer
+    Left = 444
+    Top = 123
   end
 end
