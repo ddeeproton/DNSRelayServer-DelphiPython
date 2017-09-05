@@ -11,8 +11,8 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.261';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.262.0';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
