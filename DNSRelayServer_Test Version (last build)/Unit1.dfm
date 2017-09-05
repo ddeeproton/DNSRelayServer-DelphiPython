@@ -1,8 +1,8 @@
 object Form1: TForm1
   Left = 190
   Top = 114
-  Width = 514
-  Height = 684
+  Width = 504
+  Height = 644
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -66,8 +66,8 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 81
-    Width = 506
+    Top = 48
+    Width = 496
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -79,7 +79,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 98
+    Top = 66
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet6
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -987,7 +987,7 @@ object Form1: TForm1
                     Width = 216
                     Height = 13
                     Caption = 'Afficher des alertes pour les domaines connus'
-                    FocusControl = CheckBoxAlertEventsKnown
+                    FocusControl = CheckBoxAlertEventsUnknown
                     OnClick = LabelToCheckboxClick
                     OnMouseEnter = LabelCheckboxMouseEnter
                     OnMouseLeave = LabelCheckboxMouseLeave
@@ -1375,8 +1375,8 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 568
-    Width = 506
+    Top = 528
+    Width = 496
     Height = 82
     Align = alBottom
     Caption = '           '
@@ -1389,7 +1389,7 @@ object Form1: TForm1
     TabOrder = 1
     Visible = False
     DesignSize = (
-      506
+      496
       82)
     object Label21: TLabel
       Left = 13
@@ -1401,7 +1401,7 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 39
-      Width = 502
+      Width = 492
       Height = 41
       Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
@@ -1462,7 +1462,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 506
+    Width = 496
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1562,17 +1562,16 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 0
-    Top = 48
-    Width = 506
+    Top = 462
+    Width = 496
     Height = 33
-    Align = alTop
+    Align = alBottom
     TabOrder = 3
-    Visible = False
     DesignSize = (
-      506
+      496
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 471
+      Left = 461
       Top = 6
       Width = 22
       Height = 22
@@ -1609,17 +1608,16 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 0
-    Top = 535
-    Width = 506
+    Top = 495
+    Width = 496
     Height = 33
     Align = alBottom
     TabOrder = 4
-    Visible = False
     DesignSize = (
-      506
+      496
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 471
+      Left = 461
       Top = 6
       Width = 22
       Height = 22
@@ -1660,7 +1658,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 386
-    Top = 430
+    Top = 342
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2464,7 +2462,7 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Images = ImageList3
     Left = 386
-    Top = 306
+    Top = 218
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -2608,7 +2606,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 415
-    Top = 430
+    Top = 342
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -6745,11 +6743,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 387
-    Top = 491
+    Top = 403
   end
   object ImageList3: TImageList
     Left = 386
-    Top = 458
+    Top = 370
     Bitmap = {
       494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -7423,11 +7421,11 @@ object Form1: TForm1
     Interval = 2000
     OnTimer = TimerSaveChangeTimer
     Left = 387
-    Top = 183
+    Top = 95
   end
   object PopupMenuListView: TPopupMenu
     Left = 386
-    Top = 363
+    Top = 275
     object Autoriser1: TMenuItem
       Bitmap.Data = {
         AA030000424DAA03000000000000360000002800000011000000110000000100
@@ -7552,13 +7550,13 @@ object Form1: TForm1
     Interval = 500
     OnTimer = Timer1Timer
     Left = 415
-    Top = 99
+    Top = 11
   end
   object ImageList4: TImageList
     Height = 80
     Width = 71
     Left = 414
-    Top = 458
+    Top = 370
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -16362,24 +16360,25 @@ object Form1: TForm1
     Interval = 5000
     OnTimer = TimerUpdateOnLoadTimer
     Left = 387
-    Top = 127
+    Top = 39
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
+    Interval = 1
     OnTimer = TimerAfterFormCreateTimer
     Left = 387
-    Top = 155
+    Top = 67
   end
   object TimerCheckUpdate: TTimer
     Enabled = False
     Interval = 120000
     OnTimer = TimerCheckUpdateTimer
     Left = 387
-    Top = 99
+    Top = 11
   end
   object PopupMenuDNSMaster: TPopupMenu
     Left = 386
-    Top = 335
+    Top = 247
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16414,24 +16413,24 @@ object Form1: TForm1
     Interval = 1
     OnTimer = TimerStartInBackgroundTimer
     Left = 415
-    Top = 155
+    Top = 179
   end
   object TimerRestart: TTimer
     Enabled = False
     Interval = 3000
     OnTimer = TimerRestartTimer
     Left = 415
-    Top = 127
+    Top = 39
   end
   object TimerResetAlertPosition: TTimer
     Enabled = False
     OnTimer = TimerResetAlertPositionTimer
     Left = 415
-    Top = 211
+    Top = 123
   end
   object PopupMenuBlacklist: TPopupMenu
     Left = 414
-    Top = 363
+    Top = 275
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16450,11 +16449,11 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 414
-    Top = 491
+    Top = 403
   end
   object PopupMenuTheme: TPopupMenu
     Left = 386
-    Top = 391
+    Top = 303
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -16477,7 +16476,7 @@ object Form1: TForm1
   end
   object PopupMenuForAllDNSRules: TPopupMenu
     Left = 414
-    Top = 391
+    Top = 303
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -16493,7 +16492,7 @@ object Form1: TForm1
   end
   object PopupMenuLogs: TPopupMenu
     Left = 414
-    Top = 336
+    Top = 248
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -16523,34 +16522,40 @@ object Form1: TForm1
     Interval = 2000
     OnTimer = TimerHideMessageTimer
     Left = 415
-    Top = 183
+    Top = 95
   end
   object TimerAlert: TTimer
     Enabled = False
     Interval = 10000
     OnTimer = TimerAlertTimer
     Left = 387
-    Top = 211
+    Top = 123
   end
   object TimerFadeIn: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeInTimer
     Left = 387
-    Top = 239
+    Top = 151
   end
   object TimerFadeOut: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeOutTimer
     Left = 415
-    Top = 239
+    Top = 151
   end
   object TimerCheckSystemChanges: TTimer
     Enabled = False
     Interval = 10000
     OnTimer = TimerCheckSystemChangesTimer
     Left = 387
-    Top = 267
+    Top = 179
+  end
+  object TimerAfterFormCreateLong: TTimer
+    Interval = 10000
+    OnTimer = TimerAfterFormCreateLongTimer
+    Left = 416
+    Top = 69
   end
 end

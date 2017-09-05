@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.256';
+var CurrentApplicationVersion: string = '0.4.257';
 
 type
   TForm1 = class(TForm)
@@ -247,6 +247,7 @@ type
     TimerFadeIn: TTimer;
     TimerFadeOut: TTimer;
     TimerCheckSystemChanges: TTimer;
+    TimerAfterFormCreateLong: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -404,6 +405,7 @@ type
     procedure TimerFadeOutTimer(Sender: TObject);
     procedure TimerCheckSystemChangesTimer(Sender: TObject);
     procedure CheckSystemChangesTimer(Sender: TObject);
+    procedure TimerAfterFormCreateLongTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1518,7 +1520,7 @@ begin
   ServerDoStart := False;
   ServerFailStartCount := 0;
   GroupBoxUpdateTheme.Visible := False;
-  PanelMessage.Visible := False;
+  //PanelMessage.Visible := False;
 
 
   Form1.Width := Form1.Constraints.MinWidth;
@@ -2690,15 +2692,14 @@ procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
-  PanelRestart.Visible := False;
   ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
   SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
   TimerHideMessage.Enabled := False;
-  PanelMessage.Visible := False;
   TimerSaveChange.Enabled := False;
-  isApplicationLoading := False;
   if startedInBackground then exit;
-  Afficher1Click(nil);
+  Afficher1Click(nil);       
+  PanelRestart.Visible := False;
+  PanelMessage.Visible := False;
 
   {
   Application.ShowMainForm := true;
@@ -3051,7 +3052,8 @@ end;
 procedure TForm1.ButtonApplyChangesClick(Sender: TObject);
 begin
   PanelRestart.Visible := False;
-  ButtonStartClick(nil);
+  KillTask('python.exe');
+  //ButtonStartClick(nil);
 end;
 
 procedure TForm1.PageControl1DrawTab(Control: TCustomTabControl;
@@ -3969,6 +3971,12 @@ end;
 procedure TForm1.TimerCheckSystemChangesTimer(Sender: TObject);
 begin
   //
+end;
+
+procedure TForm1.TimerAfterFormCreateLongTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+  isApplicationLoading := False;
 end;
 
 end.
