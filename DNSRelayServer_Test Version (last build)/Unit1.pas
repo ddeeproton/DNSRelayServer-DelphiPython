@@ -11,7 +11,7 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.260';
+  CurrentApplicationVersion: string = '0.4.261.0';
   isDevVersion: Boolean = True;
 
 type
@@ -2574,7 +2574,7 @@ end;
 
 procedure TForm1.ButtonUpdateDevClick(Sender: TObject);
 begin
-  if MessageDlg(PChar('Attention, cette mise à jour est destiné à son développement. Vous allez mettre à jour le serveur dans une version d''essai qui est potentiellement instable. Voulez-vous continuer?'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then exit;
+  if MessageDlg(PChar('Attention, cette mise à jour est destinée à son développement. Vous allez mettre à jour le serveur dans une version d''essai qui est potentiellement instable. Voulez-vous continuer?'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then exit;
 
 
   TButton(Sender).Enabled := False;
