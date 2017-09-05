@@ -11,8 +11,8 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.262.1';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.262';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -1624,7 +1624,6 @@ begin
   ScrollBox3.Align := alClient;
   ScrollBox4.Align := alClient;
   ScrollBox5.Align := alClient;
-
 
   PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;

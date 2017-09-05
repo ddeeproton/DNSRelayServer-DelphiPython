@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet3
+            ActivePage = TabSheet1
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -472,7 +472,7 @@ object Form1: TForm1
                     241)
                   object Panel8: TPanel
                     Left = 8
-                    Top = 16
+                    Top = 13
                     Width = 273
                     Height = 145
                     Anchors = [akLeft, akTop, akRight]
@@ -575,7 +575,7 @@ object Form1: TForm1
                   end
                   object Panel9: TPanel
                     Left = 8
-                    Top = 168
+                    Top = 166
                     Width = 273
                     Height = 65
                     Anchors = [akLeft, akTop, akRight]
