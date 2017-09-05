@@ -11,7 +11,7 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.262.0';
+  CurrentApplicationVersion: string = '0.4.262.1';
   isDevVersion: Boolean = True;
 
 type
@@ -226,13 +226,6 @@ type
     Button1: TButton;
     CheckListBoxDNSRelayIP: TCheckListBox;
     GroupBox11: TGroupBox;
-    Label12: TLabel;
-    Label11: TLabel;
-    Label10: TLabel;
-    CheckBoxUpdateSilent: TCheckBox;
-    CheckBoxUpdateIntervall: TCheckBox;
-    CheckBoxUpdate: TCheckBox;
-    SpinTimeCheckUpdate: TSpinEdit;
     GroupBox12: TGroupBox;
     Label31: TLabel;
     Label18: TLabel;
@@ -255,6 +248,13 @@ type
     Panel9: TPanel;
     ButtonUpdateDev: TButton;
     Label35: TLabel;
+    SpinTimeCheckUpdate: TSpinEdit;
+    Label12: TLabel;
+    CheckBoxUpdateSilent: TCheckBox;
+    CheckBoxUpdateIntervall: TCheckBox;
+    Label11: TLabel;
+    CheckBoxUpdate: TCheckBox;
+    Label10: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1903,6 +1903,9 @@ begin
   Label31.Font.Color := color;
   Label32.Font.Color := color;
   Label33.Font.Color := color;
+  Label34.Font.Color := color;
+  Label35.Font.Color := color;
+
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
   CheckBoxAutostartDNSOnBoot.Font.Color := color;

@@ -470,95 +470,66 @@ object Form1: TForm1
                   DesignSize = (
                     289
                     241)
-                  object Label12: TLabel
-                    Left = 26
-                    Top = 68
-                    Width = 238
-                    Height = 13
-                    Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
-                    FocusControl = CheckBoxUpdateSilent
-                    OnClick = LabelToCheckboxClick
-                    OnMouseEnter = LabelCheckboxMouseEnter
-                    OnMouseLeave = LabelCheckboxMouseLeave
-                  end
-                  object Label11: TLabel
-                    Left = 26
-                    Top = 43
-                    Width = 175
-                    Height = 13
-                    Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
-                    FocusControl = CheckBoxUpdateIntervall
-                    OnClick = LabelToCheckboxClick
-                    OnMouseEnter = LabelCheckboxMouseEnter
-                    OnMouseLeave = LabelCheckboxMouseLeave
-                  end
-                  object Label10: TLabel
-                    Left = 26
-                    Top = 18
-                    Width = 226
-                    Height = 13
-                    Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
-                    FocusControl = CheckBoxUpdate
-                    OnClick = LabelToCheckboxClick
-                    OnMouseEnter = LabelCheckboxMouseEnter
-                    OnMouseLeave = LabelCheckboxMouseLeave
-                  end
-                  object CheckBoxUpdateSilent: TCheckBox
-                    Left = 8
-                    Top = 67
-                    Width = 17
-                    Height = 17
-                    TabOrder = 0
-                    OnClick = CheckBoxUpdateSilentClick
-                  end
-                  object CheckBoxUpdateIntervall: TCheckBox
-                    Left = 8
-                    Top = 42
-                    Width = 17
-                    Height = 17
-                    TabOrder = 1
-                    OnClick = CheckBoxUpdateIntervallClick
-                  end
-                  object CheckBoxUpdate: TCheckBox
-                    Left = 8
-                    Top = 16
-                    Width = 17
-                    Height = 17
-                    TabOrder = 2
-                    OnClick = CheckBoxUpdateClick
-                  end
-                  object SpinTimeCheckUpdate: TSpinEdit
-                    Left = 208
-                    Top = 40
-                    Width = 73
-                    Height = 22
-                    MaxValue = 0
-                    MinValue = 0
-                    TabOrder = 3
-                    Value = 24
-                    OnChange = SpinTimeCheckUpdateChange
-                  end
                   object Panel8: TPanel
                     Left = 8
-                    Top = 96
+                    Top = 16
                     Width = 273
-                    Height = 57
+                    Height = 145
                     Anchors = [akLeft, akTop, akRight]
                     BevelInner = bvLowered
-                    TabOrder = 4
+                    TabOrder = 0
                     DesignSize = (
                       273
-                      57)
+                      145)
                     object Label34: TLabel
-                      Left = 16
+                      Left = 8
                       Top = 8
-                      Width = 66
+                      Width = 81
                       Height = 13
                       Caption = 'Version stable'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clBlack
+                      Font.Height = -11
+                      Font.Name = 'MS Sans Serif'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                    end
+                    object Label12: TLabel
+                      Left = 26
+                      Top = 84
+                      Width = 238
+                      Height = 13
+                      Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
+                      FocusControl = CheckBoxUpdateSilent
+                      OnClick = LabelToCheckboxClick
+                      OnMouseEnter = LabelCheckboxMouseEnter
+                      OnMouseLeave = LabelCheckboxMouseLeave
+                    end
+                    object Label11: TLabel
+                      Left = 26
+                      Top = 59
+                      Width = 175
+                      Height = 13
+                      Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
+                      FocusControl = CheckBoxUpdateIntervall
+                      OnClick = LabelToCheckboxClick
+                      OnMouseEnter = LabelCheckboxMouseEnter
+                      OnMouseLeave = LabelCheckboxMouseLeave
+                    end
+                    object Label10: TLabel
+                      Left = 26
+                      Top = 34
+                      Width = 226
+                      Height = 13
+                      Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
+                      FocusControl = CheckBoxUpdate
+                      OnClick = LabelToCheckboxClick
+                      OnMouseEnter = LabelCheckboxMouseEnter
+                      OnMouseLeave = LabelCheckboxMouseLeave
                     end
                     object ButtonUpdate: TButton
                       Left = 96
-                      Top = 24
+                      Top = 112
                       Width = 75
                       Height = 25
                       Anchors = [akTop]
@@ -566,28 +537,69 @@ object Form1: TForm1
                       TabOrder = 0
                       OnClick = ButtonUpdateClick
                     end
+                    object SpinTimeCheckUpdate: TSpinEdit
+                      Left = 216
+                      Top = 56
+                      Width = 51
+                      Height = 22
+                      MaxValue = 0
+                      MinValue = 0
+                      TabOrder = 1
+                      Value = 24
+                      OnChange = SpinTimeCheckUpdateChange
+                    end
+                    object CheckBoxUpdateSilent: TCheckBox
+                      Left = 8
+                      Top = 83
+                      Width = 17
+                      Height = 17
+                      TabOrder = 2
+                      OnClick = CheckBoxUpdateSilentClick
+                    end
+                    object CheckBoxUpdateIntervall: TCheckBox
+                      Left = 8
+                      Top = 58
+                      Width = 17
+                      Height = 17
+                      TabOrder = 3
+                      OnClick = CheckBoxUpdateIntervallClick
+                    end
+                    object CheckBoxUpdate: TCheckBox
+                      Left = 8
+                      Top = 32
+                      Width = 17
+                      Height = 17
+                      TabOrder = 4
+                      OnClick = CheckBoxUpdateClick
+                    end
                   end
                   object Panel9: TPanel
                     Left = 8
                     Top = 168
                     Width = 273
-                    Height = 57
+                    Height = 65
                     Anchors = [akLeft, akTop, akRight]
                     BevelInner = bvLowered
-                    TabOrder = 5
+                    TabOrder = 1
                     DesignSize = (
                       273
-                      57)
+                      65)
                     object Label35: TLabel
-                      Left = 16
+                      Left = 8
                       Top = 8
-                      Width = 137
+                      Width = 169
                       Height = 13
                       Caption = 'Version instable (test version)'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clBlack
+                      Font.Height = -11
+                      Font.Name = 'MS Sans Serif'
+                      Font.Style = [fsBold]
+                      ParentFont = False
                     end
                     object ButtonUpdateDev: TButton
                       Left = 96
-                      Top = 24
+                      Top = 32
                       Width = 75
                       Height = 25
                       Anchors = [akTop]
