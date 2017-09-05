@@ -12,7 +12,7 @@ uses
 
 var
   CurrentApplicationVersion: string = '0.4.263.1';
-  isDevVersion: Boolean = False;
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
