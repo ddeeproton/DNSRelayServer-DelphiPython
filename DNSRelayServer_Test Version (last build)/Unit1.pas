@@ -11,7 +11,7 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.263.1';
+  CurrentApplicationVersion: string = '0.4.263.2';
   isDevVersion: Boolean = True;
 
 type

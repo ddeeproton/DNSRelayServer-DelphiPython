@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 276
-  Top = 136
+  Left = 195
+  Top = 112
   Width = 504
   Height = 644
   Caption = 'DNS Relay Server'
@@ -1201,8 +1201,8 @@ object Form1: TForm1
                     Anchors = [akLeft, akTop, akRight]
                     AutoSize = False
                     Caption = 
-                      'Permet '#224' cette application d'#39#234'tre contr'#244'l'#233' par une application e' +
-                      'xterne ou un script. '
+                      'Permet '#224' cette application d'#39#234'tre contr'#244'l'#233'e par une application ' +
+                      'externe ou un script. '
                     WordWrap = True
                   end
                   object CheckBoxRemoteAccess: TCheckBox
