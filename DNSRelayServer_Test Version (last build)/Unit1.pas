@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.255';
+var CurrentApplicationVersion: string = '0.4.256';
 
 type
   TForm1 = class(TForm)
@@ -246,6 +246,7 @@ type
     Hostfile1: TMenuItem;
     TimerFadeIn: TTimer;
     TimerFadeOut: TTimer;
+    TimerCheckSystemChanges: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -401,6 +402,8 @@ type
     procedure TimerAlertTimer(Sender: TObject);
     procedure TimerFadeInTimer(Sender: TObject);
     procedure TimerFadeOutTimer(Sender: TObject);
+    procedure TimerCheckSystemChangesTimer(Sender: TObject);
+    procedure CheckSystemChangesTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -726,8 +729,8 @@ begin
         {Leemos la Pipe}
         dispose(tb);
       except
-        On E : EOSError do
-          exit;
+        On E : EOSError do exit;
+        On E : EAccessViolation do exit;
       end;
     end;
     FreeMem(Buffer);
@@ -737,8 +740,8 @@ begin
       if PaLeer <> 0 then CloseHandle(PaLeer);
       if PaEscribir <> 0 then CloseHandle(PaEscribir);
     except
-      On E : EOSError do
-        exit
+      On E : EOSError do exit;
+      On E : EAccessViolation do exit;
     end;
 
 
@@ -2041,11 +2044,12 @@ end;
 
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin                                       
-  Self.Hide;
+  //Self.Hide;
   //TimerFadeIn.Enabled := False;
   //TimerFadeOut.Enabled := True;
                                          
-  //Top := Screen.Height;
+  Top := Screen.Height;
+  Left := Screen.Width;
   //currentFormStyle := Self.FormStyle;
   //Self.FormStyle := fsStayOnTop;
   //Systray.EnleveIconeTray;
@@ -2057,7 +2061,7 @@ procedure TForm1.Afficher1Click(Sender: TObject);
 begin
   //TimerFadeOut.Enabled := False;
   //TimerFadeIn.Enabled := True;  
-  Self.Show;
+  //Self.Show;
   try
 
   if Top > Screen.WorkAreaHeight - Self.Height then
@@ -3934,6 +3938,37 @@ begin
     TTimer(Sender).Enabled := False;
   end;
 
+end;
+
+
+// ==== TODO ===
+var
+  oldNet: tNetworkInterfaceList;
+
+procedure TForm1.CheckSystemChangesTimer(Sender: TObject);
+var
+  i, j: Integer;
+  ip: string;
+  net: tNetworkInterfaceList;
+begin
+  if not GetNetworkInterfaces(net) then exit;
+  if oldNet <> nil then
+  begin
+    for i := 0 to High(net) do
+    begin
+      for j := 0 to High(oldNet) do
+      begin
+        //oldNet[j].AddrIP;
+        //net[i].AddrIP;
+      end;
+    end;
+  end;
+  oldNet := net;
+end;
+
+procedure TForm1.TimerCheckSystemChangesTimer(Sender: TObject);
+begin
+  //
 end;
 
 end.
