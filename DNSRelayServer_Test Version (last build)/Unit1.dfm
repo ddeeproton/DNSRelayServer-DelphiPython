@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet6
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -987,7 +987,7 @@ object Form1: TForm1
                     Width = 216
                     Height = 13
                     Caption = 'Afficher des alertes pour les domaines connus'
-                    FocusControl = CheckBoxAlertEventsUnknown
+                    FocusControl = CheckBoxAlertEventsKnown
                     OnClick = LabelToCheckboxClick
                     OnMouseEnter = LabelCheckboxMouseEnter
                     OnMouseLeave = LabelCheckboxMouseLeave
