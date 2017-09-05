@@ -11,8 +11,8 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.261.0';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.261';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -2610,7 +2610,7 @@ procedure TUpdate.DoUpdateDevelopper(isSilent: Boolean);
 begin
   UpdateUrl(
     'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/DNSRelayServer_Test Version (last build)/NSIS/version_dev.txt',
-    'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup installation/old versions/DNSRelayServerSetup_',
+    'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup installation/test versions (bugged)/DNSRelayServerSetup_',
     '_alpha',
     isSilent,
     true
