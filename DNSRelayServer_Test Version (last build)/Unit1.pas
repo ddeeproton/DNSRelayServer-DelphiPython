@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.257';
+var CurrentApplicationVersion: string = '0.4.258';
 
 type
   TForm1 = class(TForm)
@@ -2351,11 +2351,11 @@ begin
     end;
   end;
   WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
-  if isApplicationLoading then exit;
+  if isApplicationLoading then exit;                 
+  if isServerStarted then PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
-  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.ToolButton10Click(Sender: TObject);
@@ -3881,11 +3881,11 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
 
-  if isApplicationLoading then exit;
+  if isApplicationLoading then exit;        
+  PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
-  PanelRestart.Visible := True;
 end;
 
 
@@ -3897,11 +3897,11 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxPureServer.cfg');
 
-  if isApplicationLoading then exit;
+  if isApplicationLoading then exit;    
+  PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
-  PanelRestart.Visible := True;
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
@@ -3950,7 +3950,7 @@ var
 procedure TForm1.CheckSystemChangesTimer(Sender: TObject);
 var
   i, j: Integer;
-  ip: string;
+  //ip: string;
   net: tNetworkInterfaceList;
 begin
   if not GetNetworkInterfaces(net) then exit;

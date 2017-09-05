@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet6
+            ActivePage = TabSheet1
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -1562,7 +1562,7 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 0
-    Top = 462
+    Top = 495
     Width = 496
     Height = 33
     Align = alBottom
@@ -1608,7 +1608,7 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 0
-    Top = 495
+    Top = 462
     Width = 496
     Height = 33
     Align = alBottom
