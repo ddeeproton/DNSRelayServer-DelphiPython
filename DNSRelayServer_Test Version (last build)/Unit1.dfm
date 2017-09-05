@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet6
+            ActivePage = TabSheet3
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -464,9 +464,12 @@ object Form1: TForm1
                   Left = 0
                   Top = 0
                   Width = 289
-                  Height = 137
+                  Height = 241
                   Align = alTop
                   TabOrder = 0
+                  DesignSize = (
+                    289
+                    241)
                   object Label12: TLabel
                     Left = 26
                     Top = 68
@@ -500,21 +503,12 @@ object Form1: TForm1
                     OnMouseEnter = LabelCheckboxMouseEnter
                     OnMouseLeave = LabelCheckboxMouseLeave
                   end
-                  object ButtonUpdate: TButton
-                    Left = 8
-                    Top = 96
-                    Width = 75
-                    Height = 25
-                    Caption = 'Mettre '#224' jour'
-                    TabOrder = 0
-                    OnClick = ButtonUpdateClick
-                  end
                   object CheckBoxUpdateSilent: TCheckBox
                     Left = 8
                     Top = 67
                     Width = 17
                     Height = 17
-                    TabOrder = 1
+                    TabOrder = 0
                     OnClick = CheckBoxUpdateSilentClick
                   end
                   object CheckBoxUpdateIntervall: TCheckBox
@@ -522,7 +516,7 @@ object Form1: TForm1
                     Top = 42
                     Width = 17
                     Height = 17
-                    TabOrder = 2
+                    TabOrder = 1
                     OnClick = CheckBoxUpdateIntervallClick
                   end
                   object CheckBoxUpdate: TCheckBox
@@ -530,7 +524,7 @@ object Form1: TForm1
                     Top = 16
                     Width = 17
                     Height = 17
-                    TabOrder = 3
+                    TabOrder = 2
                     OnClick = CheckBoxUpdateClick
                   end
                   object SpinTimeCheckUpdate: TSpinEdit
@@ -540,9 +534,67 @@ object Form1: TForm1
                     Height = 22
                     MaxValue = 0
                     MinValue = 0
-                    TabOrder = 4
+                    TabOrder = 3
                     Value = 24
                     OnChange = SpinTimeCheckUpdateChange
+                  end
+                  object Panel8: TPanel
+                    Left = 8
+                    Top = 96
+                    Width = 273
+                    Height = 57
+                    Anchors = [akLeft, akTop, akRight]
+                    BevelInner = bvLowered
+                    TabOrder = 4
+                    DesignSize = (
+                      273
+                      57)
+                    object Label34: TLabel
+                      Left = 16
+                      Top = 8
+                      Width = 66
+                      Height = 13
+                      Caption = 'Version stable'
+                    end
+                    object ButtonUpdate: TButton
+                      Left = 96
+                      Top = 24
+                      Width = 75
+                      Height = 25
+                      Anchors = [akTop]
+                      Caption = 'Mettre '#224' jour'
+                      TabOrder = 0
+                      OnClick = ButtonUpdateClick
+                    end
+                  end
+                  object Panel9: TPanel
+                    Left = 8
+                    Top = 168
+                    Width = 273
+                    Height = 57
+                    Anchors = [akLeft, akTop, akRight]
+                    BevelInner = bvLowered
+                    TabOrder = 5
+                    DesignSize = (
+                      273
+                      57)
+                    object Label35: TLabel
+                      Left = 16
+                      Top = 8
+                      Width = 142
+                      Height = 13
+                      Caption = 'Version instable (d'#233'veloppeur)'
+                    end
+                    object ButtonUpdateDev: TButton
+                      Left = 96
+                      Top = 24
+                      Width = 75
+                      Height = 25
+                      Anchors = [akTop]
+                      Caption = 'Mettre '#224' jour'
+                      TabOrder = 0
+                      OnClick = ButtonUpdateDevClick
+                    end
                   end
                 end
               end

@@ -10,7 +10,9 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
-var CurrentApplicationVersion: string = '0.4.259';
+var
+  CurrentApplicationVersion: string = '0.4.260';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -227,7 +229,6 @@ type
     Label12: TLabel;
     Label11: TLabel;
     Label10: TLabel;
-    ButtonUpdate: TButton;
     CheckBoxUpdateSilent: TCheckBox;
     CheckBoxUpdateIntervall: TCheckBox;
     CheckBoxUpdate: TCheckBox;
@@ -248,6 +249,12 @@ type
     TimerFadeOut: TTimer;
     TimerCheckSystemChanges: TTimer;
     TimerAfterFormCreateLong: TTimer;
+    Panel8: TPanel;
+    ButtonUpdate: TButton;
+    Label34: TLabel;
+    Panel9: TPanel;
+    ButtonUpdateDev: TButton;
+    Label35: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -406,6 +413,7 @@ type
     procedure TimerCheckSystemChangesTimer(Sender: TObject);
     procedure CheckSystemChangesTimer(Sender: TObject);
     procedure TimerAfterFormCreateLongTimer(Sender: TObject);
+    procedure ButtonUpdateDevClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -440,6 +448,8 @@ type
     procedure Execute; override;
   public
     procedure DoUpdate(isSilent: Boolean);
+    procedure DoUpdateDevelopper(isSilent: Boolean);
+    procedure UpdateUrl(urlLastVersion, urlUpdate, suffixe: string; isSilent, isDev: Boolean);
   end;
 
 
@@ -1507,7 +1517,7 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
-  param: string;
+  param, txt: string;
   canClose: Boolean;
   autostarted: Boolean;
 begin
@@ -1569,7 +1579,8 @@ begin
     Application.Terminate;
   end;
 
-  Form1.Caption := PChar('DNS Relay Server '+CurrentApplicationVersion);
+  if isDevVersion then txt := ' alpha' else txt := '';
+  Form1.Caption := PChar('DNS Relay Server '+CurrentApplicationVersion+txt);
 
   isServerStarted := False;
   Memo1.Clear;
@@ -2526,7 +2537,7 @@ begin
 
       Application.ProcessMessages;
       ButtonCloseClick(nil);
-      
+
 
     //end;
   end;
@@ -2535,6 +2546,11 @@ begin
   Sleep(1000);
   TToolButton(Sender).Enabled := True;
 end;
+
+
+
+
+
 
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
 begin
@@ -2556,13 +2572,55 @@ begin
   TButton(Sender).Enabled := True;
 end;
 
+procedure TForm1.ButtonUpdateDevClick(Sender: TObject);
+begin
+  TButton(Sender).Enabled := False;
+
+  if FormInstall = nil then
+  begin
+    FormInstall := TFormInstall.Create(Form1);
+  end;
+  FormInstall.CheckInstallation;
+  if not FormInstall.isWgetInstalled
+  then begin
+    FormInstall.ButtonInstallClick(Self);
+    exit;
+  end;
+
+  if ThreadUpdate = nil then ThreadUpdate := TUpdate.Create(True);
+  ThreadUpdate.DoUpdateDevelopper(False);
+  TButton(Sender).Enabled := True;
+end;
+      
 procedure TUpdate.DoUpdate(isSilent: Boolean);
+begin
+  UpdateUrl(
+    'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt',
+    'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup installation/DNSRelayServerSetup_',
+    '',
+    isSilent,
+    false
+  );
+end;
+
+procedure TUpdate.DoUpdateDevelopper(isSilent: Boolean);
+begin
+  UpdateUrl(
+    'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/DNSRelayServer_Test Version (last build)/NSIS/version_dev.txt',
+    'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup installation/old versions/DNSRelayServerSetup_',
+    '_alpha',
+    isSilent,
+    true
+  );
+end;
+
+procedure TUpdate.UpdateUrl(urlLastVersion, urlUpdate, suffixe: string; isSilent, isDev: Boolean);
 var
   lastversion, lastverFile, url, msg: string;
   canClose: Boolean;
 begin
   //url := 'https://raw.gith4ubusercontent.com/ddeeproton/DNSRelayServer-DelphiPython/master/Special version/BlackEdition/lastversion.txt';
-  url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/lastversion.txt?'+DateTimeToStr(Now);
+  url := urlLastVersion+'?'+DateTimeToStr(Now);
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
   if FileExists(lastverFile) then DeleteFile(lastverFile);
   if FileExists(lastverFile) then
@@ -2584,7 +2642,7 @@ begin
     exit;
   end;
   lastversion := ReadFromFile(lastverFile);
-  if Pos(CurrentApplicationVersion, lastversion) = 1 then
+  if (Pos(CurrentApplicationVersion, lastversion) = 1) and (isDev = isDevVersion ) then
   begin
     if isSilent then
       //Form1.MemoLogs.Lines.Add('Vous êtes à jour')
@@ -2604,7 +2662,7 @@ begin
     msg := 'Mise à jour version "'+lastversion+'" disponible :)'+#13+'Mettre à jour?';
     if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar(msg),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
     begin
-      url := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup installation/DNSRelayServerSetup_'+lastversion+'.exe';
+      url := urlUpdate+lastversion+suffixe+'.exe';
       lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'DNSRelayServerSetup_'+lastversion+'.exe';
       downloadFile(url, lastverFile);
       if FileExists(lastverFile) and (FileSize(lastverFile) > 0) then
@@ -3978,6 +4036,7 @@ begin
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
 end;
+
 
 end.
 
