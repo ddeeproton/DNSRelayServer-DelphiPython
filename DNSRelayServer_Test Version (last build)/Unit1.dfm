@@ -1104,47 +1104,21 @@ object Form1: TForm1
                 Height = 273
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 19
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
-                DesignSize = (
-                  272
-                  273)
                 object GroupBox13: TGroupBox
                   Left = 0
-                  Top = 89
+                  Top = 62
                   Width = 272
-                  Height = 331
-                  Anchors = [akLeft, akTop, akRight]
+                  Height = 211
+                  Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     272
-                    331)
-                  object Label36: TLabel
-                    Left = 8
-                    Top = 88
-                    Width = 248
-                    Height = 225
-                    Anchors = [akLeft, akTop, akRight]
-                    AutoSize = False
-                    Caption = 
-                      'Ce script permet de contr'#244'ler cette application depuis un serveu' +
-                      'r web PHP. Cette application doit pouvoir avoir un acc'#232's en '#233'cri' +
-                      'ture o'#249' sera install'#233' le script. Et le script a aussi besoin d'#39'u' +
-                      'n acc'#232's en '#233'criture o'#249' est install'#233' cette application. Lors de l' +
-                      #39'installation, l'#39'application va m'#233'moriser le chemin o'#249' est expor' +
-                      't'#233' le script. Veillez '#224' exporter dans le r'#233'p'#233'rtoire du serveur w' +
-                      'eb si vous voulez profiter des mises '#224' jour automatique du scrip' +
-                      't. Effacez le script ou exportez-le dans un r'#233'pertoire temporair' +
-                      'e si vous ne voulez pas de mise '#224' jour automatique du script. Po' +
-                      'ur le moment il n'#39'y a aucune s'#233'curit'#233' d'#39'acc'#232's au script. Install' +
-                      #233' tel quel, n'#39'importe qui qui acc'#232'de au serveur pourra changer e' +
-                      'nsuite les configurations de cette application. A vous de s'#233'curi' +
-                      'ser l'#39'acc'#232's au script (avec un .htaccess ou en placant uniquemen' +
-                      't sur un intranet local)'
-                    WordWrap = True
-                  end
+                    211)
                   object Label39: TLabel
                     Left = 16
                     Top = 16
@@ -1171,13 +1145,23 @@ object Form1: TForm1
                     TabOrder = 0
                     OnClick = ButtonInstallScriptWebAdminClick
                   end
+                  object MemoHelpWebAdmin: TMemo
+                    Left = 8
+                    Top = 72
+                    Width = 255
+                    Height = 129
+                    Anchors = [akLeft, akTop, akRight]
+                    ReadOnly = True
+                    ScrollBars = ssVertical
+                    TabOrder = 1
+                  end
                 end
                 object GroupBox14: TGroupBox
                   Left = 0
-                  Top = 0
+                  Top = -19
                   Width = 272
                   Height = 81
-                  Anchors = [akLeft, akTop, akRight]
+                  Align = alTop
                   TabOrder = 1
                   DesignSize = (
                     272

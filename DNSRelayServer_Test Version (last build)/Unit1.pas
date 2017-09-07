@@ -263,9 +263,9 @@ type
     Label37: TLabel;
     Label38: TLabel;
     CheckBoxRemoteAccess: TCheckBox;
-    Label36: TLabel;
     ButtonInstallScriptWebAdmin: TButton;
     Label39: TLabel;
+    MemoHelpWebAdmin: TMemo;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1623,6 +1623,14 @@ begin
                 'Pour fonctionner le serveur DNS a besoin de Python 2.7 et de quelques librairies pour fonctionner. Ces dépendances seront téléchargés et installés automatiquement au lancement du serveur.  Une connexion Internet sera nécessaire.';
 
 
+  MemoHelpWebAdmin.Lines.Add('Ce script permet de contrôler cette application depuis un serveur web PHP. '
+    +'Cette application doit pouvoir avoir un accès en écriture où sera installé le script. '
+    +'Et le script a aussi besoin d''un accès en écriture où est installé cette application. Lors de l''installation, l''application va mémoriser le chemin où est exporté le script.'
+    +' Veillez à exporter dans le répértoire du serveur web si vous voulez profiter des mises à jour automatique du script. '
+    +'Effacez le script ou exportez-le dans un répertoire temporaire si vous ne voulez pas de mise à jour automatique du script. '
+    +'Pour le moment il n''y a aucune sécurité d''accès au script. '
+    +'Installé tel quel, n''importe qui qui accède au serveur pourra changer ensuite les configurations de cette application. A vous de sécuriser l''accès au script (avec un .htaccess ou en placant uniquement sur un intranet local)');
+
   Panel1.Align := alClient;
   GroupBox1.Align := alClient;
   GroupBox2.Align := alClient;
@@ -1867,7 +1875,8 @@ begin
 
   ListView1.Color := bg2;
   Memo1.Color := bg2;
-  MemoLogs.Color := bg2;
+  MemoLogs.Color := bg2;   
+  MemoHelpWebAdmin.Color := bg2;
   ListBoxIpClients.Color := bg2;
   ListBoxDNSMaster.Color := bg2;
   CheckListBoxDNSRelayIP.Color := bg2;
@@ -1885,6 +1894,7 @@ begin
   ListView1.Font.Color := bg2;
   Memo1.Font.Color := bg2;
   MemoLogs.Font.Color := bg2;
+  MemoHelpWebAdmin.Font.Color := bg2;
   ListBoxIpClients.Font.Color := bg2;
   ListBoxDNSMaster.Font.Color := bg2;
   CheckListBoxDNSRelayIP.Font.Color := bg2;
@@ -1925,7 +1935,6 @@ begin
   Label33.Font.Color := color;
   Label34.Font.Color := color;
   Label35.Font.Color := color;
-  Label36.Font.Color := color; 
   Label37.Font.Color := color;
   Label38.Font.Color := color;
   Label39.Font.Color := color;
@@ -1954,7 +1963,7 @@ begin
 
   {
   ListBoxBlacklist.Font.Color := color;
-  ComboBoxPosLogs.Font.Color := color;      
+  ComboBoxPosLogs.Font.Color := color;
   CheckListBoxDNSRelayIP.Font.Color := color;
   SpinPort.Font.Color := color;
   ListView1.Font.Color := color;
@@ -1967,6 +1976,16 @@ begin
   EditFilehost.Font.Color := color;
   }
 end;
+
+
+
+procedure TForm1.TimerAfterFormCreateLongTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+  isApplicationLoading := False;
+end;
+
+
 
 procedure TUpdate.Execute;
 begin
@@ -4043,7 +4062,7 @@ begin
 end;
 
 
-// ==== TODO ===
+// ==== Detect Network Interface Change ===
 var
   oldNet: tNetworkInterfaceList;
 
@@ -4073,25 +4092,46 @@ begin
   //
 end;
 
-procedure TForm1.TimerAfterFormCreateLongTimer(Sender: TObject);
-begin
-  TTimer(Sender).Enabled := False;
-  isApplicationLoading := False;
-end;
-
+// ================ Remote access ======== //
 
 procedure TForm1.TimerRemoteAccessTimer(Sender: TObject);
 var
-  FileRemoteReload: string;
+  f: string;
 begin
-  FileRemoteReload := DataDirectoryPath + 'action.remote_reload.txt';
-  if not FileExists(FileRemoteReload) then exit;
-  DeleteFile(FileRemoteReload);
-  FormCreate(nil);
-  ButtonApplyChangesClick(nil);
+  f := DataDirectoryPath + 'action.server.restart.txt';
+  if FileExists(f) then
+  begin
+    DeleteFile(f);
+    FormCreate(nil);
+    ButtonApplyChangesClick(nil);
+    exit;
+  end;
+  f := DataDirectoryPath + 'action.server.start.txt';
+  if FileExists(f) then
+  begin
+    DeleteFile(f);    
+    FormCreate(nil);
+    ButtonStartClick(nil);
+    exit;
+  end;
+  f := DataDirectoryPath + 'action.server.stop.txt';
+  if FileExists(f) then
+  begin
+    DeleteFile(f);
+    FormCreate(nil);
+    ButtonCloseClick(nil);
+    exit;
+  end;
+  f := DataDirectoryPath + 'action.application.reload.txt';
+  if FileExists(f) then
+  begin
+    DeleteFile(f);
+    FormCreate(nil);
+    exit;
+  end;
 end;
 
-     
+
 procedure TForm1.CheckBoxRemoteAccessClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
