@@ -11,7 +11,7 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.263.2';
+  CurrentApplicationVersion: string = '0.4.264.0';
   isDevVersion: Boolean = True;
 
 type
@@ -240,7 +240,6 @@ type
     Hostfile1: TMenuItem;
     TimerFadeIn: TTimer;
     TimerFadeOut: TTimer;
-    TimerCheckSystemChanges: TTimer;
     TimerAfterFormCreateLong: TTimer;
     Panel8: TPanel;
     ButtonUpdate: TButton;
@@ -266,6 +265,13 @@ type
     ButtonInstallScriptWebAdmin: TButton;
     Label39: TLabel;
     MemoHelpWebAdmin: TMemo;
+    TimerCheckSystemChanges: TTimer;
+    GroupBox15: TGroupBox;
+    Label40: TLabel;
+    Panel10: TPanel;
+    Panel11: TPanel;
+    Label42: TLabel;
+    CheckBoxRestartOnNetworkInterfaceChange: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -421,13 +427,14 @@ type
     procedure TimerAlertTimer(Sender: TObject);
     procedure TimerFadeInTimer(Sender: TObject);
     procedure TimerFadeOutTimer(Sender: TObject);
-    procedure TimerCheckSystemChangesTimer(Sender: TObject);
     procedure CheckSystemChangesTimer(Sender: TObject);
     procedure TimerAfterFormCreateLongTimer(Sender: TObject);
     procedure ButtonUpdateDevClick(Sender: TObject);
     procedure TimerRemoteAccessTimer(Sender: TObject);
     procedure CheckBoxRemoteAccessClick(Sender: TObject);
     procedure ButtonInstallScriptWebAdminClick(Sender: TObject);
+    procedure CheckBoxRestartOnNetworkInterfaceChangeClick(
+      Sender: TObject);
   private
     { Private declarations }
   public
@@ -817,7 +824,8 @@ begin
   ToolButton11.Hint := 'Arrêter le serveur DNS';
   ServerFailStartCount := 0;
   TimerRestart.Enabled := False;
-  ServerDoStart := True;       
+  TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
+  ServerDoStart := True;
   Application.ProcessMessages;
   except
     On E : EOSError do exit;
@@ -847,6 +855,7 @@ begin
     ToolButton11.Caption := 'Démarrer';
     ToolButton11.Enabled := True;
     ToolButton11.Hint := 'Démarrer le serveur DNS';
+    TimerCheckSystemChanges.Enabled := False;
   end;
 
   isServerStarted := False;
@@ -855,10 +864,7 @@ begin
   begin
     ButtonNetCardDesintegrationClick(nil);
   end;
-  //if not ServerDoStart then
-  //begin
 
-  //end;
 
   Application.ProcessMessages;
   except
@@ -1535,8 +1541,9 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
-
- // Masque la fenêtre de la taskbar
+  
+  
+  // Masque la fenêtre de la taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
   TimerAfterFormCreate.Enabled := True;
@@ -1766,10 +1773,13 @@ begin
   CheckBoxNoTestDNSMaster.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
   CheckBoxNoCacheDNS.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
   CheckBoxPureServer.Checked := FileExists(DataDirectoryPath + 'CheckBoxPureServer.cfg');
-  
+
   CheckBoxRemoteAccess.Checked := FileExists(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg');
   TimerRemoteAccess.Enabled := CheckBoxRemoteAccess.Checked;
 
+
+  CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
+  TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
 
 
   startedInBackground := False;
@@ -4066,31 +4076,61 @@ end;
 var
   oldNet: tNetworkInterfaceList;
 
+
+function FindNetworkInterface(net:tNetworkInterface;netList:tNetworkInterfaceList):Boolean;
+var
+  i: integer;
+begin
+  for i := 0 to High(netList) do
+  begin
+    if (netList[i].AddrIP = net.AddrIP)
+    and (netList[i].IsInterfaceUp = net.IsInterfaceUp) then
+    begin
+      result := true;
+      exit;
+    end;
+  end;
+  result := false;
+end;
+
 procedure TForm1.CheckSystemChangesTimer(Sender: TObject);
 var
-  i, j: Integer;
-  //ip: string;
+  i: Integer;
   net: tNetworkInterfaceList;
 begin
   if not GetNetworkInterfaces(net) then exit;
-  if oldNet <> nil then
+  if (oldNet <> nil) and (net <> nil) then
   begin
     for i := 0 to High(net) do
     begin
-      for j := 0 to High(oldNet) do
+      if not FindNetworkInterface(net[i], oldNet) then
       begin
-        //oldNet[j].AddrIP;
-        //net[i].AddrIP;
+        if isServerStarted then
+        begin
+          ButtonRefreshNetCardClick(nil);
+          ButtonApplyChangesClick(nil);
+          oldNet := net;
+          exit;
+        end;
+      end;
+    end;
+    for i := 0 to High(oldNet) do
+    begin
+      if not FindNetworkInterface(oldNet[i], net) then
+      begin
+        if isServerStarted then
+        begin
+          ButtonRefreshNetCardClick(nil);
+          ButtonApplyChangesClick(nil);
+          oldNet := net;
+          exit;
+        end;
       end;
     end;
   end;
   oldNet := net;
 end;
 
-procedure TForm1.TimerCheckSystemChangesTimer(Sender: TObject);
-begin
-  //
-end;
 
 // ================ Remote access ======== //
 
@@ -4151,6 +4191,7 @@ procedure TForm1.ButtonInstallScriptWebAdminClick(Sender: TObject);
 var PathScript: string;
 begin
   ShowMessage('En cours d''implémentation :)');
+  exit;
   if FileExists(DataDirectoryPath + 'PathScriptWebAdminPHP.cfg') then
     PathScript := ReadFromFile(DataDirectoryPath + 'PathScriptWebAdminPHP.cfg')
   else
@@ -4165,6 +4206,24 @@ begin
     WriteInFile(DataDirectoryPath + 'PathScriptWebAdminPHP.cfg', PathScript);
     // todo
   end;
+end;
+
+procedure TForm1.CheckBoxRestartOnNetworkInterfaceChangeClick(
+  Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
+  TimerCheckSystemChanges.Enabled := isServerStarted and TCheckBox(Sender).Checked;
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+
+
+
 end;
 
 end.

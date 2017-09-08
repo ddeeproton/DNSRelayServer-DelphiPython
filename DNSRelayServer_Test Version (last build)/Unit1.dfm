@@ -1,8 +1,9 @@
 object Form1: TForm1
-  Left = 195
-  Top = 112
+  Left = 340
+  Top = 0
   Width = 504
-  Height = 644
+  Height = 540
+  VertScrollBar.Position = 14
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -66,8 +67,8 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 48
-    Width = 496
+    Top = 34
+    Width = 479
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -79,7 +80,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 66
+    Top = 52
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -126,6 +127,7 @@ object Form1: TForm1
             Width = 311
             Height = 323
             ActivePage = TabSheet7
+            MultiLine = True
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -627,19 +629,19 @@ object Form1: TForm1
                 TabOrder = 0
                 object GroupBox7: TGroupBox
                   Left = 0
-                  Top = 0
-                  Width = 290
+                  Top = 53
+                  Width = 273
                   Height = 249
                   Align = alTop
                   Caption = '                                     '
                   TabOrder = 0
                   DesignSize = (
-                    290
+                    273
                     249)
                   object Label7: TLabel
                     Left = 8
                     Top = 63
-                    Width = 263
+                    Width = 246
                     Height = 91
                     Anchors = [akLeft, akTop, akRight]
                     Caption = 
@@ -659,7 +661,7 @@ object Form1: TForm1
                     Caption = 'Int'#233'gration du serveur'
                   end
                   object Panel4: TPanel
-                    Left = 50
+                    Left = 41
                     Top = 170
                     Width = 193
                     Height = 55
@@ -698,7 +700,7 @@ object Form1: TForm1
                   object Panel2: TPanel
                     Left = 2
                     Top = 15
-                    Width = 286
+                    Width = 269
                     Height = 45
                     Align = alTop
                     BevelOuter = bvNone
@@ -735,6 +737,67 @@ object Form1: TForm1
                       State = cbChecked
                       TabOrder = 0
                       OnClick = CheckBoxAllowModifyNetCardClick
+                    end
+                  end
+                end
+                object GroupBox15: TGroupBox
+                  Left = 0
+                  Top = 0
+                  Width = 273
+                  Height = 53
+                  Align = alTop
+                  Caption = '                      '
+                  TabOrder = 1
+                  DesignSize = (
+                    273
+                    53)
+                  object Label40: TLabel
+                    Left = 11
+                    Top = -2
+                    Width = 60
+                    Height = 13
+                    Caption = 'Carte r'#233'seau'
+                  end
+                  object Panel10: TPanel
+                    Left = 41
+                    Top = 170
+                    Width = 193
+                    Height = 55
+                    Anchors = [akTop]
+                    BevelOuter = bvNone
+                    Color = clWhite
+                    TabOrder = 0
+                  end
+                  object Panel11: TPanel
+                    Left = 2
+                    Top = 15
+                    Width = 269
+                    Height = 45
+                    Align = alTop
+                    BevelOuter = bvNone
+                    BevelWidth = 4
+                    Color = clWhite
+                    TabOrder = 1
+                    object Label42: TLabel
+                      Left = 25
+                      Top = 11
+                      Width = 252
+                      Height = 13
+                      Caption = 'Red'#233'marrer le serveur si modification sur carte r'#233'seau'
+                      FocusControl = CheckBoxRestartOnNetworkInterfaceChange
+                      OnClick = LabelToCheckboxClick
+                      OnMouseEnter = LabelCheckboxMouseEnter
+                      OnMouseLeave = LabelCheckboxMouseLeave
+                    end
+                    object CheckBoxRestartOnNetworkInterfaceChange: TCheckBox
+                      Left = 8
+                      Top = 10
+                      Width = 15
+                      Height = 17
+                      Checked = True
+                      State = cbChecked
+                      TabOrder = 0
+                      OnClick = CheckBoxRestartOnNetworkInterfaceChangeClick
                     end
                   end
                 end
@@ -795,7 +858,7 @@ object Form1: TForm1
                     Height = 21
                     Style = csDropDownList
                     Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 13
+                    ItemHeight = 0
                     ItemIndex = 0
                     TabOrder = 0
                     Text = 'White'
@@ -824,7 +887,7 @@ object Form1: TForm1
                     Height = 21
                     Style = csDropDownList
                     Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 13
+                    ItemHeight = 0
                     TabOrder = 2
                     OnSelect = ComboBoxPosLogsSelect
                     Items.Strings = (
@@ -1545,8 +1608,8 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 528
-    Width = 496
+    Top = 424
+    Width = 479
     Height = 82
     Align = alBottom
     Caption = '           '
@@ -1559,7 +1622,7 @@ object Form1: TForm1
     TabOrder = 1
     Visible = False
     DesignSize = (
-      496
+      479
       82)
     object Label21: TLabel
       Left = 13
@@ -1571,7 +1634,7 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 39
-      Width = 492
+      Width = 475
       Height = 41
       Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
@@ -1631,8 +1694,8 @@ object Form1: TForm1
   end
   object Panel5: TPanel
     Left = 0
-    Top = 0
-    Width = 496
+    Top = -14
+    Width = 479
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1732,16 +1795,16 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 0
-    Top = 495
-    Width = 496
+    Top = 391
+    Width = 479
     Height = 33
     Align = alBottom
     TabOrder = 3
     DesignSize = (
-      496
+      479
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 461
+      Left = 444
       Top = 6
       Width = 22
       Height = 22
@@ -1778,16 +1841,16 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 0
-    Top = 462
-    Width = 496
+    Top = 358
+    Width = 479
     Height = 33
     Align = alBottom
     TabOrder = 4
     DesignSize = (
-      496
+      479
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 461
+      Left = 444
       Top = 6
       Width = 22
       Height = 22
@@ -16715,13 +16778,6 @@ object Form1: TForm1
     Left = 444
     Top = 95
   end
-  object TimerCheckSystemChanges: TTimer
-    Enabled = False
-    Interval = 10000
-    OnTimer = TimerCheckSystemChangesTimer
-    Left = 443
-    Top = 39
-  end
   object TimerAfterFormCreateLong: TTimer
     Interval = 10000
     OnTimer = TimerAfterFormCreateLongTimer
@@ -16733,5 +16789,11 @@ object Form1: TForm1
     OnTimer = TimerRemoteAccessTimer
     Left = 444
     Top = 123
+  end
+  object TimerCheckSystemChanges: TTimer
+    Interval = 15000
+    OnTimer = CheckSystemChangesTimer
+    Left = 440
+    Top = 40
   end
 end
