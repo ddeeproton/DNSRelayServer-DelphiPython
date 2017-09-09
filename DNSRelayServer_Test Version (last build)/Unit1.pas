@@ -11,7 +11,7 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.265';
+  CurrentApplicationVersion: string = '0.4.266';
   isDevVersion: Boolean = False;
 
 type
@@ -1290,7 +1290,7 @@ begin
       j := Length(listThreads);
       SetLength(listThreads, j+1);
       listThreads[j] := Unit1.ThreadProcess.Create(True);
-      listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" hostfile "'+EditFilehost.Text+'" blackhost "'+BlackListCfgFile+'"';
+      listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
       listThreads[j].output := TStringList.Create;
       listThreads[j].EnMemo := MemoLogs;
       listThreads[j].indexThread := i;
