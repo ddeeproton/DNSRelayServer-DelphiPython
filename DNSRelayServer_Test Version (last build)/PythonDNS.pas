@@ -82,24 +82,18 @@ begin
     ''#13#10+
     '# Server DNS'#13#10+
     'config_block_all = '+config_block_all+' # [ 0 | 1 ] utilise le fichier blackhost'#13#10+
-    'config_dnsip = ''0.0.0.0'''#13#10+
-    'if len(sys.argv) > 1:'#13#10+
-    '	if sys.argv[1] == ''config_dnsip'':'#13#10+
-    '		if len(sys.argv) > 2:'#13#10+
-    '			config_dnsip = sys.argv[2]'#13#10+
-    '			'#13#10+
-    '# hostfile = ''hosts ''+config_dnsip+''.txt'''#13#10+
-    'hostfile = ''hosts.txt'''#13#10+
-    'if len(sys.argv) > 3:'#13#10+
-    '	if sys.argv[3] == ''hostfile'':'#13#10+
-    '		if len(sys.argv) > 4:'#13#10+
-    '			hostfile = sys.argv[4]'#13#10+
     ''#13#10+
-    'blackhostfile = ''blackhost.txt'''#13#10+
-    'if len(sys.argv) > 5:'#13#10+
-    '	if sys.argv[5] == ''blackhost'':'#13#10+
-    '		if len(sys.argv) > 6:'#13#10+
-    '			blackhostfile = sys.argv[6]'#13#10+
+    'def getArgv(varname, default):'#13#10+
+    '	result = default'#13#10+
+    '	if varname in sys.argv:'#13#10+
+    '		i = sys.argv.index(varname)'#13#10+
+    '		if i > -1 and len(sys.argv) > i:'#13#10+
+    '			result = sys.argv[i+1]'#13#10+
+    '	return result'#13#10+
+    ''#13#10+
+    'config_dnsip = getArgv(''config_dnsip'', ''0.0.0.0'')'#13#10+
+    'hostfile = getArgv(''hostfile'', ''hosts.txt'')'#13#10+
+    'blackhostfile = getArgv(''blackhost'', ''blackhost.txt'')'#13#10+
     ''#13#10+
     '			'#13#10+
     'config_dnsport = '+IntToStr(Form1.SpinPort.Value)+#13#10+
@@ -112,8 +106,7 @@ begin
     '#config_banned_countries = [''il'']'#13#10+
     'config_banned_countries = []'#13#10+
     ''#13#10+
-    'cache_domains = []'#13#10+
-    'cache_ips = []'#13#10+
+    'cache_domains = {}'#13#10+
     ''#13#10+
     '#============================='#13#10+
     '# SQL'#13#10+
@@ -262,30 +255,16 @@ begin
     '			return result[:-1]'#13#10+
     ''#13#10+
     ''#13#10+
-    '	def resolveDomain(self, domain, idstatus, dnss):'#13#10+
+    '	def resolveDomain(self, domain, idstatus, dnss, ipclient):'#13#10+
     '	'#13#10+
     '		if config_block_all == 1:'#13#10+
     '			return "127.0.0.3"'#13#10+
     '		if config_cache_memory == 1:'#13#10+
-    '			if domain in cache_domains:'#13#10+
-    '				i = cache_domains.index(domain)'#13#10+
-    '				if i > -1:'#13#10+
-    '					try:'#13#10+
-    '						return cache_ips[i]'#13#10+
-    '					except:'#13#10+
-    '						sys.stdout.flush()'#13#10+
-    '						#cache_domains.append(domain)'#13#10+
-    '				#else:'#13#10+
-    '				#	cache_domains.append(domain)'#13#10+
-    '			#else:'#13#10+
-    '			#	cache_domains.append(domain)'#13#10+
+    '			if ipclient in cache_domains:'#13#10+
+    '				if domain in cache_domains[ipclient]:'#13#10+
+    '					return cache_domains[ipclient][domain]'#13#10+
     '				'#13#10+
     '		if ".in-addr.arpa" in domain:'#13#10+
-    '			#if config_display:'#13#10+
-    '			#	print "ARPA"'#13#10+
-    '			#if config_cache_memory == 1:'#13#10+
-    '			#	cache_domains.append(domain)'#13#10+
-    '			#	cache_ips.append("127.0.0.2")'#13#10+
     '			return "127.0.0.2"'#13#10+
     '			'#13#10+
     '		IPHost = dnss.checkHost(domain)'#13#10+
@@ -293,37 +272,37 @@ begin
     '			#if config_display:'#13#10+
     '			#	print "Host file domain:"'#13#10+
     '			if config_cache_memory == 1:'#13#10+
-    '				cache_domains.append(domain)'#13#10+
-    '				cache_ips.append(IPHost)'#13#10+
+    '				if not ipclient in cache_domains:'#13#10+
+    '					cache_domains[ipclient] = {}'#13#10+
+    '				if not domain in cache_domains[ipclient]:'#13#10+
+    '					cache_domains[ipclient][domain] = IPHost'#13#10+
     '			return IPHost'#13#10+
     ''#13#10+
     '		IPHost = dnss.checkBlackHost(domain)'#13#10+
     '		if config_use_blackhost == 1 and IPHost <> '''':'#13#10+
-    '			cache_domains.append(domain)'#13#10+
-    '			cache_ips.append(IPHost)'#13#10+
+    '			if not ipclient in cache_domains:'#13#10+
+    '				cache_domains[ipclient] = {}'#13#10+
+    '			if not domain in cache_domains[ipclient]:'#13#10+
+    '				cache_domains[ipclient][domain] = IPHost'#13#10+
     '			return IPHost'#13#10+
     ''#13#10+
-    ''#13#10+
-    '			'#13#10+
     '		d = dnss.onlyDomain(domain)'#13#10+
-    '		#print d'#13#10+
     '		nameservers = config_dnsrelay'#13#10+
-    '		ip = dnsc.dnsResolve(domain) # Ask the master DNS server'#13#10+
-    '		if ip == 0:'#13#10+
-    '			ip = dnsc.dnsResolve(domain)'#13#10+
-    '			if ip == 0:'#13#10+
-    '				#if config_cache_memory == 1:'#13#10+
-    '				#	cache_domains.append(domain)'#13#10+
-    '				#	cache_ips.append("127.0.0.4")'#13#10+
+    '		IPHost = dnsc.dnsResolve(domain) # Ask the master DNS server'#13#10+
+    '		if IPHost == 0:'#13#10+
+    '			IPHost = dnsc.dnsResolve(domain)'#13#10+
+    '			if IPHost == 0:'#13#10+
     '				return "127.0.0.4"'#13#10+
     '			'#13#10+
-    '		#db.sqlsetdomain(domain, ip) # Add IP in database'#13#10+
-    '		if config_cache_memory == 1 and ip <> 0:'#13#10+
-    '			cache_domains.append(domain)'#13#10+
-    '			cache_ips.append(ip)'#13#10+
-    '		return ip'#13#10+
+    '		#db.sqlsetdomain(domain, IPHost) # Add IP in database'#13#10+
+    '		if config_cache_memory == 1 and IPHost <> 0:'#13#10+
+    '			if not ipclient in cache_domains:'#13#10+
+    '				cache_domains[ipclient] = {}'#13#10+
+    '			if not domain in cache_domains[ipclient]:'#13#10+
+    '				cache_domains[ipclient][domain] = IPHost'#13#10+
+    '		return IPHost'#13#10+
     ''#13#10+
-    '		'#13#10+
+    ''#13#10+
     ''#13#10+
     'class SQLConnexion:'#13#10+
     '	def __init__(self, dbhost, dbport, dbuser, dbpasswd, dbname, dbtable):'#13#10+
@@ -432,7 +411,7 @@ begin
     ''#13#10+
     '		else: # if it''s a new domain'#13#10+
     '			#print "New domain:"'#13#10+
-    '			answer = dnss.resolveDomain(dnss.domain, 2, dnss) # Ask the Primary DNS server'#13#10+
+    '			answer = dnss.resolveDomain(dnss.domain, 2, dnss, addr[0]) # Ask the Primary DNS server'#13#10+
     '			#answer = dnsc.dnsResolve(dnss.domain) # Ask the Primary DNS server'#13#10+
     '			if answer == 0 :'#13#10+
     '				answer = "127.0.0.8"'#13#10+

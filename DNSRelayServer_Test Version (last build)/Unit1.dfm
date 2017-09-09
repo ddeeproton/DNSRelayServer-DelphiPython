@@ -435,7 +435,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 29
                 Width = 303
-                Height = 266
+                Height = 248
                 Align = alClient
                 Color = clWhite
                 ItemHeight = 13
@@ -858,7 +858,7 @@ object Form1: TForm1
                     Height = 21
                     Style = csDropDownList
                     Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 0
+                    ItemHeight = 13
                     ItemIndex = 0
                     TabOrder = 0
                     Text = 'White'
@@ -887,7 +887,7 @@ object Form1: TForm1
                     Height = 21
                     Style = csDropDownList
                     Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 0
+                    ItemHeight = 13
                     TabOrder = 2
                     OnSelect = ComboBoxPosLogsSelect
                     Items.Strings = (
