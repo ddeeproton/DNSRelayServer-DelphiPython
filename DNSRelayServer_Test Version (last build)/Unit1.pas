@@ -11,8 +11,8 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.264.0';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.264';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -1779,7 +1779,7 @@ begin
 
 
   CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
-  TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
+  //TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
 
 
   startedInBackground := False;
