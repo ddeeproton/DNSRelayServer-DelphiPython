@@ -12,22 +12,48 @@ uses SysUtils, Classes;
 
   function makeDir(path:string):Boolean; 
   function FileSize(fileName : wideString) : Int64;
-  
+  function dirList(dirname : wideString; Filtre : string = '*.*'; onlyDir: Boolean = False; onlyFiles: Boolean = False; isFullPath: Boolean = True ) : TStrings;
+
 implementation
 
 
 
+function dirList(dirname : wideString; Filtre : string = '*.*'; onlyDir: Boolean = False; onlyFiles: Boolean = False; isFullPath: Boolean = True ) : TStrings;
+var filename: String;
+    dirHandle: Integer;
+    searchResult: TSearchRec;
+    attributs: Integer;
+begin
+  result := TStringList.Create;
+  attributs := faDirectory + faHidden + faSysFile+ faVolumeID + faArchive ;
+  dirHandle := FindFirst(dirname+'\'+filtre, attributs, searchResult);
+  while dirHandle = 0 do
+  begin
+    if isFullPath then
+      filename := dirname+'\'+searchResult.Name
+    else
+      filename := searchResult.Name;
+    if ((searchResult.Attr and faDirectory) <= 0) then // if is file
+      if not onlyDir then
+        result.Add(filename)
+    else // if is dir
+      if not onlyFiles then
+        result.Add(filename);
+    dirHandle := FindNext(searchResult);
+  end;
+  FindClose(searchResult);
+end;
+
 function FileSize(fileName : wideString) : Int64;
- var
-   sr : TSearchRec;
- begin
-   if FindFirst(fileName, faAnyFile, sr ) = 0 then
-      result := Int64(sr.FindData.nFileSizeHigh) shl Int64(32) + Int64(sr.FindData.nFileSizeLow)
-   else
-      result := -1;
- 
-   FindClose(sr) ;
- end;
+var
+  sr : TSearchRec;
+begin
+  if FindFirst(fileName, faAnyFile, sr ) = 0 then
+     result := Int64(sr.FindData.nFileSizeHigh) shl Int64(32) + Int64(sr.FindData.nFileSizeLow)
+  else
+     result := -1;
+  FindClose(sr) ;
+end;
 
 function ReadFromFile(Filename: string):String;
 var

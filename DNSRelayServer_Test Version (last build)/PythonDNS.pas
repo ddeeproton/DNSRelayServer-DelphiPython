@@ -285,7 +285,7 @@ begin
     '					return IPHost'#13#10+
     ''#13#10+
     '		if os.path.isdir(config_dircustomhost):'#13#10+
-    '			customblackhostfile = config_dircustomhost + "/" + ipclient + "_blackhostfile.txt"'#13#10+
+    '			customblackhostfile = config_dircustomhost + "/" + ipclient + "_blackhost.txt"'#13#10+
     '			if os.path.isfile(customblackhostfile):'#13#10+
     '				if config_use_blackhost == 1:'#13#10+
     '					IPHost = self.checkBlackHost(domain, customblackhostfile)'#13#10+

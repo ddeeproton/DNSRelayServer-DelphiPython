@@ -11,8 +11,8 @@ uses
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.266';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.267.0';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -272,6 +272,10 @@ type
     Panel11: TPanel;
     Label42: TLabel;
     CheckBoxRestartOnNetworkInterfaceChange: TCheckBox;
+    ComboBoxSelectIPBlackhost: TComboBox;
+    Label36: TLabel;
+    Label41: TLabel;
+    ComboBoxSelectIPhostfile: TComboBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -435,6 +439,7 @@ type
     procedure ButtonInstallScriptWebAdminClick(Sender: TObject);
     procedure CheckBoxRestartOnNetworkInterfaceChangeClick(
       Sender: TObject);
+    procedure ComboBoxSelectIPhostfileSelect(Sender: TObject);
   private
     { Private declarations }
   public
@@ -493,6 +498,7 @@ var
   SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
   TimeCheckUpdateFile: string = 'TimeCheckUpdate.cfg';
   BlackListCfgFile: string = 'blackhost.txt';
+  DirCustomHost : string = 'customhost';
 
   FormAlertLastShow: string = '';
 
@@ -1538,11 +1544,12 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
   param, txt: string;
+  data: TStrings;
   canClose: Boolean;
   autostarted: Boolean;
 begin
-  
-  
+
+
   // Masque la fenêtre de la taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
@@ -1647,7 +1654,7 @@ begin
   GroupBox6.Align := alClient;
   Notebook1.Align := alClient;
   PageControl1.Align := alClient;
-  ListBoxBlacklist.Align := alClient;
+  //ListBoxBlacklist.Align := alClient;
   ScrollBox1.Align := alClient;
   ScrollBox2.Align := alClient;
   ScrollBox3.Align := alClient;
@@ -1655,6 +1662,10 @@ begin
   ScrollBox5.Align := alClient;
   ScrollBox6.Align := alClient;
   ScrollBox6.VertScrollBar.Position := 0;
+
+  GroupBox5.Align := alBottom;
+  PanelRestart.Align := alBottom;
+  PanelMessage.Align := alBottom;
 
   PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
@@ -1670,7 +1681,7 @@ begin
   SlaveDNSProcesslist := DataDirectoryPath + SlaveDNSProcesslist;
   TimeCheckUpdateFile :=  DataDirectoryPath + TimeCheckUpdateFile;
   BlackListCfgFile := DataDirectoryPath + BlackListCfgFile;
-
+  DirCustomHost := DataDirectoryPath + DirCustomHost;
 
   if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
 
@@ -1781,6 +1792,32 @@ begin
   CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
   //TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
 
+  if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
+  data := dirList(DirCustomHost, '*_blackhost.txt', false, true, false);
+  for i:=0 to data.Count - 1 do
+  begin
+    data[i] := StringReplace(data[i], '_blackhost.txt', '', [rfReplaceAll, rfIgnoreCase]);
+  end;
+  data.Add('Nouvelle Adresse IP ...');
+  data.Insert(0, 'Tout le monde');
+  ComboBoxSelectIPBlackhost.Items := data;
+  ComboBoxSelectIPBlackhost.ItemIndex := 0;
+
+
+  if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
+  data := dirList(DirCustomHost, '*_hostfile.txt', false, true, false);
+  for i:=0 to data.Count - 1 do
+  begin
+    data[i] := StringReplace(data[i], '_hostfile.txt', '', [rfReplaceAll, rfIgnoreCase]);
+  end;
+  data.Add('Nouvelle Adresse IP ...');
+  data.Insert(0, 'Tout le monde');
+  ComboBoxSelectIPhostfile.Items := data;
+  ComboBoxSelectIPhostfile.ItemIndex := 0;
+
+
+
+                
 
   startedInBackground := False;
   autostarted := False;
@@ -1822,6 +1859,8 @@ begin
 
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
   //setTheme(RGB(10,30,40), RGB(220,155,220));
+
+  //ComboBoxSelectIPBlackhost.Items.s
 end;
 
 procedure TForm1.setTheme(color, bg:TColor);
@@ -2130,17 +2169,19 @@ procedure TForm1.Afficher1Click(Sender: TObject);
 begin
   //TimerFadeOut.Enabled := False;
   //TimerFadeIn.Enabled := True;  
-  //Self.Show;
+  Self.Show;
   try
 
   if Top > Screen.WorkAreaHeight - Self.Height then
     Top := Screen.WorkAreaHeight - Self.Height;
   if Left > Screen.WorkAreaWidth - Self.Width then
     Left := Screen.WorkAreaWidth - Self.Width;
+  //Self.WindowState := wsNormal;
+  Application.Restore;
   Application.BringToFront;
   //Self.FormStyle := currentFormStyle;
   {
-  Application.Restore;
+
   Application.BringToFront;
   //Systray.EnleveIconeTray;
   //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
@@ -4221,9 +4262,27 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+end;
 
+procedure TForm1.ComboBoxSelectIPhostfileSelect(Sender: TObject);
+var filename:String;
+begin
+  if ComboBoxSelectIPhostfile.ItemIndex = 0 then
+  begin
+    filename := EditFilehost.Text;
+  end else
+  begin
+    if ComboBoxSelectIPhostfile.ItemIndex = ComboBoxSelectIPhostfile.Items.Count -1 then
+    begin
+      ShowMessage('En cours d''implémentation :)');
+    end else
+    begin
 
-
+    end;
+  end;
+  ListViewCreate(ListView1);
+  ListView1.Clear;
+  getDomains(filename, ListView1);
 end;
 
 end.

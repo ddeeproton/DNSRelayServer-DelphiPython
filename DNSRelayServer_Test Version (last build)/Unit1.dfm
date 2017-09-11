@@ -1,9 +1,8 @@
 object Form1: TForm1
-  Left = 340
-  Top = 0
+  Left = 526
+  Top = 115
   Width = 504
-  Height = 540
-  VertScrollBar.Position = 14
+  Height = 677
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -67,8 +66,8 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 34
-    Width = 479
+    Top = 48
+    Width = 496
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -80,17 +79,18 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 52
+    Top = 74
     Width = 369
     Height = 388
     BevelOuter = bvNone
     Color = clWhite
     TabOrder = 0
     object Notebook1: TNotebook
-      Left = 9
-      Top = 17
+      Left = 17
+      Top = 9
       Width = 344
       Height = 360
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -1279,6 +1279,9 @@ object Form1: TForm1
             '                                                                ' +
             '                                                     '
           TabOrder = 0
+          DesignSize = (
+            305
+            249)
           object Label22: TLabel
             Left = 10
             Top = -1
@@ -1288,11 +1291,19 @@ object Form1: TForm1
               'Blackwords: Bloque le domaine s'#39'il comporte un mot de la liste c' +
               'i-dessous:'
           end
+          object Label36: TLabel
+            Left = 8
+            Top = 16
+            Width = 109
+            Height = 13
+            Caption = 'R'#232'gles qui s'#39'applique '#224
+          end
           object ListBoxBlacklist: TListBox
             Left = 8
-            Top = 40
+            Top = 56
             Width = 289
-            Height = 193
+            Height = 185
+            Anchors = [akLeft, akTop, akRight, akBottom]
             ItemHeight = 13
             PopupMenu = PopupMenuBlacklist
             Sorted = True
@@ -1302,18 +1313,18 @@ object Form1: TForm1
             OnKeyUp = ListBoxBlacklistKeyUp
           end
           object Panel3: TPanel
-            Left = 2
-            Top = 15
-            Width = 301
+            Left = 154
+            Top = 31
+            Width = 143
             Height = 22
-            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
             BevelOuter = bvNone
             Color = clWhite
             TabOrder = 1
             object ToolBar4: TToolBar
               Left = 0
               Top = 0
-              Width = 185
+              Width = 121
               Height = 22
               Align = alNone
               Caption = 'ToolBar4'
@@ -1326,7 +1337,7 @@ object Form1: TForm1
               object ButtonDisableBlackhost: TToolButton
                 Left = 0
                 Top = 0
-                Hint = 'D'#233'sactive le filtrage Blackwords'
+                Hint = 'D'#233'sactive le filtrage Blackwords (pour tout le monde)'
                 Caption = 'ButtonDisableBlackhost'
                 ImageIndex = 9
                 ParentShowHint = False
@@ -1334,6 +1345,18 @@ object Form1: TForm1
                 OnClick = ButtonDisableBlackhostClick
               end
             end
+          end
+          object ComboBoxSelectIPBlackhost: TComboBox
+            Left = 8
+            Top = 32
+            Width = 145
+            Height = 21
+            ItemHeight = 13
+            TabOrder = 2
+            Text = 'ComboBoxSelectIPBlackhost'
+            Items.Strings = (
+              'Tout le monde'
+              'Nouvelle Adresse IP')
           end
         end
       end
@@ -1409,6 +1432,9 @@ object Form1: TForm1
           ParentColor = False
           ParentFont = False
           TabOrder = 0
+          DesignSize = (
+            328
+            328)
           object Label24: TLabel
             Left = 11
             Top = 0
@@ -1416,12 +1442,19 @@ object Form1: TForm1
             Height = 13
             Caption = 'WebFilter: R'#232'gles appliqu'#233's aux domaines (fichier host)'
           end
+          object Label41: TLabel
+            Left = 8
+            Top = 16
+            Width = 109
+            Height = 13
+            Caption = 'R'#232'gles qui s'#39'applique '#224
+          end
           object ListView1: TListView
             Left = 2
-            Top = 39
+            Top = 56
             Width = 324
-            Height = 287
-            Align = alClient
+            Height = 270
+            Anchors = [akLeft, akTop, akRight, akBottom]
             BevelWidth = 10
             Color = clWhite
             Columns = <>
@@ -1438,19 +1471,19 @@ object Form1: TForm1
             OnKeyUp = ListView1KeyUp
           end
           object Panel6: TPanel
-            Left = 2
-            Top = 15
-            Width = 324
+            Left = 114
+            Top = 28
+            Width = 207
             Height = 24
-            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
             BevelOuter = bvNone
             BorderWidth = 1
             Color = clWhite
             TabOrder = 1
             object ToolBar2: TToolBar
-              Left = 2
-              Top = 1
-              Width = 223
+              Left = 5
+              Top = 2
+              Width = 195
               Height = 24
               Align = alNone
               ButtonWidth = 25
@@ -1549,6 +1582,19 @@ object Form1: TForm1
               end
             end
           end
+          object ComboBoxSelectIPhostfile: TComboBox
+            Left = 8
+            Top = 32
+            Width = 105
+            Height = 21
+            ItemHeight = 13
+            TabOrder = 2
+            Text = 'ComboBoxSelectIPhostfile'
+            OnSelect = ComboBoxSelectIPhostfileSelect
+            Items.Strings = (
+              'Tout le monde'
+              'Nouvelle Adresse IP')
+          end
         end
       end
       object TPage
@@ -1607,11 +1653,10 @@ object Form1: TForm1
     end
   end
   object GroupBox5: TGroupBox
-    Left = 0
-    Top = 424
-    Width = 479
+    Left = 8
+    Top = 553
+    Width = 313
     Height = 82
-    Align = alBottom
     Caption = '           '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -1622,7 +1667,7 @@ object Form1: TForm1
     TabOrder = 1
     Visible = False
     DesignSize = (
-      479
+      313
       82)
     object Label21: TLabel
       Left = 13
@@ -1634,7 +1679,7 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 39
-      Width = 475
+      Width = 309
       Height = 41
       Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
@@ -1694,8 +1739,8 @@ object Form1: TForm1
   end
   object Panel5: TPanel
     Left = 0
-    Top = -14
-    Width = 479
+    Top = 0
+    Width = 496
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -1794,17 +1839,16 @@ object Form1: TForm1
     end
   end
   object PanelRestart: TPanel
-    Left = 0
-    Top = 391
-    Width = 479
+    Left = 8
+    Top = 506
+    Width = 313
     Height = 33
-    Align = alBottom
     TabOrder = 3
     DesignSize = (
-      479
+      313
       33)
     object ButtonClosePanelRestart: TSpeedButton
-      Left = 444
+      Left = 278
       Top = 6
       Width = 22
       Height = 22
@@ -1840,17 +1884,16 @@ object Form1: TForm1
     end
   end
   object PanelMessage: TPanel
-    Left = 0
-    Top = 358
-    Width = 479
+    Left = 8
+    Top = 465
+    Width = 313
     Height = 33
-    Align = alBottom
     TabOrder = 4
     DesignSize = (
-      479
+      313
       33)
     object SpeedButtonCloseMessage: TSpeedButton
-      Left = 444
+      Left = 278
       Top = 6
       Width = 22
       Height = 22
