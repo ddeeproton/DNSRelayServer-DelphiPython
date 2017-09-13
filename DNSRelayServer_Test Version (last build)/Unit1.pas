@@ -8,10 +8,11 @@ uses
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNS,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
-  CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager;
+  CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
+  UnitDialogIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.0';
+  CurrentApplicationVersion: string = '0.4.267.1';
   isDevVersion: Boolean = True;
 
 type
@@ -4264,6 +4265,8 @@ begin
   TimerHideMessage.Enabled := True;
 end;
 
+
+
 procedure TForm1.ComboBoxSelectIPhostfileSelect(Sender: TObject);
 var filename:String;
 begin
@@ -4274,7 +4277,9 @@ begin
   begin
     if ComboBoxSelectIPhostfile.ItemIndex = ComboBoxSelectIPhostfile.Items.Count -1 then
     begin
-      ShowMessage('En cours d''implémentation :)');
+      //ShowMessage('En cours d''implémentation :)');
+      if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
+      FormDialogIP.Show;
     end else
     begin
 

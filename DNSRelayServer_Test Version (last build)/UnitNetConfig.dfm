@@ -1,6 +1,6 @@
 object FormNetConfig: TFormNetConfig
-  Left = 373
-  Top = 104
+  Left = 468
+  Top = 171
   BorderStyle = bsSingle
   Caption = 'W'
   ClientHeight = 406
@@ -17,7 +17,7 @@ object FormNetConfig: TFormNetConfig
   object Label9: TLabel
     Left = 16
     Top = 16
-    Width = 337
+    Width = 328
     Height = 39
     Caption = 
       'Vous pouvez indiquer ici la configuration de la carte r'#233'seau qui' +
