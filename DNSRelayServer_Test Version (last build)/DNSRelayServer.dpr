@@ -11,7 +11,7 @@ uses
   HostParser in 'HostParser.pas',
   NetworkManager in 'NetworkManager.pas',
   ProcessManager in 'ProcessManager.pas',
-  PythonDNS in 'PythonDNS.pas',
+  PythonDNSUnit in 'PythonDNSUnit.pas',
   DNSManager in 'DNSManager.pas',
   UnitAlert in 'UnitAlert.pas' {FormAlert},
   WindowsManager in 'WindowsManager.pas',

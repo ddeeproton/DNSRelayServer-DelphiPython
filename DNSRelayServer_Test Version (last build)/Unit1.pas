@@ -6,13 +6,13 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
-  Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNS,
+  Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNSUnit,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
   UnitDialogIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.1';
+  CurrentApplicationVersion: string = '0.4.267.2';
   isDevVersion: Boolean = True;
 
 type
@@ -1254,7 +1254,7 @@ begin
 
 
 
-  createVBScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log);
+  PythonDNS.createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log);
 
   if PythonPath = '' then PythonPath := getPythonPath();
 
@@ -1793,32 +1793,8 @@ begin
   CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
   //TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
 
-  if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
-  data := dirList(DirCustomHost, '*_blackhost.txt', false, true, false);
-  for i:=0 to data.Count - 1 do
-  begin
-    data[i] := StringReplace(data[i], '_blackhost.txt', '', [rfReplaceAll, rfIgnoreCase]);
-  end;
-  data.Add('Nouvelle Adresse IP ...');
-  data.Insert(0, 'Tout le monde');
-  ComboBoxSelectIPBlackhost.Items := data;
-  ComboBoxSelectIPBlackhost.ItemIndex := 0;
-
-
-  if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
-  data := dirList(DirCustomHost, '*_hostfile.txt', false, true, false);
-  for i:=0 to data.Count - 1 do
-  begin
-    data[i] := StringReplace(data[i], '_hostfile.txt', '', [rfReplaceAll, rfIgnoreCase]);
-  end;
-  data.Add('Nouvelle Adresse IP ...');
-  data.Insert(0, 'Tout le monde');
-  ComboBoxSelectIPhostfile.Items := data;
-  ComboBoxSelectIPhostfile.ItemIndex := 0;
-
-
-
-                
+  PythonDNS.getIPCustomHostFiles(ComboBoxSelectIPBlackhost, '_blackhost.txt');
+  PythonDNS.getIPCustomHostFiles(ComboBoxSelectIPhostfile, '_hostfile.txt');
 
   startedInBackground := False;
   autostarted := False;
