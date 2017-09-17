@@ -1,6 +1,6 @@
 object FormDialogIP: TFormDialogIP
-  Left = 1077
-  Top = 281
+  Left = 1079
+  Top = 283
   BorderStyle = bsDialog
   Caption = 'FormDialogIP'
   ClientHeight = 91

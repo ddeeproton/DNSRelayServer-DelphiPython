@@ -441,6 +441,7 @@ type
     procedure CheckBoxRestartOnNetworkInterfaceChangeClick(
       Sender: TObject);
     procedure ComboBoxSelectIPhostfileSelect(Sender: TObject);
+    procedure ComboBoxSelectIPBlackhostSelect(Sender: TObject);
   private
     { Private declarations }
   public
@@ -4244,7 +4245,9 @@ end;
 
 
 procedure TForm1.ComboBoxSelectIPhostfileSelect(Sender: TObject);
-var filename:String;
+var
+  filename:String;
+  i: Integer;
 begin
   if ComboBoxSelectIPhostfile.ItemIndex = 0 then
   begin
@@ -4253,17 +4256,44 @@ begin
   begin
     if ComboBoxSelectIPhostfile.ItemIndex = ComboBoxSelectIPhostfile.Items.Count -1 then
     begin
-      //ShowMessage('En cours d''implémentation :)');
       if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
+      FormDialogIP.TargetHost := 'hostfile';
+      FormDialogIP.TargetComboBox := ComboBoxSelectIPhostfile;
       FormDialogIP.Show;
     end else
     begin
-
+      i := ComboBoxSelectIPhostfile.ItemIndex;
+      filename := DirCustomHost+'\'+ComboBoxSelectIPhostfile.Items.Strings[i]+'_hostfile.txt';
     end;
   end;
   ListViewCreate(ListView1);
   ListView1.Clear;
   getDomains(filename, ListView1);
+end;
+
+procedure TForm1.ComboBoxSelectIPBlackhostSelect(Sender: TObject);
+var
+  filename:String;
+  i: Integer;
+begin
+  if ComboBoxSelectIPBlackhost.ItemIndex = 0 then
+  begin
+    filename := BlackListCfgFile;
+  end else
+  begin
+    if ComboBoxSelectIPBlackhost.ItemIndex = ComboBoxSelectIPBlackhost.Items.Count -1 then
+    begin
+      if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
+      FormDialogIP.TargetHost := 'blackhost';
+      FormDialogIP.TargetComboBox := ComboBoxSelectIPBlackhost;
+      FormDialogIP.Show;
+    end else
+    begin
+      i := ComboBoxSelectIPBlackhost.ItemIndex;
+      filename := DirCustomHost+'\'+ComboBoxSelectIPBlackhost.Items.Strings[i]+'_blackhost.txt';
+    end;
+  end;
+  if FileExists(filename) then ListBoxBlacklist.Items.LoadFromFile(filename);
 end;
 
 end.

@@ -2,7 +2,7 @@ unit PythonDNSUnit;
 
 interface
 
-uses FilesManager, Classes, StdCtrls;
+uses FilesManager, Classes, StdCtrls, SysUtils;
 
 type
   PythonDNS = class
@@ -16,23 +16,21 @@ type
 
 implementation
 
-uses Unit1, SysUtils;
+uses Unit1;
 
 class procedure PythonDNS.getIPCustomHostFiles(var ComboBox: TComboBox; suffix: string);
 var
-  i, selIndex: Integer;
+  i: Integer;
   data: TStrings;
-  ip: string;
 begin
   if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
   data := dirList(DirCustomHost, '*'+suffix, false, true, false);
-  selIndex := 0;
   for i:=0 to data.Count - 1 do
   begin
     data[i] := StringReplace(data[i], suffix, '', [rfReplaceAll, rfIgnoreCase]);
-  end;
-  data.Add('Nouvelle Adresse IP ...');
+  end;                                
   data.Insert(0, 'Tout le monde');
+  data.Add('Nouvelle Adresse IP ...');
   ComboBox.Items := data;
   ComboBox.ItemIndex := 0;
 end;

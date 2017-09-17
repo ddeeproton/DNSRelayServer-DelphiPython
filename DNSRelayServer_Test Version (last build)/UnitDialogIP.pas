@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, FilesManager;
+  Dialogs, StdCtrls, FilesManager, PythonDNSUnit;
 
 type
   TFormDialogIP = class(TForm)
@@ -27,7 +27,9 @@ type
   private
     { Private declarations }
   public
-    { Public declarations }
+    { Public declarations }  
+    TargetHost: String;
+    TargetComboBox: TComboBox;
   end;
 
 var
@@ -142,27 +144,17 @@ var
 begin
   if not isValidIP() then
   begin
-    ShowMessage('IP is not a valid. Please specify a value between 1 and 255.');
+    ShowMessage('IP is not valid. Please specify a value between 1 and 255.');
     exit;
   end;
   ip := getIP();
   with Form1 do
   begin
     if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
-    FilesManager.WriteInFile(DirCustomHost+'\'+ip+'_hostfile.txt', '');
-    data := dirList(DirCustomHost, '*_hostfile.txt', false, true, false);
-    selIndex := 0;
-    for i:=0 to data.Count - 1 do
-    begin
-      data[i] := StringReplace(data[i], '_hostfile.txt', '', [rfReplaceAll, rfIgnoreCase]);
-      if data[i] = ip then selIndex := i;
-    end;
-    data.Add('Nouvelle Adresse IP ...');
-    data.Insert(0, 'Tout le monde');
-    ComboBoxSelectIPhostfile.Items := data;
-    ComboBoxSelectIPhostfile.ItemIndex := selIndex;
+    FilesManager.WriteInFile(DirCustomHost+'\'+ip+'_'+FormDialogIP.TargetHost+'.txt', '');
+    PythonDNS.getIPCustomHostFiles(TargetComboBox, '_'+FormDialogIP.TargetHost+'.txt');
+    TargetComboBox.ItemIndex := TargetComboBox.Items.IndexOf(ip);
   end;
-  ShowMessage('En cours d''implémentation :)');
   Close;
 
 end;

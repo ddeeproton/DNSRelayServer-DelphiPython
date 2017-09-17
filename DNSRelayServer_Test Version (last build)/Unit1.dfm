@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 474
-  Top = 111
+  Left = 475
+  Top = 0
   Width = 504
-  Height = 587
+  Height = 540
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 48
-    Width = 496
+    Width = 479
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -90,7 +90,7 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 3
+      PageIndex = 1
       TabOrder = 0
       object TPage
         Left = 0
@@ -1360,6 +1360,7 @@ object Form1: TForm1
             ItemHeight = 13
             TabOrder = 2
             Text = 'ComboBoxSelectIPBlackhost'
+            OnSelect = ComboBoxSelectIPBlackhostSelect
             Items.Strings = (
               'Tout le monde'
               'Nouvelle Adresse IP')
@@ -1746,7 +1747,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 496
+    Width = 479
     Height = 48
     Align = alTop
     BevelOuter = bvNone
