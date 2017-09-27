@@ -12,7 +12,7 @@ uses
   UnitDialogIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.2';
+  CurrentApplicationVersion: string = '0.4.267.3';
   isDevVersion: Boolean = True;
 
 type
@@ -1339,7 +1339,7 @@ begin
     Application.ProcessMessages;
     i := i - 5;
   end;
-  ButtonCloseClick(nil);
+  if isServerStarted then ButtonCloseClick(nil);
   for i := 0 to Form1.ControlCount - 1 do
   begin
     if Form1.Controls[i].ClassName = 'TTimer' then
@@ -1546,7 +1546,6 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   i: Integer;
   param, txt: string;
-  data: TStrings;
   canClose: Boolean;
   autostarted: Boolean;
 begin
@@ -1865,17 +1864,20 @@ begin
 end;
 
 procedure TForm1.setThemeBg(bg:TColor);
-var bg2:TColor;
+var
+  bg2:TColor;
 begin
 
+
   Form1.Color := bg;
+
   GroupBox2.Color := bg;
   GroupBox3.Color := bg;
   GroupBox4.Color := bg;
   GroupBox5.Color := bg;
   GroupBox6.Color := bg;
-
-  Splitter1.Color := bg;
+  GroupBox13.Color := bg;
+  GroupBox14.Color := bg;
 
   Panel1.Color := bg;
   Panel2.Color := bg;
@@ -1884,8 +1886,11 @@ begin
   Panel5.Color := bg;
   Panel6.Color := bg;
   Panel7.Color := bg;
+  Panel8.Color := bg;
+  Panel9.Color := bg;
   PanelMessage.Color := bg;
 
+  Splitter1.Color := bg;
 
   ToolBar1.Color := bg;
   ToolBar2.Color := bg;
@@ -1915,6 +1920,8 @@ begin
   EditThemeName.Color := bg2;
   ListBoxBlacklist.Color := bg2;
   ComboBoxPosLogs.Color := bg2;
+  ComboBoxSelectIPBlackhost.Color := bg2;
+  ComboBoxSelectIPhostfile.Color := bg2;
 
   bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
 
@@ -1933,6 +1940,8 @@ begin
   EditThemeName.Font.Color := bg2;
   ListBoxBlacklist.Font.Color := bg2;
   ComboBoxPosLogs.Font.Color := bg2;
+  ComboBoxSelectIPBlackhost.Font.Color := bg2;
+  ComboBoxSelectIPhostfile.Font.Color := bg2;
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
@@ -1988,20 +1997,6 @@ begin
   CheckBoxUpdateSilent.Font.Color := color;
   CheckBoxAllowModifyNetCard.Font.Color := color;
 
-  {
-  ListBoxBlacklist.Font.Color := color;
-  ComboBoxPosLogs.Font.Color := color;
-  CheckListBoxDNSRelayIP.Font.Color := color;
-  SpinPort.Font.Color := color;
-  ListView1.Font.Color := color;
-  Memo1.Font.Color := color;
-  MemoLogs.Font.Color := color;
-  EditThemeName.Font.Color := color;
-  ComboBoxCurrentTheme.Font.Color := color;
-  ListBoxIpClients.Font.Color := color;
-  ListBoxDNSMaster.Font.Color := color;
-  EditFilehost.Font.Color := color;
-  }
 end;
 
 
@@ -4242,7 +4237,7 @@ begin
   TimerHideMessage.Enabled := True;
 end;
 
-
+var oldIndexHost: Integer = 0;
 
 procedure TForm1.ComboBoxSelectIPhostfileSelect(Sender: TObject);
 var
@@ -4254,46 +4249,82 @@ begin
     filename := EditFilehost.Text;
   end else
   begin
-    if ComboBoxSelectIPhostfile.ItemIndex = ComboBoxSelectIPhostfile.Items.Count -1 then
+    if ComboBoxSelectIPhostfile.ItemIndex = ComboBoxSelectIPhostfile.Items.Count - 1 then
     begin
+        {
       if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
       FormDialogIP.TargetHost := 'hostfile';
       FormDialogIP.TargetComboBox := ComboBoxSelectIPhostfile;
       FormDialogIP.Show;
+      }
+      ShowMessage('En cours d''implémentation :)');            
+      ComboBoxSelectIPhostfile.ItemIndex := oldIndexHost;
     end else
     begin
-      i := ComboBoxSelectIPhostfile.ItemIndex;
-      filename := DirCustomHost+'\'+ComboBoxSelectIPhostfile.Items.Strings[i]+'_hostfile.txt';
+      if ComboBoxSelectIPhostfile.ItemIndex = ComboBoxSelectIPhostfile.Items.Count - 2 then
+      begin
+        if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
+        FormDialogIP.TargetHost := 'hostfile';
+        FormDialogIP.TargetComboBox := ComboBoxSelectIPhostfile;
+        FormDialogIP.Show;     
+        ComboBoxSelectIPhostfile.ItemIndex := oldIndexHost;
+      end else
+      begin
+        i := ComboBoxSelectIPhostfile.ItemIndex;
+        filename := DirCustomHost+'\'+ComboBoxSelectIPhostfile.Items.Strings[i]+'_hostfile.txt';
+      end;
     end;
   end;
   ListViewCreate(ListView1);
   ListView1.Clear;
   getDomains(filename, ListView1);
+  oldIndexHost := ComboBoxSelectIPhostfile.ItemIndex;
 end;
+
+var oldIndexBlackhost: Integer = 0;
 
 procedure TForm1.ComboBoxSelectIPBlackhostSelect(Sender: TObject);
 var
   filename:String;
   i: Integer;
 begin
+
   if ComboBoxSelectIPBlackhost.ItemIndex = 0 then
   begin
     filename := BlackListCfgFile;
   end else
   begin
-    if ComboBoxSelectIPBlackhost.ItemIndex = ComboBoxSelectIPBlackhost.Items.Count -1 then
+    if ComboBoxSelectIPBlackhost.ItemIndex = ComboBoxSelectIPBlackhost.Items.Count - 1 then
     begin
+    {
       if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
       FormDialogIP.TargetHost := 'blackhost';
       FormDialogIP.TargetComboBox := ComboBoxSelectIPBlackhost;
       FormDialogIP.Show;
+    }                     
+      ShowMessage('En cours d''implémentation :)');  
+      ComboBoxSelectIPBlackhost.ItemIndex := oldIndexBlackhost;
     end else
     begin
-      i := ComboBoxSelectIPBlackhost.ItemIndex;
-      filename := DirCustomHost+'\'+ComboBoxSelectIPBlackhost.Items.Strings[i]+'_blackhost.txt';
+      if ComboBoxSelectIPBlackhost.ItemIndex = ComboBoxSelectIPBlackhost.Items.Count - 2 then
+      begin
+        if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
+        FormDialogIP.TargetHost := 'blackhost';
+        FormDialogIP.TargetComboBox := ComboBoxSelectIPBlackhost;
+        FormDialogIP.Show;
+        ComboBoxSelectIPBlackhost.ItemIndex := oldIndexBlackhost;
+      end else
+      begin
+
+        i := ComboBoxSelectIPBlackhost.ItemIndex;
+        if (i >= 0) and (i < ComboBoxSelectIPBlackhost.Items.Count) then
+        filename := DirCustomHost+'\'+ComboBoxSelectIPBlackhost.Items.Strings[i]+'_blackhost.txt';
+
+      end;
     end;
   end;
   if FileExists(filename) then ListBoxBlacklist.Items.LoadFromFile(filename);
+  oldIndexBlackhost := ComboBoxSelectIPBlackhost.ItemIndex;
 end;
 
 end.

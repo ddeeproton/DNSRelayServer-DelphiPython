@@ -31,6 +31,7 @@ begin
   end;                                
   data.Insert(0, 'Tout le monde');
   data.Add('Nouvelle Adresse IP ...');
+  data.Add('Gérer adresses IP ...');
   ComboBox.Items := data;
   ComboBox.ItemIndex := 0;
 end;
