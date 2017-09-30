@@ -9,10 +9,10 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNSUnit,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
-  UnitDialogIP;
+  UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.3';
+  CurrentApplicationVersion: string = '0.4.267.4';
   isDevVersion: Boolean = True;
 
 type
@@ -4296,13 +4296,12 @@ begin
   begin
     if ComboBoxSelectIPBlackhost.ItemIndex = ComboBoxSelectIPBlackhost.Items.Count - 1 then
     begin
-    {
-      if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
-      FormDialogIP.TargetHost := 'blackhost';
-      FormDialogIP.TargetComboBox := ComboBoxSelectIPBlackhost;
-      FormDialogIP.Show;
-    }                     
-      ShowMessage('En cours d''implémentation :)');  
+
+      if FormManageIP = nil then FormManageIP := TFormManageIP.Create(nil);
+      FormManageIP.Show;
+                         
+      //ShowMessage('En cours d''implémentation :)');
+      if oldIndexBlackhost > ComboBoxSelectIPBlackhost.Items.Count - 1 then oldIndexBlackhost := 0;
       ComboBoxSelectIPBlackhost.ItemIndex := oldIndexBlackhost;
     end else
     begin
@@ -4312,6 +4311,8 @@ begin
         FormDialogIP.TargetHost := 'blackhost';
         FormDialogIP.TargetComboBox := ComboBoxSelectIPBlackhost;
         FormDialogIP.Show;
+        
+        if oldIndexBlackhost > ComboBoxSelectIPBlackhost.Items.Count - 1 then oldIndexBlackhost := 0;
         ComboBoxSelectIPBlackhost.ItemIndex := oldIndexBlackhost;
       end else
       begin
@@ -4324,6 +4325,8 @@ begin
     end;
   end;
   if FileExists(filename) then ListBoxBlacklist.Items.LoadFromFile(filename);
+  
+  if oldIndexBlackhost > ComboBoxSelectIPBlackhost.Items.Count - 1 then oldIndexBlackhost := 0;
   oldIndexBlackhost := ComboBoxSelectIPBlackhost.ItemIndex;
 end;
 

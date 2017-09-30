@@ -19,7 +19,8 @@ uses
   StringManager in 'StringManager.pas',
   UnitRestartAlert in 'UnitRestartAlert.pas' {FormRestart},
   AlertManager in 'AlertManager.pas',
-  UnitDialogIP in 'UnitDialogIP.pas' {FormDialogIP};
+  UnitDialogIP in 'UnitDialogIP.pas' {FormDialogIP},
+  UnitManageIP in 'UnitManageIP.pas' {FormManageIP};
 
 {$R *.res}
 
@@ -33,5 +34,6 @@ begin
   Application.CreateForm(TFormNetConfig, FormNetConfig);
   Application.CreateForm(TFormRestart, FormRestart);
   Application.CreateForm(TFormDialogIP, FormDialogIP);
+  Application.CreateForm(TFormManageIP, FormManageIP);
   Application.Run;
 end.
