@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.6';
+  CurrentApplicationVersion: string = '0.4.267.7';
   isDevVersion: Boolean = True;
 
 type
@@ -4269,16 +4269,7 @@ begin
       begin
 
         if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
-        FormDialogIP.isDone := False;
-        FormDialogIP.ip := '';
-        FormDialogIP.Show;
-        Application.ProcessMessages;
-        while not FormDialogIP.isDone do
-        begin
-          Sleep(100);
-          Application.ProcessMessages;
-        end;
-        ip := FormDialogIP.ip;
+        ip := FormDialogIP.waitForValue();
         if ip = '' then exit;
 
         if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
@@ -4337,16 +4328,7 @@ begin
       if ComboBoxSelectIPBlackhost.ItemIndex = ComboBoxSelectIPBlackhost.Items.Count - 2 then
       begin
         if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
-        FormDialogIP.isDone := False;
-        FormDialogIP.ip := '';
-        FormDialogIP.Show;
-        Application.ProcessMessages;
-        while not FormDialogIP.isDone do
-        begin
-          Sleep(100);
-          Application.ProcessMessages;
-        end;
-        ip := FormDialogIP.ip;
+        ip := FormDialogIP.waitForValue();
         if ip = '' then exit;
 
         if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
@@ -4373,7 +4355,7 @@ begin
     end;
   end;
   if FileExists(filename) then ListBoxBlacklist.Items.LoadFromFile(filename);
-  
+
   if oldIndexBlackhost > ComboBoxSelectIPBlackhost.Items.Count - 1 then oldIndexBlackhost := 0;
   oldIndexBlackhost := ComboBoxSelectIPBlackhost.ItemIndex;
 end;

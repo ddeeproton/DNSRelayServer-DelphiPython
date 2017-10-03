@@ -16,6 +16,7 @@ type
     Label3: TLabel;
     ButtonOK: TButton;
     ButtonCancel: TButton;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure MemoKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -24,6 +25,7 @@ type
     procedure ButtonCancelClick(Sender: TObject);
     function isValidIP(): Boolean;
     function getIP(): String;
+    function waitForValue(): string;
   private
     { Private declarations }
   public
@@ -67,11 +69,12 @@ begin
   if Key = 40 then exit; // key = down
   m := TMemo(Sender);
   m2 := nil;
-  if (Length(m.Text) > 2) then // if key "." pressed
+  Label1.Visible := (m.Text <> '') and ((StrToInt(m.Text) < 1) or (StrToInt(m.Text) > 255));
+  if (Length(m.Text) > 2) then
   begin
     if (StrToInt(m.Text) < 1) or (StrToInt(m.Text) > 255) then
     begin
-      ShowMessage(m.Text + ' is not a valid entry. Please specify a value between 1 and 255.');
+      //ShowMessage(m.Text + ' is not a valid entry. Please specify a value between 1 and 255.');
       exit;
     end;
   end;
@@ -141,6 +144,22 @@ begin
     result := result + MList[i].Text;
   end;
 end;
+
+
+function TFormDialogIP.waitForValue(): string;
+begin
+  isDone := False;
+  ip := '';
+  Show;
+  Application.ProcessMessages;
+  while not FormDialogIP.isDone do
+  begin
+    Sleep(10);
+    Application.ProcessMessages;
+  end;
+  result := ip;
+end;
+
 
 procedure TFormDialogIP.ButtonOKClick(Sender: TObject);
 var

@@ -1,6 +1,6 @@
 object FormManageIP: TFormManageIP
-  Left = 796
-  Top = 575
+  Left = 781
+  Top = 480
   Width = 303
   Height = 203
   Caption = 'R'#232'gles d'#39'exception'

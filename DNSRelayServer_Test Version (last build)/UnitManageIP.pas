@@ -40,16 +40,7 @@ procedure TFormManageIP.ButtonAjouterClick(Sender: TObject);
 var ip: string;
 begin
   if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
-  FormDialogIP.isDone := False;
-  FormDialogIP.ip := '';
-  FormDialogIP.Show;
-  Application.ProcessMessages;
-  while not FormDialogIP.isDone do
-  begin
-    Sleep(100);
-    Application.ProcessMessages;
-  end;
-  ip := FormDialogIP.ip;
+  ip := FormDialogIP.waitForValue();
   if ip = '' then exit;
 
   with Form1 do

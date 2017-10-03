@@ -1,6 +1,6 @@
 object FormDialogIP: TFormDialogIP
-  Left = 1036
-  Top = 332
+  Left = 1066
+  Top = 324
   BorderStyle = bsDialog
   Caption = 'FormDialogIP'
   ClientHeight = 91
@@ -22,6 +22,22 @@ object FormDialogIP: TFormDialogIP
     Width = 57
     Height = 13
     Caption = 'Adresse IP :'
+  end
+  object Label1: TLabel
+    Left = 72
+    Top = 8
+    Width = 74
+    Height = 13
+    Caption = '(valeur invalide)'
+    Color = clBtnFace
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+    Visible = False
   end
   object Edit4: TEdit
     Left = 10
