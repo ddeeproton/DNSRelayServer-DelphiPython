@@ -30,6 +30,8 @@ type
     { Public declarations }  
     TargetHost: String;
     TargetComboBox: TComboBox;
+    isDone: Boolean;
+    ip: String;
   end;
 
 var
@@ -43,6 +45,8 @@ uses Unit1;
 
 procedure TFormDialogIP.FormCreate(Sender: TObject);
 begin
+  isDone := False;
+  ip := '';
   Memo1.Text := '';
   Memo2.Text := '';
   Memo3.Text := '';
@@ -101,7 +105,7 @@ end;
 
 function TFormDialogIP.isValidIP(): Boolean;
 var
-  i: Integer;
+  i, value: Integer;
   MList: array[1..4] of TMemo;
 begin
   result := True;
@@ -111,7 +115,9 @@ begin
   MList[4] := Memo4;
   for i := 1 to Length(MList) do
   begin
-    if (StrToInt(MList[i].Text) < 1) or (StrToInt(MList[i].Text) > 255) then
+    value := 0;
+    TryStrToInt(MList[i].Text, value);
+    if (value < 1) or (value > 255) then
     begin
       result := False;
       exit;
@@ -140,7 +146,6 @@ procedure TFormDialogIP.ButtonOKClick(Sender: TObject);
 var
   i, selIndex: Integer;
   data: TStrings;
-  ip: string;
 begin
   if not isValidIP() then
   begin
@@ -148,6 +153,7 @@ begin
     exit;
   end;
   ip := getIP();
+  {
   with Form1 do
   begin
     if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
@@ -155,12 +161,15 @@ begin
     PythonDNS.getIPCustomHostFiles(TargetComboBox, '_'+FormDialogIP.TargetHost+'.txt');
     TargetComboBox.ItemIndex := TargetComboBox.Items.IndexOf(ip);
   end;
+  }
+  isDone := True;
   Close;
 
 end;
 
 procedure TFormDialogIP.ButtonCancelClick(Sender: TObject);
 begin
+  isDone := True;
   Close;
 end;
 

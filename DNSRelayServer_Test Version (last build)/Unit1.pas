@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.4';
+  CurrentApplicationVersion: string = '0.4.267.5';
   isDevVersion: Boolean = True;
 
 type
@@ -4241,7 +4241,7 @@ var oldIndexHost: Integer = 0;
 
 procedure TForm1.ComboBoxSelectIPhostfileSelect(Sender: TObject);
 var
-  filename:String;
+  filename, ip: String;
   i: Integer;
 begin
   if ComboBoxSelectIPhostfile.ItemIndex = 0 then
@@ -4257,20 +4257,44 @@ begin
       FormDialogIP.TargetComboBox := ComboBoxSelectIPhostfile;
       FormDialogIP.Show;
       }
-      ShowMessage('En cours d''implémentation :)');            
+      ShowMessage('En cours d''implémentation :)');
+      if oldIndexHost > ComboBoxSelectIPhostfile.Items.Count - 1 then oldIndexHost := 0;
       ComboBoxSelectIPhostfile.ItemIndex := oldIndexHost;
     end else
     begin
       if ComboBoxSelectIPhostfile.ItemIndex = ComboBoxSelectIPhostfile.Items.Count - 2 then
       begin
+
         if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
-        FormDialogIP.TargetHost := 'hostfile';
-        FormDialogIP.TargetComboBox := ComboBoxSelectIPhostfile;
-        FormDialogIP.Show;     
+        FormDialogIP.isDone := False;
+        FormDialogIP.ip := '';
+        FormDialogIP.Show;
+        Application.ProcessMessages;
+        while not FormDialogIP.isDone do
+        begin
+          Sleep(100);
+          Application.ProcessMessages;
+        end;
+        ip := FormDialogIP.ip;
+        if ip = '' then exit;
+
+        if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
+
+        FilesManager.WriteInFile(DirCustomHost+'\'+ip+'_blackhost.txt', '');
+        PythonDNS.getIPCustomHostFiles(ComboBoxSelectIPBlackhost, '_blackhost.txt');
+        ComboBoxSelectIPBlackhost.ItemIndex := ComboBoxSelectIPBlackhost.Items.IndexOf(ip);
+
+        FilesManager.WriteInFile(DirCustomHost+'\'+ip+'_hostfile.txt', '');
+        PythonDNS.getIPCustomHostFiles(ComboBoxSelectIPhostfile, '_hostfile.txt');
+        ComboBoxSelectIPhostfile.ItemIndex := ComboBoxSelectIPhostfile.Items.IndexOf(ip);
+
+        if oldIndexHost > ComboBoxSelectIPhostfile.Items.Count - 1 then oldIndexHost := 0;
         ComboBoxSelectIPhostfile.ItemIndex := oldIndexHost;
+
       end else
       begin
         i := ComboBoxSelectIPhostfile.ItemIndex;
+        if i > ComboBoxSelectIPhostfile.Items.Count - 1 then exit;
         filename := DirCustomHost+'\'+ComboBoxSelectIPhostfile.Items.Strings[i]+'_hostfile.txt';
       end;
     end;
@@ -4278,6 +4302,8 @@ begin
   ListViewCreate(ListView1);
   ListView1.Clear;
   getDomains(filename, ListView1);
+
+  if oldIndexHost > ComboBoxSelectIPhostfile.Items.Count - 1 then oldIndexHost := 0;
   oldIndexHost := ComboBoxSelectIPhostfile.ItemIndex;
 end;
 
@@ -4285,7 +4311,7 @@ var oldIndexBlackhost: Integer = 0;
 
 procedure TForm1.ComboBoxSelectIPBlackhostSelect(Sender: TObject);
 var
-  filename:String;
+  filename, ip: String;
   i: Integer;
 begin
 
@@ -4308,10 +4334,29 @@ begin
       if ComboBoxSelectIPBlackhost.ItemIndex = ComboBoxSelectIPBlackhost.Items.Count - 2 then
       begin
         if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
-        FormDialogIP.TargetHost := 'blackhost';
-        FormDialogIP.TargetComboBox := ComboBoxSelectIPBlackhost;
+        FormDialogIP.isDone := False;
+        FormDialogIP.ip := '';
         FormDialogIP.Show;
-        
+        Application.ProcessMessages;
+        while not FormDialogIP.isDone do
+        begin
+          Sleep(100);
+          Application.ProcessMessages;
+        end;
+        ip := FormDialogIP.ip;
+        if ip = '' then exit;
+
+        if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
+
+        FilesManager.WriteInFile(DirCustomHost+'\'+ip+'_blackhost.txt', '');
+        PythonDNS.getIPCustomHostFiles(ComboBoxSelectIPBlackhost, '_blackhost.txt');
+        ComboBoxSelectIPBlackhost.ItemIndex := ComboBoxSelectIPBlackhost.Items.IndexOf(ip);
+
+        FilesManager.WriteInFile(DirCustomHost+'\'+ip+'_hostfile.txt', '');
+        PythonDNS.getIPCustomHostFiles(ComboBoxSelectIPhostfile, '_hostfile.txt');
+        ComboBoxSelectIPhostfile.ItemIndex := ComboBoxSelectIPhostfile.Items.IndexOf(ip);
+
+
         if oldIndexBlackhost > ComboBoxSelectIPBlackhost.Items.Count - 1 then oldIndexBlackhost := 0;
         ComboBoxSelectIPBlackhost.ItemIndex := oldIndexBlackhost;
       end else

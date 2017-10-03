@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 580
-  Top = 295
+  Left = 493
+  Top = 0
   Width = 493
-  Height = 590
+  Height = 540
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 48
-    Width = 485
+    Width = 468
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -90,7 +90,7 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 3
+      PageIndex = 1
       TabOrder = 0
       object TPage
         Left = 0
@@ -126,9 +126,9 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet3
+            ActivePage = TabSheet1
             MultiLine = True
-            TabIndex = 2
+            TabIndex = 0
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -1747,7 +1747,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 485
+    Width = 468
     Height = 48
     Align = alTop
     BevelOuter = bvNone

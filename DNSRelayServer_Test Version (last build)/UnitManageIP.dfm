@@ -1,6 +1,6 @@
 object FormManageIP: TFormManageIP
-  Left = 820
-  Top = 695
+  Left = 796
+  Top = 575
   Width = 303
   Height = 203
   Caption = 'R'#232'gles d'#39'exception'
@@ -45,6 +45,7 @@ object FormManageIP: TFormManageIP
     Anchors = [akTop, akRight]
     Caption = 'Ajouter'
     TabOrder = 1
+    OnClick = ButtonAjouterClick
   end
   object ButtonModifier: TButton
     Left = 207
