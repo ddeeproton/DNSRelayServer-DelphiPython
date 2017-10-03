@@ -2,8 +2,8 @@ object FormDialogIP: TFormDialogIP
   Left = 1066
   Top = 324
   BorderStyle = bsDialog
-  Caption = 'FormDialogIP'
-  ClientHeight = 91
+  Caption = 'Adresse IP'
+  ClientHeight = 77
   ClientWidth = 153
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,22 +13,16 @@ object FormDialogIP: TFormDialogIP
   Font.Style = []
   FormStyle = fsStayOnTop
   OldCreateOrder = False
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object Label3: TLabel
-    Left = 8
-    Top = 8
-    Width = 57
-    Height = 13
-    Caption = 'Adresse IP :'
-  end
   object Label1: TLabel
-    Left = 72
-    Top = 8
-    Width = 74
+    Left = 9
+    Top = 1
+    Width = 113
     Height = 13
-    Caption = '(valeur invalide)'
+    Caption = 'N'#39'est pas entre 1 et 255'
     Color = clBtnFace
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
@@ -41,7 +35,7 @@ object FormDialogIP: TFormDialogIP
   end
   object Edit4: TEdit
     Left = 10
-    Top = 24
+    Top = 15
     Width = 132
     Height = 21
     TabStop = False
@@ -51,7 +45,7 @@ object FormDialogIP: TFormDialogIP
   end
   object Memo4: TMemo
     Left = 110
-    Top = 28
+    Top = 19
     Width = 28
     Height = 14
     Alignment = taCenter
@@ -69,7 +63,7 @@ object FormDialogIP: TFormDialogIP
   end
   object Memo3: TMemo
     Left = 79
-    Top = 28
+    Top = 19
     Width = 28
     Height = 14
     Alignment = taCenter
@@ -87,7 +81,7 @@ object FormDialogIP: TFormDialogIP
   end
   object Memo2: TMemo
     Left = 47
-    Top = 28
+    Top = 19
     Width = 28
     Height = 14
     Alignment = taCenter
@@ -105,7 +99,7 @@ object FormDialogIP: TFormDialogIP
   end
   object Memo1: TMemo
     Left = 14
-    Top = 28
+    Top = 19
     Width = 28
     Height = 14
     Alignment = taCenter
@@ -123,16 +117,17 @@ object FormDialogIP: TFormDialogIP
   end
   object ButtonOK: TButton
     Left = 8
-    Top = 56
+    Top = 43
     Width = 62
     Height = 25
     Caption = 'OK'
+    Enabled = False
     TabOrder = 5
     OnClick = ButtonOKClick
   end
   object ButtonCancel: TButton
     Left = 80
-    Top = 56
+    Top = 43
     Width = 62
     Height = 25
     Caption = 'Annuler'

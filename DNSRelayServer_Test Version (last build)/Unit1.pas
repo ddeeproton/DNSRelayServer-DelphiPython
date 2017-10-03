@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.7';
+  CurrentApplicationVersion: string = '0.4.267.8';
   isDevVersion: Boolean = True;
 
 type
@@ -1346,6 +1346,9 @@ begin
       TTimer(Form1.Controls[i]).Enabled := False;
   end;
   Application.ProcessMessages;
+
+  if FormDialogIP <> nil then FormDialogIP.Close;
+
   //CanClose := False;
   //if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();

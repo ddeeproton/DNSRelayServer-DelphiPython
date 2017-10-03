@@ -13,7 +13,6 @@ type
     Memo3: TMemo;
     Memo2: TMemo;
     Memo1: TMemo;
-    Label3: TLabel;
     ButtonOK: TButton;
     ButtonCancel: TButton;
     Label1: TLabel;
@@ -26,6 +25,7 @@ type
     function isValidIP(): Boolean;
     function getIP(): String;
     function waitForValue(): string;
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
@@ -55,20 +55,39 @@ begin
   Memo4.Text := '';
 end;
 
+
+function TFormDialogIP.waitForValue(): string;
+begin
+  isDone := False;
+  ip := '';
+  Show;    
+  Memo1.SetFocus;
+  Application.ProcessMessages;
+  while not isDone do
+  begin
+    Sleep(10);
+    Application.ProcessMessages;
+  end;
+  result := ip;
+end;
+
 procedure TFormDialogIP.MemoKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
   m, m2: TMemo;
 begin
+  m := TMemo(Sender);
+  m2 := nil;
+
   //ShowMessage(IntToStr(Key));
   if Key = 13 then exit; // key = Enter
   if Key = 27 then exit; // key = Escape
-  if Key = 37 then exit; // key = left
+  //if Key = 37 then exit; // key = left
   if Key = 38 then exit; // key = up
-  if Key = 39 then exit; // key = right
+  //if Key = 39 then exit; // key = right
   if Key = 40 then exit; // key = down
-  m := TMemo(Sender);
-  m2 := nil;
+
+
   Label1.Visible := (m.Text <> '') and ((StrToInt(m.Text) < 1) or (StrToInt(m.Text) > 255));
   if (Length(m.Text) > 2) then
   begin
@@ -78,13 +97,17 @@ begin
       exit;
     end;
   end;
-  if (Length(m.Text) > 2) or ((Length(m.Text) > 0) and (Key = 190)) then // if key "." pressed
+
+  if ((Length(m.Text) > 2) and not (Key = 37)) // Key = Left
+  or ((Length(m.Text) > 0) and (Key = 190)) // if key "." pressed
+  or ((Key = 39) and (m.SelStart > 0)) then // if key = right pressed
   begin
     if m.Name = 'Memo1' then m2 := Memo2;
     if m.Name = 'Memo2' then m2 := Memo3;
     if m.Name = 'Memo3' then m2 := Memo4;
   end;
-  if (Length(m.Text) = 0) and (Key = 8) then // if key "Backspace" pressed
+  if ((Length(m.Text) = 0) and (Key = 8)) // if key "Backspace" pressed
+  or ((Key = 37) and (m.SelStart = 0)) then  // if key = left pressed
   begin
     if m.Name = 'Memo4' then m2 := Memo3;
     if m.Name = 'Memo3' then m2 := Memo2;
@@ -95,6 +118,7 @@ begin
     m2.SetFocus;
     m2.SelStart := Length(m2.Text);
   end;
+  ButtonOK.Enabled := isValidIP();
 end;
 
 procedure TFormDialogIP.MemoKeyPress(Sender: TObject; var Key: Char);
@@ -103,6 +127,7 @@ begin
   if ord(Key) = 13 then ButtonOKClick(nil); // Key = Enter
   if ord(Key) = 27 then ButtonCancelClick(nil); // Key = Escpape
   if ord(Key) = 8 then exit;   // key = Backspace
+  if ord(Key) = 37 then exit;   // key = Left
   if (Key = '.') or ((ord(Key) < ord('0')) or (ord(Key) > ord('9'))) then Key := #0;
 end;
 
@@ -146,19 +171,6 @@ begin
 end;
 
 
-function TFormDialogIP.waitForValue(): string;
-begin
-  isDone := False;
-  ip := '';
-  Show;
-  Application.ProcessMessages;
-  while not FormDialogIP.isDone do
-  begin
-    Sleep(10);
-    Application.ProcessMessages;
-  end;
-  result := ip;
-end;
 
 
 procedure TFormDialogIP.ButtonOKClick(Sender: TObject);
@@ -190,6 +202,12 @@ procedure TFormDialogIP.ButtonCancelClick(Sender: TObject);
 begin
   isDone := True;
   Close;
+end;
+
+procedure TFormDialogIP.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  isDone := True;
 end;
 
 end.
