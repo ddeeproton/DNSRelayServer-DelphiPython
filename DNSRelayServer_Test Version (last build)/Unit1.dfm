@@ -90,7 +90,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 1
       TabOrder = 0
       object TPage
         Left = 0
@@ -126,9 +125,9 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet4
             MultiLine = True
-            TabIndex = 0
+            TabIndex = 3
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab

@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.5';
+  CurrentApplicationVersion: string = '0.4.267.6';
   isDevVersion: Boolean = True;
 
 type
@@ -1878,6 +1878,7 @@ begin
   GroupBox6.Color := bg;
   GroupBox13.Color := bg;
   GroupBox14.Color := bg;
+  GroupBox15.Color := bg;
 
   Panel1.Color := bg;
   Panel2.Color := bg;
@@ -1888,6 +1889,7 @@ begin
   Panel7.Color := bg;
   Panel8.Color := bg;
   Panel9.Color := bg;
+  Panel11.Color := bg;
   PanelMessage.Color := bg;
 
   Splitter1.Color := bg;
@@ -1907,7 +1909,7 @@ begin
 
   ListView1.Color := bg2;
   Memo1.Color := bg2;
-  MemoLogs.Color := bg2;   
+  MemoLogs.Color := bg2;
   MemoHelpWebAdmin.Color := bg2;
   ListBoxIpClients.Color := bg2;
   ListBoxDNSMaster.Color := bg2;
@@ -1960,6 +1962,7 @@ begin
   Label11.Font.Color := color;
   Label12.Font.Color := color;
   Label13.Font.Color := color;
+  Label14.Font.Color := color;
   Label15.Font.Color := color;
   Label16.Font.Color := color;
   Label17.Font.Color := color;
