@@ -13,7 +13,7 @@ uses
 
 var
   CurrentApplicationVersion: string = '0.4.268.1';
-  isDevVersion: Boolean = False;
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -280,15 +280,12 @@ type
     TabSheet8: TTabSheet;
     ScrollBox7: TScrollBox;
     GroupBox16: TGroupBox;
-    Edit1: TEdit;
-    Label43: TLabel;
-    Edit2: TEdit;
-    Label44: TLabel;
-    Edit3: TEdit;
-    Label45: TLabel;
-    Edit4: TEdit;
     Label46: TLabel;
-    Button4: TButton;
+    CheckBoxExecOnDisconnected: TCheckBox;
+    EditExecOnDisconnected: TEdit;
+    Label43: TLabel;
+    TimerExecOnDisconnected: TTimer;
+    ButtonTester: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -453,6 +450,9 @@ type
     procedure CheckBoxRestartOnNetworkInterfaceChangeClick(
       Sender: TObject);
     procedure ComboBoxSelectIPSelect(Sender: TObject);
+    procedure CheckBoxExecOnDisconnectedClick(Sender: TObject);
+    procedure TimerExecOnDisconnectedTimer(Sender: TObject);
+    procedure ButtonTesterClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -652,9 +652,20 @@ begin
           FormAlert.Show;
         end;
       end;
-     
 
 
+      if ipdomain = '127.0.0.4' then //status := 'BLOCKED by DNS Master fail';
+      begin
+        if CheckBoxExecOnDisconnected.Checked and not TimerExecOnDisconnected.Enabled then
+        begin
+          if EditExecOnDisconnected.Text <> '' then
+          begin
+            Form1.MemoLogs.Lines.Add('Exec command for Event "Disconnected"');
+            ProcessManager.ExecAndContinue(EditExecOnDisconnected.Text, '', SW_SHOWNORMAL);
+            TimerExecOnDisconnected.Enabled := True;
+          end;
+        end;
+      end;
     end;
   end
   else begin
@@ -1723,6 +1734,9 @@ begin
   if FileExists(FilehostPathConfig) then
     EditFilehost.Text := ReadFromFile(FilehostPathConfig);
 
+  if FileExists(DataDirectoryPath + 'EditExecOnDisconnected.cfg') then
+    EditExecOnDisconnected.Text := ReadFromFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg');
+
   //if FileExists(SlaveDNSIPConfig) then
   //  CheckListBoxDNSRelayIP.Items.LoadFromFile(SlaveDNSIPConfig);
   //CBoxDNSServerSlaveIP.Text := ReadFromFile(SlaveDNSIPConfig);
@@ -1815,6 +1829,9 @@ begin
 
 
   CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
+
+  CheckBoxExecOnDisconnected.Checked := FileExists(DataDirectoryPath + 'CheckBoxExecOnDisconnected.cfg');
+
   //TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
 
   //TActionManageIP.getIPCustomHostFiles(ComboBoxSelectIPBlackhost, '_blackhost.txt');
@@ -2454,6 +2471,9 @@ begin
   WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
   WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
   WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
+  WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
+
+
 
   txt := #13#10;
   for i := 0 to CheckListBoxDNSRelayIP.Count - 1 do
@@ -4271,7 +4291,7 @@ var oldIndex: Integer = 0;
 
 procedure TForm1.ComboBoxSelectIPSelect(Sender: TObject);
 var
-  filename, ip: String;
+  filename: String;
   i: Integer;
   ComboBox: TComboBox;
 begin
@@ -4329,7 +4349,6 @@ end;
 
 class procedure TActionManageIP.getIPCustomHostFiles(var ComboBox: TComboBox; suffix: string);
 var
-  i: Integer;
   data: TStrings;
 begin
   data := TActionManageIP.loadListIP(suffix);
@@ -4427,6 +4446,29 @@ begin
   end;
 end;
 
+
+procedure TForm1.CheckBoxExecOnDisconnectedClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + TCheckBox(Sender).Name + '.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + TCheckBox(Sender).Name + '.cfg');
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.TimerExecOnDisconnectedTimer(Sender: TObject);
+begin
+  TTimer(Sender).Enabled := False;
+end;
+
+procedure TForm1.ButtonTesterClick(Sender: TObject);
+begin
+  ProcessManager.ExecAndContinue(EditExecOnDisconnected.Text, '', SW_SHOWNORMAL);
+end;
 
 end.
 

@@ -15,6 +15,8 @@ uses Windows, SysUtils, Messages,
 
 procedure ExecAndWait(sExe, sFile: String; wShowWin: Word);
 procedure ExecAndBringToFront(sExe, sFile: String);
+procedure ExecAndContinue(sExe, sFile: string; wShowWin: Word);
+function ExecAndRead(Que:String):string;
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean; //wShowWin => SW_SHOWNORMAL | SW_HIDE
 
 function KillTask(ExeFileName: string): Integer;
@@ -27,10 +29,19 @@ function IsUserAnAdmin(): Boolean; external shell32;
 
 procedure downloadFile(url, filepath: string);
 
-function ExecAndRead(Que:String):string;
-
 implementation
+
 uses UnitInstallation;
+
+procedure ExecAndContinue(sExe, sFile: string; wShowWin: Word);
+var
+  h: Cardinal;
+  operation: PChar;
+begin
+  if IsUserAnAdmin() then operation := 'open' else operation := 'runas';
+  h := 0;
+  ShellExecute(h, operation, PChar(sExe), PChar(sFile), nil,wShowWin);
+end;
 
 procedure ExecAndWait(sExe, sFile: string; wShowWin: Word);
 var
@@ -272,6 +283,7 @@ var
       result := result + String(Buffer);
     until (BytesRead <= CUANTOBUFFER);
   end;
+
 begin
   result := '';
   With Seguridades do

@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 628
-  Top = 0
+  Left = 760
+  Top = 115
   Width = 493
-  Height = 540
+  Height = 578
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 48
-    Width = 468
+    Width = 485
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -78,8 +78,8 @@ object Form1: TForm1
     OnMoved = FormResize
   end
   object Panel1: TPanel
-    Left = 16
-    Top = 74
+    Left = 8
+    Top = 66
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -1269,93 +1269,73 @@ object Form1: TForm1
               end
             end
             object TabSheet8: TTabSheet
-              Caption = 'DNS Erreurs'
+              Caption = 'Events'
               ImageIndex = 7
               object ScrollBox7: TScrollBox
-                Left = 8
-                Top = 4
-                Width = 289
-                Height = 273
+                Left = 0
+                Top = 0
+                Width = 303
+                Height = 277
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
+                Align = alClient
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox16: TGroupBox
                   Left = 0
                   Top = 0
-                  Width = 289
-                  Height = 177
+                  Width = 303
+                  Height = 129
                   Align = alTop
                   TabOrder = 0
+                  DesignSize = (
+                    303
+                    129)
+                  object Label46: TLabel
+                    Left = 26
+                    Top = 17
+                    Width = 310
+                    Height = 13
+                    Caption = 'Ex'#233'cuter la commande suivante lors d'#39'une d'#233'connexion d'#39'Internet'
+                    FocusControl = CheckBoxExecOnDisconnected
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
                   object Label43: TLabel
                     Left = 8
-                    Top = 16
-                    Width = 38
+                    Top = 48
+                    Width = 56
                     Height = 13
-                    Caption = 'Label43'
+                    Caption = 'Commande:'
                   end
-                  object Label44: TLabel
+                  object CheckBoxExecOnDisconnected: TCheckBox
                     Left = 8
-                    Top = 56
-                    Width = 38
-                    Height = 13
-                    Caption = 'Label43'
+                    Top = 16
+                    Width = 17
+                    Height = 17
+                    TabOrder = 0
+                    OnClick = CheckBoxExecOnDisconnectedClick
                   end
-                  object Label45: TLabel
+                  object EditExecOnDisconnected: TEdit
+                    Left = 8
+                    Top = 64
+                    Width = 285
+                    Height = 21
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 1
+                    OnChange = EditFilehostChange
+                  end
+                  object ButtonTester: TButton
                     Left = 8
                     Top = 96
-                    Width = 38
-                    Height = 13
-                    Caption = 'Label43'
-                  end
-                  object Label46: TLabel
-                    Left = 8
-                    Top = 136
-                    Width = 38
-                    Height = 13
-                    Caption = 'Label43'
-                  end
-                  object Edit1: TEdit
-                    Left = 8
-                    Top = 32
-                    Width = 121
-                    Height = 21
-                    TabOrder = 0
-                    Text = 'Edit1'
-                  end
-                  object Edit2: TEdit
-                    Left = 8
-                    Top = 72
-                    Width = 121
-                    Height = 21
-                    TabOrder = 1
-                    Text = 'Edit1'
-                  end
-                  object Edit3: TEdit
-                    Left = 8
-                    Top = 112
-                    Width = 121
-                    Height = 21
-                    TabOrder = 2
-                    Text = 'Edit1'
-                  end
-                  object Edit4: TEdit
-                    Left = 8
-                    Top = 152
-                    Width = 121
-                    Height = 21
-                    TabOrder = 3
-                    Text = 'Edit1'
-                  end
-                  object Button4: TButton
-                    Left = 200
-                    Top = 16
                     Width = 75
                     Height = 25
-                    Caption = 'Par d'#233'faut'
-                    TabOrder = 4
+                    Caption = 'Tester'
+                    TabOrder = 2
+                    OnClick = ButtonTesterClick
                   end
                 end
               end
@@ -1838,7 +1818,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 468
+    Width = 485
     Height = 48
     Align = alTop
     BevelOuter = bvNone
@@ -2032,7 +2012,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 386
-    Top = 262
+    Top = 302
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2836,7 +2816,7 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Images = ImageList3
     Left = 386
-    Top = 170
+    Top = 210
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -2980,7 +2960,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 415
-    Top = 262
+    Top = 302
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -7117,11 +7097,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 387
-    Top = 323
+    Top = 363
   end
   object ImageList3: TImageList
     Left = 386
-    Top = 290
+    Top = 330
     Bitmap = {
       494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -7799,7 +7779,7 @@ object Form1: TForm1
   end
   object PopupMenuListView: TPopupMenu
     Left = 386
-    Top = 226
+    Top = 266
     object Autoriser1: TMenuItem
       Bitmap.Data = {
         AA030000424DAA03000000000000360000002800000011000000110000000100
@@ -7930,7 +7910,7 @@ object Form1: TForm1
     Height = 80
     Width = 71
     Left = 444
-    Top = 262
+    Top = 302
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -16752,7 +16732,7 @@ object Form1: TForm1
   end
   object PopupMenuDNSMaster: TPopupMenu
     Left = 386
-    Top = 198
+    Top = 238
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16804,7 +16784,7 @@ object Form1: TForm1
   end
   object PopupMenuBlacklist: TPopupMenu
     Left = 414
-    Top = 198
+    Top = 238
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16824,11 +16804,11 @@ object Form1: TForm1
   object ColorDialog1: TColorDialog
     Ctl3D = True
     Left = 414
-    Top = 323
+    Top = 363
   end
   object PopupMenuTheme: TPopupMenu
     Left = 442
-    Top = 198
+    Top = 238
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -16851,7 +16831,7 @@ object Form1: TForm1
   end
   object PopupMenuForAllDNSRules: TPopupMenu
     Left = 441
-    Top = 170
+    Top = 210
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -16867,7 +16847,7 @@ object Form1: TForm1
   end
   object PopupMenuLogs: TPopupMenu
     Left = 414
-    Top = 170
+    Top = 210
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -16937,5 +16917,12 @@ object Form1: TForm1
     OnTimer = CheckSystemChangesTimer
     Left = 440
     Top = 40
+  end
+  object TimerExecOnDisconnected: TTimer
+    Enabled = False
+    Interval = 60000
+    OnTimer = TimerExecOnDisconnectedTimer
+    Left = 387
+    Top = 151
   end
 end
