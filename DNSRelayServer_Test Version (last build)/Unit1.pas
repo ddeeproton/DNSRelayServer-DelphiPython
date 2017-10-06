@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.9';
+  CurrentApplicationVersion: string = '0.4.267.10';
   isDevVersion: Boolean = True;
 
 type
@@ -440,7 +440,7 @@ type
     procedure ButtonInstallScriptWebAdminClick(Sender: TObject);
     procedure CheckBoxRestartOnNetworkInterfaceChangeClick(
       Sender: TObject);
-    procedure ComboBoxSelectIPBlackhostSelect(Sender: TObject);
+    procedure ComboBoxSelectIPSelect(Sender: TObject);
   private
     { Private declarations }
   public
@@ -4257,7 +4257,7 @@ end;
 
 var oldIndex: Integer = 0;
 
-procedure TForm1.ComboBoxSelectIPBlackhostSelect(Sender: TObject);
+procedure TForm1.ComboBoxSelectIPSelect(Sender: TObject);
 var
   filename, ip: String;
   i: Integer;
@@ -4274,6 +4274,8 @@ begin
 
       if FormManageIP = nil then FormManageIP := TFormManageIP.Create(nil);
       FormManageIP.FormCreate(nil);
+      FormManageIP.Top := Top;
+      FormManageIP.Left := Left;
       FormManageIP.Show;
       Hide;
 
@@ -4373,9 +4375,24 @@ var
   ip: string;
   list : array[0..1] of string;
 begin
-  if HideShowForm1 then Form1.Masquer1Click(nil);
+
 
   if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
+
+  if HideShowForm1 then
+  begin
+    FormDialogIP.Top := Form1.Top;
+    FormDialogIP.Left := Form1.Left;
+  end
+  else begin
+    if FormManageIP <> nil then
+    begin       
+      FormDialogIP.Top := FormManageIP.Top;
+      FormDialogIP.Left := FormManageIP.Left;
+    end;
+  end;
+  
+  if HideShowForm1 then Form1.Masquer1Click(nil);
   ip := FormDialogIP.waitForValue();
 
   if HideShowForm1 then Form1.Afficher1Click(nil);

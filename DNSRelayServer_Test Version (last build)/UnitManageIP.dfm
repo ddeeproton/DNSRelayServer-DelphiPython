@@ -41,7 +41,7 @@ object FormManageIP: TFormManageIP
   end
   object ButtonAjouter: TButton
     Left = 207
-    Top = 8
+    Top = 16
     Width = 75
     Height = 25
     Anchors = [akTop, akRight]
@@ -61,7 +61,7 @@ object FormManageIP: TFormManageIP
   end
   object ButtonClose: TButton
     Left = 207
-    Top = 88
+    Top = 80
     Width = 75
     Height = 25
     Caption = 'Fermer'

@@ -1360,7 +1360,7 @@ object Form1: TForm1
             ItemHeight = 13
             TabOrder = 2
             Text = 'ComboBoxSelectIPBlackhost'
-            OnSelect = ComboBoxSelectIPBlackhostSelect
+            OnSelect = ComboBoxSelectIPSelect
             Items.Strings = (
               'Tout le monde'
               'Nouvelle Adresse IP')
@@ -1597,7 +1597,7 @@ object Form1: TForm1
             ItemHeight = 13
             TabOrder = 2
             Text = 'ComboBoxSelectIPhostfile'
-            OnSelect = ComboBoxSelectIPBlackhostSelect
+            OnSelect = ComboBoxSelectIPSelect
             Items.Strings = (
               'Tout le monde'
               'Nouvelle Adresse IP')
