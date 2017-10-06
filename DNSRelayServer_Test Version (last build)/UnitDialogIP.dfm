@@ -1,6 +1,6 @@
 object FormDialogIP: TFormDialogIP
-  Left = 1066
-  Top = 324
+  Left = 1068
+  Top = 326
   BorderStyle = bsDialog
   Caption = 'Adresse IP'
   ClientHeight = 77
@@ -20,9 +20,9 @@ object FormDialogIP: TFormDialogIP
   object Label1: TLabel
     Left = 9
     Top = 1
-    Width = 113
+    Width = 109
     Height = 13
-    Caption = 'N'#39'est pas entre 1 et 255'
+    Caption = 'Doit '#234'tre entre 1 et 255'
     Color = clBtnFace
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon

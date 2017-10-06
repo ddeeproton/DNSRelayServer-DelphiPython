@@ -1,6 +1,6 @@
 object FormManageIP: TFormManageIP
-  Left = 781
-  Top = 480
+  Left = 930
+  Top = 435
   Width = 303
   Height = 203
   Caption = 'R'#232'gles d'#39'exception'
@@ -11,6 +11,8 @@ object FormManageIP: TFormManageIP
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
   DesignSize = (
     295
     169)
@@ -39,7 +41,7 @@ object FormManageIP: TFormManageIP
   end
   object ButtonAjouter: TButton
     Left = 207
-    Top = 16
+    Top = 8
     Width = 75
     Height = 25
     Anchors = [akTop, akRight]
@@ -47,31 +49,23 @@ object FormManageIP: TFormManageIP
     TabOrder = 1
     OnClick = ButtonAjouterClick
   end
-  object ButtonModifier: TButton
-    Left = 207
-    Top = 56
-    Width = 75
-    Height = 25
-    Anchors = [akTop, akRight]
-    Caption = 'Modifier'
-    TabOrder = 2
-  end
   object ButtonSupprimer: TButton
     Left = 207
-    Top = 96
+    Top = 48
     Width = 75
     Height = 25
     Anchors = [akTop, akRight]
     Caption = 'Supprimer'
-    TabOrder = 3
+    TabOrder = 2
+    OnClick = ButtonSupprimerClick
   end
   object ButtonClose: TButton
     Left = 207
-    Top = 136
+    Top = 88
     Width = 75
     Height = 25
     Caption = 'Fermer'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = ButtonCloseClick
   end
 end

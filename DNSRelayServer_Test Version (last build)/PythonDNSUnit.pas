@@ -11,30 +11,12 @@ type
   public
     { Public declarations }
     class procedure createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log: string);
-    class procedure getIPCustomHostFiles(var ComboBox: TComboBox; suffix: string);
   end;
 
 implementation
 
 uses Unit1;
 
-class procedure PythonDNS.getIPCustomHostFiles(var ComboBox: TComboBox; suffix: string);
-var
-  i: Integer;
-  data: TStrings;
-begin
-  if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
-  data := dirList(DirCustomHost, '*'+suffix, false, true, false);
-  for i:=0 to data.Count - 1 do
-  begin
-    data[i] := StringReplace(data[i], suffix, '', [rfReplaceAll, rfIgnoreCase]);
-  end;                                
-  data.Insert(0, 'Tout le monde');
-  data.Add('Nouvelle Adresse IP ...');
-  data.Add('Gérer adresses IP ...');
-  ComboBox.Items := data;
-  ComboBox.ItemIndex := 0;
-end;
 
 class procedure PythonDNS.createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log: string);
 var

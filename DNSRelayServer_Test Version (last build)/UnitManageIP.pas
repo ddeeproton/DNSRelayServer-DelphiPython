@@ -11,11 +11,13 @@ type
     GroupBox1: TGroupBox;
     ListBox1: TListBox;
     ButtonAjouter: TButton;
-    ButtonModifier: TButton;
     ButtonSupprimer: TButton;
     ButtonClose: TButton;
     procedure ButtonCloseClick(Sender: TObject);
     procedure ButtonAjouterClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormCreate(Sender: TObject);
+    procedure ButtonSupprimerClick(Sender: TObject);
   private
     { Déclarations privées }
   public
@@ -33,31 +35,41 @@ uses Unit1;
 
 procedure TFormManageIP.ButtonCloseClick(Sender: TObject);
 begin
+  Form1.Masquer1Click(nil);
   Close;
 end;
 
 procedure TFormManageIP.ButtonAjouterClick(Sender: TObject);
-var ip: string;
 begin
-  if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
-  ip := FormDialogIP.waitForValue();
-  if ip = '' then exit;
+  Hide;
+  TActionManageIP.addIP(False);
+  ListBox1.Items := TActionManageIP.loadListIP();
+  Show;
+end;
 
-  with Form1 do
-  begin
-    if not DirectoryExists(DirCustomHost) then makeDir(DirCustomHost);
+procedure TFormManageIP.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  Form1.Afficher1Click(nil);
+end;
 
-    FilesManager.WriteInFile(DirCustomHost+'\'+ip+'_blackhost.txt', '');
-    PythonDNS.getIPCustomHostFiles(ComboBoxSelectIPBlackhost, '_blackhost.txt');
-    ComboBoxSelectIPBlackhost.ItemIndex := ComboBoxSelectIPBlackhost.Items.IndexOf(ip);
+procedure TFormManageIP.FormCreate(Sender: TObject);
+begin
+  ListBox1.Items := TActionManageIP.loadListIP();
+end;
 
-    FilesManager.WriteInFile(DirCustomHost+'\'+ip+'_hostfile.txt', '');
-    PythonDNS.getIPCustomHostFiles(ComboBoxSelectIPhostfile, '_hostfile.txt');
-    ComboBoxSelectIPhostfile.ItemIndex := ComboBoxSelectIPhostfile.Items.IndexOf(ip);
+procedure TFormManageIP.ButtonSupprimerClick(Sender: TObject);
+var
+  i: Integer;
+  ip: String;
+begin
 
-    //if oldIndexHost > ComboBoxSelectIPhostfile.Items.Count - 1 then oldIndexHost := 0;
-    //ComboBoxSelectIPhostfile.ItemIndex := oldIndexHost;
-  end;
+  i := ListBox1.ItemIndex;
+  if i = -1 then exit;
+  ip := ListBox1.Items.Strings[i];
+  if MessageDlg(PChar('Effacer '+ip+'?'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then exit;
+
+  TActionManageIP.eraseIP(ip);
 end;
 
 end.

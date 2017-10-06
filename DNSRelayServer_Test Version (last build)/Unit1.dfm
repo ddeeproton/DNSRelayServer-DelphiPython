@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 626
-  Top = 98
+  Left = 628
+  Top = 0
   Width = 493
   Height = 540
   Caption = 'DNS Relay Server'
@@ -78,7 +78,7 @@ object Form1: TForm1
     OnMoved = FormResize
   end
   object Panel1: TPanel
-    Left = 8
+    Left = 16
     Top = 74
     Width = 369
     Height = 388
@@ -90,6 +90,7 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
+      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -1596,7 +1597,7 @@ object Form1: TForm1
             ItemHeight = 13
             TabOrder = 2
             Text = 'ComboBoxSelectIPhostfile'
-            OnSelect = ComboBoxSelectIPhostfileSelect
+            OnSelect = ComboBoxSelectIPBlackhostSelect
             Items.Strings = (
               'Tout le monde'
               'Nouvelle Adresse IP')
@@ -16841,7 +16842,7 @@ object Form1: TForm1
     Top = 123
   end
   object TimerCheckSystemChanges: TTimer
-    Interval = 15000
+    Interval = 30000
     OnTimer = CheckSystemChangesTimer
     Left = 440
     Top = 40

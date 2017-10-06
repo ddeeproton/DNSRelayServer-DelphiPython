@@ -14,9 +14,15 @@ uses SysUtils, Classes;
   function FileSize(fileName : wideString) : Int64;
   function dirList(dirname : wideString; Filtre : string = '*.*'; onlyDir: Boolean = False; onlyFiles: Boolean = False; isFullPath: Boolean = True ) : TStrings;
 
+  //procedure deleteFile(fname: string);
 implementation
 
-
+{
+procedure deleteFile(fname: string);
+begin
+  DeleteFile(PAnsiChar(fname));
+end;
+}
 
 function dirList(dirname : wideString; Filtre : string = '*.*'; onlyDir: Boolean = False; onlyFiles: Boolean = False; isFullPath: Boolean = True ) : TStrings;
 var filename: String;
