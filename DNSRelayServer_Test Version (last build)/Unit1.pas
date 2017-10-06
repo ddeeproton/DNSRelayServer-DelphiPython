@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.267.10';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.268.1';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -277,6 +277,18 @@ type
     Label36: TLabel;
     Label41: TLabel;
     ComboBoxSelectIPhostfile: TComboBox;
+    TabSheet8: TTabSheet;
+    ScrollBox7: TScrollBox;
+    GroupBox16: TGroupBox;
+    Edit1: TEdit;
+    Label43: TLabel;
+    Edit2: TEdit;
+    Label44: TLabel;
+    Edit3: TEdit;
+    Label45: TLabel;
+    Edit4: TEdit;
+    Label46: TLabel;
+    Button4: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);

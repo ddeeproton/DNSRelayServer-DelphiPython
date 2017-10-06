@@ -23,8 +23,14 @@ object FormHost: TFormHost
     Width = 449
     Height = 305
     Anchors = [akLeft, akTop, akRight, akBottom]
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Courier New'
+    Font.Style = []
     Lines.Strings = (
       'Memo1')
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 0
     WantTabs = True

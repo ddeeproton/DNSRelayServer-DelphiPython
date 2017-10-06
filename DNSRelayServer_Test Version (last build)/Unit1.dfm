@@ -90,7 +90,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -126,9 +125,9 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet4
+            ActivePage = TabSheet8
             MultiLine = True
-            TabIndex = 3
+            TabIndex = 7
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -1265,6 +1264,98 @@ object Form1: TForm1
                     Height = 17
                     TabOrder = 0
                     OnClick = CheckBoxRemoteAccessClick
+                  end
+                end
+              end
+            end
+            object TabSheet8: TTabSheet
+              Caption = 'DNS Erreurs'
+              ImageIndex = 7
+              object ScrollBox7: TScrollBox
+                Left = 8
+                Top = 4
+                Width = 289
+                Height = 273
+                HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
+                VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
+                BorderStyle = bsNone
+                TabOrder = 0
+                object GroupBox16: TGroupBox
+                  Left = 0
+                  Top = 0
+                  Width = 289
+                  Height = 177
+                  Align = alTop
+                  TabOrder = 0
+                  object Label43: TLabel
+                    Left = 8
+                    Top = 16
+                    Width = 38
+                    Height = 13
+                    Caption = 'Label43'
+                  end
+                  object Label44: TLabel
+                    Left = 8
+                    Top = 56
+                    Width = 38
+                    Height = 13
+                    Caption = 'Label43'
+                  end
+                  object Label45: TLabel
+                    Left = 8
+                    Top = 96
+                    Width = 38
+                    Height = 13
+                    Caption = 'Label43'
+                  end
+                  object Label46: TLabel
+                    Left = 8
+                    Top = 136
+                    Width = 38
+                    Height = 13
+                    Caption = 'Label43'
+                  end
+                  object Edit1: TEdit
+                    Left = 8
+                    Top = 32
+                    Width = 121
+                    Height = 21
+                    TabOrder = 0
+                    Text = 'Edit1'
+                  end
+                  object Edit2: TEdit
+                    Left = 8
+                    Top = 72
+                    Width = 121
+                    Height = 21
+                    TabOrder = 1
+                    Text = 'Edit1'
+                  end
+                  object Edit3: TEdit
+                    Left = 8
+                    Top = 112
+                    Width = 121
+                    Height = 21
+                    TabOrder = 2
+                    Text = 'Edit1'
+                  end
+                  object Edit4: TEdit
+                    Left = 8
+                    Top = 152
+                    Width = 121
+                    Height = 21
+                    TabOrder = 3
+                    Text = 'Edit1'
+                  end
+                  object Button4: TButton
+                    Left = 200
+                    Top = 16
+                    Width = 75
+                    Height = 25
+                    Caption = 'Par d'#233'faut'
+                    TabOrder = 4
                   end
                 end
               end
