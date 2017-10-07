@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.268.1';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.268';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -660,7 +660,7 @@ begin
         begin
           if EditExecOnDisconnected.Text <> '' then
           begin
-            Form1.MemoLogs.Lines.Add('Exec command for Event "Disconnected"');
+            Form1.MemoLogs.Lines.Add('Event "Disconnected"');
             ProcessManager.ExecAndContinue(EditExecOnDisconnected.Text, '', SW_SHOWNORMAL);
             TimerExecOnDisconnected.Enabled := True;
           end;
@@ -1921,6 +1921,7 @@ begin
   GroupBox13.Color := bg;
   GroupBox14.Color := bg;
   GroupBox15.Color := bg;
+  GroupBox16.Color := bg;
 
   Panel1.Color := bg;
   Panel2.Color := bg;
@@ -1949,6 +1950,9 @@ begin
 
   bg2 := changeColor(bg, SpinEditContraste.Position, SpinEditContraste.Position, SpinEditContraste.Position);
 
+  EditFilehost.Color := bg2;   
+  EditThemeName.Color := bg2;
+  EditExecOnDisconnected.Color := bg2;
   ListView1.Color := bg2;
   Memo1.Color := bg2;
   MemoLogs.Color := bg2;
@@ -1957,18 +1961,19 @@ begin
   ListBoxDNSMaster.Color := bg2;
   CheckListBoxDNSRelayIP.Color := bg2;
   SpinPort.Color := bg2;
-  EditFilehost.Color := bg2;
   SpinTimeCheckUpdate.Color := bg2;
   SpinEditAlertDuration.Color := bg2;
   ComboBoxCurrentTheme.Color := bg2;
-  EditThemeName.Color := bg2;
   ListBoxBlacklist.Color := bg2;
   ComboBoxPosLogs.Color := bg2;
   ComboBoxSelectIPBlackhost.Color := bg2;
   ComboBoxSelectIPhostfile.Color := bg2;
 
   bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
-
+                               
+  EditFilehost.Font.Color := bg2;  
+  EditThemeName.Font.Color := bg2;
+  EditExecOnDisconnected.Font.Color := bg2;
   ListView1.Font.Color := bg2;
   Memo1.Font.Color := bg2;
   MemoLogs.Font.Color := bg2;
@@ -1977,11 +1982,9 @@ begin
   ListBoxDNSMaster.Font.Color := bg2;
   CheckListBoxDNSRelayIP.Font.Color := bg2;
   SpinPort.Font.Color := bg2;
-  EditFilehost.Font.Color := bg2;
   SpinTimeCheckUpdate.Font.Color := bg2;
   SpinEditAlertDuration.Font.Color := bg2;
   ComboBoxCurrentTheme.Font.Color := bg2;
-  EditThemeName.Font.Color := bg2;
   ListBoxBlacklist.Font.Color := bg2;
   ComboBoxPosLogs.Font.Color := bg2;
   ComboBoxSelectIPBlackhost.Font.Color := bg2;
@@ -2019,6 +2022,8 @@ begin
   Label37.Font.Color := color;
   Label38.Font.Color := color;
   Label39.Font.Color := color;
+  Label43.Font.Color := color;
+  Label46.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
