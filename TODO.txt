@@ -1,0 +1,6 @@
+-refaire l'affichage du log (à voir)
+-ecrire les logs dans un fichier (à voir)
+-implémenter un TTL sur le DNS en cache
+-implémenter un reset rapide du DNS cacne
+-implémenter une interface web
+
