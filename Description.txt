@@ -11,7 +11,7 @@ L'idée est de proposer un firewall (un parfeu) sur la couche DNS.
 -De poser un filtrage parentale
 -Accélérer votre connexion Internet (en gardant en cache les requêtes DNS)
 -De moins soliciter le serveur DNS de votre FAI (grâce au cache) donc aspect "écologie" et "vie privée".
--De rajouter des noms de domaines à des IP d'un seul coup pour plusieurs machines. 
+-De rajouter des noms de domaines à des IP d'un seul coup pour plusieurs machines (clients DNS). 
 -De vous avertir en cas de déconnexion d'internet
 -et bien d'autre choses auquel je n'ai pas pensé ^^
 
