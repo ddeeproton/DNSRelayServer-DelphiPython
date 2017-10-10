@@ -3,4 +3,11 @@
 -implémenter un TTL sur le DNS en cache
 -implémenter un reset rapide du DNS cacne
 -implémenter une interface web
+-implémenter le check au lancement du serveur si l'install du framework MS est nécessaire ou pas. Si oui faire l'installation automatique.
+-Vérifier les multiples lancements
+-implémenter un agent qui répare la connexion en cas de plantage (si l'agent est killé, le programme principal demandera si l'utilisateur veut fermer le serveur. 
+ Si oui, on ferme tout, si non, on relance l'agent planté.
+ Si c'est le programme principale qui plante, l'agent relance simplement le programme (après l'avoir demandé à l'utilisateur).
+ Proposer à l'utilisateur de rendre l'agent silencieux.
+
 
