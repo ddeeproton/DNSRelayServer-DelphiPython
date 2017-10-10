@@ -1,13 +1,19 @@
+Prioritaire:
+-------------
+-proposer un filtrage basé sur une whitelist d'ipclients 
+
+Secondaire:
+-------------
 -refaire l'affichage du log (à voir)
 -ecrire les logs dans un fichier (à voir)
 -implémenter un TTL sur le DNS en cache
--implémenter un reset rapide du DNS cacne
+-implémenter un reset rapide du DNS cache, puis enlever la demande de redémarrage là où ce n'est plus nécessaire.
 -implémenter une interface web
 -implémenter le check au lancement du serveur si l'install du framework MS est nécessaire ou pas. Si oui faire l'installation automatique.
 -Vérifier les multiples lancements
 -implémenter un agent qui répare la connexion en cas de plantage (si l'agent est killé, le programme principal demandera si l'utilisateur veut fermer le serveur. 
  Si oui, on ferme tout, si non, on relance l'agent planté.
  Si c'est le programme principale qui plante, l'agent relance simplement le programme (après l'avoir demandé à l'utilisateur).
- Proposer à l'utilisateur de rendre l'agent silencieux.
-
+ Proposer à l'utilisateur de rendre l'agent silencieux dans les options.
+-finir d'implémenter dans le gui, la fusion du blackhost avec hostfile.
 
