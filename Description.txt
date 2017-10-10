@@ -1,0 +1,18 @@
+Description
+"DNS Relay Server" est une application qui a pour but d'offrir un filrage sur les DNS.
+L'idée est de proposer un firewall (un parfeu) sur la couche DNS d'une machine.
+
+"DNS Relay Server" peut servir à 
+
+-Bloquer les publicités
+-Savoir ce que fait votre machine
+-Contrôler s'il n'y a pas de virus / malware qui tente de communiquer.
+-De bloquer les mises à jours obligatoires sur certaines machines.
+-De poser un filtrage parentale
+-Accélérer votre connexion Internet (en gardant en cache les requêtes DNS)
+
+Avertissement:
+Les versions 0.x signifient qu'il est déconseillé de rendre le serveur DNS publique, 
+et d'utiliser cette application "si vous ne savez pas ce que veut dire configurer l'adresse IP de votre carte réseau" 
+
+Les version 1.0 et + seront pour tout publique.
