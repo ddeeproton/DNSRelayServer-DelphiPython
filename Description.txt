@@ -18,7 +18,8 @@ L'idée est de proposer un firewall (un parfeu) sur la couche DNS.
 Avertissement:
 Les versions 0.x signifient qu'il est déconseillé de rendre le serveur DNS publique 
 (à cause du "cache serveur" qui n'expire jamais pour le moment), si non d'un point de vue sécurité aucun problème. 
-et d'utiliser cette application "si vous ne savez pas ce que veut dire configurer l'adresse IP de votre carte réseau" 
+et qu'il est déconseillé d'utiliser cette application si vous ne savez pas ce que veut dire: 
+"configurer l'adresse IP de votre carte réseau" (pour réparer votre connexion en cas de plantage). 
 
 Les versions 1.0 et + sont prévus pour être tout publique.
 
