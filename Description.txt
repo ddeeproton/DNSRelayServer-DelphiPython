@@ -17,4 +17,6 @@ Avertissement:
 Les versions 0.x signifient qu'il est déconseillé de rendre le serveur DNS publique, 
 et d'utiliser cette application "si vous ne savez pas ce que veut dire configurer l'adresse IP de votre carte réseau" 
 
-Les version 1.0 et + seront pour tout publique.
+Les versions 1.0 et + sont prévus pour être tout publique.
+
+Ce prorgamme est gratuit et le restera toujours. ^^
