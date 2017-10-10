@@ -7,7 +7,7 @@ L'idée est de proposer un firewall (un parfeu) sur la couche DNS.
 -Bloquer les publicités
 -Savoir ce que fait une machine sur Internet
 -Contrôler s'il n'y a pas de virus / malware qui tente de communiquer.
--De bloquer les mises à jours obligatoires (normalement impossible à bloquer depuis le fichier host).
+-De bloquer les mises à jours obligatoires (dont certains sont normalement impossible à bloquer depuis le fichier host).
 -De poser un filtrage parentale
 -Accélérer votre connexion Internet (en gardant en cache les requêtes DNS)
 -De moins soliciter le serveur DNS de votre FAI (grâce au cache).
