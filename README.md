@@ -1,9 +1,9 @@
 ![](preview.png)
 
-# Youtube Downloader
+# DNS Relay Server
 
 
-### DNS Relay Server:
+### Description:
 
 "DNS Relay Server" est une application qui a pour but d'offrir un filrage sur les DNS.
 
