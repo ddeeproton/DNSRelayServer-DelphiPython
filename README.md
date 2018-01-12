@@ -41,6 +41,10 @@ Les versions 1.0 et + sont prévus pour être tout publique.
 
 Ce prorgamme est gratuit et le restera toujours. ^^
 
+### Télécharger le setup d'installation:
+
+https://github.com/ddeeproton/DNSRelayServer-DelphiPython/tree/master/Setup%20installation
+
 ### Faire un don:
 
 #### Bitcoin (BTC)
