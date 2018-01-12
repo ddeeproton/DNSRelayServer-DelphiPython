@@ -133,86 +133,63 @@ SectionEnd ; end the section
 
 
 # Uninstall section.
-
 Section "Uninstall"
+  Call un.DoCloseProcess
+  
+  IfFileExists "C:\Python27\python.exe" AskRemovePython FSkip
+  AskRemovePython:
+  MessageBox MB_YESNO "Souhaitez-vous désinstaller Python 2.7?" IDNO FSkip
+    ExecWait '"$WINDIR\system32\msiexec.exe" /x{4A656C6C-D24A-473F-9747-3A8D00907A03}'	  
+  FSkip:
 
+  MessageBox MB_YESNO "Effacer vos fichiers de configuration?" IDNO FSkip2
+    RMDir /r "$INSTDIR\DNSRelayServer"
+  FSkip2:
 
+  MessageBox MB_YESNO "Effacer les fichiers d'installation téléchargés?" IDNO FSkip3
+    RMDir /r "$INSTDIR\setup"
+  FSkip3:
 
-	IfFileExists "C:\Python27\python.exe" AskRemovePython FSkip
+  MessageBox MB_YESNO "Effacer les sources?" IDNO FSkip4
+    Delete "$INSTDIR\DNSRelayServer_*_Source.zip"
+  FSkip4:
 
-	  
+  DeleteRegKey HKLM "SOFTWARE\DNSRelayServer"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\DNSRelayServer"
 
-	AskRemovePython:
+  RMDir /r "$SMPROGRAMS\DNS Relay Server"
+  
+  Call un.DoCloseProcess
+  Exec 'DNSRelayServer.exe /uninst'
+  Sleep 5000
 
-	  MessageBox MB_YESNO "Souhaitez-vous désinstaller Python 2.7?" IDNO FSkip
-	  
-	  ExecWait '"$WINDIR\system32\msiexec.exe" /x{4A656C6C-D24A-473F-9747-3A8D00907A03}'
-	  
-	FSkip:
+  Delete "$INSTDIR\wget.exe"
+  Delete "$INSTDIR\DNSRelayServer.exe"
+  Delete "$INSTDIR\uninstall_DNSRelayServer.exe"
+  Delete "$INSTDIR\kill.exe"
+  Delete "$INSTDIR\libgcc_s_dw2-1.dll"
 
-
-
-	  MessageBox MB_YESNO "Effacer vos fichiers de configuration?" IDNO FSkip2
-
-
-	  RMDir /r "$INSTDIR\DNSRelayServer"
-	  
-
-	  
-	FSkip2:
-
-
-	  MessageBox MB_YESNO "Effacer les fichiers d'installation téléchargés?" IDNO FSkip3
-
-	  RMDir /r "$INSTDIR\setup"
-
-	FSkip3:
-
-
-
-	  MessageBox MB_YESNO "Effacer les sources?" IDNO FSkip4
-
-	  Delete "$INSTDIR\DNSRelayServer_*_Source.zip"
-
-	  
-	FSkip4:
-
-
-
-	  DeleteRegKey HKLM "SOFTWARE\DNSRelayServer"
-	  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\DNSRelayServer"
-
-	  RMDir /r "$SMPROGRAMS\DNS Relay Server"
-
-
-	  Delete "$INSTDIR\wget.exe"
-	  Delete "$INSTDIR\DNSRelayServer.exe"
-	  Delete "$INSTDIR\uninstall_DNSRelayServer.exe"
-
-
-	  RMDir $INSTDIR
-
-
-
+  RMDir $INSTDIR
 SectionEnd
 
-
-
-
 Function .onInit
-
   !insertmacro MUI_LANGDLL_DISPLAY
-
 FunctionEnd
 
 
+Function "un.DoCloseProcess"
+  ClearErrors
+  #Exec "kill.exe k $\"youtube downloader$\"" 
+  ExecShell "open" "kill.exe" "k $\"DNS Relay Server $\"" SW_HIDE
+  Sleep 5000
+FunctionEnd
+
 Function "CloseProcess"
-    ClearErrors
-    File "libgcc_s_dw2-1.dll" 
-    File "kill.exe" 
-    #Exec "kill.exe k $\"youtube downloader$\"" 
-    ExecShell "open" "kill.exe" "k $\"DNS Relay Server $\"" SW_HIDE
-    Sleep 5000
+  ClearErrors
+  File "libgcc_s_dw2-1.dll" 
+  File "kill.exe" 
+  ExecShell "open" "kill.exe" "k $\"DNS Relay Server $\"" SW_HIDE
+  Sleep 5000
 FunctionEnd
 
 

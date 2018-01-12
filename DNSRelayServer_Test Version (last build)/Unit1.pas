@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.276';
+  CurrentApplicationVersion: string = '0.4.277';
   isDevVersion: Boolean = False;
 
 type
@@ -1652,6 +1652,16 @@ begin
   begin
     SetCurrentDir(ExtractFileDir(Application.ExeName));
     ExecAndBringToFront(Application.ExeName, '/autostart');
+    canClose := True;
+    FormCloseQuery(nil, canClose);
+    //KillTask(ExtractFileName(Application.ExeName));
+    KillProcess(Self.Handle);
+    Application.Terminate;
+  end;
+
+  if (ParamCount() >= 1) and (ParamStr(1) = '/uninst') then
+  begin
+    ButtonNetCardDesintegrationClick(nil);
     canClose := True;
     FormCloseQuery(nil, canClose);
     //KillTask(ExtractFileName(Application.ExeName));

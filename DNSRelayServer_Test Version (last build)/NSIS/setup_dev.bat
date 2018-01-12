@@ -6,7 +6,9 @@ set /p v=<version_dev.txt
 
 
 
-echo Version %v%
+echo Compilation Version %v%
+
+@pause
 
 echo NSIS version 3.01 est requis
 echo http://prdownloads.sourceforge.net/nsis/nsis-3.01-setup.exe
@@ -36,6 +38,11 @@ copy /Y NSIS\* DNSRelayServer_%v%_Source\NSIS\
 del /Q DNSRelayServer_%v%_Source\DNSRelayServer.exe
 
 NSIS\7za920\7za.exe a DNSRelayServer_%v%_Source.zip DNSRelayServer_%v%_Source 
+
+if not exist DNSRelayServer_%v%_Source.zip echo Compression fail! DNSRelayServer_%v%_Source.zip
+if not exist DNSRelayServer_%v%_Source.zip @pause
+if not exist DNSRelayServer_%v%_Source.zip exit
+
 
 del /Q DNSRelayServer_%v%_Source\NSIS\*
 del /Q DNSRelayServer_%v%_Source\images\mainmenu\*
@@ -87,3 +94,4 @@ echo ==============================
 "..\..\Setup installation\test versions (bugged)\DNSRelayServerSetup_%v%_alpha.exe"
 
 
+@pause
