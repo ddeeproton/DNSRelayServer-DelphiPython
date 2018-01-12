@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.270';
+  CurrentApplicationVersion: string = '0.4.271';
   isDevVersion: Boolean = False;
 
 type
@@ -168,17 +168,6 @@ type
     ScrollBox1: TScrollBox;
     ScrollBox2: TScrollBox;
     ScrollBox3: TScrollBox;
-    GroupBox7: TGroupBox;
-    Label7: TLabel;
-    Label20: TLabel;
-    Panel4: TPanel;
-    ButtonNetCardIntegration: TButton;
-    ButtonNetCardDesintegration: TButton;
-    Button3: TButton;
-    Panel2: TPanel;
-    Label9: TLabel;
-    Label13: TLabel;
-    CheckBoxAllowModifyNetCard: TCheckBox;
     ScrollBox4: TScrollBox;
     ScrollBox5: TScrollBox;
     Masquer2: TMenuItem;
@@ -267,12 +256,6 @@ type
     Label39: TLabel;
     MemoHelpWebAdmin: TMemo;
     TimerCheckSystemChanges: TTimer;
-    GroupBox15: TGroupBox;
-    Label40: TLabel;
-    Panel10: TPanel;
-    Panel11: TPanel;
-    Label42: TLabel;
-    CheckBoxRestartOnNetworkInterfaceChange: TCheckBox;
     ComboBoxSelectIPBlackhost: TComboBox;
     Label36: TLabel;
     Label41: TLabel;
@@ -286,6 +269,27 @@ type
     Label43: TLabel;
     TimerExecOnDisconnected: TTimer;
     ButtonTester: TButton;
+    CheckBoxBindAllIP: TCheckBox;
+    Label44: TLabel;
+    GroupBox17: TGroupBox;
+    Panel12: TPanel;
+    GroupBox15: TGroupBox;
+    Label40: TLabel;
+    Panel10: TPanel;
+    Panel11: TPanel;
+    Label42: TLabel;
+    CheckBoxRestartOnNetworkInterfaceChange: TCheckBox;
+    GroupBox7: TGroupBox;
+    Label7: TLabel;
+    Label20: TLabel;
+    Panel4: TPanel;
+    ButtonNetCardIntegration: TButton;
+    ButtonNetCardDesintegration: TButton;
+    Button3: TButton;
+    Panel2: TPanel;
+    Label9: TLabel;
+    Label13: TLabel;
+    CheckBoxAllowModifyNetCard: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -453,6 +457,7 @@ type
     procedure CheckBoxExecOnDisconnectedClick(Sender: TObject);
     procedure TimerExecOnDisconnectedTimer(Sender: TObject);
     procedure ButtonTesterClick(Sender: TObject);
+    procedure CheckBoxBindAllIPClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1585,7 +1590,19 @@ var
   canClose: Boolean;
   autostarted: Boolean;
 begin
-
+  //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
+  if not IsUserAnAdmin() then
+  begin
+    param := '';
+    for i:=1 to ParamCount() do
+      param := param +' '+ParamStr(i);
+    ExecAndBringToFront(Application.ExeName, param);
+    canClose := True;
+    FormCloseQuery(nil, canClose);
+    //KillTask(ExtractFileName(Application.ExeName));
+    KillProcess(Self.Handle);
+    Application.Terminate;
+  end;
 
   // Masque la fenêtre de la taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
@@ -1607,19 +1624,7 @@ begin
   //GroupBox5.Width := Form1.Width div 2;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
-  //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
-  if not IsUserAnAdmin() then
-  begin
-    param := '';
-    for i:=1 to ParamCount() do
-      param := param +' '+ParamStr(i);
-    ExecAndBringToFront(Application.ExeName, param);
-    canClose := True;
-    FormCloseQuery(nil, canClose);
-    //KillTask(ExtractFileName(Application.ExeName));
-    KillProcess(Self.Handle);
-    Application.Terminate;
-  end;
+
 
   if (ParamCount() >= 1) and (ParamStr(1) = '/inst_background') then
   begin
@@ -1769,6 +1774,8 @@ begin
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
 
+
+
   //CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
   ComboBoxCurrentTheme.OnSelect := nil;
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
@@ -1787,7 +1794,11 @@ begin
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
   Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+  CheckBoxBindAllIP.Checked := FileExists(DataDirectoryPath + 'CheckBoxBindAllIP.cfg');
+  CheckBoxBindAllIPClick(nil);
   ButtonRefreshNetCardClick(nil);
+
+
   CheckBoxAlertEventsKnown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
   CheckBoxAlertEventsUnknown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
   CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
@@ -2026,6 +2037,7 @@ begin
   Label40.Font.Color := color;
   Label42.Font.Color := color;
   Label43.Font.Color := color;
+  Label44.Font.Color := color;
   Label46.Font.Color := color;
 
   LabelMessage.Font.Color := color;
@@ -2868,6 +2880,8 @@ var
   net: tNetworkInterfaceList;
   txt: String;
 begin
+  if CheckBoxBindAllIP.Checked then exit;
+  
   txt := ReadFromFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg');
 
   CheckListBoxDNSRelayIP.Clear;
@@ -4480,6 +4494,26 @@ procedure TForm1.ButtonTesterClick(Sender: TObject);
 begin
   ProcessManager.ExecAndContinue(EditExecOnDisconnected.Text, '', SW_SHOWNORMAL);
 end;
+
+procedure TForm1.CheckBoxBindAllIPClick(Sender: TObject);
+var isCheck: Boolean;
+begin
+  isCheck := CheckBoxBindAllIP.Checked;
+  
+  if isCheck then
+  begin
+    CheckListBoxDNSRelayIP.Clear;
+    CheckListBoxDNSRelayIP.Items.Add('0.0.0.0');
+    CheckListBoxDNSRelayIP.Checked[0] := True;        
+    WriteInFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg', '1');
+  end else begin
+    ButtonRefreshNetCardClick(Nil);            
+    DeleteFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg');
+  end;
+  CheckListBoxDNSRelayIP.Enabled := not isCheck;
+end;
+
+
 
 end.
 

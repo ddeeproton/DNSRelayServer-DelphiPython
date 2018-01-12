@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet5
+            ActivePage = TabSheet1
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -148,14 +148,13 @@ object Form1: TForm1
                 Height = 265
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
-                VertScrollBar.Position = 23
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = -23
+                  Top = 0
                   Width = 264
                   Height = 289
                   Align = alTop
@@ -166,9 +165,9 @@ object Form1: TForm1
                   object Label1: TLabel
                     Left = 16
                     Top = 23
-                    Width = 141
+                    Width = 68
                     Height = 13
-                    Caption = 'Adresse(s) IP du serveur DNS'
+                    Caption = 'Adresse(s) IP :'
                     Transparent = True
                   end
                   object SpeedButtonRefreshNetCard: TSpeedButton
@@ -211,9 +210,9 @@ object Form1: TForm1
                   object Label2: TLabel
                     Left = 176
                     Top = 23
-                    Width = 19
+                    Width = 25
                     Height = 13
-                    Caption = 'Port'
+                    Caption = 'Port :'
                     Transparent = True
                   end
                   object Label4: TLabel
@@ -226,15 +225,15 @@ object Form1: TForm1
                   end
                   object Label5: TLabel
                     Left = 16
-                    Top = 111
-                    Width = 56
+                    Top = 135
+                    Width = 62
                     Height = 13
-                    Caption = 'Fichier Host'
+                    Caption = 'Fichier Host :'
                     Transparent = True
                   end
                   object Label6: TLabel
                     Left = 35
-                    Top = 161
+                    Top = 185
                     Width = 239
                     Height = 13
                     Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
@@ -251,7 +250,7 @@ object Form1: TForm1
                   end
                   object Label8: TLabel
                     Left = 35
-                    Top = 185
+                    Top = 209
                     Width = 294
                     Height = 13
                     Caption = 'Lancer le serveur DNS (au lancement normale de l'#39'application)'
@@ -262,7 +261,7 @@ object Form1: TForm1
                   end
                   object Label3: TLabel
                     Left = 35
-                    Top = 209
+                    Top = 233
                     Width = 276
                     Height = 13
                     Caption = 'Ne pas v'#233'rifier les DNS Ma'#238'tres (au d'#233'marrage du serveur)'
@@ -273,7 +272,7 @@ object Form1: TForm1
                   end
                   object Label32: TLabel
                     Left = 35
-                    Top = 233
+                    Top = 257
                     Width = 184
                     Height = 13
                     Caption = 'Ne pas utiliser le cache DNS (plus lent)'
@@ -284,11 +283,33 @@ object Form1: TForm1
                   end
                   object Label33: TLabel
                     Left = 35
-                    Top = 257
+                    Top = 281
                     Width = 150
                     Height = 13
                     Caption = 'Pas d'#39'affichage log (plus rapide)'
                     FocusControl = CheckBoxPureServer
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label44: TLabel
+                    Left = 33
+                    Top = 105
+                    Width = 283
+                    Height = 13
+                    Hint = 
+                      'Si activ'#233', pas besoin de "Red'#233'marrer le serveur si modification ' +
+                      'sur carte r'#233'seau" (voir section "Carte R'#233'seau")'
+                    Caption = 'Ecouter toutes les adresses (un seul serveur max / plus lent)'
+                    FocusControl = CheckBoxBindAllIP
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clBlack
+                    Font.Height = -11
+                    Font.Name = 'MS Sans Serif'
+                    Font.Style = []
+                    ParentFont = False
+                    ParentShowHint = False
+                    ShowHint = True
                     OnClick = LabelToCheckboxClick
                     OnMouseEnter = LabelCheckboxMouseEnter
                     OnMouseLeave = LabelCheckboxMouseLeave
@@ -307,7 +328,7 @@ object Form1: TForm1
                   end
                   object EditFilehost: TEdit
                     Left = 16
-                    Top = 127
+                    Top = 151
                     Width = 202
                     Height = 21
                     Anchors = [akLeft, akTop, akRight]
@@ -323,7 +344,7 @@ object Form1: TForm1
                   end
                   object CheckBoxStartWithWindows: TCheckBox
                     Left = 16
-                    Top = 159
+                    Top = 183
                     Width = 17
                     Height = 17
                     TabOrder = 2
@@ -331,7 +352,7 @@ object Form1: TForm1
                   end
                   object CheckBoxAutostartDNSOnBoot: TCheckBox
                     Left = 16
-                    Top = 183
+                    Top = 207
                     Width = 19
                     Height = 17
                     TabOrder = 3
@@ -339,7 +360,7 @@ object Form1: TForm1
                   end
                   object CheckBoxNoTestDNSMaster: TCheckBox
                     Left = 16
-                    Top = 207
+                    Top = 231
                     Width = 17
                     Height = 17
                     TabOrder = 4
@@ -347,7 +368,7 @@ object Form1: TForm1
                   end
                   object CheckBoxNoCacheDNS: TCheckBox
                     Left = 16
-                    Top = 231
+                    Top = 255
                     Width = 16
                     Height = 17
                     TabOrder = 5
@@ -355,7 +376,7 @@ object Form1: TForm1
                   end
                   object CheckBoxPureServer: TCheckBox
                     Left = 16
-                    Top = 255
+                    Top = 279
                     Width = 17
                     Height = 17
                     TabOrder = 6
@@ -363,7 +384,7 @@ object Form1: TForm1
                   end
                   object Button1: TButton
                     Left = 225
-                    Top = 127
+                    Top = 151
                     Width = 35
                     Height = 23
                     Anchors = [akTop, akRight]
@@ -379,6 +400,19 @@ object Form1: TForm1
                     OnClickCheck = CheckListBoxDNSRelayIPClickCheck
                     ItemHeight = 13
                     TabOrder = 8
+                  end
+                  object CheckBoxBindAllIP: TCheckBox
+                    Left = 16
+                    Top = 103
+                    Width = 17
+                    Height = 17
+                    Hint = 
+                      'Si activ'#233', pas besoin de "Red'#233'marrer le serveur si modification ' +
+                      'sur carte r'#233'seau" (voir section "Carte R'#233'seau")'
+                    ParentShowHint = False
+                    ShowHint = True
+                    TabOrder = 9
+                    OnClick = CheckBoxBindAllIPClick
                   end
                 end
               end
@@ -622,146 +656,25 @@ object Form1: TForm1
                 Left = 8
                 Top = 0
                 Width = 290
-                Height = 286
+                Height = 267
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
-                object GroupBox7: TGroupBox
-                  Left = 0
-                  Top = 53
-                  Width = 274
-                  Height = 249
-                  Align = alTop
-                  Caption = '                                     '
-                  TabOrder = 0
-                  DesignSize = (
-                    274
-                    249)
-                  object Label7: TLabel
-                    Left = 8
-                    Top = 63
-                    Width = 246
-                    Height = 91
-                    Anchors = [akLeft, akTop, akRight]
-                    Caption = 
-                      'Change la configuration de la carte r'#233'seau afin d'#39'utiliser ce pr' +
-                      'ogramme comme serveur DNS. Attention! Si ce programme est ferm'#233' ' +
-                      'brutalement vous perdez Internet. Pour r'#233'parer une connexion cas' +
-                      's'#233'e cliquez sur D'#233'sintaller. Le bouton d'#233'sintaller, restaure la ' +
-                      'configuration de la carte r'#233'seau en mode automatique (DHCP)'
-                    Transparent = True
-                    WordWrap = True
-                  end
-                  object Label20: TLabel
-                    Left = 11
-                    Top = -2
-                    Width = 103
-                    Height = 13
-                    Caption = 'Int'#233'gration du serveur'
-                  end
-                  object Panel4: TPanel
-                    Left = 42
-                    Top = 170
-                    Width = 193
-                    Height = 55
-                    Anchors = [akTop]
-                    BevelOuter = bvNone
-                    Color = clWhite
-                    TabOrder = 0
-                    object ButtonNetCardIntegration: TButton
-                      Left = 16
-                      Top = 0
-                      Width = 75
-                      Height = 25
-                      Caption = 'Installer'
-                      TabOrder = 0
-                      OnClick = ButtonNetCardIntegrationClick
-                    end
-                    object ButtonNetCardDesintegration: TButton
-                      Left = 104
-                      Top = 0
-                      Width = 75
-                      Height = 25
-                      Caption = 'D'#233'sinstaller'
-                      TabOrder = 1
-                      OnClick = ButtonNetCardDesintegrationClick
-                    end
-                    object Button3: TButton
-                      Left = 61
-                      Top = 29
-                      Width = 75
-                      Height = 25
-                      Caption = 'Modifier'
-                      TabOrder = 2
-                      OnClick = Button3Click
-                    end
-                  end
-                  object Panel2: TPanel
-                    Left = 2
-                    Top = 15
-                    Width = 270
-                    Height = 45
-                    Align = alTop
-                    BevelOuter = bvNone
-                    BevelWidth = 4
-                    Color = clWhite
-                    TabOrder = 1
-                    object Label9: TLabel
-                      Left = 27
-                      Top = 28
-                      Width = 286
-                      Height = 13
-                      Caption = '(Executera un script de r'#233'paration au red'#233'marrage Windows)'
-                      Transparent = True
-                    end
-                    object Label13: TLabel
-                      Left = 25
-                      Top = 11
-                      Width = 309
-                      Height = 13
-                      Caption = 
-                        'Modifier la carte r'#233'seau au lancement et '#224' la fermeture du serve' +
-                        'ur'
-                      FocusControl = CheckBoxAllowModifyNetCard
-                      OnClick = LabelToCheckboxClick
-                      OnMouseEnter = LabelCheckboxMouseEnter
-                      OnMouseLeave = LabelCheckboxMouseLeave
-                    end
-                    object CheckBoxAllowModifyNetCard: TCheckBox
-                      Left = 8
-                      Top = 10
-                      Width = 15
-                      Height = 17
-                      Checked = True
-                      State = cbChecked
-                      TabOrder = 0
-                      OnClick = CheckBoxAllowModifyNetCardClick
-                    end
-                  end
-                end
-                object GroupBox15: TGroupBox
+                object GroupBox17: TGroupBox
                   Left = 0
                   Top = 0
                   Width = 274
-                  Height = 53
+                  Height = 325
                   Align = alTop
-                  Caption = '                      '
-                  TabOrder = 1
+                  TabOrder = 0
                   DesignSize = (
                     274
-                    53)
-                  object Label40: TLabel
-                    Left = 11
-                    Top = -2
-                    Width = 60
-                    Height = 13
-                    Caption = 'Carte r'#233'seau'
-                  end
-                  object Panel10: TPanel
-                    Left = 42
+                    325)
+                  object Panel12: TPanel
+                    Left = 34
                     Top = 170
                     Width = 193
                     Height = 55
@@ -770,36 +683,178 @@ object Form1: TForm1
                     Color = clWhite
                     TabOrder = 0
                   end
-                  object Panel11: TPanel
-                    Left = 2
+                  object GroupBox15: TGroupBox
+                    Left = 8
                     Top = 15
-                    Width = 270
-                    Height = 45
-                    Align = alTop
-                    BevelOuter = bvNone
-                    BevelWidth = 4
-                    Color = clWhite
+                    Width = 259
+                    Height = 53
+                    Anchors = [akLeft, akTop, akRight]
+                    Caption = '                      '
                     TabOrder = 1
-                    object Label42: TLabel
-                      Left = 25
-                      Top = 11
-                      Width = 252
+                    DesignSize = (
+                      259
+                      53)
+                    object Label40: TLabel
+                      Left = 11
+                      Top = -2
+                      Width = 60
                       Height = 13
-                      Caption = 'Red'#233'marrer le serveur si modification sur carte r'#233'seau'
-                      FocusControl = CheckBoxRestartOnNetworkInterfaceChange
-                      OnClick = LabelToCheckboxClick
-                      OnMouseEnter = LabelCheckboxMouseEnter
-                      OnMouseLeave = LabelCheckboxMouseLeave
+                      Caption = 'Changement'
                     end
-                    object CheckBoxRestartOnNetworkInterfaceChange: TCheckBox
-                      Left = 8
-                      Top = 10
-                      Width = 15
-                      Height = 17
-                      Checked = True
-                      State = cbChecked
+                    object Panel10: TPanel
+                      Left = 34
+                      Top = 170
+                      Width = 193
+                      Height = 55
+                      Anchors = [akTop]
+                      BevelOuter = bvNone
+                      Color = clWhite
                       TabOrder = 0
-                      OnClick = CheckBoxRestartOnNetworkInterfaceChangeClick
+                    end
+                    object Panel11: TPanel
+                      Left = 2
+                      Top = 15
+                      Width = 255
+                      Height = 25
+                      Align = alTop
+                      BevelOuter = bvNone
+                      BevelWidth = 4
+                      Color = clWhite
+                      TabOrder = 1
+                      object Label42: TLabel
+                        Left = 25
+                        Top = 11
+                        Width = 252
+                        Height = 13
+                        Caption = 'Red'#233'marrer le serveur si modification sur carte r'#233'seau'
+                        FocusControl = CheckBoxRestartOnNetworkInterfaceChange
+                        OnClick = LabelToCheckboxClick
+                        OnMouseEnter = LabelCheckboxMouseEnter
+                        OnMouseLeave = LabelCheckboxMouseLeave
+                      end
+                      object CheckBoxRestartOnNetworkInterfaceChange: TCheckBox
+                        Left = 8
+                        Top = 10
+                        Width = 15
+                        Height = 17
+                        Checked = True
+                        State = cbChecked
+                        TabOrder = 0
+                        OnClick = CheckBoxRestartOnNetworkInterfaceChangeClick
+                      end
+                    end
+                  end
+                  object GroupBox7: TGroupBox
+                    Left = 8
+                    Top = 68
+                    Width = 259
+                    Height = 249
+                    Anchors = [akLeft, akTop, akRight]
+                    Caption = '                                     '
+                    TabOrder = 2
+                    DesignSize = (
+                      259
+                      249)
+                    object Label7: TLabel
+                      Left = 8
+                      Top = 63
+                      Width = 230
+                      Height = 91
+                      Anchors = [akLeft, akTop, akRight]
+                      Caption = 
+                        'Change la configuration de la carte r'#233'seau afin d'#39'utiliser ce pr' +
+                        'ogramme comme serveur DNS. Attention! Si ce programme est ferm'#233' ' +
+                        'brutalement vous perdez Internet. Pour r'#233'parer une connexion cas' +
+                        's'#233'e cliquez sur D'#233'sintaller. Le bouton d'#233'sintaller, restaure la ' +
+                        'configuration de la carte r'#233'seau en mode automatique (DHCP)'
+                      Transparent = True
+                      WordWrap = True
+                    end
+                    object Label20: TLabel
+                      Left = 11
+                      Top = -2
+                      Width = 103
+                      Height = 13
+                      Caption = 'Int'#233'gration du serveur'
+                    end
+                    object Panel4: TPanel
+                      Left = 34
+                      Top = 170
+                      Width = 193
+                      Height = 55
+                      Anchors = [akTop]
+                      BevelOuter = bvNone
+                      Color = clWhite
+                      TabOrder = 0
+                      object ButtonNetCardIntegration: TButton
+                        Left = 16
+                        Top = 0
+                        Width = 75
+                        Height = 25
+                        Caption = 'Installer'
+                        TabOrder = 0
+                        OnClick = ButtonNetCardIntegrationClick
+                      end
+                      object ButtonNetCardDesintegration: TButton
+                        Left = 104
+                        Top = 0
+                        Width = 75
+                        Height = 25
+                        Caption = 'D'#233'sinstaller'
+                        TabOrder = 1
+                        OnClick = ButtonNetCardDesintegrationClick
+                      end
+                      object Button3: TButton
+                        Left = 61
+                        Top = 29
+                        Width = 75
+                        Height = 25
+                        Caption = 'Modifier'
+                        TabOrder = 2
+                        OnClick = Button3Click
+                      end
+                    end
+                    object Panel2: TPanel
+                      Left = 2
+                      Top = 15
+                      Width = 255
+                      Height = 45
+                      Align = alTop
+                      BevelOuter = bvNone
+                      BevelWidth = 4
+                      Color = clWhite
+                      TabOrder = 1
+                      object Label9: TLabel
+                        Left = 27
+                        Top = 28
+                        Width = 286
+                        Height = 13
+                        Caption = '(Executera un script de r'#233'paration au red'#233'marrage Windows)'
+                        Transparent = True
+                      end
+                      object Label13: TLabel
+                        Left = 25
+                        Top = 11
+                        Width = 309
+                        Height = 13
+                        Caption = 
+                          'Modifier la carte r'#233'seau au lancement et '#224' la fermeture du serve' +
+                          'ur'
+                        FocusControl = CheckBoxAllowModifyNetCard
+                        OnClick = LabelToCheckboxClick
+                        OnMouseEnter = LabelCheckboxMouseEnter
+                        OnMouseLeave = LabelCheckboxMouseLeave
+                      end
+                      object CheckBoxAllowModifyNetCard: TCheckBox
+                        Left = 8
+                        Top = 10
+                        Width = 15
+                        Height = 17
+                        Checked = True
+                        State = cbChecked
+                        TabOrder = 0
+                        OnClick = CheckBoxAllowModifyNetCardClick
+                      end
                     end
                   end
                 end
@@ -835,23 +890,23 @@ object Form1: TForm1
                   object Label30: TLabel
                     Left = 16
                     Top = 15
-                    Width = 65
+                    Width = 71
                     Height = 13
-                    Caption = 'Th'#232'me actuel'
+                    Caption = 'Th'#232'me actuel :'
                   end
                   object Label15: TLabel
                     Left = 16
                     Top = 63
-                    Width = 79
+                    Width = 85
                     Height = 13
-                    Caption = 'Position des logs'
+                    Caption = 'Position des logs :'
                   end
                   object Label26: TLabel
                     Left = 16
                     Top = 112
-                    Width = 180
+                    Width = 186
                     Height = 13
-                    Caption = 'Changer le contraste des zones textes'
+                    Caption = 'Changer le contraste des zones textes :'
                   end
                   object ComboBoxCurrentTheme: TComboBox
                     Left = 16
@@ -933,9 +988,9 @@ object Form1: TForm1
                   object Label29: TLabel
                     Left = 8
                     Top = 37
-                    Width = 69
+                    Width = 75
                     Height = 13
-                    Caption = 'Nom du th'#232'me'
+                    Caption = 'Nom du th'#232'me :'
                   end
                   object Label27: TLabel
                     Left = 124
@@ -1169,14 +1224,13 @@ object Form1: TForm1
                 Height = 273
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
-                VertScrollBar.Position = 19
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox13: TGroupBox
                   Left = 0
-                  Top = 62
+                  Top = 81
                   Width = 273
                   Height = 211
                   Align = alTop
@@ -1223,7 +1277,7 @@ object Form1: TForm1
                 end
                 object GroupBox14: TGroupBox
                   Left = 0
-                  Top = -19
+                  Top = 0
                   Width = 273
                   Height = 81
                   Align = alTop
