@@ -171,28 +171,6 @@ type
     ScrollBox4: TScrollBox;
     ScrollBox5: TScrollBox;
     Masquer2: TMenuItem;
-    GroupBox8: TGroupBox;
-    Label30: TLabel;
-    ComboBoxCurrentTheme: TComboBox;
-    ButtonMenuTheme: TButton;
-    ComboBoxPosLogs: TComboBox;
-    Label15: TLabel;
-    Label26: TLabel;
-    SpinEditContraste: TTrackBar;
-    GroupBoxUpdateTheme: TGroupBox;
-    Shape2: TShape;
-    Label29: TLabel;
-    Label27: TLabel;
-    ShapeColorText: TShape;
-    Label28: TLabel;
-    Shape1: TShape;
-    ShapeColorBackground: TShape;
-    EditThemeName: TEdit;
-    ButtonUpdateTheme: TButton;
-    Button2: TButton;
-    GroupBox9: TGroupBox;
-    SpeedButtonClosePanelUpdateTheme: TSpeedButton;
-    LabelUpdateTheme: TLabel;
     N10: TMenuItem;
     TimerAlert: TTimer;
     GroupBox10: TGroupBox;
@@ -231,30 +209,9 @@ type
     TimerFadeIn: TTimer;
     TimerFadeOut: TTimer;
     TimerAfterFormCreateLong: TTimer;
-    Panel8: TPanel;
-    ButtonUpdate: TButton;
-    Label34: TLabel;
-    Panel9: TPanel;
-    ButtonUpdateDev: TButton;
-    Label35: TLabel;
-    SpinTimeCheckUpdate: TSpinEdit;
-    Label12: TLabel;
-    CheckBoxUpdateSilent: TCheckBox;
-    CheckBoxUpdateIntervall: TCheckBox;
-    Label11: TLabel;
-    CheckBoxUpdate: TCheckBox;
-    Label10: TLabel;
     TimerRemoteAccess: TTimer;
     TabSheet7: TTabSheet;
     ScrollBox6: TScrollBox;
-    GroupBox13: TGroupBox;
-    GroupBox14: TGroupBox;
-    Label37: TLabel;
-    Label38: TLabel;
-    CheckBoxRemoteAccess: TCheckBox;
-    ButtonInstallScriptWebAdmin: TButton;
-    Label39: TLabel;
-    MemoHelpWebAdmin: TMemo;
     TimerCheckSystemChanges: TTimer;
     ComboBoxSelectIPBlackhost: TComboBox;
     Label36: TLabel;
@@ -274,14 +231,12 @@ type
     GroupBox17: TGroupBox;
     Panel12: TPanel;
     GroupBox15: TGroupBox;
-    Label40: TLabel;
     Panel10: TPanel;
     Panel11: TPanel;
     Label42: TLabel;
     CheckBoxRestartOnNetworkInterfaceChange: TCheckBox;
     GroupBox7: TGroupBox;
     Label7: TLabel;
-    Label20: TLabel;
     Panel4: TPanel;
     ButtonNetCardIntegration: TButton;
     ButtonNetCardDesintegration: TButton;
@@ -298,6 +253,51 @@ type
     ButtonCopyEditBTC: TButton;
     EditSourceURL: TEdit;
     ButtonCopyEditSourceURL: TButton;
+    GroupBox20: TGroupBox;
+    ButtonUpdate: TButton;
+    Label12: TLabel;
+    CheckBoxUpdateSilent: TCheckBox;
+    Label11: TLabel;
+    CheckBoxUpdateIntervall: TCheckBox;
+    SpinTimeCheckUpdate: TSpinEdit;
+    Label10: TLabel;
+    CheckBoxUpdate: TCheckBox;
+    Label34: TLabel;
+    GroupBox21: TGroupBox;
+    ButtonUpdateDev: TButton;
+    Label35: TLabel;
+    GroupBox22: TGroupBox;
+    GroupBox14: TGroupBox;
+    Label37: TLabel;
+    Label38: TLabel;
+    CheckBoxRemoteAccess: TCheckBox;
+    GroupBox13: TGroupBox;
+    Label39: TLabel;
+    ButtonInstallScriptWebAdmin: TButton;
+    MemoHelpWebAdmin: TMemo;
+    GroupBoxAffichage: TGroupBox;
+    GroupBoxUpdateTheme: TGroupBox;
+    Shape2: TShape;
+    Label29: TLabel;
+    Label27: TLabel;
+    ShapeColorText: TShape;
+    Label28: TLabel;
+    Shape1: TShape;
+    ShapeColorBackground: TShape;
+    EditThemeName: TEdit;
+    Button2: TButton;
+    ButtonUpdateTheme: TButton;
+    GroupBox19: TGroupBox;
+    Label30: TLabel;
+    Label26: TLabel;
+    ComboBoxCurrentTheme: TComboBox;
+    ButtonMenuTheme: TButton;
+    SpinEditContraste: TTrackBar;
+    GroupBox23: TGroupBox;
+    Label15: TLabel;
+    ComboBoxPosLogs: TComboBox;
+    LabelUpdateTheme: TLabel;
+    SpeedButtonClosePanelUpdateTheme: TSpeedButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1622,6 +1622,7 @@ begin
   ServerDoStart := False;
   ServerFailStartCount := 0;
   GroupBoxUpdateTheme.Visible := False;
+  GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
   //PanelMessage.Visible := False;
 
   Form1.Width := Form1.Constraints.MinWidth * 2;
@@ -1952,8 +1953,6 @@ begin
   Panel5.Color := bg;
   Panel6.Color := bg;
   Panel7.Color := bg;
-  Panel8.Color := bg;
-  Panel9.Color := bg;
   Panel11.Color := bg;
   PanelMessage.Color := bg;
 
@@ -2044,7 +2043,6 @@ begin
   Label37.Font.Color := color;
   Label38.Font.Color := color;
   Label39.Font.Color := color;
-  Label40.Font.Color := color;
   Label42.Font.Color := color;
   Label43.Font.Color := color;
   Label44.Font.Color := color;
@@ -3345,7 +3343,8 @@ end;
 
 procedure TForm1.SpeedButtonClosePanelUpdateThemeClick(Sender: TObject);
 begin
-  GroupBoxUpdateTheme.Visible := False;
+  GroupBoxUpdateTheme.Visible := False;                                           
+  GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
 end;
 
 procedure TForm1.ComboBoxCurrentThemeSelect(Sender: TObject);
@@ -3429,6 +3428,7 @@ begin
   EditThemeName.Text := '';
   GroupBoxUpdateTheme.Hint := 'add';
   GroupBoxUpdateTheme.Visible := True;
+  GroupBoxAffichage.Height := GroupBoxUpdateTheme.Top + GroupBoxUpdateTheme.Height + GroupBox23.Top;
 end;
 
 procedure TForm1.Modifier4Click(Sender: TObject);
@@ -3436,7 +3436,8 @@ begin
   LabelUpdateTheme.Caption := PChar('Modifier un thème');
   EditThemeName.Text := ComboBoxCurrentTheme.Text;
   GroupBoxUpdateTheme.Hint := IntToStr(ComboBoxCurrentTheme.ItemIndex);
-  GroupBoxUpdateTheme.Visible := True;
+  GroupBoxUpdateTheme.Visible := True;                                  
+  GroupBoxAffichage.Height := GroupBoxUpdateTheme.Top + GroupBoxUpdateTheme.Height + GroupBox23.Top;
 end;
 
 procedure TForm1.Supprimer3Click(Sender: TObject);
@@ -3481,7 +3482,8 @@ begin
   ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
   ComboBoxCurrentTheme.ItemIndex := 0;
   ComboBoxCurrentThemeSelect(ComboBoxCurrentTheme);
-  GroupBoxUpdateTheme.Visible := False;
+  GroupBoxUpdateTheme.Visible := False;    
+  GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
 
 
 
@@ -3550,7 +3552,8 @@ begin
     ComboBoxCurrentTheme.ItemIndex := ComboBoxCurrentTheme.Items.Count - 1
   else
     ComboBoxCurrentTheme.ItemIndex := i;
-  GroupBoxUpdateTheme.Visible := False;
+  GroupBoxUpdateTheme.Visible := False;             
+  GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
 end;
 
 procedure TForm1.Restaurer1Click(Sender: TObject);

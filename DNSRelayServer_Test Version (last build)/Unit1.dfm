@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet5
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -486,173 +486,6 @@ object Form1: TForm1
                 OnDblClick = ToolButtonUpdateDNSMasterClick
               end
             end
-            object TabSheet3: TTabSheet
-              Caption = 'Mise '#224' jour'
-              ImageIndex = 2
-              object ScrollBox2: TScrollBox
-                Left = 8
-                Top = 8
-                Width = 289
-                Height = 241
-                HorzScrollBar.Smooth = True
-                HorzScrollBar.Tracking = True
-                VertScrollBar.Smooth = True
-                VertScrollBar.Tracking = True
-                BorderStyle = bsNone
-                TabOrder = 0
-                object GroupBox11: TGroupBox
-                  Left = 0
-                  Top = 0
-                  Width = 289
-                  Height = 241
-                  Align = alTop
-                  TabOrder = 0
-                  DesignSize = (
-                    289
-                    241)
-                  object Panel8: TPanel
-                    Left = 8
-                    Top = 13
-                    Width = 273
-                    Height = 145
-                    Anchors = [akLeft, akTop, akRight]
-                    BevelInner = bvLowered
-                    Color = clWhite
-                    TabOrder = 0
-                    DesignSize = (
-                      273
-                      145)
-                    object Label34: TLabel
-                      Left = 8
-                      Top = 8
-                      Width = 81
-                      Height = 13
-                      Caption = 'Version stable'
-                      Font.Charset = DEFAULT_CHARSET
-                      Font.Color = clBlack
-                      Font.Height = -11
-                      Font.Name = 'MS Sans Serif'
-                      Font.Style = [fsBold]
-                      ParentFont = False
-                    end
-                    object Label12: TLabel
-                      Left = 26
-                      Top = 84
-                      Width = 238
-                      Height = 13
-                      Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
-                      FocusControl = CheckBoxUpdateSilent
-                      OnClick = LabelToCheckboxClick
-                      OnMouseEnter = LabelCheckboxMouseEnter
-                      OnMouseLeave = LabelCheckboxMouseLeave
-                    end
-                    object Label11: TLabel
-                      Left = 26
-                      Top = 59
-                      Width = 175
-                      Height = 13
-                      Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
-                      FocusControl = CheckBoxUpdateIntervall
-                      OnClick = LabelToCheckboxClick
-                      OnMouseEnter = LabelCheckboxMouseEnter
-                      OnMouseLeave = LabelCheckboxMouseLeave
-                    end
-                    object Label10: TLabel
-                      Left = 26
-                      Top = 34
-                      Width = 226
-                      Height = 13
-                      Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
-                      FocusControl = CheckBoxUpdate
-                      OnClick = LabelToCheckboxClick
-                      OnMouseEnter = LabelCheckboxMouseEnter
-                      OnMouseLeave = LabelCheckboxMouseLeave
-                    end
-                    object ButtonUpdate: TButton
-                      Left = 96
-                      Top = 112
-                      Width = 75
-                      Height = 25
-                      Anchors = [akTop]
-                      Caption = 'Mettre '#224' jour'
-                      TabOrder = 0
-                      OnClick = ButtonUpdateClick
-                    end
-                    object SpinTimeCheckUpdate: TSpinEdit
-                      Left = 216
-                      Top = 56
-                      Width = 51
-                      Height = 22
-                      MaxValue = 0
-                      MinValue = 0
-                      TabOrder = 1
-                      Value = 24
-                      OnChange = SpinTimeCheckUpdateChange
-                    end
-                    object CheckBoxUpdateSilent: TCheckBox
-                      Left = 8
-                      Top = 83
-                      Width = 17
-                      Height = 17
-                      TabOrder = 2
-                      OnClick = CheckBoxUpdateSilentClick
-                    end
-                    object CheckBoxUpdateIntervall: TCheckBox
-                      Left = 8
-                      Top = 58
-                      Width = 17
-                      Height = 17
-                      TabOrder = 3
-                      OnClick = CheckBoxUpdateIntervallClick
-                    end
-                    object CheckBoxUpdate: TCheckBox
-                      Left = 8
-                      Top = 32
-                      Width = 17
-                      Height = 17
-                      TabOrder = 4
-                      OnClick = CheckBoxUpdateClick
-                    end
-                  end
-                  object Panel9: TPanel
-                    Left = 8
-                    Top = 166
-                    Width = 273
-                    Height = 65
-                    Anchors = [akLeft, akTop, akRight]
-                    BevelInner = bvLowered
-                    Color = clWhite
-                    TabOrder = 1
-                    DesignSize = (
-                      273
-                      65)
-                    object Label35: TLabel
-                      Left = 8
-                      Top = 8
-                      Width = 169
-                      Height = 13
-                      Caption = 'Version instable (test version)'
-                      Font.Charset = DEFAULT_CHARSET
-                      Font.Color = clBlack
-                      Font.Height = -11
-                      Font.Name = 'MS Sans Serif'
-                      Font.Style = [fsBold]
-                      ParentFont = False
-                    end
-                    object ButtonUpdateDev: TButton
-                      Left = 96
-                      Top = 32
-                      Width = 75
-                      Height = 25
-                      Anchors = [akTop]
-                      Caption = 'Mettre '#224' jour'
-                      TabOrder = 0
-                      OnClick = ButtonUpdateDevClick
-                    end
-                  end
-                end
-              end
-            end
             object TabSheet4: TTabSheet
               Caption = 'Carte R'#233'seau'
               ImageIndex = 3
@@ -671,12 +504,12 @@ object Form1: TForm1
                   Left = 0
                   Top = 0
                   Width = 273
-                  Height = 325
+                  Height = 331
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     273
-                    325)
+                    331)
                   object Panel12: TPanel
                     Left = 34
                     Top = 170
@@ -689,22 +522,14 @@ object Form1: TForm1
                   end
                   object GroupBox15: TGroupBox
                     Left = 8
-                    Top = 15
+                    Top = 11
                     Width = 258
                     Height = 53
                     Anchors = [akLeft, akTop, akRight]
-                    Caption = '                      '
                     TabOrder = 1
                     DesignSize = (
                       258
                       53)
-                    object Label40: TLabel
-                      Left = 11
-                      Top = -2
-                      Width = 60
-                      Height = 13
-                      Caption = 'Changement'
-                    end
                     object Panel10: TPanel
                       Left = 33
                       Top = 170
@@ -727,7 +552,7 @@ object Form1: TForm1
                       TabOrder = 1
                       object Label42: TLabel
                         Left = 25
-                        Top = 11
+                        Top = 6
                         Width = 252
                         Height = 13
                         Caption = 'Red'#233'marrer le serveur si modification sur carte r'#233'seau'
@@ -738,7 +563,7 @@ object Form1: TForm1
                       end
                       object CheckBoxRestartOnNetworkInterfaceChange: TCheckBox
                         Left = 8
-                        Top = 10
+                        Top = 4
                         Width = 15
                         Height = 17
                         Checked = True
@@ -750,11 +575,10 @@ object Form1: TForm1
                   end
                   object GroupBox7: TGroupBox
                     Left = 8
-                    Top = 68
+                    Top = 70
                     Width = 258
                     Height = 249
                     Anchors = [akLeft, akTop, akRight]
-                    Caption = '                                     '
                     TabOrder = 2
                     DesignSize = (
                       258
@@ -773,13 +597,6 @@ object Form1: TForm1
                         'configuration de la carte r'#233'seau en mode automatique (DHCP)'
                       Transparent = True
                       WordWrap = True
-                    end
-                    object Label20: TLabel
-                      Left = 11
-                      Top = -2
-                      Width = 103
-                      Height = 13
-                      Caption = 'Int'#233'gration du serveur'
                     end
                     object Panel4: TPanel
                       Left = 33
@@ -829,8 +646,8 @@ object Form1: TForm1
                       Color = clWhite
                       TabOrder = 1
                       object Label9: TLabel
-                        Left = 27
-                        Top = 28
+                        Left = 26
+                        Top = 24
                         Width = 286
                         Height = 13
                         Caption = '(Executera un script de r'#233'paration au red'#233'marrage Windows)'
@@ -838,7 +655,7 @@ object Form1: TForm1
                       end
                       object Label13: TLabel
                         Left = 25
-                        Top = 11
+                        Top = 1
                         Width = 309
                         Height = 13
                         Caption = 
@@ -851,7 +668,7 @@ object Form1: TForm1
                       end
                       object CheckBoxAllowModifyNetCard: TCheckBox
                         Left = 8
-                        Top = 10
+                        Top = -2
                         Width = 15
                         Height = 17
                         Checked = True
@@ -871,214 +688,100 @@ object Form1: TForm1
                 Left = 8
                 Top = 8
                 Width = 286
-                Height = 276
+                Height = 257
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 34
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
-                DesignSize = (
-                  269
-                  276)
-                object GroupBox8: TGroupBox
+                object GroupBoxAffichage: TGroupBox
                   Left = 0
-                  Top = 0
-                  Width = 270
-                  Height = 161
-                  Anchors = [akLeft, akTop, akRight]
+                  Top = -34
+                  Width = 269
+                  Height = 381
+                  Align = alTop
                   TabOrder = 0
                   DesignSize = (
-                    270
-                    161)
-                  object Label30: TLabel
-                    Left = 16
-                    Top = 15
-                    Width = 71
-                    Height = 13
-                    Caption = 'Th'#232'me actuel :'
-                  end
-                  object Label15: TLabel
-                    Left = 16
-                    Top = 63
-                    Width = 85
-                    Height = 13
-                    Caption = 'Position des logs :'
-                  end
-                  object Label26: TLabel
-                    Left = 16
-                    Top = 112
-                    Width = 186
-                    Height = 13
-                    Caption = 'Changer le contraste des zones textes :'
-                  end
-                  object ComboBoxCurrentTheme: TComboBox
-                    Left = 16
-                    Top = 31
-                    Width = 199
-                    Height = 21
-                    Style = csDropDownList
-                    Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 13
-                    ItemIndex = 0
-                    TabOrder = 0
-                    Text = 'White'
-                    OnSelect = ComboBoxCurrentThemeSelect
-                    Items.Strings = (
-                      'White'
-                      'Black'
-                      'Blue Sky'
-                      'Matrix'
-                      'Pink')
-                  end
-                  object ButtonMenuTheme: TButton
-                    Left = 223
-                    Top = 30
-                    Width = 27
-                    Height = 23
-                    Anchors = [akTop, akRight]
-                    Caption = '+'
-                    TabOrder = 1
-                    OnClick = ButtonMenuThemeClick
-                  end
-                  object ComboBoxPosLogs: TComboBox
-                    Left = 16
-                    Top = 79
-                    Width = 233
-                    Height = 21
-                    Style = csDropDownList
-                    Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 13
-                    TabOrder = 2
-                    OnSelect = ComboBoxPosLogsSelect
-                    Items.Strings = (
-                      'Haut'
-                      'Bas'
-                      'Gauche'
-                      'Droite'
-                      'Masqu'#233)
-                  end
-                  object SpinEditContraste: TTrackBar
-                    Left = 4
-                    Top = 128
-                    Width = 249
-                    Height = 19
-                    Anchors = [akLeft, akTop, akRight]
-                    Max = 255
-                    Min = -255
-                    Position = 30
-                    TabOrder = 3
-                    TickStyle = tsNone
-                  end
-                end
-                object GroupBoxUpdateTheme: TGroupBox
-                  Left = 1
-                  Top = 169
-                  Width = 269
-                  Height = 129
-                  Anchors = [akLeft, akTop, akRight]
-                  TabOrder = 1
-                  DesignSize = (
                     269
-                    129)
-                  object Shape2: TShape
-                    Left = 162
-                    Top = 47
-                    Width = 29
-                    Height = 29
-                    Anchors = [akTop, akRight]
-                    OnMouseUp = ShapeColorBackgroundMouseUp
-                  end
-                  object Label29: TLabel
-                    Left = 8
-                    Top = 37
-                    Width = 75
-                    Height = 13
-                    Caption = 'Nom du th'#232'me :'
-                  end
-                  object Label27: TLabel
-                    Left = 124
-                    Top = 61
-                    Width = 30
-                    Height = 13
-                    Anchors = [akTop, akRight]
-                    Caption = 'Texte:'
-                  end
-                  object ShapeColorText: TShape
-                    Left = 164
-                    Top = 49
-                    Width = 25
-                    Height = 25
-                    Anchors = [akTop, akRight]
-                    Brush.Color = clBlack
-                    OnMouseUp = ShapeColorTextMouseUp
-                  end
-                  object Label28: TLabel
-                    Left = 196
-                    Top = 61
-                    Width = 27
-                    Height = 13
-                    Anchors = [akTop, akRight]
-                    Caption = 'Fond:'
-                  end
-                  object Shape1: TShape
-                    Left = 226
-                    Top = 47
-                    Width = 29
-                    Height = 29
-                    Anchors = [akTop, akRight]
-                    OnMouseUp = ShapeColorBackgroundMouseUp
-                  end
-                  object ShapeColorBackground: TShape
-                    Left = 228
-                    Top = 49
-                    Width = 25
-                    Height = 25
-                    Anchors = [akTop, akRight]
-                    OnMouseUp = ShapeColorBackgroundMouseUp
-                  end
-                  object EditThemeName: TEdit
-                    Left = 8
-                    Top = 53
-                    Width = 109
-                    Height = 21
+                    381)
+                  object GroupBoxUpdateTheme: TGroupBox
+                    Left = 9
+                    Top = 194
+                    Width = 253
+                    Height = 178
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 0
-                    Text = 'EditThemeName'
-                  end
-                  object ButtonUpdateTheme: TButton
-                    Left = 100
-                    Top = 89
-                    Width = 75
-                    Height = 25
-                    Anchors = [akTop, akRight]
-                    Caption = 'Sauver'
-                    TabOrder = 1
-                    OnClick = ButtonUpdateThemeClick
-                  end
-                  object Button2: TButton
-                    Left = 181
-                    Top = 89
-                    Width = 75
-                    Height = 25
-                    Anchors = [akTop, akRight]
-                    Caption = 'Annuler'
-                    TabOrder = 2
-                    OnClick = SpeedButtonClosePanelUpdateThemeClick
-                  end
-                  object GroupBox9: TGroupBox
-                    Left = 0
-                    Top = 0
-                    Width = 268
-                    Height = 31
-                    Anchors = [akLeft, akTop, akRight]
-                    TabOrder = 3
                     DesignSize = (
-                      268
-                      31)
+                      253
+                      178)
+                    object Shape2: TShape
+                      Left = 6
+                      Top = 92
+                      Width = 29
+                      Height = 29
+                      OnMouseUp = ShapeColorBackgroundMouseUp
+                    end
+                    object Label29: TLabel
+                      Left = 8
+                      Top = 37
+                      Width = 75
+                      Height = 13
+                      Caption = 'Nom du th'#232'me :'
+                    end
+                    object Label27: TLabel
+                      Left = 7
+                      Top = 77
+                      Width = 30
+                      Height = 13
+                      Caption = 'Texte:'
+                    end
+                    object ShapeColorText: TShape
+                      Left = 8
+                      Top = 94
+                      Width = 25
+                      Height = 25
+                      Brush.Color = clBlack
+                      OnMouseUp = ShapeColorTextMouseUp
+                    end
+                    object Label28: TLabel
+                      Left = 7
+                      Top = 125
+                      Width = 27
+                      Height = 13
+                      Caption = 'Fond:'
+                    end
+                    object Shape1: TShape
+                      Left = 6
+                      Top = 140
+                      Width = 29
+                      Height = 29
+                      OnMouseUp = ShapeColorBackgroundMouseUp
+                    end
+                    object ShapeColorBackground: TShape
+                      Left = 8
+                      Top = 142
+                      Width = 25
+                      Height = 25
+                      OnMouseUp = ShapeColorBackgroundMouseUp
+                    end
+                    object LabelUpdateTheme: TLabel
+                      Left = 8
+                      Top = 9
+                      Width = 97
+                      Height = 13
+                      Caption = 'Ajouter un th'#232'me'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clBlack
+                      Font.Height = -11
+                      Font.Name = 'MS Sans Serif'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                    end
                     object SpeedButtonClosePanelUpdateTheme: TSpeedButton
-                      Left = 244
-                      Top = 5
+                      Left = 228
+                      Top = 6
                       Width = 22
                       Height = 22
                       Anchors = [akTop, akRight]
@@ -1102,18 +805,135 @@ object Form1: TForm1
                         BBB8B8B8B3B3B3898989}
                       OnClick = SpeedButtonClosePanelUpdateThemeClick
                     end
-                    object LabelUpdateTheme: TLabel
+                    object EditThemeName: TEdit
                       Left = 8
-                      Top = 9
-                      Width = 97
+                      Top = 53
+                      Width = 154
+                      Height = 21
+                      Anchors = [akLeft, akTop, akRight]
+                      TabOrder = 0
+                      Text = 'EditThemeName'
+                    end
+                    object Button2: TButton
+                      Left = 165
+                      Top = 143
+                      Width = 75
+                      Height = 25
+                      Anchors = [akTop, akRight]
+                      Caption = 'Annuler'
+                      TabOrder = 1
+                      OnClick = SpeedButtonClosePanelUpdateThemeClick
+                    end
+                    object ButtonUpdateTheme: TButton
+                      Left = 84
+                      Top = 143
+                      Width = 75
+                      Height = 25
+                      Anchors = [akTop, akRight]
+                      Caption = 'Sauver'
+                      TabOrder = 2
+                      OnClick = ButtonUpdateThemeClick
+                    end
+                  end
+                  object GroupBox19: TGroupBox
+                    Left = 9
+                    Top = 74
+                    Width = 253
+                    Height = 112
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 1
+                    DesignSize = (
+                      253
+                      112)
+                    object Label30: TLabel
+                      Left = 16
+                      Top = 55
+                      Width = 47
                       Height = 13
-                      Caption = 'Ajouter un th'#232'me'
-                      Font.Charset = DEFAULT_CHARSET
-                      Font.Color = clBlack
-                      Font.Height = -11
-                      Font.Name = 'MS Sans Serif'
-                      Font.Style = [fsBold]
-                      ParentFont = False
+                      Caption = 'Couleurs :'
+                    end
+                    object Label26: TLabel
+                      Left = 16
+                      Top = 16
+                      Width = 186
+                      Height = 13
+                      Caption = 'Changer le contraste des zones textes :'
+                    end
+                    object ComboBoxCurrentTheme: TComboBox
+                      Left = 16
+                      Top = 71
+                      Width = 182
+                      Height = 21
+                      Style = csDropDownList
+                      Anchors = [akLeft, akTop, akRight]
+                      ItemHeight = 13
+                      ItemIndex = 0
+                      TabOrder = 0
+                      Text = 'White'
+                      OnSelect = ComboBoxCurrentThemeSelect
+                      Items.Strings = (
+                        'White'
+                        'Black'
+                        'Blue Sky'
+                        'Matrix'
+                        'Pink')
+                    end
+                    object ButtonMenuTheme: TButton
+                      Left = 206
+                      Top = 70
+                      Width = 27
+                      Height = 23
+                      Anchors = [akTop, akRight]
+                      Caption = '+'
+                      TabOrder = 1
+                      OnClick = ButtonMenuThemeClick
+                    end
+                    object SpinEditContraste: TTrackBar
+                      Left = 8
+                      Top = 32
+                      Width = 232
+                      Height = 19
+                      Anchors = [akLeft, akTop, akRight]
+                      Max = 255
+                      Min = -255
+                      Position = 30
+                      TabOrder = 2
+                      TickStyle = tsNone
+                    end
+                  end
+                  object GroupBox23: TGroupBox
+                    Left = 9
+                    Top = 10
+                    Width = 253
+                    Height = 57
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 2
+                    DesignSize = (
+                      253
+                      57)
+                    object Label15: TLabel
+                      Left = 16
+                      Top = 8
+                      Width = 85
+                      Height = 13
+                      Caption = 'Position des logs :'
+                    end
+                    object ComboBoxPosLogs: TComboBox
+                      Left = 16
+                      Top = 24
+                      Width = 221
+                      Height = 21
+                      Style = csDropDownList
+                      Anchors = [akLeft, akTop, akRight]
+                      ItemHeight = 13
+                      TabOrder = 0
+                      OnSelect = ComboBoxPosLogsSelect
+                      Items.Strings = (
+                        'Haut'
+                        'Bas'
+                        'Gauche'
+                        'Droite'
+                        'Masqu'#233)
                     end
                   end
                 end
@@ -1141,15 +961,15 @@ object Form1: TForm1
                   Align = alTop
                   TabOrder = 0
                   object Label31: TLabel
-                    Left = 8
-                    Top = 88
+                    Left = 16
+                    Top = 86
                     Width = 189
                     Height = 13
                     Caption = 'Afficher le message pendant (secondes)'
                   end
                   object Label18: TLabel
-                    Left = 26
-                    Top = 65
+                    Left = 34
+                    Top = 63
                     Width = 218
                     Height = 13
                     Caption = 'Afficher des alertes pour les domaines bloqu'#233's'
@@ -1159,8 +979,8 @@ object Form1: TForm1
                     OnMouseLeave = LabelCheckboxMouseLeave
                   end
                   object Label17: TLabel
-                    Left = 26
-                    Top = 42
+                    Left = 34
+                    Top = 40
                     Width = 224
                     Height = 13
                     Caption = 'Afficher des alertes pour les domaines inconnus'
@@ -1170,8 +990,8 @@ object Form1: TForm1
                     OnMouseLeave = LabelCheckboxMouseLeave
                   end
                   object Label16: TLabel
-                    Left = 26
-                    Top = 17
+                    Left = 34
+                    Top = 15
                     Width = 216
                     Height = 13
                     Caption = 'Afficher des alertes pour les domaines connus'
@@ -1181,8 +1001,8 @@ object Form1: TForm1
                     OnMouseLeave = LabelCheckboxMouseLeave
                   end
                   object SpinEditAlertDuration: TSpinEdit
-                    Left = 8
-                    Top = 104
+                    Left = 16
+                    Top = 102
                     Width = 121
                     Height = 22
                     MaxValue = 0
@@ -1192,24 +1012,24 @@ object Form1: TForm1
                     OnChange = SpinEditAlertDurationChange
                   end
                   object CheckBoxAlertEventDisallowed: TCheckBox
-                    Left = 8
-                    Top = 64
+                    Left = 16
+                    Top = 62
                     Width = 17
                     Height = 17
                     TabOrder = 1
                     OnClick = CheckBoxAlertEventDisallowedClick
                   end
                   object CheckBoxAlertEventsUnknown: TCheckBox
-                    Left = 8
-                    Top = 40
+                    Left = 16
+                    Top = 38
                     Width = 17
                     Height = 17
                     TabOrder = 2
                     OnClick = CheckBoxAlertEventsUnknownClick
                   end
                   object CheckBoxAlertEventsKnown: TCheckBox
-                    Left = 8
-                    Top = 16
+                    Left = 16
+                    Top = 14
                     Width = 17
                     Height = 17
                     TabOrder = 3
@@ -1225,100 +1045,111 @@ object Form1: TForm1
                 Left = 8
                 Top = 8
                 Width = 289
-                Height = 273
+                Height = 254
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
-                object GroupBox13: TGroupBox
+                object GroupBox22: TGroupBox
                   Left = 0
-                  Top = 81
+                  Top = 0
                   Width = 272
-                  Height = 211
+                  Height = 316
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     272
-                    211)
-                  object Label39: TLabel
-                    Left = 16
-                    Top = 16
-                    Width = 250
-                    Height = 17
+                    316)
+                  object GroupBox14: TGroupBox
+                    Left = 7
+                    Top = 9
+                    Width = 258
+                    Height = 81
                     Anchors = [akLeft, akTop, akRight]
-                    AutoSize = False
-                    Caption = 'Script Web Admin v0.1'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Height = -11
-                    Font.Name = 'MS Sans Serif'
-                    Font.Style = [fsBold]
-                    ParentFont = False
-                    WordWrap = True
-                  end
-                  object ButtonInstallScriptWebAdmin: TButton
-                    Left = 40
-                    Top = 40
-                    Width = 177
-                    Height = 25
-                    Anchors = [akTop]
-                    Caption = 'Installer le script Web Admin'
                     TabOrder = 0
-                    OnClick = ButtonInstallScriptWebAdminClick
+                    DesignSize = (
+                      258
+                      81)
+                    object Label37: TLabel
+                      Left = 30
+                      Top = 17
+                      Width = 137
+                      Height = 13
+                      Caption = 'Activer le contr'#244'le '#224' distance'
+                      FocusControl = CheckBoxRemoteAccess
+                      OnClick = LabelToCheckboxClick
+                      OnMouseEnter = LabelCheckboxMouseEnter
+                      OnMouseLeave = LabelCheckboxMouseLeave
+                    end
+                    object Label38: TLabel
+                      Left = 12
+                      Top = 40
+                      Width = 234
+                      Height = 33
+                      Anchors = [akLeft, akTop, akRight]
+                      AutoSize = False
+                      Caption = 
+                        'Permet '#224' cette application d'#39#234'tre contr'#244'l'#233'e par une application ' +
+                        'externe ou un script. '
+                      WordWrap = True
+                    end
+                    object CheckBoxRemoteAccess: TCheckBox
+                      Left = 12
+                      Top = 16
+                      Width = 17
+                      Height = 17
+                      TabOrder = 0
+                      OnClick = CheckBoxRemoteAccessClick
+                    end
                   end
-                  object MemoHelpWebAdmin: TMemo
+                  object GroupBox13: TGroupBox
                     Left = 8
-                    Top = 72
+                    Top = 94
                     Width = 257
-                    Height = 129
+                    Height = 211
                     Anchors = [akLeft, akTop, akRight]
-                    ReadOnly = True
-                    ScrollBars = ssVertical
                     TabOrder = 1
-                  end
-                end
-                object GroupBox14: TGroupBox
-                  Left = 0
-                  Top = 0
-                  Width = 272
-                  Height = 81
-                  Align = alTop
-                  TabOrder = 1
-                  DesignSize = (
-                    272
-                    81)
-                  object Label37: TLabel
-                    Left = 26
-                    Top = 17
-                    Width = 137
-                    Height = 13
-                    Caption = 'Activer le contr'#244'le '#224' distance'
-                    FocusControl = CheckBoxRemoteAccess
-                    OnClick = LabelToCheckboxClick
-                    OnMouseEnter = LabelCheckboxMouseEnter
-                    OnMouseLeave = LabelCheckboxMouseLeave
-                  end
-                  object Label38: TLabel
-                    Left = 8
-                    Top = 40
-                    Width = 248
-                    Height = 33
-                    Anchors = [akLeft, akTop, akRight]
-                    AutoSize = False
-                    Caption = 
-                      'Permet '#224' cette application d'#39#234'tre contr'#244'l'#233'e par une application ' +
-                      'externe ou un script. '
-                    WordWrap = True
-                  end
-                  object CheckBoxRemoteAccess: TCheckBox
-                    Left = 8
-                    Top = 16
-                    Width = 17
-                    Height = 17
-                    TabOrder = 0
-                    OnClick = CheckBoxRemoteAccessClick
+                    DesignSize = (
+                      257
+                      211)
+                    object Label39: TLabel
+                      Left = 16
+                      Top = 16
+                      Width = 235
+                      Height = 17
+                      Anchors = [akLeft, akTop, akRight]
+                      AutoSize = False
+                      Caption = 'Script Web Admin v0.1'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clBlack
+                      Font.Height = -11
+                      Font.Name = 'MS Sans Serif'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                      WordWrap = True
+                    end
+                    object ButtonInstallScriptWebAdmin: TButton
+                      Left = 33
+                      Top = 40
+                      Width = 177
+                      Height = 25
+                      Anchors = [akTop]
+                      Caption = 'Installer le script Web Admin'
+                      TabOrder = 0
+                      OnClick = ButtonInstallScriptWebAdminClick
+                    end
+                    object MemoHelpWebAdmin: TMemo
+                      Left = 8
+                      Top = 72
+                      Width = 242
+                      Height = 129
+                      Anchors = [akLeft, akTop, akRight]
+                      ReadOnly = True
+                      ScrollBars = ssVertical
+                      TabOrder = 1
+                    end
                   end
                 end
               end
@@ -1342,14 +1173,14 @@ object Form1: TForm1
                   Left = 0
                   Top = 0
                   Width = 303
-                  Height = 129
+                  Height = 134
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     303
-                    129)
+                    134)
                   object Label46: TLabel
-                    Left = 26
+                    Left = 31
                     Top = 17
                     Width = 310
                     Height = 13
@@ -1360,14 +1191,14 @@ object Form1: TForm1
                     OnMouseLeave = LabelCheckboxMouseLeave
                   end
                   object Label43: TLabel
-                    Left = 8
+                    Left = 13
                     Top = 48
                     Width = 56
                     Height = 13
                     Caption = 'Commande:'
                   end
                   object CheckBoxExecOnDisconnected: TCheckBox
-                    Left = 8
+                    Left = 13
                     Top = 16
                     Width = 17
                     Height = 17
@@ -1375,22 +1206,185 @@ object Form1: TForm1
                     OnClick = CheckBoxExecOnDisconnectedClick
                   end
                   object EditExecOnDisconnected: TEdit
-                    Left = 8
+                    Left = 13
                     Top = 64
-                    Width = 285
+                    Width = 278
                     Height = 21
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 1
                     OnChange = EditFilehostChange
                   end
                   object ButtonTester: TButton
-                    Left = 8
+                    Left = 13
                     Top = 96
                     Width = 75
                     Height = 25
                     Caption = 'Tester'
                     TabOrder = 2
                     OnClick = ButtonTesterClick
+                  end
+                end
+              end
+            end
+            object TabSheet3: TTabSheet
+              Caption = 'Mise '#224' jour'
+              ImageIndex = 2
+              object ScrollBox2: TScrollBox
+                Left = 8
+                Top = 8
+                Width = 289
+                Height = 241
+                HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
+                VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
+                BorderStyle = bsNone
+                TabOrder = 0
+                object GroupBox11: TGroupBox
+                  Left = 0
+                  Top = 0
+                  Width = 272
+                  Height = 269
+                  Align = alTop
+                  TabOrder = 0
+                  DesignSize = (
+                    272
+                    269)
+                  object GroupBox20: TGroupBox
+                    Left = 8
+                    Top = 10
+                    Width = 257
+                    Height = 161
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 0
+                    DesignSize = (
+                      257
+                      161)
+                    object Label12: TLabel
+                      Left = 32
+                      Top = 87
+                      Width = 238
+                      Height = 13
+                      Caption = 'Mettre '#224' jour silencieusement (pas de confirmation)'
+                      FocusControl = CheckBoxUpdateSilent
+                      OnClick = LabelToCheckboxClick
+                      OnMouseEnter = LabelCheckboxMouseEnter
+                      OnMouseLeave = LabelCheckboxMouseLeave
+                    end
+                    object Label11: TLabel
+                      Left = 31
+                      Top = 62
+                      Width = 175
+                      Height = 13
+                      Caption = 'V'#233'rifier mise '#224' jour tous les X heure(s)'
+                      FocusControl = CheckBoxUpdateIntervall
+                      OnClick = LabelToCheckboxClick
+                      OnMouseEnter = LabelCheckboxMouseEnter
+                      OnMouseLeave = LabelCheckboxMouseLeave
+                    end
+                    object Label10: TLabel
+                      Left = 31
+                      Top = 37
+                      Width = 226
+                      Height = 13
+                      Caption = 'V'#233'rifier mise '#224' jour au d'#233'marrage de l'#39'application'
+                      FocusControl = CheckBoxUpdate
+                      OnClick = LabelToCheckboxClick
+                      OnMouseEnter = LabelCheckboxMouseEnter
+                      OnMouseLeave = LabelCheckboxMouseLeave
+                    end
+                    object Label34: TLabel
+                      Left = 8
+                      Top = 11
+                      Width = 81
+                      Height = 13
+                      Caption = 'Version stable'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clBlack
+                      Font.Height = -11
+                      Font.Name = 'MS Sans Serif'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                    end
+                    object ButtonUpdate: TButton
+                      Left = 88
+                      Top = 115
+                      Width = 75
+                      Height = 25
+                      Anchors = [akTop]
+                      Caption = 'Mettre '#224' jour'
+                      TabOrder = 0
+                      OnClick = ButtonUpdateClick
+                    end
+                    object CheckBoxUpdateSilent: TCheckBox
+                      Left = 13
+                      Top = 86
+                      Width = 17
+                      Height = 17
+                      TabOrder = 1
+                      OnClick = CheckBoxUpdateSilentClick
+                    end
+                    object CheckBoxUpdateIntervall: TCheckBox
+                      Left = 13
+                      Top = 61
+                      Width = 17
+                      Height = 17
+                      TabOrder = 2
+                      OnClick = CheckBoxUpdateIntervallClick
+                    end
+                    object SpinTimeCheckUpdate: TSpinEdit
+                      Left = 211
+                      Top = 59
+                      Width = 51
+                      Height = 22
+                      MaxValue = 0
+                      MinValue = 0
+                      TabOrder = 3
+                      Value = 24
+                      OnChange = SpinTimeCheckUpdateChange
+                    end
+                    object CheckBoxUpdate: TCheckBox
+                      Left = 13
+                      Top = 35
+                      Width = 17
+                      Height = 17
+                      TabOrder = 4
+                      OnClick = CheckBoxUpdateClick
+                    end
+                  end
+                  object GroupBox21: TGroupBox
+                    Left = 8
+                    Top = 177
+                    Width = 257
+                    Height = 81
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 1
+                    DesignSize = (
+                      257
+                      81)
+                    object Label35: TLabel
+                      Left = 8
+                      Top = 12
+                      Width = 169
+                      Height = 13
+                      Caption = 'Version instable (test version)'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clBlack
+                      Font.Height = -11
+                      Font.Name = 'MS Sans Serif'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                    end
+                    object ButtonUpdateDev: TButton
+                      Left = 88
+                      Top = 36
+                      Width = 75
+                      Height = 25
+                      Anchors = [akTop]
+                      Caption = 'Mettre '#224' jour'
+                      TabOrder = 0
+                      OnClick = ButtonUpdateDevClick
+                    end
                   end
                 end
               end
