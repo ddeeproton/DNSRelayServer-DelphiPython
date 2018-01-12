@@ -48,14 +48,29 @@ rmdir DNSRelayServer_%v%_Source\images
 rmdir DNSRelayServer_%v%_Source
 
 
+set ns64="C:\Program Files\NSIS\makensis.exe"
+set ns86="C:\Program Files (x86)\NSIS\makensis.exe"
+
+set ns=%ns64%
+if not exist %ns64% set ns=%ns86%
+
+if not exist %ns% echo ============================== 
+if not exist %ns% echo !! NSIS: is not found !!
+if not exist %ns% echo %ns64% (not found)
+if not exist %ns% echo %ns86% (not found)
+if not exist %ns% echo ============================== 
+if not exist %ns% @pause
 
 echo ==============================
 echo Creation du Setup installation
 echo ==============================
 
-mkdir "..\Setup installation"
-cd NSIS
-"C:\Program Files\NSIS\makensis.exe" setup.nsi
+set si="..\Setup installation"
+if not exist %si% mkdir %si%
+cd "NSIS"
+
+%ns% setup.nsi
+
 del /Q ..\DNSRelayServer_%v%_Source.zip
 
 
