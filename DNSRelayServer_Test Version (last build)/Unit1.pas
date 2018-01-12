@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.271';
+  CurrentApplicationVersion: string = '0.4.272';
   isDevVersion: Boolean = False;
 
 type
@@ -290,6 +290,14 @@ type
     Label9: TLabel;
     Label13: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
+    TabSheet9: TTabSheet;
+    GroupBox18: TGroupBox;
+    Label45: TLabel;
+    Label47: TLabel;
+    EditBTC: TEdit;
+    ButtonCopyEditBTC: TButton;
+    EditSourceURL: TEdit;
+    ButtonCopyEditSourceURL: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -458,6 +466,8 @@ type
     procedure TimerExecOnDisconnectedTimer(Sender: TObject);
     procedure ButtonTesterClick(Sender: TObject);
     procedure CheckBoxBindAllIPClick(Sender: TObject);
+    procedure ButtonCopyEditSourceURLClick(Sender: TObject);
+    procedure ButtonCopyEditBTCClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2038,7 +2048,9 @@ begin
   Label42.Font.Color := color;
   Label43.Font.Color := color;
   Label44.Font.Color := color;
+  Label45.Font.Color := color;
   Label46.Font.Color := color;
+  Label47.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
@@ -4512,9 +4524,30 @@ begin
   end;
   CheckListBoxDNSRelayIP.Enabled := not isCheck;     
   if isServerStarted then PanelRestart.Visible := True;
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 
+
+procedure TForm1.ButtonCopyEditSourceURLClick(Sender: TObject);
+begin
+  EditSourceURL.SelectAll;
+  EditSourceURL.CopyToClipboard;
+  LabelMessage.Caption := PChar('Copié!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.ButtonCopyEditBTCClick(Sender: TObject);
+begin
+  EditBTC.SelectAll;
+  EditBTC.CopyToClipboard;           
+  LabelMessage.Caption := PChar('Copié!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
 
 end.
 
