@@ -43,6 +43,6 @@ Ce prorgamme est gratuit et le restera toujours. ^^
 
 ### Faire un don:
 
-Bitcoin (BTC)
+#### Bitcoin (BTC)
 
 1EBbyNT66hDpnKXcF6FVP555JgWA8VakDu
