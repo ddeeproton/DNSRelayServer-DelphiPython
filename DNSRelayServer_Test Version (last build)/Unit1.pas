@@ -1,6 +1,6 @@
 unit Unit1;
              
-interface                                                      
+interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.268';
+  CurrentApplicationVersion: string = '0.4.269';
   isDevVersion: Boolean = False;
 
 type
@@ -1590,15 +1590,14 @@ begin
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 
   TimerAfterFormCreate.Enabled := True;
-  PageControl1.OwnerDraw := True;
+  //PageControl1.OwnerDraw := True;   (bug win7)
   ServerDoStart := False;
   ServerFailStartCount := 0;
   GroupBoxUpdateTheme.Visible := False;
   //PanelMessage.Visible := False;
 
-
-  Form1.Width := Form1.Constraints.MinWidth;
-  Form1.Height := Form1.Constraints.MinHeight;
+  Form1.Width := Form1.Constraints.MinWidth * 2;
+  Form1.Height := Form1.Constraints.MinHeight * 2;
 
   Form1.Top := Screen.WorkAreaHeight - Form1.Height;
   Form1.Left := Screen.WorkAreaWidth - Form1.Width;
@@ -2022,6 +2021,8 @@ begin
   Label37.Font.Color := color;
   Label38.Font.Color := color;
   Label39.Font.Color := color;
+  Label40.Font.Color := color;
+  Label42.Font.Color := color;
   Label43.Font.Color := color;
   Label46.Font.Color := color;
 
@@ -2239,6 +2240,7 @@ var
   ResizePanelConfig_oldWidth: Integer = 0;
 
 procedure TForm1.ResizePanelConfig();
+var h, w: Integer;
 begin
   refreshCheckBox(CheckBoxStartWithWindows);
 
@@ -2274,8 +2276,8 @@ begin
   if GroupBox5.Visible or Panel1.Visible then
   begin
     Form1.Constraints.MinHeight := 300;
-    Form1.Height := ResizePanelConfig_oldHeight;
-    Form1.Width := ResizePanelConfig_oldWidth;
+    h := ResizePanelConfig_oldHeight;
+    w := ResizePanelConfig_oldWidth;
     Afficher1Click(nil);
   end else
   begin
@@ -2285,9 +2287,11 @@ begin
       ResizePanelConfig_oldWidth := Form1.Width;
       ResizePanelConfig_oldHeight := Form1.Height;
     end;
-    Form1.Height := Form1.Constraints.MinHeight+2;
-    Form1.Width := Form1.Constraints.MinWidth;
+    h := Form1.Constraints.MinHeight+2;
+    w := Form1.Constraints.MinWidth;
   end;
+  if h > Form1.Height then Form1.Height := h;
+  if w > Form1.Width then Form1.Width := w;
   Application.ProcessMessages;
   //Sleep(1000);
 end;

@@ -125,9 +125,11 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet8
+            ActivePage = TabSheet4
             MultiLine = True
-            TabIndex = 7
+            ParentShowHint = False
+            ShowHint = False
+            Style = tsButtons
             TabOrder = 0
             OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
@@ -159,7 +161,7 @@ object Form1: TForm1
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
-                    263
+                    264
                     289)
                   object Label1: TLabel
                     Left = 16
@@ -306,7 +308,7 @@ object Form1: TForm1
                   object EditFilehost: TEdit
                     Left = 16
                     Top = 127
-                    Width = 199
+                    Width = 200
                     Height = 21
                     Anchors = [akLeft, akTop, akRight]
                     Color = clWhite
@@ -360,7 +362,7 @@ object Form1: TForm1
                     OnClick = CheckBoxPureServerClick
                   end
                   object Button1: TButton
-                    Left = 222
+                    Left = 223
                     Top = 127
                     Width = 35
                     Height = 23
@@ -630,18 +632,18 @@ object Form1: TForm1
                 object GroupBox7: TGroupBox
                   Left = 0
                   Top = 53
-                  Width = 273
+                  Width = 274
                   Height = 249
                   Align = alTop
                   Caption = '                                     '
                   TabOrder = 0
                   DesignSize = (
-                    273
+                    274
                     249)
                   object Label7: TLabel
                     Left = 8
                     Top = 63
-                    Width = 246
+                    Width = 247
                     Height = 91
                     Anchors = [akLeft, akTop, akRight]
                     Caption = 
@@ -661,7 +663,7 @@ object Form1: TForm1
                     Caption = 'Int'#233'gration du serveur'
                   end
                   object Panel4: TPanel
-                    Left = 41
+                    Left = 42
                     Top = 170
                     Width = 193
                     Height = 55
@@ -700,7 +702,7 @@ object Form1: TForm1
                   object Panel2: TPanel
                     Left = 2
                     Top = 15
-                    Width = 269
+                    Width = 270
                     Height = 45
                     Align = alTop
                     BevelOuter = bvNone
@@ -743,13 +745,13 @@ object Form1: TForm1
                 object GroupBox15: TGroupBox
                   Left = 0
                   Top = 0
-                  Width = 273
+                  Width = 274
                   Height = 53
                   Align = alTop
                   Caption = '                      '
                   TabOrder = 1
                   DesignSize = (
-                    273
+                    274
                     53)
                   object Label40: TLabel
                     Left = 11
@@ -759,7 +761,7 @@ object Form1: TForm1
                     Caption = 'Carte r'#233'seau'
                   end
                   object Panel10: TPanel
-                    Left = 41
+                    Left = 42
                     Top = 170
                     Width = 193
                     Height = 55
@@ -771,7 +773,7 @@ object Form1: TForm1
                   object Panel11: TPanel
                     Left = 2
                     Top = 15
-                    Width = 269
+                    Width = 270
                     Height = 45
                     Align = alTop
                     BevelOuter = bvNone
@@ -818,7 +820,7 @@ object Form1: TForm1
                 BorderStyle = bsNone
                 TabOrder = 0
                 DesignSize = (
-                  269
+                  270
                   276)
                 object GroupBox8: TGroupBox
                   Left = 0
@@ -858,7 +860,7 @@ object Form1: TForm1
                     Height = 21
                     Style = csDropDownList
                     Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 13
+                    ItemHeight = 0
                     ItemIndex = 0
                     TabOrder = 0
                     Text = 'White'
@@ -887,7 +889,7 @@ object Form1: TForm1
                     Height = 21
                     Style = csDropDownList
                     Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 13
+                    ItemHeight = 0
                     TabOrder = 2
                     OnSelect = ComboBoxPosLogsSelect
                     Items.Strings = (
@@ -905,13 +907,8 @@ object Form1: TForm1
                     Anchors = [akLeft, akTop, akRight]
                     Max = 255
                     Min = -255
-                    Orientation = trHorizontal
-                    Frequency = 1
                     Position = 30
-                    SelEnd = 0
-                    SelStart = 0
                     TabOrder = 3
-                    TickMarks = tmBottomRight
                     TickStyle = tsNone
                   end
                 end
@@ -1185,12 +1182,12 @@ object Form1: TForm1
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
-                    272
+                    273
                     211)
                   object Label39: TLabel
                     Left = 16
                     Top = 16
-                    Width = 248
+                    Width = 249
                     Height = 17
                     Anchors = [akLeft, akTop, akRight]
                     AutoSize = False
@@ -1216,7 +1213,7 @@ object Form1: TForm1
                   object MemoHelpWebAdmin: TMemo
                     Left = 8
                     Top = 72
-                    Width = 255
+                    Width = 256
                     Height = 129
                     Anchors = [akLeft, akTop, akRight]
                     ReadOnly = True
@@ -1227,12 +1224,12 @@ object Form1: TForm1
                 object GroupBox14: TGroupBox
                   Left = 0
                   Top = -19
-                  Width = 272
+                  Width = 273
                   Height = 81
                   Align = alTop
                   TabOrder = 1
                   DesignSize = (
-                    272
+                    273
                     81)
                   object Label37: TLabel
                     Left = 26
@@ -1248,7 +1245,7 @@ object Form1: TForm1
                   object Label38: TLabel
                     Left = 8
                     Top = 40
-                    Width = 248
+                    Width = 249
                     Height = 33
                     Anchors = [akLeft, akTop, akRight]
                     AutoSize = False
@@ -16802,7 +16799,6 @@ object Form1: TForm1
     end
   end
   object ColorDialog1: TColorDialog
-    Ctl3D = True
     Left = 414
     Top = 363
   end
