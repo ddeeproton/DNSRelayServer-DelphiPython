@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet4
+            ActivePage = TabSheet5
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -156,7 +156,7 @@ object Form1: TForm1
                 object GroupBox10: TGroupBox
                   Left = 0
                   Top = -23
-                  Width = 263
+                  Width = 264
                   Height = 289
                   Align = alTop
                   TabOrder = 0
@@ -308,7 +308,7 @@ object Form1: TForm1
                   object EditFilehost: TEdit
                     Left = 16
                     Top = 127
-                    Width = 200
+                    Width = 202
                     Height = 21
                     Anchors = [akLeft, akTop, akRight]
                     Color = clWhite
@@ -362,7 +362,7 @@ object Form1: TForm1
                     OnClick = CheckBoxPureServerClick
                   end
                   object Button1: TButton
-                    Left = 223
+                    Left = 225
                     Top = 127
                     Width = 35
                     Height = 23
@@ -437,7 +437,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 29
                 Width = 303
-                Height = 248
+                Height = 239
                 Align = alClient
                 Color = clWhite
                 ItemHeight = 13
@@ -643,7 +643,7 @@ object Form1: TForm1
                   object Label7: TLabel
                     Left = 8
                     Top = 63
-                    Width = 247
+                    Width = 246
                     Height = 91
                     Anchors = [akLeft, akTop, akRight]
                     Caption = 
@@ -860,7 +860,7 @@ object Form1: TForm1
                     Height = 21
                     Style = csDropDownList
                     Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 0
+                    ItemHeight = 13
                     ItemIndex = 0
                     TabOrder = 0
                     Text = 'White'
@@ -889,7 +889,7 @@ object Form1: TForm1
                     Height = 21
                     Style = csDropDownList
                     Anchors = [akLeft, akTop, akRight]
-                    ItemHeight = 0
+                    ItemHeight = 13
                     TabOrder = 2
                     OnSelect = ComboBoxPosLogsSelect
                     Items.Strings = (
@@ -1177,7 +1177,7 @@ object Form1: TForm1
                 object GroupBox13: TGroupBox
                   Left = 0
                   Top = 62
-                  Width = 272
+                  Width = 273
                   Height = 211
                   Align = alTop
                   TabOrder = 0
@@ -1187,7 +1187,7 @@ object Form1: TForm1
                   object Label39: TLabel
                     Left = 16
                     Top = 16
-                    Width = 249
+                    Width = 251
                     Height = 17
                     Anchors = [akLeft, akTop, akRight]
                     AutoSize = False
@@ -1213,7 +1213,7 @@ object Form1: TForm1
                   object MemoHelpWebAdmin: TMemo
                     Left = 8
                     Top = 72
-                    Width = 256
+                    Width = 258
                     Height = 129
                     Anchors = [akLeft, akTop, akRight]
                     ReadOnly = True
@@ -1272,7 +1272,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 277
+                Height = 268
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True

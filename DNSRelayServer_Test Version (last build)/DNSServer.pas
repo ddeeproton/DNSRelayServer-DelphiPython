@@ -1,11 +1,11 @@
-unit PythonDNSUnit;
+unit DNSServer;
 
 interface
 
 uses FilesManager, Classes, StdCtrls, SysUtils;
 
 type
-  PythonDNS = class
+  ServerDNS = class
   private
     { Private declarations }
   public
@@ -18,7 +18,7 @@ implementation
 uses Unit1;
 
 
-class procedure PythonDNS.createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log: string);
+class procedure ServerDNS.createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log: string);
 var
   i: integer;
   script, dnsMaster: string;

@@ -6,13 +6,13 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
-  Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, PythonDNSUnit,
+  Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.269';
+  CurrentApplicationVersion: string = '0.4.270';
   isDevVersion: Boolean = False;
 
 type
@@ -1257,6 +1257,7 @@ begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé');
     MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
     MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
+    ButtonRefreshNetCardClick(nil);
     ToolButton11.Enabled := True;
     if ServerDoStart then TimerRestart.Enabled := True;
     exit;
@@ -1287,7 +1288,7 @@ begin
 
 
 
-  PythonDNS.createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log);
+  ServerDNS.createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log);
 
   if PythonPath = '' then PythonPath := getPythonPath();
 
@@ -1750,6 +1751,7 @@ begin
   if FileExists(SlaveDNSPortConfig) then
     SpinPort.Value := StrToInt(ReadFromFile(SlaveDNSPortConfig));
 
+  SpinEditContraste.Position := 205;  
   if FileExists(DataDirectoryPath + 'contrasteTextarea.cfg') then
     SpinEditContraste.Position := StrToInt(ReadFromFile(DataDirectoryPath + 'contrasteTextarea.cfg'));
 

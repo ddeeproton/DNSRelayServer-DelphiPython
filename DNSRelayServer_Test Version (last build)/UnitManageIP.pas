@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, UnitDialogIP, FilesManager, PythonDNSUnit;
+  Dialogs, StdCtrls, UnitDialogIP, FilesManager;
 
 type
   TFormManageIP = class(TForm)

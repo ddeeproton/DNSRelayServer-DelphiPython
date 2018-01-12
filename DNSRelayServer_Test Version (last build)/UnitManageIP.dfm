@@ -15,7 +15,7 @@ object FormManageIP: TFormManageIP
   OnCreate = FormCreate
   DesignSize = (
     295
-    169)
+    176)
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBox1: TGroupBox

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, FilesManager, PythonDNSUnit;
+  Dialogs, StdCtrls, FilesManager;
 
 type
   TFormDialogIP = class(TForm)
@@ -174,9 +174,6 @@ end;
 
 
 procedure TFormDialogIP.ButtonOKClick(Sender: TObject);
-var
-  i, selIndex: Integer;
-  data: TStrings;
 begin
   if not isValidIP() then
   begin
