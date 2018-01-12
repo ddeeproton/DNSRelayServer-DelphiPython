@@ -55,9 +55,3 @@ https://github.com/ddeeproton/DNSRelayServer-DelphiPython/archive/master.zip
 Compile avec:
 
 -Delphi 5, 6, 7, 2006, 2007, et +
-
-### Faire un don:
-
-#### Bitcoin (BTC)
-
-1EBbyNT66hDpnKXcF6FVP555JgWA8VakDu

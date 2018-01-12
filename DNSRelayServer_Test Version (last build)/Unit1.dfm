@@ -171,8 +171,8 @@ object Form1: TForm1
                     Transparent = True
                   end
                   object SpeedButtonRefreshNetCard: TSpeedButton
-                    Left = 136
-                    Top = 31
+                    Left = 104
+                    Top = 9
                     Width = 23
                     Height = 22
                     Hint = 'Rafraichir les Adresses IP'
@@ -395,7 +395,7 @@ object Form1: TForm1
                     OnClick = ButtonSelectFilehostClick
                   end
                   object CheckListBoxDNSRelayIP: TCheckListBox
-                    Left = 16
+                    Left = 15
                     Top = 32
                     Width = 113
                     Height = 57
