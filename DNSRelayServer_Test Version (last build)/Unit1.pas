@@ -168,7 +168,7 @@ type
     ScrollBox1: TScrollBox;
     ScrollBox2: TScrollBox;
     ScrollBox3: TScrollBox;
-    ScrollBox4: TScrollBox;
+    ScrollBoxAffichage: TScrollBox;
     ScrollBox5: TScrollBox;
     Masquer2: TMenuItem;
     N10: TMenuItem;
@@ -1710,7 +1710,8 @@ begin
   ScrollBox1.Align := alClient;
   ScrollBox2.Align := alClient;
   ScrollBox3.Align := alClient;
-  ScrollBox4.Align := alClient;
+  ScrollBoxAffichage.Align := alClient;
+  GroupBoxAffichage.Align := alTop;
   ScrollBox5.Align := alClient;
   ScrollBox6.Align := alClient;
   ScrollBox6.VertScrollBar.Position := 0;
@@ -3429,6 +3430,7 @@ begin
   GroupBoxUpdateTheme.Hint := 'add';
   GroupBoxUpdateTheme.Visible := True;
   GroupBoxAffichage.Height := GroupBoxUpdateTheme.Top + GroupBoxUpdateTheme.Height + GroupBox23.Top;
+  ScrollBoxAffichage.VertScrollBar.Position := GroupBoxUpdateTheme.Top - 50;
 end;
 
 procedure TForm1.Modifier4Click(Sender: TObject);
@@ -3438,6 +3440,7 @@ begin
   GroupBoxUpdateTheme.Hint := IntToStr(ComboBoxCurrentTheme.ItemIndex);
   GroupBoxUpdateTheme.Visible := True;                                  
   GroupBoxAffichage.Height := GroupBoxUpdateTheme.Top + GroupBoxUpdateTheme.Height + GroupBox23.Top;
+  ScrollBoxAffichage.VertScrollBar.Position := GroupBoxUpdateTheme.Top - 50;
 end;
 
 procedure TForm1.Supprimer3Click(Sender: TObject);

@@ -684,37 +684,36 @@ object Form1: TForm1
             object TabSheet5: TTabSheet
               Caption = 'Affichage'
               ImageIndex = 4
-              object ScrollBox4: TScrollBox
+              object ScrollBoxAffichage: TScrollBox
                 Left = 8
                 Top = 8
                 Width = 286
                 Height = 257
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
-                VertScrollBar.Position = 34
+                VertScrollBar.Position = 124
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBoxAffichage: TGroupBox
                   Left = 0
-                  Top = -34
-                  Width = 269
+                  Top = -124
+                  Width = 257
                   Height = 381
-                  Align = alTop
                   TabOrder = 0
                   DesignSize = (
-                    269
+                    257
                     381)
                   object GroupBoxUpdateTheme: TGroupBox
                     Left = 9
                     Top = 194
-                    Width = 253
+                    Width = 241
                     Height = 178
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 0
                     DesignSize = (
-                      253
+                      241
                       178)
                     object Shape2: TShape
                       Left = 6
@@ -780,7 +779,7 @@ object Form1: TForm1
                       ParentFont = False
                     end
                     object SpeedButtonClosePanelUpdateTheme: TSpeedButton
-                      Left = 228
+                      Left = 216
                       Top = 6
                       Width = 22
                       Height = 22
@@ -808,14 +807,14 @@ object Form1: TForm1
                     object EditThemeName: TEdit
                       Left = 8
                       Top = 53
-                      Width = 154
+                      Width = 142
                       Height = 21
                       Anchors = [akLeft, akTop, akRight]
                       TabOrder = 0
                       Text = 'EditThemeName'
                     end
                     object Button2: TButton
-                      Left = 165
+                      Left = 153
                       Top = 143
                       Width = 75
                       Height = 25
@@ -825,7 +824,7 @@ object Form1: TForm1
                       OnClick = SpeedButtonClosePanelUpdateThemeClick
                     end
                     object ButtonUpdateTheme: TButton
-                      Left = 84
+                      Left = 72
                       Top = 143
                       Width = 75
                       Height = 25
@@ -838,12 +837,12 @@ object Form1: TForm1
                   object GroupBox19: TGroupBox
                     Left = 9
                     Top = 74
-                    Width = 253
+                    Width = 241
                     Height = 112
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 1
                     DesignSize = (
-                      253
+                      241
                       112)
                     object Label30: TLabel
                       Left = 16
@@ -862,7 +861,7 @@ object Form1: TForm1
                     object ComboBoxCurrentTheme: TComboBox
                       Left = 16
                       Top = 71
-                      Width = 182
+                      Width = 170
                       Height = 21
                       Style = csDropDownList
                       Anchors = [akLeft, akTop, akRight]
@@ -879,7 +878,7 @@ object Form1: TForm1
                         'Pink')
                     end
                     object ButtonMenuTheme: TButton
-                      Left = 206
+                      Left = 194
                       Top = 70
                       Width = 27
                       Height = 23
@@ -891,7 +890,7 @@ object Form1: TForm1
                     object SpinEditContraste: TTrackBar
                       Left = 8
                       Top = 32
-                      Width = 232
+                      Width = 220
                       Height = 19
                       Anchors = [akLeft, akTop, akRight]
                       Max = 255
@@ -904,12 +903,12 @@ object Form1: TForm1
                   object GroupBox23: TGroupBox
                     Left = 9
                     Top = 10
-                    Width = 253
+                    Width = 241
                     Height = 57
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 2
                     DesignSize = (
-                      253
+                      241
                       57)
                     object Label15: TLabel
                       Left = 16
@@ -921,7 +920,7 @@ object Form1: TForm1
                     object ComboBoxPosLogs: TComboBox
                       Left = 16
                       Top = 24
-                      Width = 221
+                      Width = 209
                       Height = 21
                       Style = csDropDownList
                       Anchors = [akLeft, akTop, akRight]
