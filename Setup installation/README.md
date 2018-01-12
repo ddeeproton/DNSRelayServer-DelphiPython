@@ -31,15 +31,9 @@ L'idée est de proposer un firewall (un parfeu) sur la couche DNS.
 -et bien d'autre choses auquel je n'ai pas pensé ^^
 
 ### Avertissement:
-Les versions 0.x signifient qu'il est déconseillé de rendre le serveur DNS publique 
-(à cause du "cache serveur" qui n'expire jamais pour le moment), si non d'un point de vue sécurité aucun problème. 
-et qu'il est déconseillé d'utiliser cette application si vous ne savez pas ce que veut dire: 
-"configurer l'adresse IP de votre carte réseau" (pour réparer votre connexion en cas de plantage). 
+Les versions 0.x signifient que vous êtes sur une version béta. Ce qui signifie qu'il peut y avoir des bugs et des fonctionnalités non-implémentées.  
 
-
-Les versions 1.0 et + sont prévus pour être tout publique.
-
-Ce prorgamme est gratuit et le restera toujours. ^^
+Ce prorgamme est gratuit et le restera toujours. 
 
 ### Télécharger le setup d'installation:
 
