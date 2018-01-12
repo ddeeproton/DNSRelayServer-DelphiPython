@@ -60,18 +60,18 @@ begin
         if i > 0 then
         begin
           isInHost := true;
-          result := result + ip + #9 + System.Copy(texte, i+1, Length(texte)-i+1) +#10;
+          result := result + ip + #9 + System.Copy(texte, i+1, Length(texte)-i+1) +#13#10;
         end
         else
-          result := result + texte +#10;
+          result := result + texte +#13#10;
       end else
-        result := result + texte +#10;
+        result := result + texte +#13#10;
     end;
     closefile(fp);
   end;
 
   if not isInHost then
-    result := result + ip + #9 + domain +#10;
+    result := result + ip + #9 + domain +#13#10;
   assignFile(fp, hostfile);
   reWrite(fp);
   Write(Fp, result);
