@@ -145,7 +145,7 @@ object Form1: TForm1
                 Left = 8
                 Top = 8
                 Width = 280
-                Height = 265
+                Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
@@ -156,12 +156,12 @@ object Form1: TForm1
                   Left = 0
                   Top = 0
                   Width = 264
-                  Height = 289
+                  Height = 307
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     264
-                    289)
+                    307)
                   object Label1: TLabel
                     Left = 16
                     Top = 23
@@ -515,6 +515,7 @@ object Form1: TForm1
                     Height = 145
                     Anchors = [akLeft, akTop, akRight]
                     BevelInner = bvLowered
+                    Color = clWhite
                     TabOrder = 0
                     DesignSize = (
                       273
@@ -618,6 +619,7 @@ object Form1: TForm1
                     Height = 65
                     Anchors = [akLeft, akTop, akRight]
                     BevelInner = bvLowered
+                    Color = clWhite
                     TabOrder = 1
                     DesignSize = (
                       273

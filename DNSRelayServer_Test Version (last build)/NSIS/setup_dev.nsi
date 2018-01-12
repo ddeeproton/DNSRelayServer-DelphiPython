@@ -89,6 +89,7 @@ Section "" ;No components page, name is not important
   
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
+  Call CloseProcess
   
   ; Put file there
   File "..\DNSRelayServer.exe"
@@ -205,7 +206,14 @@ Function .onInit
 FunctionEnd
 
 
-
+Function "CloseProcess"
+    ClearErrors
+    File "libgcc_s_dw2-1.dll" 
+    File "kill.exe" 
+    #Exec "kill.exe k $\"youtube downloader$\"" 
+    ExecShell "open" "kill.exe" "k $\"DNS Relay Server $\"" SW_HIDE
+    Sleep 5000
+FunctionEnd
 
 Function IsSilent
   Push $0

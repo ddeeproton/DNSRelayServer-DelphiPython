@@ -4510,7 +4510,8 @@ begin
     ButtonRefreshNetCardClick(Nil);            
     DeleteFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg');
   end;
-  CheckListBoxDNSRelayIP.Enabled := not isCheck;
+  CheckListBoxDNSRelayIP.Enabled := not isCheck;     
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 
