@@ -1420,9 +1420,6 @@ object Form1: TForm1
                   Font.Name = 'MS Sans Serif'
                   Font.Style = [fsBold]
                   ParentFont = False
-                  OnClick = LabelToCheckboxClick
-                  OnMouseEnter = LabelCheckboxMouseEnter
-                  OnMouseLeave = LabelCheckboxMouseLeave
                 end
                 object Label47: TLabel
                   Left = 8
