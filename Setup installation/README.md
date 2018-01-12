@@ -56,10 +56,6 @@ Compile avec:
 
 -Delphi 5, 6, 7, 2006, 2007, et +
 
-Ne compile pas avec:
-
--Lazarus
-
 ### Faire un don:
 
 #### Bitcoin (BTC)
