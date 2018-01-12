@@ -1990,10 +1990,12 @@ begin
   ComboBoxPosLogs.Color := bg2;
   ComboBoxSelectIPBlackhost.Color := bg2;
   ComboBoxSelectIPhostfile.Color := bg2;
+  EditSourceURL.Color := bg2;
+  EditBTC.Color := bg2;
 
   bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
                                
-  EditFilehost.Font.Color := bg2;  
+  EditFilehost.Font.Color := bg2;
   EditThemeName.Font.Color := bg2;
   EditExecOnDisconnected.Font.Color := bg2;
   ListView1.Font.Color := bg2;
@@ -2011,6 +2013,8 @@ begin
   ComboBoxPosLogs.Font.Color := bg2;
   ComboBoxSelectIPBlackhost.Font.Color := bg2;
   ComboBoxSelectIPhostfile.Font.Color := bg2;
+  EditSourceURL.Font.Color := bg2;
+  EditBTC.Font.Color := bg2;
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
