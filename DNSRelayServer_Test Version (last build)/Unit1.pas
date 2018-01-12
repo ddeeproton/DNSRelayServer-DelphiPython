@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.277';
+  CurrentApplicationVersion: string = '0.4.278';
   isDevVersion: Boolean = False;
 
 type
@@ -548,6 +548,7 @@ var
   lastLogOutput: string = '';
   isApplicationLoading: Boolean = True;
   opacity: Integer = 0;
+  autostarted: Boolean = False;
 implementation
 
 {$R *.dfm}
@@ -1598,7 +1599,7 @@ var
   i: Integer;
   param, txt: string;
   canClose: Boolean;
-  autostarted: Boolean;
+
 begin
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
   if not IsUserAnAdmin() then
@@ -1659,15 +1660,7 @@ begin
     Application.Terminate;
   end;
 
-  if (ParamCount() >= 1) and (ParamStr(1) = '/uninst') then
-  begin
-    ButtonNetCardDesintegrationClick(nil);
-    canClose := True;
-    FormCloseQuery(nil, canClose);
-    //KillTask(ExtractFileName(Application.ExeName));
-    KillProcess(Self.Handle);
-    Application.Terminate;
-  end;
+
 
   if isDevVersion then txt := ' alpha' else txt := '';
   Form1.Caption := PChar('DNS Relay Server '+CurrentApplicationVersion+txt);
@@ -1896,18 +1889,6 @@ begin
   ListView1.Clear;
   getDomains(EditFilehost.Text, ListView1);
 
-  if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
-  begin
-    ServerDoStart := True;
-    ButtonStartClick(nil);
-  {
-    ServerDoStart := True;
-    ImageList4.GetIcon(2, Application.Icon);
-    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-    ToolButton11.ImageIndex := 13;
-    TimerRestart.Enabled := True;
-   }
-  end;
 
 
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
@@ -2926,13 +2907,15 @@ end;
 procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
+
+
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
   ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
   SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
   TimerHideMessage.Enabled := False;
   TimerSaveChange.Enabled := False;
   if startedInBackground then exit;
-  Afficher1Click(nil);       
+  Afficher1Click(nil);
   PanelRestart.Visible := False;
   PanelMessage.Visible := False;
 
@@ -2946,6 +2929,31 @@ begin
   FlashWindow(Application.Handle, true);
   ShowWindow(Application.Handle, SW_SHOW);
   }
+
+  if (ParamCount() >= 1) and (ParamStr(1) = '/uninst') then
+  begin
+    ButtonNetCardDesintegrationClick(nil);
+    //canClose := True;
+    //FormCloseQuery(nil, canClose);
+    //KillTask(ExtractFileName(Application.ExeName));
+    //KillProcess(Self.Handle);
+    Application.Terminate;
+    exit;
+  end;
+
+  if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
+  begin
+    ServerDoStart := True;
+    ButtonStartClick(nil);
+  {
+    ServerDoStart := True;
+    ImageList4.GetIcon(2, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+    ToolButton11.ImageIndex := 13;
+    TimerRestart.Enabled := True;
+   }
+  end;
+
 end;
 
 procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);
@@ -3016,6 +3024,7 @@ procedure TForm1.ButtonNetCardIntegrationClick(Sender: TObject);
 var
   i: Integer;
   dnslist: String;
+  isChecked: Boolean;
   //net: tNetworkInterfaceList;
 begin
   //if Sender <> nil then
@@ -3025,7 +3034,10 @@ begin
     //ToolButton6Click(nil);
   //end;
   //setIPToDHCP();
-
+  isChecked := CheckBoxBindAllIP.Checked;
+  CheckBoxBindAllIP.Checked := False;
+  CheckBoxBindAllIPClick(nil);
+  ButtonRefreshNetCardClick(nil);
 
   dnslist := '';
   for i := 0 to CheckListBoxDNSRelayIP.Items.Count - 1 do
@@ -3042,6 +3054,11 @@ begin
   MemoLogs.Lines.Add('Set DNS '+dnslist);
   setDNS(dnslist);
   setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+
+
+  CheckBoxBindAllIP.Checked := isChecked;
+  CheckBoxBindAllIPClick(nil);
+  ButtonRefreshNetCardClick(nil);
 end;
 
 procedure TForm1.ButtonNetCardDesintegrationClick(Sender: TObject);
@@ -3056,6 +3073,7 @@ begin
     ToolButton6Click(nil);
   end;
   MemoLogs.Lines.Add('Go to DHCP');
+  {
   dns := '';
   for i := 0 to ConfigDNSMaster.Count - 1 do
   begin
@@ -3064,6 +3082,8 @@ begin
   end;
   setDNS(dns);
   //setDNS('');
+  }
+  setDNS('');
   setDNSOnBoot(False);
   //setIPToDHCP();
 end;

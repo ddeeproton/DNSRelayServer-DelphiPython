@@ -109,9 +109,11 @@ Section "" ;No components page, name is not important
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\DNSRelayServer" "UninstallString" '"$INSTDIR\uninstall_DNSRelayServer.exe"'
   
   
+  CreateShortCut "$DESKTOP\DNS Relay Server.lnk" "$INSTDIR\DNSRelayServer.exe" "" "$INSTDIR\DNSRelayServer.exe" 0
+  CreateShortCut "$DESKTOP\Réparer connexion.lnk" "$INSTDIR\DNSRelayServer.exe" "/uninst" "$INSTDIR\DNSRelayServer.exe" 0
   CreateDirectory "$SMPROGRAMS\DNS Relay Server"
   CreateShortCut "$SMPROGRAMS\DNS Relay Server\DNS Relay Server.lnk" "$INSTDIR\DNSRelayServer.exe" "" "$INSTDIR\DNSRelayServer.exe" 0
-  CreateShortCut "$DESKTOP\DNS Relay Server.lnk" "$INSTDIR\DNSRelayServer.exe" "" "$INSTDIR\DNSRelayServer.exe" 0
+  CreateShortCut "$SMPROGRAMS\DNS Relay Server\Réparer connexion.lnk" "$INSTDIR\DNSRelayServer.exe" "/uninst" "$INSTDIR\DNSRelayServer.exe" 0
   CreateShortCut "$SMPROGRAMS\DNS Relay Server\Uninstall.lnk" "$INSTDIR\uninstall_DNSRelayServer.exe" "" "$INSTDIR\uninstall_DNSRelayServer.exe" 0
 
   
