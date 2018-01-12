@@ -45,6 +45,21 @@ Ce prorgamme est gratuit et le restera toujours. ^^
 
 https://github.com/ddeeproton/DNSRelayServer-DelphiPython/tree/master/Setup%20installation
 
+### Télécharger le code source:
+
+https://github.com/ddeeproton/DNSRelayServer-DelphiPython/archive/master.zip
+
+
+### Compilation:
+
+Compile avec:
+
+-Delphi 5, 6, 7, 2006, 2007, et +
+
+Ne compile pas avec:
+
+-Lazarus
+
 ### Faire un don:
 
 #### Bitcoin (BTC)
