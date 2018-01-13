@@ -215,14 +215,16 @@ begin
     '		#fp = open(''/mnt/sdcard2/!prog/hosts'', ''r'')'#13#10+
     '		for line in fp.readlines():'#13#10+
     '			#print line'#13#10+
-    '			filehost_domain = line.split("	")[1]'#13#10+
-    '			if "*" in filehost_domain:'#13#10+
-    '				filehost_domain = filehost_domain.replace("*","")'#13#10+
-    '				if re.search(filehost_domain[:-1], domain):'#13#10+
-    '					res = line.split("	")[0]'#13#10+
-    '			else:'#13#10+
-    '				if "	"+domain in line:'#13#10+
-    '					res = line.split("	")[0]'#13#10+
+    '			checkcom = line.replace(" ", "")'#13#10+
+    '			if checkcom <> "#":'#13#10+
+    '				filehost_domain = line.split("	")[1]'#13#10+
+    '				if "*" in filehost_domain:'#13#10+
+    '					filehost_domain = filehost_domain.replace("*","")'#13#10+
+    '					if re.search(filehost_domain[:-1], domain):'#13#10+
+    '						res = line.split("	")[0]'#13#10+
+    '				else:'#13#10+
+    '					if "	"+domain in line:'#13#10+
+    '						res = line.split("	")[0]'#13#10+
     '		fp.close()'#13#10+
     '		if res <> "":'#13#10+
     '			if res[0] == "#":'#13#10+
