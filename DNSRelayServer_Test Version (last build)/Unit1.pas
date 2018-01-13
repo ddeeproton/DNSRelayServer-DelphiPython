@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.279';
+  CurrentApplicationVersion: string = '0.4.280';
   isDevVersion: Boolean = False;
 
 type
@@ -3062,9 +3062,11 @@ begin
 end;
 
 procedure TForm1.ButtonNetCardDesintegrationClick(Sender: TObject);
+{
 var
   i: Integer;
   dns: string;
+}
 begin
   if Sender <> nil then
   begin
@@ -4019,8 +4021,8 @@ begin
   Afficher1Click(nil);
 end;
 
-procedure TForm1.Misejour1Click(Sender: TObject);
-begin                                        
+procedure TForm1.Carterseau1Click(Sender: TObject);
+begin
   Panel1.Visible := False;
   Splitter1.Visible := False;
   ToolButton8Click(nil);
@@ -4029,8 +4031,8 @@ begin
   Afficher1Click(nil);
 end;
 
-procedure TForm1.Carterseau1Click(Sender: TObject);
-begin                             
+procedure TForm1.Affichage1Click(Sender: TObject);
+begin
   Panel1.Visible := False;
   Splitter1.Visible := False;
   ToolButton8Click(nil);
@@ -4039,8 +4041,8 @@ begin
   Afficher1Click(nil);
 end;
 
-procedure TForm1.Affichage1Click(Sender: TObject);
-begin                                   
+procedure TForm1.Alertes2Click(Sender: TObject);
+begin
   Panel1.Visible := False;
   Splitter1.Visible := False;
   ToolButton8Click(nil);
@@ -4049,12 +4051,13 @@ begin
   Afficher1Click(nil);
 end;
 
-procedure TForm1.Alertes2Click(Sender: TObject);
-begin                          
+
+procedure TForm1.Misejour1Click(Sender: TObject);
+begin
   Panel1.Visible := False;
   Splitter1.Visible := False;
   ToolButton8Click(nil);
-  PageControl1.TabIndex := 5;
+  PageControl1.TabIndex := 7;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Afficher1Click(nil);
 end;
@@ -4080,7 +4083,7 @@ procedure TForm1.SpinEditAlertDurationChange(Sender: TObject);
 begin
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
-  if TSpinEdit(Sender).Value < 3 then TSpinEdit(Sender).Value := 3; 
+  if TSpinEdit(Sender).Value < 3 then TSpinEdit(Sender).Value := 3;
 end;
 
 procedure TForm1.SpeedButtonCloseMessageClick(Sender: TObject);
