@@ -217,14 +217,20 @@ begin
     '			#print line'#13#10+
     '			checkcom = line.replace(" ", "")'#13#10+
     '			if checkcom <> "#" and re.search("	", line):'#13#10+
-    '				filehost_domain = line.split("	")[1]'#13#10+
-    '				if "*" in filehost_domain:'#13#10+
-    '					filehost_domain = filehost_domain.replace("*","")'#13#10+
-    '					if re.search(filehost_domain[:-1], domain):'#13#10+
-    '						res = line.split("	")[0]'#13#10+
-    '				else:'#13#10+
-    '					if "	"+domain in line:'#13#10+
-    '						res = line.split("	")[0]'#13#10+
+    '				charSplit = ""'#13#10+
+    '				if re.search(" ", line):'#13#10+
+    '					charSplit = " "'#13#10+
+    '				if re.search("	", line):'#13#10+
+    '					charSplit = "	"'#13#10+
+    '				if charSplit <> "":'#13#10+
+    '					filehost_domain = line.split(charSplit)[1]'#13#10+
+    '					if "*" in filehost_domain:'#13#10+
+    '						filehost_domain = filehost_domain.replace("*","")'#13#10+
+    '						if re.search(filehost_domain[:-1], domain):'#13#10+
+    '							res = line.split(charSplit)[0]'#13#10+
+    '					else:'#13#10+
+    '						if "	"+domain in line:'#13#10+
+    '							res = line.split(charSplit)[0]'#13#10+
     '		fp.close()'#13#10+
     '		if res <> "":'#13#10+
     '			if res[0] == "#":'#13#10+
