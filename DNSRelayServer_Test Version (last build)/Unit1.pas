@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.281';
+  CurrentApplicationVersion: string = '0.4.282';
   isDevVersion: Boolean = False;
 
 type
@@ -1201,7 +1201,7 @@ begin
   if count = 0 then
   begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé');
-    MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur.');
+    MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur (ou attendre le redémarrage).');
 
     ToolButton11.Enabled := True;
     ToolButton8Click(ToolButton8);

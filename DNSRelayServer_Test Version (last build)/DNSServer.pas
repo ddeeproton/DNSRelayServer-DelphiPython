@@ -216,7 +216,7 @@ begin
     '		for line in fp.readlines():'#13#10+
     '			#print line'#13#10+
     '			checkcom = line.replace(" ", "")'#13#10+
-    '			if checkcom <> "#":'#13#10+
+    '			if checkcom <> "#" and re.search("	", line):'#13#10+
     '				filehost_domain = line.split("	")[1]'#13#10+
     '				if "*" in filehost_domain:'#13#10+
     '					filehost_domain = filehost_domain.replace("*","")'#13#10+
