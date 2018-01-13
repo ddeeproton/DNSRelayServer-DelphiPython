@@ -298,6 +298,9 @@ type
     ComboBoxPosLogs: TComboBox;
     LabelUpdateTheme: TLabel;
     SpeedButtonClosePanelUpdateTheme: TSpeedButton;
+    Label20: TLabel;
+    SpinEditTTLCache: TSpinEdit;
+    TimerClearCache: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -467,6 +470,7 @@ type
     procedure CheckBoxBindAllIPClick(Sender: TObject);
     procedure ButtonCopyEditSourceURLClick(Sender: TObject);
     procedure ButtonCopyEditBTCClick(Sender: TObject);
+    procedure TimerClearCacheTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -534,6 +538,7 @@ var
   SlaveDNSIPConfig: string = 'SlaveDNSIP.cfg';
   SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
   TimeCheckUpdateFile: string = 'TimeCheckUpdate.cfg';
+  SpinEditTTLCacheFile: string = 'SpinEditTTLCache.cfg';
   BlackListCfgFile: string = 'blackhost.txt';
   DirCustomHost : string = 'customhost';
 
@@ -942,6 +947,7 @@ begin
   try
   //KillTask('python.exe');
   ButtonCloseClick(nil);
+  ButtonRefreshNetCardClick(nil);
   //closeProcessCreated;
 
   ImageList4.GetIcon(2, Application.Icon);
@@ -1627,7 +1633,7 @@ begin
   if FileExists(SlaveDNSPortConfig) then
     SpinPort.Value := StrToInt(ReadFromFile(SlaveDNSPortConfig));
 
-  SpinEditContraste.Position := 205;  
+  SpinEditContraste.Position := 205;
   if FileExists(DataDirectoryPath + 'contrasteTextarea.cfg') then
     SpinEditContraste.Position := StrToInt(ReadFromFile(DataDirectoryPath + 'contrasteTextarea.cfg'));
 
@@ -1636,6 +1642,12 @@ begin
 
   if FileExists(BlackListCfgFile) then
     ListBoxBlacklist.Items.LoadFromFile(BlackListCfgFile);
+
+  SpinEditTTLCache.Value := 24;
+  if FileExists(SpinEditTTLCacheFile) then
+     SpinEditTTLCache.Value := StrToInt(ReadFromFile(SpinEditTTLCacheFile));
+  TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
+  TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
 
   CheckBoxAutostartDNSOnBoot.Checked := FileExists(DataDirectoryPath + 'checkAutostartDNS.cfg');
   CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
@@ -1932,6 +1944,20 @@ procedure TForm1.TimerAfterFormCreateLongTimer(Sender: TObject);
 begin
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
+
+  if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
+  begin
+    ServerDoStart := True;
+    ButtonStartClick(nil);
+  {
+    ServerDoStart := True;
+    ImageList4.GetIcon(2, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+    ToolButton11.ImageIndex := 13;
+    TimerRestart.Enabled := True;
+   }
+  end;
+
 end;
 
 
@@ -2338,6 +2364,7 @@ end;
 
 procedure TForm1.EditFilehostChange(Sender: TObject);
 begin
+  if isApplicationLoading then exit;
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
 end;
@@ -2349,7 +2376,7 @@ var
 begin
   TTimer(Sender).Enabled := False;
   if isApplicationLoading then exit;
-  
+
   WriteInFile(FilehostPathConfig, EditFilehost.Text);
   //CheckListBoxDNSRelayIP.Items.SaveToFile(SlaveDNSIPConfig);
   //WriteInFile(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
@@ -2358,7 +2385,9 @@ begin
   WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
   WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
 
-
+  WriteInFile(SpinEditTTLCacheFile, IntToStr(SpinEditTTLCache.Value));
+  TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
+  TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
 
   txt := #13#10;
   for i := 0 to CheckListBoxDNSRelayIP.Count - 1 do
@@ -2791,19 +2820,6 @@ begin
     //KillProcess(Self.Handle);
     Application.Terminate;
     exit;
-  end;
-
-  if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
-  begin
-    ServerDoStart := True;
-    ButtonStartClick(nil);
-  {
-    ServerDoStart := True;
-    ImageList4.GetIcon(2, Application.Icon);
-    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-    ToolButton11.ImageIndex := 13;
-    TimerRestart.Enabled := True;
-   }
   end;
 
 end;
@@ -4445,6 +4461,11 @@ begin
   LabelMessage.Caption := PChar('Copié!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.TimerClearCacheTimer(Sender: TObject);
+begin
+  ActionDNS.clearCache;
 end;
 
 end.

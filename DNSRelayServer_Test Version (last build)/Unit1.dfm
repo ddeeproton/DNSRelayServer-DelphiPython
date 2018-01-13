@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 807
   Top = 74
   Width = 493
-  Height = 578
+  Height = 652
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet4
+            ActivePage = TabSheet1
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -148,20 +148,21 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 104
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = 0
+                  Top = -104
                   Width = 263
-                  Height = 307
+                  Height = 360
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     263
-                    307)
+                    360)
                   object Label1: TLabel
                     Left = 16
                     Top = 15
@@ -316,6 +317,14 @@ object Form1: TForm1
                     OnMouseEnter = LabelCheckboxMouseEnter
                     OnMouseLeave = LabelCheckboxMouseLeave
                   end
+                  object Label20: TLabel
+                    Left = 16
+                    Top = 311
+                    Width = 187
+                    Height = 13
+                    Caption = 'Dur'#233'e du cache DNS (0 expire jamais) :'
+                    Transparent = True
+                  end
                   object SpinPort: TSpinEdit
                     Left = 176
                     Top = 31
@@ -415,6 +424,20 @@ object Form1: TForm1
                     ShowHint = True
                     TabOrder = 9
                     OnClick = CheckBoxBindAllIPClick
+                  end
+                  object SpinEditTTLCache: TSpinEdit
+                    Left = 16
+                    Top = 328
+                    Width = 121
+                    Height = 22
+                    Hint = 'Efface le cache apr'#232's X heures'
+                    MaxValue = 0
+                    MinValue = 0
+                    ParentShowHint = False
+                    ShowHint = True
+                    TabOrder = 10
+                    Value = 0
+                    OnChange = EditFilehostChange
                   end
                 end
               end
@@ -1861,7 +1884,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 553
+    Top = 521
     Width = 313
     Height = 82
     Caption = '           '
@@ -2047,7 +2070,7 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 8
-    Top = 506
+    Top = 490
     Width = 313
     Height = 33
     TabOrder = 3
@@ -2092,7 +2115,7 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 8
-    Top = 465
+    Top = 457
     Width = 313
     Height = 33
     TabOrder = 4
@@ -17052,5 +17075,11 @@ object Form1: TForm1
     OnTimer = TimerExecOnDisconnectedTimer
     Left = 387
     Top = 151
+  end
+  object TimerClearCache: TTimer
+    Enabled = False
+    OnTimer = TimerClearCacheTimer
+    Left = 416
+    Top = 152
   end
 end
