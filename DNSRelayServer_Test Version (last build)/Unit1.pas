@@ -5,14 +5,14 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost, Systray, Registry, md5, ListViewManager, HostParser, XPMan,
+  UnitHost, Systray, Registry, md5,  ListViewManager, HostParser, XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.283';
+  CurrentApplicationVersion: string = '0.4.285';
   isDevVersion: Boolean = False;
 
 type
@@ -350,7 +350,6 @@ type
     procedure ToolButton11Click(Sender: TObject);
     procedure ButtonUpdateClick(Sender: TObject);
     procedure CheckBoxUpdateClick(Sender: TObject);
-    procedure setDNSOnBoot(enabled: Boolean);
     procedure TimerUpdateOnLoadTimer(Sender: TObject);
     procedure ButtonRefreshNetCardClick(Sender: TObject);
     procedure TimerAfterFormCreateTimer(Sender: TObject);
@@ -930,149 +929,6 @@ begin
 end;
 
 
-procedure TForm1.setDNSOnBoot(enabled: Boolean);
-var
-  Reg: TRegistry;
-  scriptVBS, dirPath: string;
-begin
-  dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
-
-  scriptVBS := '''Example: '#13#10+
-    ''' Set IP DNS'#13#10+
-    '''   wscript.exe this.vbs 127.0.0.1 192.168.0.1'#13#10+
-    ''''#13#10+
-    ''' Automatic DNS '#13#10+
-    '''   wscript.exe this.vbs '#13#10+
-    ''#13#10+
-    'if isManualDNS Then setDNS(ArgumentsToArray())'#13#10+
-    ''#13#10+
-    'function ArgumentsToArray()'#13#10+
-    '  Dim i, res()'#13#10+
-    '  i = 0'#13#10+
-    '  redim res(WScript.Arguments.Count-1)'#13#10+
-    '  For Each arg in WScript.Arguments'#13#10+
-    '    arg = Replace(arg," ","")'#13#10+
-    '    if arg <> "" and arg <> "uac" Then'#13#10+
-    '      res(i) = arg'#13#10+
-    '      i = i + 1'#13#10+
-    '    End If'#13#10+
-    '  Next'#13#10+
-    '  if i = 0 then'#13#10+
-    '    ArgumentsToArray = Array()'#13#10+
-    '  else'#13#10+
-    '    ArgumentsToArray = res'#13#10+
-    '  end if'#13#10+
-    'End function'#13#10+
-    ''#13#10+
-    'function setDNS(listIP)'#13#10+
-    '    Dim res,objNetCard,arrDNSServers,objWMIService,colNetCards'#13#10+
-    '    res = False'#13#10+
-    '    Call GetAdminPrivilege()'#13#10+
-    '    Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
-    '    Set colNetCards = objWMIService.ExecQuery("Select * From Win32_NetworkAdapterConfiguration Where IPEnabled = True")'#13#10+
-    '    For Each objNetCard in colNetCards'#13#10+
-    '	  objNetCard.SetDNSServerSearchOrder(listIP)'#13#10+
-    '      If Err = 0 Then res = True'#13#10+
-    '    Next'#13#10+
-    '    setDNS = res'#13#10+
-    'End function'#13#10+
-    ''#13#10+
-    'function isManualDNS()'#13#10+
-    '    Dim res,objNetCard,arrDNSServers,objWMIService,colNetCards, netDNS'#13#10+
-    '    res = False'#13#10+
-    '    ''Call GetAdminPrivilege()'#13#10+
-    '    Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
-    '    Set colNetCards = objWMIService.ExecQuery("Select * From Win32_NetworkAdapterConfiguration Where IPEnabled = True")'#13#10+
-    '    For Each objNetCard in colNetCards'#13#10+
-    '	''  if objNetCard.DHCPEnabled = False then res = True'#13#10+
-    '		strDNSServerSearchOrder = ""'#13#10+
-    '		If Not IsNull(objNetCard.DNSServerSearchOrder) Then'#13#10+
-    '			For Each strDNSServer In objNetCard.DNSServerSearchOrder'#13#10+
-    '				if strDNSServerSearchOrder <> "" then strDNSServerSearchOrder = strDNSServerSearchOrder & ","'#13#10+
-    '				strDNSServerSearchOrder = strDNSServerSearchOrder & strDNSServer'#13#10+
-    '			Next'#13#10+
-    '		End If'#13#10+
-    '		strIPAddresses = ""'#13#10+
-    '		If Not IsNull(objNetCard.IPAddress) Then'#13#10+
-    '			For Each strIPAddress In objNetCard.IPAddress'#13#10+
-    '				if strIPAddresses <> "" then strIPAddresses = strIPAddresses & ","'#13#10+
-    '				strIPAddresses = strIPAddresses & strIPAddress'#13#10+
-    '			Next'#13#10+
-    '		End If'#13#10+
-    '		if strDNSServerSearchOrder = strIPAddresses then res = True'#13#10+
-    '		''Wscript.echo "''" & strDNSServerSearchOrder & "'' = ''" & strIPAddresses & "''"'#13#10+
-    '    Next'#13#10+
-    '    isManualDNS = res'#13#10+
-    'End function'#13#10+
-    ''#13#10+
-    ''#13#10+
-    'sub GetAdminPrivilege()'#13#10+
-    '  Dim WMI, OS, Value, Shell'#13#10+
-    '  do while WScript.Arguments.Count = 0 and WScript.Version >= 5.7'#13#10+
-    '    Set WMI = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
-    '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
-    '    For Each Value in OS'#13#10+
-    '      if left(Value.Version, 3) < 6.0 then exit do'#13#10+
-    '    Next'#13#10+
-    '    WScript.Echo "Script de réparation de connexion réseau. Veuillez répondre oui au dialogue suivant afin de réparer votre connexion Internet. Et non, si le serveur DNS Relai s''est déjà lancé et que vous voulez continuer à l''utiliser."'#13#10+
-    '    Set Shell = CreateObject("Shell.Application")'#13#10+
-    '    Shell.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ uac", "", "runas"'#13#10+
-    '    WScript.Quit'#13#10+
-    '  loop'#13#10+
-    'end sub';
-    if enabled then WriteInFile(dirPath+'setDNSOnBoot.vbs', scriptVBS);
-
-  // For versions equal or less than <= 0.4.7
-  Reg := TRegistry.Create;
-  Reg.RootKey := HKEY_CURRENT_USER;
-  try
-  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
-  begin
-    if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName)) then
-      Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName));
-    Reg.CloseKey;
-  end;
-  finally
-    Reg.Free;
-  end;
-
-  // For versions equal or less than <= 0.4.47
-  Reg := TRegistry.Create;
-  Reg.RootKey := HKEY_LOCAL_MACHINE;
-  try
-  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
-  begin
-      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName)) then
-        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName));
-    Reg.CloseKey;
-  end;
-  finally
-    Reg.Free;
-  end;
-
-
-
-  // New version
-  Reg := TRegistry.Create;
-  Reg.RootKey := HKEY_LOCAL_MACHINE;
-  try
-  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
-  begin
-    if enabled then
-      Reg.WriteString(ExtractFileName(Application.ExeName)+'_restoreNet', dirPath+'setDNSOnBoot.vbs')
-    else begin
-      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet') then
-        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet');
-    end;
-    Reg.CloseKey;
-  end;
-  finally
-    Reg.Free;
-  end;
-end;
-
-
-
 
 
 
@@ -1245,7 +1101,7 @@ begin
     begin
       dns := ConfigDNSMaster[i];
       MemoLogs.Lines.Add('Master '+ dns +'... ');
-      if resolveDNSByPython('a.root-servers.net', dns) = '' then
+      if ActionDNS.resolveDNSByPython('a.root-servers.net', dns) = '' then
       begin
         DNSMasterSerialized := '';
         MemoLogs.Lines.Add('Erreur: Lancement annulé.');
@@ -2529,20 +2385,7 @@ begin
   ListView1.OnChange := ListView1Change;
 end;
 
-procedure TForm1.Bloquerledomaine1Click(Sender: TObject);
-begin
-  SelectedListItem := ListView1.Selected;
-  if not Assigned(SelectedListItem) then exit;
-  //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
-  setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
-  SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
-  MemoLogs.Lines.Add('Bloquage de '+SelectedListItem.Caption);
-  refreshListView1Click();
-  if isServerStarted then
-  begin
-    PanelRestart.Visible := True;
-  end;
-end;
+
 
 procedure TForm1.Autoriser1Click(Sender: TObject);
 begin
@@ -2550,14 +2393,12 @@ begin
   if not Assigned(SelectedListItem) then exit;
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
   //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
-  delDomain(EditFilehost.Text, SelectedListItem.Caption);     
+  delDomain(EditFilehost.Text, SelectedListItem.Caption);
   MemoLogs.Lines.Add('Débloquage de '+SelectedListItem.Caption);
   SelectedListItem.Delete;
   refreshListView1Click();
-  if isServerStarted then
-  begin
-    PanelRestart.Visible := True;
-  end;
+  //if isServerStarted then PanelRestart.Visible := True;
+  if isServerStarted then ActionDNS.clearCache;
 end;
 
 procedure TForm1.Modifier1Click(Sender: TObject);
@@ -2572,10 +2413,21 @@ begin
   setDomain( EditFilehost.Text, SelectedListItem.Caption, ip);
   SelectedListItem.SubItems.Strings[0] := ip;
   refreshListView1Click();
-  if isServerStarted then
-  begin
-    PanelRestart.Visible := True;
-  end;
+  //if isServerStarted then PanelRestart.Visible := True;
+  if isServerStarted then ActionDNS.clearCache;
+end;
+
+procedure TForm1.Bloquerledomaine1Click(Sender: TObject);
+begin
+  SelectedListItem := ListView1.Selected;
+  if not Assigned(SelectedListItem) then exit;
+  //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
+  setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
+  SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
+  MemoLogs.Lines.Add('Bloquage de '+SelectedListItem.Caption);
+  refreshListView1Click();
+  //if isServerStarted then PanelRestart.Visible := True;
+  if isServerStarted then ActionDNS.clearCache;
 end;
 
 procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
@@ -2855,7 +2707,7 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
 
-  setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+  ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -3033,7 +2885,7 @@ begin
     //ToolButton3.Down := True;
     //ToolButton6Click(nil);
   //end;
-  //setIPToDHCP();
+  //ActionDNS.setIPToDHCP();
   isChecked := CheckBoxBindAllIP.Checked;
   CheckBoxBindAllIP.Checked := False;
   CheckBoxBindAllIPClick(nil);
@@ -3052,8 +2904,8 @@ begin
   
   //setDNS(CBoxDNSServerSlaveIP.Text);
   MemoLogs.Lines.Add('Set DNS '+dnslist);
-  setDNS(dnslist);
-  setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+  ActionDNS.setDNS(dnslist);
+  ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 
 
   CheckBoxBindAllIP.Checked := isChecked;
@@ -3082,12 +2934,12 @@ begin
     if dns <> '' then dns := dns + ' ';
     dns := dns + ConfigDNSMaster[i];
   end;
-  setDNS(dns);
+  ActionDNS.setDNS(dns);
   //setDNS('');
   }
-  setDNS('');
-  setDNSOnBoot(False);
-  //setIPToDHCP();
+  ActionDNS.setDNS('');
+  ActionDNS.setDNSOnBoot(False);
+  //ActionDNS.setIPToDHCP();
 end;
 
 procedure TForm1.TimerCheckUpdateTimer(Sender: TObject);
@@ -3255,7 +3107,8 @@ begin
   if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', ip) then exit;
   ListBoxBlacklist.Items.Add(ip);
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-  if isServerStarted then PanelRestart.Visible := True;
+  //if isServerStarted then PanelRestart.Visible := True;
+  if isServerStarted then ActionDNS.clearCache;
 end;
 
 procedure TForm1.Modifier3Click(Sender: TObject);
@@ -3273,7 +3126,8 @@ begin
   if not InputQuery('Update Blackword', txt, txt) then exit;
   ListBoxBlacklist.Items.Strings[i] := txt;
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-  if isServerStarted then PanelRestart.Visible := True;
+  //if isServerStarted then PanelRestart.Visible := True;
+  if isServerStarted then ActionDNS.clearCache;
 end;
 
 procedure TForm1.Supprimer2Click(Sender: TObject);
@@ -3294,7 +3148,8 @@ begin
     ListBoxBlacklist.DeleteSelected;
     ListBoxBlacklist.ItemIndex := 1 - 1;
     ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-    if isServerStarted then PanelRestart.Visible := True;
+    //if isServerStarted then PanelRestart.Visible := True;
+    if isServerStarted then ActionDNS.clearCache;
     //ShowMessage('Effacé');
   end;
 end;

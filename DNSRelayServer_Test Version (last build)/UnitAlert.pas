@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls,
+  Dialogs, StdCtrls, ExtCtrls, DNSManager,
   HostParser, Buttons, ImgList, Menus, FilesManager, WindowsManager, UnitRestartAlert;
 
 type
@@ -177,10 +177,8 @@ begin
     PanelAllowed.Visible := not PanelAllowed.Visible;
     PanelDisallowed.Visible := not PanelDisallowed.Visible;
     FormCreate(nil);
-
+    {
     //if not Form1.isServerStarted then exit;
-
-    
     if (Unit1.FormRestart <> nil) then
     begin
       Unit1.FormRestart := nil;
@@ -188,11 +186,14 @@ begin
     if (Unit1.FormRestart = nil) then
       Unit1.FormRestart := TFormRestart.Create(nil);
     Unit1.FormRestart.Show;
-    Unit1.FormRestart.BringToFront;
-                                      
+    Unit1.FormRestart.BringToFront;          
     TimerAfterCreate.Enabled := True;
+    }
+    ActionDNS.clearCache;
     CheckBoxStay.Checked := False;
     CheckBoxStay2.Checked := False;
+
+
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;

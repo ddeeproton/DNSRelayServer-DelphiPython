@@ -273,7 +273,16 @@ begin
     '		if not domain in cache_domains[ipclient]:'#13#10+
     '			cache_domains[ipclient][domain] = IPHost'#13#10+
     ''#13#10+
+    '	def checkAction(self):'#13#10+
+    '		currentDir = os.path.dirname(os.path.realpath(__file__))'#13#10+
+    '		f = currentDir + "/action_clear_cache.txt"'#13#10+
+    '		if os.path.isfile(f) == True:'#13#10+
+    '			cache_domains = {}'#13#10+
+    '			os.remove(f)'#13#10+
+    '			print "Cache cleared;EOL;"'#13#10+
+    ''#13#10+
     '	def resolveDomain(self, domain, idstatus, dnss, ipclient):'#13#10+
+    '		self.checkAction()'#13#10+
     '		if config_block_all == 1:'#13#10+
     '			return "127.0.0.3"'#13#10+
     '		if config_cache_memory == 1:'#13#10+

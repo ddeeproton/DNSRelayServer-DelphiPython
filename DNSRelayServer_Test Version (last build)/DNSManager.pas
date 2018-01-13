@@ -16,21 +16,43 @@ uses
   // For Application
   Forms,
   // For AnsiReplaceStr
-  StrUtils;
+  StrUtils,
   // Pour la function DNS Resolve
   //IdDNSResolver, IdStack,
   //IdException;
+  Registry, md5;
 
-  procedure setDNS(Servers: string);
-  procedure setDNSList(Servers: TStrings);
-  //function resolveDNS(ADomain, AHost : string): string;
-  function resolveDNSByPython(domain, dns:String):string;
-  procedure setIPToDHCP();
+  
+  
+  
 
+ 
+type
+  ActionDNS = class
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    class procedure clearCache(); 
+    class procedure setIPToDHCP();
+    class function resolveDNSByPython(domain, dns:String):string;
+    class procedure setDNS(Servers: string);
+    class procedure setDNSList(Servers: TStrings);
+    class procedure setDNSOnBoot(enabled: Boolean);
+    //class function resolveDNS(ADomain, AHost : string): string;
+  end;
+  
 implementation
 uses Unit1;
 
-procedure setDNS(Servers: string);
+class procedure ActionDNS.clearCache();
+var dirPath: string;
+begin
+  dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
+  WriteInFile(dirPath+'action_clear_cache.txt', ' ');
+end;
+
+class procedure ActionDNS.setDNS(Servers: string);
 var
   scriptVBS, dirPath: string;
 begin
@@ -99,7 +121,7 @@ begin
 end;
 
 
-procedure setDNSList(Servers: TStrings);
+class procedure ActionDNS.setDNSList(Servers: TStrings);
 var
   i: Integer;
   iplist: String;
@@ -115,7 +137,7 @@ end;
 
 
 
-function resolveDNSByPython(domain, dns:String):string;
+class function ActionDNS.resolveDNSByPython(domain, dns:String):string;
 var scriptPython: String;
 begin
   scriptPython :=     '#!/usr/bin/env python'#13#10+
@@ -171,7 +193,7 @@ begin
 end;
 
 {
-function resolveDNS(ADomain, AHost: string): string;
+class function ActionDNS.resolveDNS(ADomain, AHost: string): string;
 var
   i,x : integer;
   LDomainPart : String;
@@ -206,7 +228,7 @@ begin
   end;
 end;
 }
-procedure setIPToDHCP();
+class procedure ActionDNS.setIPToDHCP();
 var
   scriptVBS, scriptBAT, dirPath: string;
 begin
@@ -261,6 +283,149 @@ begin
     //ecrireDansUnFichier(dirPath+'setDHCP.bat', scriptBAT);
     //ProcessManager.ExecAndWait(dirPath+'setDHCP.bat', '', SW_HIDE);
 end;
+
+
+class procedure ActionDNS.setDNSOnBoot(enabled: Boolean);
+var
+  Reg: TRegistry;
+  scriptVBS, dirPath: string;
+begin
+  dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
+
+  scriptVBS := '''Example: '#13#10+
+    ''' Set IP DNS'#13#10+
+    '''   wscript.exe this.vbs 127.0.0.1 192.168.0.1'#13#10+
+    ''''#13#10+
+    ''' Automatic DNS '#13#10+
+    '''   wscript.exe this.vbs '#13#10+
+    ''#13#10+
+    'if isManualDNS Then setDNS(ArgumentsToArray())'#13#10+
+    ''#13#10+
+    'function ArgumentsToArray()'#13#10+
+    '  Dim i, res()'#13#10+
+    '  i = 0'#13#10+
+    '  redim res(WScript.Arguments.Count-1)'#13#10+
+    '  For Each arg in WScript.Arguments'#13#10+
+    '    arg = Replace(arg," ","")'#13#10+
+    '    if arg <> "" and arg <> "uac" Then'#13#10+
+    '      res(i) = arg'#13#10+
+    '      i = i + 1'#13#10+
+    '    End If'#13#10+
+    '  Next'#13#10+
+    '  if i = 0 then'#13#10+
+    '    ArgumentsToArray = Array()'#13#10+
+    '  else'#13#10+
+    '    ArgumentsToArray = res'#13#10+
+    '  end if'#13#10+
+    'End function'#13#10+
+    ''#13#10+
+    'function setDNS(listIP)'#13#10+
+    '    Dim res,objNetCard,arrDNSServers,objWMIService,colNetCards'#13#10+
+    '    res = False'#13#10+
+    '    Call GetAdminPrivilege()'#13#10+
+    '    Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
+    '    Set colNetCards = objWMIService.ExecQuery("Select * From Win32_NetworkAdapterConfiguration Where IPEnabled = True")'#13#10+
+    '    For Each objNetCard in colNetCards'#13#10+
+    '	  objNetCard.SetDNSServerSearchOrder(listIP)'#13#10+
+    '      If Err = 0 Then res = True'#13#10+
+    '    Next'#13#10+
+    '    setDNS = res'#13#10+
+    'End function'#13#10+
+    ''#13#10+
+    'function isManualDNS()'#13#10+
+    '    Dim res,objNetCard,arrDNSServers,objWMIService,colNetCards, netDNS'#13#10+
+    '    res = False'#13#10+
+    '    ''Call GetAdminPrivilege()'#13#10+
+    '    Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
+    '    Set colNetCards = objWMIService.ExecQuery("Select * From Win32_NetworkAdapterConfiguration Where IPEnabled = True")'#13#10+
+    '    For Each objNetCard in colNetCards'#13#10+
+    '	''  if objNetCard.DHCPEnabled = False then res = True'#13#10+
+    '		strDNSServerSearchOrder = ""'#13#10+
+    '		If Not IsNull(objNetCard.DNSServerSearchOrder) Then'#13#10+
+    '			For Each strDNSServer In objNetCard.DNSServerSearchOrder'#13#10+
+    '				if strDNSServerSearchOrder <> "" then strDNSServerSearchOrder = strDNSServerSearchOrder & ","'#13#10+
+    '				strDNSServerSearchOrder = strDNSServerSearchOrder & strDNSServer'#13#10+
+    '			Next'#13#10+
+    '		End If'#13#10+
+    '		strIPAddresses = ""'#13#10+
+    '		If Not IsNull(objNetCard.IPAddress) Then'#13#10+
+    '			For Each strIPAddress In objNetCard.IPAddress'#13#10+
+    '				if strIPAddresses <> "" then strIPAddresses = strIPAddresses & ","'#13#10+
+    '				strIPAddresses = strIPAddresses & strIPAddress'#13#10+
+    '			Next'#13#10+
+    '		End If'#13#10+
+    '		if strDNSServerSearchOrder = strIPAddresses then res = True'#13#10+
+    '		''Wscript.echo "''" & strDNSServerSearchOrder & "'' = ''" & strIPAddresses & "''"'#13#10+
+    '    Next'#13#10+
+    '    isManualDNS = res'#13#10+
+    'End function'#13#10+
+    ''#13#10+
+    ''#13#10+
+    'sub GetAdminPrivilege()'#13#10+
+    '  Dim WMI, OS, Value, Shell'#13#10+
+    '  do while WScript.Arguments.Count = 0 and WScript.Version >= 5.7'#13#10+
+    '    Set WMI = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
+    '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
+    '    For Each Value in OS'#13#10+
+    '      if left(Value.Version, 3) < 6.0 then exit do'#13#10+
+    '    Next'#13#10+
+    '    WScript.Echo "Script de réparation de connexion réseau. Veuillez répondre oui au dialogue suivant afin de réparer votre connexion Internet. Et non, si le serveur DNS Relai s''est déjà lancé et que vous voulez continuer à l''utiliser."'#13#10+
+    '    Set Shell = CreateObject("Shell.Application")'#13#10+
+    '    Shell.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ uac", "", "runas"'#13#10+
+    '    WScript.Quit'#13#10+
+    '  loop'#13#10+
+    'end sub';
+    if enabled then WriteInFile(dirPath+'setDNSOnBoot.vbs', scriptVBS);
+
+  // For versions equal or less than <= 0.4.7
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_CURRENT_USER;
+  try
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+    if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName)) then
+      Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName));
+    Reg.CloseKey;
+  end;
+  finally
+    Reg.Free;
+  end;
+
+  // For versions equal or less than <= 0.4.47
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  try
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName)) then
+        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet_'+md5string(Application.ExeName));
+    Reg.CloseKey;
+  end;
+  finally
+    Reg.Free;
+  end;
+
+
+
+  // New version
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  try
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  begin
+    if enabled then
+      Reg.WriteString(ExtractFileName(Application.ExeName)+'_restoreNet', dirPath+'setDNSOnBoot.vbs')
+    else begin
+      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_restoreNet') then
+        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_restoreNet');
+    end;
+    Reg.CloseKey;
+  end;
+  finally
+    Reg.Free;
+  end;
+end;
+
 
 
 end.
