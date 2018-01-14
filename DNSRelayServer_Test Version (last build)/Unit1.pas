@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.288';
+  CurrentApplicationVersion: string = '0.4.289';
   isDevVersion: Boolean = False;
 
 type
@@ -26,7 +26,7 @@ type
     ImageList2: TImageList;
     SaveDialog1: TSaveDialog;
     ImageList3: TImageList;
-    TimerSaveChange: TTimer;
+    TimerSaveChangeAndRestart: TTimer;
     PopupMenuListView: TPopupMenu;
     Bloquerledomaine1: TMenuItem;
     Autoriser1: TMenuItem;
@@ -301,6 +301,7 @@ type
     Label20: TLabel;
     SpinEditTTLCache: TSpinEdit;
     TimerClearCache: TTimer;
+    TimerSaveChange: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -334,7 +335,7 @@ type
       Change: TItemChange);
     procedure ToolButton9Click(Sender: TObject);
     procedure EditFilehostChange(Sender: TObject);
-    procedure TimerSaveChangeTimer(Sender: TObject);
+    procedure TimerSaveChangeAndRestartTimer(Sender: TObject);
     procedure ToolButton10Click(Sender: TObject);
     procedure Bloquerledomaine1Click(Sender: TObject);
     procedure Autoriser1Click(Sender: TObject);
@@ -471,6 +472,8 @@ type
     procedure ButtonCopyEditSourceURLClick(Sender: TObject);
     procedure ButtonCopyEditBTCClick(Sender: TObject);
     procedure TimerClearCacheTimer(Sender: TObject);
+    procedure TimerSaveChangeTimer(Sender: TObject);
+    procedure SpinEditTTLCacheChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1886,6 +1889,7 @@ begin
   Label16.Font.Color := color;
   Label17.Font.Color := color;
   Label18.Font.Color := color;
+  Label20.Font.Color := color;
   Label26.Font.Color := color;
   Label30.Font.Color := color;
   Label31.Font.Color := color;
@@ -2318,7 +2322,7 @@ begin
     ListView1.OnChange := nil;
     getDomains(EditFilehost.Text, ListView1);
     ListView1.OnChange := ListView1Change;
-    TimerSaveChange.Enabled := True;
+    TimerSaveChangeAndRestart.Enabled := True;
     PanelRestart.Visible := True;
   end;
 end;
@@ -2354,8 +2358,21 @@ end;
 procedure TForm1.EditFilehostChange(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  TimerSaveChangeAndRestart.Enabled := False;
+  TimerSaveChangeAndRestart.Enabled := True;
+end;
+
+procedure TForm1.SpinEditTTLCacheChange(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
+end;
+
+procedure TForm1.TimerSaveChangeAndRestartTimer(Sender: TObject);
+begin
+  TimerSaveChangeTimer(Sender);
+  if isServerStarted then PanelRestart.Visible := True;
 end;
 
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
@@ -2388,7 +2405,6 @@ begin
   end;
   WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
 
-  if isServerStarted then PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2783,7 +2799,7 @@ begin
   ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
   SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
   TimerHideMessage.Enabled := False;
-  TimerSaveChange.Enabled := False;
+  TimerSaveChangeAndRestart.Enabled := False;
   if startedInBackground then exit;
   Afficher1Click(nil);
   PanelRestart.Visible := False;
@@ -3949,8 +3965,8 @@ end;
 
 procedure TForm1.SpinEditAlertDurationChange(Sender: TObject);
 begin
-  TimerSaveChange.Enabled := False;
-  TimerSaveChange.Enabled := True;
+  TimerSaveChangeAndRestart.Enabled := False;
+  TimerSaveChangeAndRestart.Enabled := True;
   if TSpinEdit(Sender).Value < 3 then TSpinEdit(Sender).Value := 3;
 end;
 
@@ -3968,7 +3984,7 @@ end;
 procedure TForm1.CheckListBoxDNSRelayIPClickCheck(Sender: TObject);
 begin
   if isServerStarted then PanelRestart.Visible := True;
-  TimerSaveChange.Enabled := True;
+  TimerSaveChangeAndRestart.Enabled := True;
 end;
 
 procedure TForm1.ListView1KeyUp(Sender: TObject; var Key: Word;
@@ -4464,6 +4480,10 @@ procedure TForm1.TimerClearCacheTimer(Sender: TObject);
 begin
   ActionDNS.clearCache;
 end;
+
+
+
+
 
 end.
 

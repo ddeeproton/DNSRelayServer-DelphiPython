@@ -437,7 +437,7 @@ object Form1: TForm1
                     ShowHint = True
                     TabOrder = 10
                     Value = 0
-                    OnChange = EditFilehostChange
+                    OnChange = SpinEditTTLCacheChange
                   end
                 end
               end
@@ -7922,12 +7922,12 @@ object Form1: TForm1
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
   end
-  object TimerSaveChange: TTimer
+  object TimerSaveChangeAndRestart: TTimer
     Enabled = False
     Interval = 2000
-    OnTimer = TimerSaveChangeTimer
-    Left = 387
-    Top = 95
+    OnTimer = TimerSaveChangeAndRestartTimer
+    Left = 415
+    Top = 151
   end
   object PopupMenuListView: TPopupMenu
     Left = 386
@@ -8055,8 +8055,8 @@ object Form1: TForm1
     Enabled = False
     Interval = 500
     OnTimer = Timer1Timer
-    Left = 415
-    Top = 11
+    Left = 386
+    Top = 93
   end
   object ImageList4: TImageList
     Height = 80
@@ -16872,8 +16872,8 @@ object Form1: TForm1
     Enabled = False
     Interval = 1
     OnTimer = TimerAfterFormCreateTimer
-    Left = 387
-    Top = 67
+    Left = 415
+    Top = 11
   end
   object TimerCheckUpdate: TTimer
     Enabled = False
@@ -16918,8 +16918,8 @@ object Form1: TForm1
     Enabled = False
     Interval = 1
     OnTimer = TimerStartInBackgroundTimer
-    Left = 443
-    Top = 11
+    Left = 387
+    Top = 67
   end
   object TimerRestart: TTimer
     Enabled = False
@@ -17041,7 +17041,7 @@ object Form1: TForm1
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeInTimer
-    Left = 443
+    Left = 444
     Top = 67
   end
   object TimerFadeOut: TTimer
@@ -17054,8 +17054,8 @@ object Form1: TForm1
   object TimerAfterFormCreateLong: TTimer
     Interval = 10000
     OnTimer = TimerAfterFormCreateLongTimer
-    Left = 416
-    Top = 67
+    Left = 444
+    Top = 11
   end
   object TimerRemoteAccess: TTimer
     Enabled = False
@@ -17066,8 +17066,8 @@ object Form1: TForm1
   object TimerCheckSystemChanges: TTimer
     Interval = 30000
     OnTimer = CheckSystemChangesTimer
-    Left = 440
-    Top = 40
+    Left = 444
+    Top = 39
   end
   object TimerExecOnDisconnected: TTimer
     Enabled = False
@@ -17079,7 +17079,14 @@ object Form1: TForm1
   object TimerClearCache: TTimer
     Enabled = False
     OnTimer = TimerClearCacheTimer
-    Left = 416
-    Top = 152
+    Left = 415
+    Top = 67
+  end
+  object TimerSaveChange: TTimer
+    Enabled = False
+    Interval = 2000
+    OnTimer = TimerSaveChangeTimer
+    Left = 444
+    Top = 151
   end
 end
