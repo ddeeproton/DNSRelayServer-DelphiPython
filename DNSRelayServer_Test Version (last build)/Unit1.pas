@@ -3699,6 +3699,7 @@ end;
 procedure TForm1.RefreshModeFilter();
 begin
   AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  Toutautoriser1.Checked := AllowAll.Checked;
   DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
   ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
   ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
@@ -3710,6 +3711,15 @@ end;
 
 procedure TForm1.AllowAllClick(Sender: TObject);
 begin
+  // if all allowed
+  if FileExists(DataDirectoryPath + 'disableHost.cfg')
+  and FileExists(DataDirectoryPath + 'disableBlackhost.cfg')
+  and not FileExists(DataDirectoryPath + 'disableAll.cfg') then
+  begin
+    ToutNormal1Click(nil);
+    exit;
+  end;
+
   if not FileExists(DataDirectoryPath + 'disableHost.cfg') then
     WriteInFile(DataDirectoryPath + 'disableHost.cfg', '1');
 
@@ -3757,7 +3767,8 @@ procedure TForm1.DisallowAllClick(Sender: TObject);
 begin
   if FileExists(DataDirectoryPath + 'disableAll.cfg') then
   begin
-    DeleteFile(DataDirectoryPath + 'disableAll.cfg');
+    ToutNormal1Click(nil);
+    exit;
   end else begin
     WriteInFile(DataDirectoryPath + 'disableAll.cfg', '1');
   end;
