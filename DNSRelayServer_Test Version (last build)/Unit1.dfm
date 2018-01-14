@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet4
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -148,14 +148,13 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
-                VertScrollBar.Position = 104
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = -104
+                  Top = 0
                   Width = 263
                   Height = 360
                   Align = alTop

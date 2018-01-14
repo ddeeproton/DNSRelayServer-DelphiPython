@@ -301,6 +301,7 @@ begin
     ''' Automatic DNS '#13#10+
     '''   wscript.exe this.vbs '#13#10+
     ''#13#10+
+    'WScript.Sleep 20000'#13#10+
     'if isManualDNS Then setDNS(ArgumentsToArray())'#13#10+
     ''#13#10+
     'function ArgumentsToArray()'#13#10+
