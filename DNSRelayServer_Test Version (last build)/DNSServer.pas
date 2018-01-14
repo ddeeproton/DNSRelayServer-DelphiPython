@@ -10,7 +10,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    class procedure createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log: string);
+    class procedure createScript(config_cache_memory, config_display_log: string);
   end;
 
 implementation
@@ -18,7 +18,7 @@ implementation
 uses Unit1;
 
 
-class procedure ServerDNS.createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log: string);
+class procedure ServerDNS.createScript(config_cache_memory, config_display_log: string);
 var
   i: integer;
   script, dnsMaster: string;
@@ -85,11 +85,6 @@ begin
     '#Client DNS'#13#10+
     'config_cache_sql = 0  # [ 0 | 1 ] utilise la base MySQL en priorite'#13#10+
     'config_cache_memory = '+config_cache_memory+' # [ 0 | 1 ] utilise la memoire pour stocker les resolutions'#13#10+
-    'config_use_host = '+config_use_host+' # [ 0 | 1 ] utilise le fichier host'#13#10+
-    'config_use_blackhost = '+config_use_blackhost+' # [ 0 | 1 ] utilise le fichier blackhost'#13#10+
-    ''#13#10+
-    '# Server DNS'#13#10+
-    'config_block_all = '+config_block_all+' # [ 0 | 1 ] utilise le fichier blackhost'#13#10+
     ''#13#10+
     'def getArgv(varname, default):'#13#10+
     '	result = default'#13#10+
@@ -101,7 +96,6 @@ begin
     ''#13#10+
     'config_dnsip = getArgv(''config_dnsip'', ''0.0.0.0'')'#13#10+
     'config_hostfile = getArgv(''config_hostfile'', ''hosts.txt'')'#13#10+
-    'config_blackhostfile = getArgv(''config_blackhost'', ''blackhost.txt'')'#13#10+
     'config_blackhostfile = getArgv(''config_blackhost'', ''blackhost.txt'')'#13#10+
     'config_dircustomhost = getArgv(''config_dircustomhost'', ''customhost'')'#13#10+
     ''#13#10+
@@ -118,8 +112,10 @@ begin
     ''#13#10+
     'cache_domains = {}'#13#10+
     ''#13#10+
+    'currentDir = os.path.dirname(os.path.realpath(__file__))'#13#10+
+    ''#13#10+
     '#============================='#13#10+
-    '# SQL'#13#10+
+    '# DNS Server'#13#10+
     '#============================='#13#10+
     ''#13#10+
     ''#13#10+
@@ -280,7 +276,6 @@ begin
     '			cache_domains[ipclient][domain] = IPHost'#13#10+
     ''#13#10+
     '	def checkAction(self):'#13#10+
-    '		currentDir = os.path.dirname(os.path.realpath(__file__))'#13#10+
     '		f = currentDir + "/action_clear_cache.txt"'#13#10+
     '		if os.path.isfile(f) == True:'#13#10+
     '			cache_domains = {}'#13#10+
@@ -289,7 +284,7 @@ begin
     ''#13#10+
     '	def resolveDomain(self, domain, idstatus, dnss, ipclient):'#13#10+
     '		self.checkAction()'#13#10+
-    '		if config_block_all == 1:'#13#10+
+    '		if os.path.isfile(currentDir + "/disableAll.cfg") == True:'#13#10+
     '			return "127.0.0.3"'#13#10+
     '		if config_cache_memory == 1:'#13#10+
     '			if ipclient in cache_domains:'#13#10+
@@ -303,7 +298,7 @@ begin
     '			customhostfile = config_dircustomhost + "/" + ipclient + "_hostfile.txt"'#13#10+
     '			if os.path.isfile(customhostfile):'#13#10+
     '				IPHost = self.checkHost(domain, customhostfile)'#13#10+
-    '				if config_use_host == 1 and IPHost <> '''':'#13#10+
+    '				if os.path.isfile(currentDir + "/disableHost.cfg") == False and IPHost <> '''':'#13#10+
     '					#if config_display:'#13#10+
     '					#	print "Host file domain:"'#13#10+
     '					self.addToCache(ipclient, domain, IPHost)'#13#10+
@@ -312,7 +307,7 @@ begin
     '		if os.path.isdir(config_dircustomhost):'#13#10+
     '			customblackhostfile = config_dircustomhost + "/" + ipclient + "_blackhost.txt"'#13#10+
     '			if os.path.isfile(customblackhostfile):'#13#10+
-    '				if config_use_blackhost == 1:'#13#10+
+    '				if os.path.isfile(currentDir + "/disableBlackhost.cfg") == False:'#13#10+
     '					IPHost = self.checkBlackHost(domain, customblackhostfile)'#13#10+
     '					if IPHost <> '''':'#13#10+
     '						#if config_display:'#13#10+
@@ -320,7 +315,7 @@ begin
     '						self.addToCache(ipclient, domain, IPHost)'#13#10+
     '						return IPHost'#13#10+
     '		'#13#10+
-    '		if config_use_host == 1:'#13#10+
+    '		if os.path.isfile(currentDir + "/disableHost.cfg") == False:'#13#10+
     '			IPHost = self.checkHost(domain, config_hostfile)'#13#10+
     '			if IPHost <> '''':'#13#10+
     '				#if config_display:'#13#10+
@@ -328,7 +323,7 @@ begin
     '				self.addToCache(ipclient, domain, IPHost)'#13#10+
     '				return IPHost'#13#10+
     ''#13#10+
-    '		if config_use_blackhost == 1:'#13#10+
+    '		if os.path.isfile(currentDir + "/disableBlackhost.cfg") == False:'#13#10+
     '			IPHost = self.checkBlackHost(domain, config_blackhostfile)'#13#10+
     '			if IPHost <> '''':'#13#10+
     '				self.addToCache(ipclient, domain, IPHost)'#13#10+

@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.287';
+  CurrentApplicationVersion: string = '0.4.288';
   isDevVersion: Boolean = False;
 
 type
@@ -940,8 +940,7 @@ end;
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i, j, count: Integer;
-  filepath, dns, script, config_use_host, config_use_blackhost,
-  config_block_all, config_cache_memory, config_display_log: string;
+  filepath, dns, script, config_cache_memory, config_display_log: string;
   //net: tNetworkInterfaceList;
 begin
   try
@@ -1152,21 +1151,15 @@ begin
 
   //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
   //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
-  config_use_host := '1';
-  config_use_blackhost := '1';
-  config_block_all := '0';
   config_cache_memory := '1';
   config_display_log := 'True';
 
-  if ButtonDisableBlackhost.Down then config_use_blackhost := '0';
-  if ButtonDisableHost.Down then config_use_host := '0';
-  if ToolButtonBlockAll.Down then config_block_all := '1';
   if CheckBoxNoCacheDNS.Checked then config_cache_memory := '0';
   if CheckBoxPureServer.Checked then config_display_log := 'False';
 
 
 
-  ServerDNS.createScript(config_use_host, config_use_blackhost, config_block_all, config_cache_memory, config_display_log);
+  ServerDNS.createScript(config_cache_memory, config_display_log);
 
   if PythonPath = '' then PythonPath := getPythonPath();
 
@@ -1708,11 +1701,7 @@ begin
   DsactiverlefiltragedufichierHost1.Checked := AllowAll.Checked;
   DsactiverlefiltrageBlackword1.Checked := AllowAll.Checked;
 
-  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
-                      and not ButtonDisableHost.Down
-                      and not AllowAll.Checked
-                      and not DisallowAll.Checked
-                      and not Toutnormale1.Checked;
+  Toutnormale1.Checked := not AllowAll.Checked and not DisallowAll.Checked;
   Toutnormal1.Checked := Toutnormale1.Checked;
 
   CheckBoxNoTestDNSMaster.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
@@ -3713,13 +3702,9 @@ begin
   DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
   ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
   ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
-  Toutnormale1.Checked := not ButtonDisableBlackhost.Down
-                      and not ButtonDisableHost.Down
-                      and not AllowAll.Checked
-                      and not DisallowAll.Checked
-                      and not Toutnormale1.Checked;
+  Toutnormale1.Checked := not AllowAll.Checked and not DisallowAll.Checked;
   Toutnormal1.Checked := Toutnormale1.Checked;
-  if isServerStarted then ButtonApplyChangesClick(nil);
+  if isServerStarted then ActionDNS.clearCache; //ButtonApplyChangesClick(nil);
 end;
 
 
@@ -3770,21 +3755,22 @@ end;
 
 procedure TForm1.DisallowAllClick(Sender: TObject);
 begin
-  if not FileExists(DataDirectoryPath + 'disableAll.cfg') then
+  if FileExists(DataDirectoryPath + 'disableAll.cfg') then
+  begin
+    DeleteFile(DataDirectoryPath + 'disableAll.cfg');
+  end else begin
     WriteInFile(DataDirectoryPath + 'disableAll.cfg', '1');
-
+  end;
   if FileExists(DataDirectoryPath + 'disableHost.cfg') then
     DeleteFile(DataDirectoryPath + 'disableHost.cfg');
-
   if FileExists(DataDirectoryPath + 'disableBlackhost.cfg') then
     DeleteFile(DataDirectoryPath + 'disableBlackhost.cfg');
 
-
   MemoLogs.Lines.Add('Mode "tout bloquer"');
 
-  AllowAll.Checked := False;
+  AllowAll.Checked := not FileExists(DataDirectoryPath + 'disableAll.cfg');
   toutbloquer1.Checked := not AllowAll.Checked;
-  ToolButtonBlockAll.Down := True;
+  ToolButtonBlockAll.Down := not AllowAll.Checked;
   DsactiverlefiltragedufichierHost1.Checked := AllowAll.Checked;
   DsactiverlefiltrageBlackword1.Checked := AllowAll.Checked;
   Toutautoriser1.Checked := AllowAll.Checked;
