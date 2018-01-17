@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290.4';
+  CurrentApplicationVersion: string = '0.4.290.5';
   isDevVersion: Boolean = True;
 
 type
@@ -1461,7 +1461,7 @@ var
   canClose: Boolean;
 
 begin
-
+  forOldVersions();
   //MemoLogs.Lines.Add('Current OS: '+IntToStr(SysUtils.Win32MajorVersion));
   //MemoLogs.Lines.Add(Application.ExeName);
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -1729,7 +1729,7 @@ begin
 
   //TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
 
-  forOldVersions();
+
   refreshCheckBox(CheckBoxStartWithWindows);
 
   //TActionManageIP.getIPCustomHostFiles(ComboBoxSelectIPBlackhost, '_blackhost.txt');
@@ -4525,7 +4525,9 @@ begin
     begin
       Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
       CheckBoxStartWithWindows.Checked := True;
-      CheckBoxStartWithWindowsClick(CheckBoxStartWithWindows);
+      CheckBoxStartWithWindowsClick(CheckBoxStartWithWindows); 
+      MemoLogs.Lines.Add('Update new system boot');
+      Sleep(2000);
     end;
     Reg.CloseKey;
   end;
