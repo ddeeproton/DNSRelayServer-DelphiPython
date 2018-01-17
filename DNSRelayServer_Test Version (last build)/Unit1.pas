@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290';
+  CurrentApplicationVersion: string = '0.4.291';
   isDevVersion: Boolean = False;
 
 type
@@ -2230,6 +2230,32 @@ begin
   //Notebook1.PageIndex := 1;
 end;
 
+procedure TForm1.ToolButton8Click(Sender: TObject);
+begin
+  GotoMainPage(0);
+end;
+
+procedure TForm1.ToolButtonBlackwordsClick(Sender: TObject);
+begin
+  GotoMainPage(1);
+end;
+
+procedure TForm1.ToolButton4Click(Sender: TObject);
+begin
+  GotoMainPage(2);
+end;
+
+procedure TForm1.ToolButton6Click(Sender: TObject);
+begin
+  GotoMainPage(3);
+end;
+
+procedure TForm1.ToolButton3Click(Sender: TObject);
+begin
+  GotoMainPage(4);
+end;
+
+
 procedure TForm1.GotoMainPage(inexPage: Integer);
 var
   isIndexChanged: Boolean;
@@ -2253,15 +2279,15 @@ begin
   //Splitter1.Visible := (GroupBox5.Visible and Panel1.Visible);
 
   if not Panel1.Visible then
-    GroupBox5.Align := alClient
-  else begin
+  begin
+    GroupBox5.Align := alClient;
+    GroupBox5.Visible := True;
+  end else begin
     //Splitter1.Align := alBottom;
     //GroupBox5.Align := alBottom;
     //GroupBox5.Height := 100;
     if isVisibleChanged then ComboBoxPosLogsSelect(ComboBoxPosLogs);
   end;
-
-
 
   ToolButton8.Down := Panel1.Visible and (inexPage = 0);
   ToolButtonBlackwords.Down := Panel1.Visible and (inexPage = 1);
@@ -2269,38 +2295,11 @@ begin
   ToolButton6.Down := Panel1.Visible and (inexPage = 3);
   ToolButton3.Down := Panel1.Visible and (inexPage = 4);
 
-
-
-
   Notebook1.PageIndex := inexPage;
   //ResizePanelConfig();
   PanelMessage.Visible := False;
 end;
 
-procedure TForm1.ToolButton8Click(Sender: TObject);
-begin
-  GotoMainPage(0);
-end;
-          
-procedure TForm1.ToolButtonBlackwordsClick(Sender: TObject);
-begin
-  GotoMainPage(1);
-end;
-
-procedure TForm1.ToolButton4Click(Sender: TObject);
-begin
-  GotoMainPage(2);
-end;
-
-procedure TForm1.ToolButton6Click(Sender: TObject);
-begin
-  GotoMainPage(3);
-end;
-
-procedure TForm1.ToolButton3Click(Sender: TObject);
-begin
-  GotoMainPage(4);
-end;
 
 function TForm1.isXP:Boolean;
 begin
@@ -3892,25 +3891,29 @@ procedure TForm1.Afficherenbas1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 1;
   ComboBoxPosLogsSelect(nil);
+  GotoMainPage(Notebook1.PageIndex);
 end;
 
 procedure TForm1.Affichergauche1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 2;
-  ComboBoxPosLogsSelect(nil);
+  ComboBoxPosLogsSelect(nil);     
+  GotoMainPage(Notebook1.PageIndex);
 end;
 
 procedure TForm1.Afficherdroite1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 3;
-  ComboBoxPosLogsSelect(nil);
+  ComboBoxPosLogsSelect(nil);       
+  GotoMainPage(Notebook1.PageIndex);
 end;
 
 
 procedure TForm1.Masquer2Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 4;
-  ComboBoxPosLogsSelect(nil);
+  ComboBoxPosLogsSelect(nil);       
+  GotoMainPage(Notebook1.PageIndex);
 end;
 
 procedure TForm1.Activertouteslesalertes1Click(Sender: TObject);

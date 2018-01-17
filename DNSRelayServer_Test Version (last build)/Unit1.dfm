@@ -1,8 +1,9 @@
 object Form1: TForm1
-  Left = 122
-  Top = 114
+  Left = 278
+  Top = 95
   Width = 505
-  Height = 442
+  Height = 471
+  VertScrollBar.Position = 189
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -66,7 +67,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 48
+    Top = -141
     Width = 472
     Height = 10
     Cursor = crVSplit
@@ -79,7 +80,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 66
+    Top = -123
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -1884,7 +1885,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 521
+    Top = 276
     Width = 313
     Height = 82
     Caption = '           '
@@ -1969,7 +1970,7 @@ object Form1: TForm1
   end
   object Panel5: TPanel
     Left = 0
-    Top = 0
+    Top = -189
     Width = 472
     Height = 48
     Align = alTop
@@ -2069,8 +2070,8 @@ object Form1: TForm1
     end
   end
   object PanelRestart: TPanel
-    Left = 8
-    Top = 490
+    Left = 0
+    Top = 405
     Width = 313
     Height = 33
     TabOrder = 3
@@ -2114,8 +2115,8 @@ object Form1: TForm1
     end
   end
   object PanelMessage: TPanel
-    Left = 8
-    Top = 457
+    Left = 0
+    Top = 364
     Width = 313
     Height = 33
     TabOrder = 4
@@ -17019,7 +17020,7 @@ object Form1: TForm1
       Caption = '-'
     end
     object Masquer2: TMenuItem
-      Caption = 'Masquer'
+      Caption = 'Masquer / Pleine fen'#234'tre'
       OnClick = Masquer2Click
     end
   end
