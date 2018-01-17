@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290.2';
+  CurrentApplicationVersion: string = '0.4.290.3';
   isDevVersion: Boolean = True;
 
 type
@@ -475,6 +475,7 @@ type
     procedure TimerSaveChangeTimer(Sender: TObject);
     procedure SpinEditTTLCacheChange(Sender: TObject);
     function isXP(): Boolean;
+    procedure forOldVersions();
   private
     { Private declarations }
   public
@@ -1728,6 +1729,9 @@ begin
 
   //TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
 
+  forOldVersions();
+  refreshCheckBox(CheckBoxStartWithWindows);
+
   //TActionManageIP.getIPCustomHostFiles(ComboBoxSelectIPBlackhost, '_blackhost.txt');
   //TActionManageIP.getIPCustomHostFiles(ComboBoxSelectIPhostfile, '_hostfile.txt');
   TActionManageIP.load();
@@ -2287,14 +2291,19 @@ procedure TForm1.refreshCheckBox(Checkbox:TCheckBox);
 var
   Reg: TRegistry;
 begin
-  Reg := TRegistry.Create;
-  Reg.RootKey := HKEY_CURRENT_USER;
-  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+  if isXP() then
   begin
-    Checkbox.Checked := Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
-    Reg.CloseKey;
+    Reg := TRegistry.Create;
+    Reg.RootKey := HKEY_CURRENT_USER;
+    if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+    begin
+      Checkbox.Checked := Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
+      Reg.CloseKey;
+    end;
+    Reg.Free;
+  end else begin
+    Checkbox.Checked := Pos('DNSRelayServer', ExecAndRead('schtasks')) > 0;
   end;
-  Reg.Free;
 end;
 
 
@@ -2323,9 +2332,9 @@ begin
     end;
   end else begin
     if TCheckBox(Sender).Checked then
-      LaunchAndWait('SCHTASKS.exe','/create /TN "DNSRelayServer" /TR "'''+Application.ExeName+''' /background"  /SC ONLOGON /RL HIGHEST /IT', SW_HIDE)
+      ExecAndContinue('SCHTASKS','/create /TN "DNSRelayServer" /TR "'''+Application.ExeName+''' /background"  /SC ONLOGON /RL HIGHEST /IT', SW_HIDE)
     else
-      LaunchAndWait('SCHTASKS.exe','/delete /TN "DNSRelayServer" /F', SW_HIDE);
+      ExecAndContinue('SCHTASKS','/delete /TN "DNSRelayServer" /F', SW_HIDE);
   end;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -4503,6 +4512,28 @@ begin
 end;
 
 
+
+procedure TForm1.forOldVersions();
+var
+  Reg: TRegistry;
+begin
+  if not isXP() then
+  begin
+    Reg := TRegistry.Create;
+    Reg.RootKey := HKEY_CURRENT_USER;
+    if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+    begin
+      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName)) then
+      begin
+        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
+        CheckBoxStartWithWindows.Checked := True;
+        CheckBoxStartWithWindowsClick(CheckBoxStartWithWindows);
+      end;
+      Reg.CloseKey;
+    end;
+    Reg.Free;
+  end;
+end;
 
 
 
