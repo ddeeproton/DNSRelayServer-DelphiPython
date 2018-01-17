@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290.7';
+  CurrentApplicationVersion: string = '0.4.290.8';
   isDevVersion: Boolean = True;
 
 type
@@ -1461,11 +1461,12 @@ var
   canClose: Boolean;
 
 begin
+{
   if isXP() then
     MemoLogs.Lines.Add('OS is XP')
-  else                           
+  else
     MemoLogs.Lines.Add('OS is not XP');
-
+}
   //MemoLogs.Lines.Add('Current OS: '+IntToStr(SysUtils.Win32MajorVersion));
   //MemoLogs.Lines.Add(Application.ExeName);
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -4530,11 +4531,10 @@ begin
     if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName)) then
     begin
 
-      CheckBoxStartWithWindows.Checked := True;
-      CheckBoxStartWithWindowsClick(CheckBoxStartWithWindows); 
+      ExecAndContinue('SCHTASKS','/create /TN "DNSRelayServer" /TR "'''+Application.ExeName+''' /background"  /SC ONLOGON /RL HIGHEST /IT', SW_HIDE);
       MemoLogs.Lines.Add('Update new system boot');
       Sleep(2000);
-      //Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
+      Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
 
     end;
     Reg.CloseKey;
