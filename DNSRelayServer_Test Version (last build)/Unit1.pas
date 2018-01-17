@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290.6';
+  CurrentApplicationVersion: string = '0.4.290.7';
   isDevVersion: Boolean = True;
 
 type
@@ -1461,6 +1461,11 @@ var
   canClose: Boolean;
 
 begin
+  if isXP() then
+    MemoLogs.Lines.Add('OS is XP')
+  else                           
+    MemoLogs.Lines.Add('OS is not XP');
+
   //MemoLogs.Lines.Add('Current OS: '+IntToStr(SysUtils.Win32MajorVersion));
   //MemoLogs.Lines.Add(Application.ExeName);
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -4529,7 +4534,7 @@ begin
       CheckBoxStartWithWindowsClick(CheckBoxStartWithWindows); 
       MemoLogs.Lines.Add('Update new system boot');
       Sleep(2000);
-      Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
+      //Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
 
     end;
     Reg.CloseKey;
