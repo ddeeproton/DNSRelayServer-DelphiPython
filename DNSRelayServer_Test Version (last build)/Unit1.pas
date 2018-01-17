@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290.1';
+  CurrentApplicationVersion: string = '0.4.290.2';
   isDevVersion: Boolean = True;
 
 type
@@ -1462,6 +1462,7 @@ var
 begin
 
   //MemoLogs.Lines.Add('Current OS: '+IntToStr(SysUtils.Win32MajorVersion));
+  //MemoLogs.Lines.Add(Application.ExeName);
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
   if not IsUserAnAdmin() then
   begin
@@ -2309,19 +2310,22 @@ begin
     Reg := TRegistry.Create;
     Reg.RootKey := HKEY_CURRENT_USER;
     try
-    if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
-    begin
-      if TCheckBox(Sender).Checked then
-        Reg.WriteString(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName), '"'+Application.ExeName+'" /background')
-      else
-        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
-      Reg.CloseKey;
-    end;
+      if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+      begin
+        if TCheckBox(Sender).Checked then
+          Reg.WriteString(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName), '"'+Application.ExeName+'" /background')
+        else
+          Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
+        Reg.CloseKey;
+      end;
     finally
       Reg.Free;
     end;
   end else begin
-    //SCHTASKS /create /tn "DNSRelayServer" /tr "C:\DNSRelayServer\DNSRelayServer.exe /background"  /SC ONLOGON /RL HIGHEST /IT
+    if TCheckBox(Sender).Checked then
+      LaunchAndWait('SCHTASKS.exe','/create /TN "DNSRelayServer" /TR "'''+Application.ExeName+''' /background"  /SC ONLOGON /RL HIGHEST /IT', SW_HIDE)
+    else
+      LaunchAndWait('SCHTASKS.exe','/delete /TN "DNSRelayServer" /F', SW_HIDE);
   end;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
