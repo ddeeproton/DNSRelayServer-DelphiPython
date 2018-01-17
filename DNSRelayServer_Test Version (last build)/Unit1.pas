@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.291';
+  CurrentApplicationVersion: string = '0.4.292';
   isDevVersion: Boolean = False;
 
 type
@@ -1220,10 +1220,13 @@ begin
 
   if Notebook1.PageIndex = 5 then
   begin
+    gotoMainPage(5);
+    {
     Panel1.Visible := False;
     Splitter1.Visible := False;
     GroupBox5.Align := alClient;
     ResizePanelConfig();
+    }
   end;
 
   //if not Panel1.Visible then
@@ -2282,11 +2285,12 @@ begin
   begin
     GroupBox5.Align := alClient;
     GroupBox5.Visible := True;
+    Splitter1.Visible := False;
   end else begin
     //Splitter1.Align := alBottom;
     //GroupBox5.Align := alBottom;
     //GroupBox5.Height := 100;
-    if isVisibleChanged then ComboBoxPosLogsSelect(ComboBoxPosLogs);
+    if isVisibleChanged or isApplicationLoading then ComboBoxPosLogsSelect(ComboBoxPosLogs);
   end;
 
   ToolButton8.Down := Panel1.Visible and (inexPage = 0);
