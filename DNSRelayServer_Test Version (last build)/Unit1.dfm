@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 807
-  Top = 74
-  Width = 493
-  Height = 652
+  Left = 122
+  Top = 114
+  Width = 505
+  Height = 442
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 48
-    Width = 477
+    Width = 472
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet4
+            ActivePage = TabSheet1
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -148,13 +148,14 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 104
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = 0
+                  Top = -104
                   Width = 263
                   Height = 360
                   Align = alTop
@@ -208,7 +209,7 @@ object Form1: TForm1
                     OnClick = ButtonRefreshNetCardClick
                   end
                   object Label2: TLabel
-                    Left = 176
+                    Left = 152
                     Top = 15
                     Width = 25
                     Height = 13
@@ -216,7 +217,7 @@ object Form1: TForm1
                     Transparent = True
                   end
                   object Label4: TLabel
-                    Left = 176
+                    Left = 152
                     Top = 55
                     Width = 58
                     Height = 13
@@ -325,7 +326,7 @@ object Form1: TForm1
                     Transparent = True
                   end
                   object SpinPort: TSpinEdit
-                    Left = 176
+                    Left = 152
                     Top = 31
                     Width = 97
                     Height = 22
@@ -1969,7 +1970,7 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 477
+    Width = 472
     Height = 48
     Align = alTop
     BevelOuter = bvNone
