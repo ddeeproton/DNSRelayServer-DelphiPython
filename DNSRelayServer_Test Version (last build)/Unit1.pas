@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290.3';
+  CurrentApplicationVersion: string = '0.4.290.4';
   isDevVersion: Boolean = True;
 
 type
@@ -4517,22 +4517,19 @@ procedure TForm1.forOldVersions();
 var
   Reg: TRegistry;
 begin
-  if not isXP() then
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_CURRENT_USER;
+  if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
   begin
-    Reg := TRegistry.Create;
-    Reg.RootKey := HKEY_CURRENT_USER;
-    if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Run', True) then
+    if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName)) then
     begin
-      if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName)) then
-      begin
-        Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
-        CheckBoxStartWithWindows.Checked := True;
-        CheckBoxStartWithWindowsClick(CheckBoxStartWithWindows);
-      end;
-      Reg.CloseKey;
+      Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
+      CheckBoxStartWithWindows.Checked := True;
+      CheckBoxStartWithWindowsClick(CheckBoxStartWithWindows);
     end;
-    Reg.Free;
+    Reg.CloseKey;
   end;
+  Reg.Free;
 end;
 
 
