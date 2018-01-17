@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.290.1';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -1459,6 +1459,8 @@ var
   canClose: Boolean;
 
 begin
+
+  MemoLogs.Lines.Add('Current OS: '+IntToStr(SysUtils.Win32MajorVersion));
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
   if not IsUserAnAdmin() then
   begin
@@ -1486,6 +1488,9 @@ begin
 
   Form1.Width := Form1.Constraints.MinWidth * 2;
   Form1.Height := Form1.Constraints.MinHeight * 2;
+
+  if Form1.Width > Screen.WorkAreaWidth then Form1.Width := Screen.WorkAreaWidth;
+  if Form1.Height > Screen.WorkAreaHeight then Form1.Height := Screen.WorkAreaHeight;
 
   Form1.Top := Screen.WorkAreaHeight - Form1.Height;
   Form1.Left := Screen.WorkAreaWidth - Form1.Width;
@@ -1731,6 +1736,7 @@ begin
   begin
     if ParamStr(i) = '/background' then
     begin
+      Masquer1Click(nil);
       ServerDoStart := True;
       ButtonStartClick(nil);
       startedInBackground := True;
@@ -1938,7 +1944,9 @@ begin
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
 
-  if CheckBoxAutostartDNSOnBoot.Checked and not autostarted then
+  if not ServerDoStart
+  and CheckBoxAutostartDNSOnBoot.Checked
+  and not autostarted then
   begin
     ServerDoStart := True;
     ButtonStartClick(nil);
