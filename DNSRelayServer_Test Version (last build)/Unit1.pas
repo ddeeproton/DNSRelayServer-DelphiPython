@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290.8';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.290';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -1510,6 +1510,18 @@ begin
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
 
+  if (ParamCount() >= 1) and (ParamStr(1) = '/taskschd') then
+  begin
+    Sleep(50000);
+    SetCurrentDir(ExtractFileDir(Application.ExeName));
+    ExecAndBringToFront(Application.ExeName, '/background');
+    canClose := True;
+    FormCloseQuery(nil, canClose);
+    //KillTask(ExtractFileName(Application.ExeName));
+    KillProcess(Self.Handle);
+    Application.Terminate;
+    exit;
+  end;
 
   if (ParamCount() >= 1) and (ParamStr(1) = '/inst_background') then
   begin
@@ -1520,6 +1532,7 @@ begin
     //KillTask(ExtractFileName(Application.ExeName));
     KillProcess(Self.Handle);
     Application.Terminate;
+    exit;
   end;
 
   if (ParamCount() >= 1) and (ParamStr(1) = '/inst_autostart') then
@@ -2339,7 +2352,7 @@ begin
     end;
   end else begin
     if TCheckBox(Sender).Checked then
-      ExecAndContinue('SCHTASKS','/create /TN "DNSRelayServer" /TR "'''+Application.ExeName+''' /background"  /SC ONLOGON /RL HIGHEST /IT', SW_HIDE)
+      ExecAndContinue('SCHTASKS','/create /TN "DNSRelayServer" /TR "'''+Application.ExeName+''' /taskschd"  /SC ONLOGON /RL HIGHEST /IT', SW_HIDE)
     else
       ExecAndContinue('SCHTASKS','/delete /TN "DNSRelayServer" /F', SW_HIDE);
   end;
@@ -4531,7 +4544,7 @@ begin
     if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName)) then
     begin
 
-      ExecAndContinue('SCHTASKS','/create /TN "DNSRelayServer" /TR "'''+Application.ExeName+''' /background"  /SC ONLOGON /RL HIGHEST /IT', SW_HIDE);
+      ExecAndContinue('SCHTASKS','/create /TN "DNSRelayServer" /TR "'''+Application.ExeName+''' /taskschd"  /SC ONLOGON /RL HIGHEST /IT', SW_HIDE);
       MemoLogs.Lines.Add('Update new system boot');
       Sleep(2000);
       Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
