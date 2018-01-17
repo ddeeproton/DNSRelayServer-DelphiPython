@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.290.5';
+  CurrentApplicationVersion: string = '0.4.290.6';
   isDevVersion: Boolean = True;
 
 type
@@ -1461,7 +1461,6 @@ var
   canClose: Boolean;
 
 begin
-  forOldVersions();
   //MemoLogs.Lines.Add('Current OS: '+IntToStr(SysUtils.Win32MajorVersion));
   //MemoLogs.Lines.Add(Application.ExeName);
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -1477,6 +1476,8 @@ begin
     KillProcess(Self.Handle);
     Application.Terminate;
   end;
+
+  forOldVersions();
 
   // Masque la fenêtre de la taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
@@ -4523,11 +4524,13 @@ begin
   begin
     if Reg.ValueExists(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName)) then
     begin
-      Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
+
       CheckBoxStartWithWindows.Checked := True;
       CheckBoxStartWithWindowsClick(CheckBoxStartWithWindows); 
       MemoLogs.Lines.Add('Update new system boot');
       Sleep(2000);
+      Reg.DeleteValue(ExtractFileName(Application.ExeName)+'_'+md5string(Application.ExeName));
+
     end;
     Reg.CloseKey;
   end;
