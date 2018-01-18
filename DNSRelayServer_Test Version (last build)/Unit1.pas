@@ -476,6 +476,7 @@ type
     procedure SpinEditTTLCacheChange(Sender: TObject);
     function isXP(): Boolean;
     procedure forOldVersions();
+    procedure Alertes1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1050,6 +1051,7 @@ begin
     exit;
   end;
 
+  {
   Application.ProcessMessages;
   if not ServerDoStart then
   begin
@@ -1057,7 +1059,7 @@ begin
     onServerDNSStop();
     exit;
   end;
-
+  }
 
   count := 0;
   for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
@@ -1145,6 +1147,7 @@ begin
     exit;
   end;
 
+  {
   Application.ProcessMessages;
   if not ServerDoStart then
   begin
@@ -1152,7 +1155,7 @@ begin
     onServerDNSStop();
     exit;
   end;
-
+  }
 
   //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
   //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
@@ -4563,6 +4566,14 @@ begin
 end;
 
 
+
+procedure TForm1.Alertes1Click(Sender: TObject);
+begin
+  ToolButton8Click(nil);
+  PageControl1.TabIndex := 4;
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
+  Afficher1Click(nil);
+end;
 
 end.
 

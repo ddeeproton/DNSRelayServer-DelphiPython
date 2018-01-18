@@ -90,7 +90,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 5
       TabOrder = 0
       object TPage
         Left = 0
@@ -101,9 +100,9 @@ object Form1: TForm1
           360)
         object GroupBox2: TGroupBox
           Left = 8
-          Top = 8
+          Top = 16
           Width = 329
-          Height = 345
+          Height = 329
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = '            '
           TabOrder = 0
@@ -3006,6 +3005,7 @@ object Form1: TForm1
     end
     object Filrage1: TMenuItem
       Caption = 'Filrage'
+      OnClick = ToolButton6Click
       object DsactiverlefiltragedufichierHost1: TMenuItem
         Caption = 'D'#233'sactiver le filtrage Host'
         OnClick = DsactiverlefiltragedufichierHost1Click
@@ -3033,6 +3033,7 @@ object Form1: TForm1
     object Config1: TMenuItem
       Caption = 'Config'
       ImageIndex = 15
+      OnClick = ToolButton8Click
       object DNS1: TMenuItem
         Caption = 'Serveur DNS'
         OnClick = DNS1Click
@@ -3078,6 +3079,7 @@ object Form1: TForm1
     end
     object Alertes1: TMenuItem
       Caption = 'Alertes'
+      OnClick = Alertes1Click
       object connus1: TMenuItem
         Caption = 'connus'
         OnClick = connus1Click
