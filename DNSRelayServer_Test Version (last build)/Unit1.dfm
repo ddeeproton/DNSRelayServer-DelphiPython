@@ -3033,7 +3033,7 @@ object Form1: TForm1
     object Config1: TMenuItem
       Caption = 'Config'
       ImageIndex = 15
-      OnClick = ToolButton8Click
+      OnClick = Config1Click
       object DNS1: TMenuItem
         Caption = 'Serveur DNS'
         OnClick = DNS1Click

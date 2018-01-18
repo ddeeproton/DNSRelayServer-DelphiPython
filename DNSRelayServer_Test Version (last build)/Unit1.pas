@@ -477,6 +477,7 @@ type
     function isXP(): Boolean;
     procedure forOldVersions();
     procedure Alertes1Click(Sender: TObject);
+    procedure Config1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -4571,6 +4572,14 @@ procedure TForm1.Alertes1Click(Sender: TObject);
 begin
   ToolButton8Click(nil);
   PageControl1.TabIndex := 4;
+  PageControl1.ActivePageIndex := PageControl1.TabIndex;
+  Afficher1Click(nil);
+end;
+
+procedure TForm1.Config1Click(Sender: TObject);
+begin
+  ToolButton8Click(nil);
+  PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Afficher1Click(nil);
 end;
