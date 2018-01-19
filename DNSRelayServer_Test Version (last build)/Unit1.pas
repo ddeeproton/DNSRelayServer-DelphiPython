@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.293';
+  CurrentApplicationVersion: string = '0.4.294';
   isDevVersion: Boolean = False;
 
 type
@@ -952,6 +952,14 @@ var
 begin
   try
   //KillTask('python.exe');
+  // Close others instances
+  Form1.Hint := Form1.Caption;
+  Form1.Caption := 'DRS Loading...';
+  Application.ProcessMessages;
+  CloseProcess(Form1.Hint);
+  //Sleep(1000);
+  Form1.Caption := Form1.Hint;
+
   ButtonCloseClick(nil);
   ButtonRefreshNetCardClick(nil);
   //closeProcessCreated;
@@ -973,7 +981,7 @@ begin
 
 
   Application.ProcessMessages;
-  Sleep(1000); 
+  Sleep(1000);
   Application.ProcessMessages;
   {
   if not ServerDoStart then
@@ -1196,12 +1204,16 @@ begin
   end;
 
   Application.ProcessMessages;
+
+  // Can cancel
   if not ServerDoStart then
   begin
     ButtonCloseClick(nil);
     onServerDNSStop();
     exit;
   end;
+
+
 
   for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
   begin
@@ -1468,6 +1480,7 @@ var
   canClose: Boolean;
 
 begin
+
 {
   if isXP() then
     MemoLogs.Lines.Add('OS is XP')
@@ -1795,6 +1808,8 @@ begin
 
   //ComboBoxSelectIPBlackhost.Items.s
 end;
+
+
 
 procedure TForm1.setTheme(color, bg:TColor);
 begin
@@ -2688,7 +2703,7 @@ begin
   ThreadUpdate.DoUpdateDevelopper(False);
   TButton(Sender).Enabled := True;
 end;
-      
+
 procedure TUpdate.DoUpdate(isSilent: Boolean);
 begin
   UpdateUrl(

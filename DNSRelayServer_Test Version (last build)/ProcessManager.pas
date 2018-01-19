@@ -20,19 +20,30 @@ procedure ExecAndContinue(sExe, sFile: string; wShowWin: Word);
 function ExecAndRead(Que:String):string;
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean; //wShowWin => SW_SHOWNORMAL | SW_HIDE
 
+function CloseProcess(const windowName: String): Boolean;
 function KillTask(ExeFileName: string): Integer;
 function CloseTaskPID(ExeFileName: string; pid: Integer): Integer;
 procedure CloseProcessPID(pid: Integer);
 procedure KillProcess(hWindowHandle: HWND);
 procedure DestroyProcess(hProcess: Cardinal);
 
+
 function IsUserAnAdmin(): Boolean; external shell32;
 
 procedure downloadFile(url, filepath: string);
 
+
 implementation
 
 uses UnitInstallation;
+
+function CloseProcess(const windowName: String): Boolean;
+var
+  AppHandle: THandle;
+begin
+  AppHandle:=FindWindow(Nil, PChar(windowName));
+  Result:=PostMessage(AppHandle, WM_CLOSE, 0, 0);
+end;
 
 {
 function GetDosOutput(CommandLine: string; Work: string = 'C:\'): string;
