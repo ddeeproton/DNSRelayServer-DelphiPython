@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.296';
+  CurrentApplicationVersion: string = '0.4.297';
   isDevVersion: Boolean = False;
 
 type
@@ -2969,41 +2969,24 @@ procedure TForm1.ButtonNetCardIntegrationClick(Sender: TObject);
 var
   i: Integer;
   dnslist: String;
-  isChecked: Boolean;
-  //net: tNetworkInterfaceList;
+  net: tNetworkInterfaceList;
 begin
-  //if Sender <> nil then
-  //begin
-    //ToolButton8.Down := False;
-    //ToolButton3.Down := True;
-    //ToolButton6Click(nil);
-  //end;
-  //ActionDNS.setIPToDHCP();
-  isChecked := CheckBoxBindAllIP.Checked;
-  CheckBoxBindAllIP.Checked := False;
-  CheckBoxBindAllIPClick(nil);
-  ButtonRefreshNetCardClick(nil);
-
   dnslist := '';
-  for i := 0 to CheckListBoxDNSRelayIP.Items.Count - 1 do
+  if GetNetworkInterfaces(net) then
   begin
-    if CheckListBoxDNSRelayIP.Checked[i]
-    and (CheckListBoxDNSRelayIP.Items.Strings[i] <> '127.0.0.1') then
+    for i := 0 to High (net) do
     begin
-      if dnslist <> '' then dnslist := dnslist + ' ';
-      dnslist := dnslist + CheckListBoxDNSRelayIP.Items.Strings[i];
-    end
+      if net[i].AddrIP <> '127.0.0.1' then
+      begin
+        if dnslist <> '' then dnslist := dnslist + ' ';
+        dnslist := dnslist + net[i].AddrIP;
+      end;
+    end;
   end;
-  
-  //setDNS(CBoxDNSServerSlaveIP.Text);
+
   MemoLogs.Lines.Add('Set DNS '+dnslist);
   ActionDNS.setDNS(dnslist);
   ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
-
-
-  CheckBoxBindAllIP.Checked := isChecked;
-  CheckBoxBindAllIPClick(nil);
-  ButtonRefreshNetCardClick(nil);
 end;
 
 procedure TForm1.ButtonNetCardDesintegrationClick(Sender: TObject);
