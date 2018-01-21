@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.295';
+  CurrentApplicationVersion: string = '0.4.296';
   isDevVersion: Boolean = False;
 
 type
@@ -2123,11 +2123,15 @@ end;
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin                                       
   //Self.Hide;
-  //TimerFadeIn.Enabled := False;
-  //TimerFadeOut.Enabled := True;
-                                         
+  TimerFadeIn.Enabled := False;
+  TimerFadeOut.Enabled := True;
+  {
   Top := Screen.Height;
   Left := Screen.Width;
+  Top := -Form1.Height;
+  Left := -Form1.Width;
+  }
+
   //currentFormStyle := Self.FormStyle;
   //Self.FormStyle := fsStayOnTop;
   //Systray.EnleveIconeTray;
@@ -2137,16 +2141,17 @@ end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
-  //TimerFadeOut.Enabled := False;
-  //TimerFadeIn.Enabled := True;  
+
   Self.Show;
   try
 
-  if Top > Screen.WorkAreaHeight - Self.Height then
+  //if Top > Screen.WorkAreaHeight - Self.Height then
     Top := Screen.WorkAreaHeight - Self.Height;
-  if Left > Screen.WorkAreaWidth - Self.Width then
+  //if Left > Screen.WorkAreaWidth - Self.Width then
     Left := Screen.WorkAreaWidth - Self.Width;
   //Self.WindowState := wsNormal;
+  TimerFadeOut.Enabled := False;
+  TimerFadeIn.Enabled := True;
   Application.Restore;
   Application.BringToFront;
   //Self.FormStyle := currentFormStyle;
@@ -4158,11 +4163,13 @@ end;
 procedure TForm1.TimerFadeOutTimer(Sender: TObject);
 begin  
   SetFormOpacity(Self.Handle, opacity);
-  if opacity > 0 then
+  if opacity > 10 then
     opacity := opacity - 10
   else
   begin
-    Top := Screen.Height;
+    //Top := Screen.Height;
+    Top := -Form1.Height;
+    Left := -Form1.Width;
     TTimer(Sender).Enabled := False;
   end;
 

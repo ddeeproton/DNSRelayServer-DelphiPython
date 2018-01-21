@@ -85,6 +85,6 @@ echo ==============================
 echo Done.
 echo ==============================
 
-"..\..\Setup installation\DNSRelayServerSetup_%v%.exe"
+"..\..\Setup installation\DNSRelayServerSetup_%v%.exe" /S
 
-@pause
+@rem pause
