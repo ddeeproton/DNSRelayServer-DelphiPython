@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.297';
+  CurrentApplicationVersion: string = '0.4.298';
   isDevVersion: Boolean = False;
 
 type
@@ -2996,26 +2996,10 @@ var
   dns: string;
 }
 begin
-  if Sender <> nil then
-  begin
-    ToolButton8.Down := False;
-    //ToolButton3.Down := True;
-    ToolButton6Click(nil);
-  end;
-  MemoLogs.Lines.Add('Go to DHCP');
-  {
-  dns := '';
-  for i := 0 to ConfigDNSMaster.Count - 1 do
-  begin
-    if dns <> '' then dns := dns + ' ';
-    dns := dns + ConfigDNSMaster[i];
-  end;
-  ActionDNS.setDNS(dns);
-  //setDNS('');
-  }
   ActionDNS.setDNS('');
   ActionDNS.setDNSOnBoot(False);
   //ActionDNS.setIPToDHCP();
+  MemoLogs.Lines.Add('Go to DHCP');
 end;
 
 procedure TForm1.TimerCheckUpdateTimer(Sender: TObject);
