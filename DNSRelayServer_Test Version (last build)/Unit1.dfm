@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 278
-  Top = 95
+  Left = 437
+  Top = 158
   Width = 505
   Height = 471
   Caption = 'DNS Relay Server'
@@ -2163,7 +2163,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 386
-    Top = 302
+    Top = 334
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2967,7 +2967,7 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Images = ImageList3
     Left = 386
-    Top = 210
+    Top = 242
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -3114,7 +3114,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 415
-    Top = 302
+    Top = 334
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -7251,11 +7251,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 387
-    Top = 363
+    Top = 395
   end
   object ImageList3: TImageList
     Left = 386
-    Top = 330
+    Top = 362
     Bitmap = {
       494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -7933,7 +7933,7 @@ object Form1: TForm1
   end
   object PopupMenuListView: TPopupMenu
     Left = 386
-    Top = 266
+    Top = 298
     object Autoriser1: TMenuItem
       Bitmap.Data = {
         AA030000424DAA03000000000000360000002800000011000000110000000100
@@ -8064,7 +8064,7 @@ object Form1: TForm1
     Height = 80
     Width = 71
     Left = 444
-    Top = 302
+    Top = 334
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -16886,7 +16886,7 @@ object Form1: TForm1
   end
   object PopupMenuDNSMaster: TPopupMenu
     Left = 386
-    Top = 238
+    Top = 270
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16938,7 +16938,7 @@ object Form1: TForm1
   end
   object PopupMenuBlacklist: TPopupMenu
     Left = 414
-    Top = 238
+    Top = 270
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16957,11 +16957,11 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 414
-    Top = 363
+    Top = 395
   end
   object PopupMenuTheme: TPopupMenu
     Left = 442
-    Top = 238
+    Top = 270
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -16984,7 +16984,7 @@ object Form1: TForm1
   end
   object PopupMenuForAllDNSRules: TPopupMenu
     Left = 441
-    Top = 210
+    Top = 242
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -17000,7 +17000,7 @@ object Form1: TForm1
   end
   object PopupMenuLogs: TPopupMenu
     Left = 414
-    Top = 210
+    Top = 242
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -17090,5 +17090,12 @@ object Form1: TForm1
     OnTimer = TimerSaveChangeTimer
     Left = 444
     Top = 151
+  end
+  object TimerBootNoXP: TTimer
+    Enabled = False
+    Interval = 5000
+    OnTimer = TimerBootNoXPTimer
+    Left = 384
+    Top = 184
   end
 end

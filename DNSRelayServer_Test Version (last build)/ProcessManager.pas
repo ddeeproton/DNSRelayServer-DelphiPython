@@ -20,6 +20,9 @@ procedure ExecAndContinue(sExe, sFile: string; wShowWin: Word);
 function ExecAndRead(Que:String):string;
 function LaunchAndWait(sExe, sFile: String; wShowWin: Word): Boolean; //wShowWin => SW_SHOWNORMAL | SW_HIDE
 
+
+function listProcesses(): String;
+
 function CloseProcess(const windowName: String): Boolean;
 function KillTask(ExeFileName: string): Integer;
 function CloseTaskPID(ExeFileName: string; pid: Integer): Integer;
@@ -36,6 +39,35 @@ procedure downloadFile(url, filepath: string);
 implementation
 
 uses UnitInstallation;
+
+
+function listProcesses(): String;
+const
+  PROCESS_TERMINATE = $0001;
+var
+  ContinueLoop: BOOL;
+  FSnapshotHandle: THandle;
+  FProcessEntry32: TProcessEntry32;
+begin
+  result := '';
+  try
+    FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    FProcessEntry32.dwSize := SizeOf(FProcessEntry32);
+    ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);
+
+    while Integer(ContinueLoop) <> 0 do
+    begin
+      result := result + FProcessEntry32.szExeFile + #13#10;
+      ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
+    end;
+
+    CloseHandle(FSnapshotHandle);
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
+end;
+
 
 function CloseProcess(const windowName: String): Boolean;
 var

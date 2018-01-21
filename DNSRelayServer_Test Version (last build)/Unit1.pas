@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.294';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.295';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -302,6 +302,7 @@ type
     SpinEditTTLCache: TSpinEdit;
     TimerClearCache: TTimer;
     TimerSaveChange: TTimer;
+    TimerBootNoXP: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -478,6 +479,7 @@ type
     procedure forOldVersions();
     procedure Alertes1Click(Sender: TObject);
     procedure Config1Click(Sender: TObject);
+    procedure TimerBootNoXPTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -952,12 +954,12 @@ var
 begin
   try
   //KillTask('python.exe');
+
   // Close others instances
   Form1.Hint := Form1.Caption;
   Form1.Caption := 'DRS Loading...';
   Application.ProcessMessages;
   CloseProcess(Form1.Hint);
-  //Sleep(1000);
   Form1.Caption := Form1.Hint;
 
   ButtonCloseClick(nil);
@@ -971,19 +973,15 @@ begin
   ToolButton11.Enabled := True;
   ToolButton11.Hint := 'Arrêter le serveur DNS';
   ServerDoStart := True;
+
   //PanelRestart.Visible := False;
-
-
-
   //Splitter1.Visible := True;
   //GroupBox5.Visible := True;
 
-
-
-  Application.ProcessMessages;
-  Sleep(1000);
   Application.ProcessMessages;
   {
+  Sleep(1000);
+  Application.ProcessMessages;
   if not ServerDoStart then
   begin
     ButtonCloseClick(nil);
@@ -1481,12 +1479,15 @@ var
 
 begin
 
+
+
 {
   if isXP() then
     MemoLogs.Lines.Add('OS is XP')
   else
     MemoLogs.Lines.Add('OS is not XP');
 }
+
   //MemoLogs.Lines.Add('Current OS: '+IntToStr(SysUtils.Win32MajorVersion));
   //MemoLogs.Lines.Add(Application.ExeName);
   //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
@@ -1529,17 +1530,11 @@ begin
   //GroupBox5.Width := Form1.Width div 2;
   //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
 
-
   if (ParamCount() >= 1) and (ParamStr(1) = '/taskschd') then
-  begin
-    Sleep(50000);
-    SetCurrentDir(ExtractFileDir(Application.ExeName));
-    ExecAndBringToFront(Application.ExeName, '/background');
-    canClose := True;
-    FormCloseQuery(nil, canClose);
-    //KillTask(ExtractFileName(Application.ExeName));
-    KillProcess(Self.Handle);
-    Application.Terminate;
+  begin         
+    Hide();
+    Sleep(10000);
+    TimerBootNoXP.Enabled := True;
     exit;
   end;
 
@@ -4597,6 +4592,23 @@ begin
   PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Afficher1Click(nil);
+end;
+
+
+procedure TForm1.TimerBootNoXPTimer(Sender: TObject);
+var canClose: Boolean;
+begin
+  Hide;
+  if Pos('dwm.exe', listProcesses()) = 0 then exit;
+  Sleep(10000);
+  TTimer(Sender).Enabled := False;
+  SetCurrentDir(ExtractFileDir(Application.ExeName));
+  ExecAndContinue(Application.ExeName, '/background', SW_SHOW);
+  canClose := True;
+  FormCloseQuery(nil, canClose);
+  //KillTask(ExtractFileName(Application.ExeName));
+  KillProcess(Self.Handle);
+  Application.Terminate;
 end;
 
 end.
