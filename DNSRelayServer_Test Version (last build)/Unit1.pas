@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.306';
+  CurrentApplicationVersion: string = '0.4.307';
   isDevVersion: Boolean = False;
 
 type
@@ -2157,6 +2157,8 @@ begin
   Application.Restore;
   Application.BringToFront;
   ToolBar3.Realign;
+  ToolBar3.Repaint;
+  ToolBar3.Update;
   //Self.FormStyle := currentFormStyle;
   {
 
