@@ -35,6 +35,5 @@ begin
   Application.CreateForm(TFormRestart, FormRestart);
   Application.CreateForm(TFormDialogIP, FormDialogIP);
   Application.CreateForm(TFormManageIP, FormManageIP);
-  Application.ShowMainForm := False;
   Application.Run;
 end.

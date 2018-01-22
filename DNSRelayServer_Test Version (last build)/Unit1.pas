@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.299';
+  CurrentApplicationVersion: string = '0.4.300';
   isDevVersion: Boolean = False;
 
 type
@@ -1532,8 +1532,8 @@ begin
 
   if (ParamCount() >= 1) and (ParamStr(1) = '/taskschd') then
   begin         
-    Hide();
-    Sleep(10000);
+    Masquer1Click(nil);
+    Sleep(5000);
     TimerBootNoXP.Enabled := True;
     exit;
   end;
@@ -2141,8 +2141,8 @@ end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
-  if opacity > 10 then exit;
-  Self.Show;
+  //if opacity > 10 then exit;
+  //Self.Show;
   try
 
   //if Top > Screen.WorkAreaHeight - Self.Height then
@@ -4318,7 +4318,7 @@ begin
       FormManageIP.Top := Top;
       FormManageIP.Left := Left;
       FormManageIP.Show;
-      Hide;
+      Masquer1Click(nil);
 
       if oldIndex > ComboBoxSelectIPBlackhost.Items.Count - 1 then oldIndex := 0;
       ComboBoxSelectIPBlackhost.ItemIndex := oldIndex;
@@ -4482,19 +4482,22 @@ end;
 procedure TForm1.CheckBoxBindAllIPClick(Sender: TObject);
 var isCheck: Boolean;
 begin
+
   isCheck := CheckBoxBindAllIP.Checked;
-  
+
   if isCheck then
   begin
     CheckListBoxDNSRelayIP.Clear;
     CheckListBoxDNSRelayIP.Items.Add('0.0.0.0');
-    CheckListBoxDNSRelayIP.Checked[0] := True;        
+    CheckListBoxDNSRelayIP.Checked[0] := True;
     WriteInFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg', '1');
   end else begin
-    ButtonRefreshNetCardClick(Nil);            
+    ButtonRefreshNetCardClick(Nil);
     DeleteFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg');
   end;
-  CheckListBoxDNSRelayIP.Enabled := not isCheck;     
+  CheckListBoxDNSRelayIP.Enabled := not isCheck;
+
+  if isApplicationLoading then exit;
   if isServerStarted then PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -4572,9 +4575,9 @@ end;
 procedure TForm1.TimerBootNoXPTimer(Sender: TObject);
 var canClose: Boolean;
 begin
-  Hide;
+  Masquer1Click(nil);
   if Pos('dwm.exe', listProcesses()) = 0 then exit;
-  Sleep(10000);
+  Sleep(5000);
   TTimer(Sender).Enabled := False;
   SetCurrentDir(ExtractFileDir(Application.ExeName));
   ExecAndContinue(Application.ExeName, '/background', SW_SHOW);

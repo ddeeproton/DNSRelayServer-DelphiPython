@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet4
+            ActivePage = TabSheet1
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -148,13 +148,14 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 52
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = 0
+                  Top = -52
                   Width = 263
                   Height = 360
                   Align = alTop
@@ -234,9 +235,9 @@ object Form1: TForm1
                   object Label6: TLabel
                     Left = 35
                     Top = 185
-                    Width = 239
+                    Width = 208
                     Height = 13
-                    Caption = 'Lancer en arri'#232're plan (au d'#233'marrage de Windows)'
+                    Caption = 'D'#233'marrer avec windows / D'#233'marrer masqu'#233
                     FocusControl = CheckBoxStartWithWindows
                     Font.Charset = DEFAULT_CHARSET
                     Font.Color = clBlack
