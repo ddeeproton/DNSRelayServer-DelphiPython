@@ -34,7 +34,8 @@ BGGradient 000000 000080 FFFFFF
 InstallColors 8080FF 000030 
 XPStyle on
 
-SetCompressor bzip2
+;SetCompressor bzip2
+SetCompressor /SOLID lzma
 
 ;--------------------------------
 ;Interface Settings
