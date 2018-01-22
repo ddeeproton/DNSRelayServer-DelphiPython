@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.304';
+  CurrentApplicationVersion: string = '0.4.305';
   isDevVersion: Boolean = False;
 
 type
@@ -2119,10 +2119,14 @@ end;
 
 
 procedure TForm1.Masquer1Click(Sender: TObject);
-begin                                       
+begin
+  Top := -Form1.Height;
+  Left := -Form1.Width;
   //Self.Hide;
+  {
   TimerFadeIn.Enabled := False;
   TimerFadeOut.Enabled := True;
+  }
   {
   Top := Screen.Height;
   Left := Screen.Width;
@@ -2148,8 +2152,8 @@ begin
   //if Left > Screen.WorkAreaWidth - Self.Width then
     Left := Screen.WorkAreaWidth - Self.Width;
   //Self.WindowState := wsNormal;
-  TimerFadeOut.Enabled := False;
-  TimerFadeIn.Enabled := True;
+  //TimerFadeOut.Enabled := False;
+  //TimerFadeIn.Enabled := True;
   Application.Restore;
   Application.BringToFront;
   //Self.FormStyle := currentFormStyle;
