@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.309.1';
+  CurrentApplicationVersion: string = '0.4.309.2';
   isDevVersion: Boolean = True;
 
 type
@@ -1634,6 +1634,7 @@ begin
   ScrollBox5.Align := alClient;
   ScrollBox6.Align := alClient;
   ScrollBox6.VertScrollBar.Position := 0;
+  ToolBar3.Align := alClient;
 
   GroupBox5.Align := alBottom;
   PanelRestart.Align := alBottom;
