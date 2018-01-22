@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.308';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.309.1';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -2156,10 +2156,12 @@ begin
   //TimerFadeIn.Enabled := True;
   Application.Restore;
   Application.BringToFront;
+  {
   ToolBar3.Realign;
   ToolBar3.Repaint;
   ToolBar3.Update;
   ToolBar3.Refresh;
+  }
   //Self.FormStyle := currentFormStyle;
   {
 
