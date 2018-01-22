@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.300';
+  CurrentApplicationVersion: string = '0.4.301';
   isDevVersion: Boolean = False;
 
 type
@@ -2142,7 +2142,7 @@ end;
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
   //if opacity > 10 then exit;
-  //Self.Show;
+  Self.Show;
   try
 
   //if Top > Screen.WorkAreaHeight - Self.Height then
