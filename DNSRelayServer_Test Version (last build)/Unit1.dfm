@@ -1979,7 +1979,7 @@ object Form1: TForm1
       Left = 1
       Top = 1
       Width = 352
-      Height = 46
+      Height = 47
       Align = alNone
       ButtonHeight = 46
       ButtonWidth = 47
