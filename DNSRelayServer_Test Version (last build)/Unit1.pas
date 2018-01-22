@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.302';
+  CurrentApplicationVersion: string = '0.4.303';
   isDevVersion: Boolean = False;
 
 type
@@ -1532,6 +1532,7 @@ begin
   if (ParamCount() >= 1) and (ParamStr(1) = '/taskschd') then
   begin         
     Masquer1Click(nil);
+    StopDNS1Click(nil);
     //Sleep(1000);
     TimerBootNoXP.Enabled := True;
     exit;
