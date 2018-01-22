@@ -2141,7 +2141,7 @@ end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
-  if Self.Visible then exit;
+  if opacity > 10 then exit;
   Self.Show;
   try
 
