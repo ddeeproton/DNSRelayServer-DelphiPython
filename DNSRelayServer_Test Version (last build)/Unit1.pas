@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.301';
+  CurrentApplicationVersion: string = '0.4.302';
   isDevVersion: Boolean = False;
 
 type
@@ -1480,7 +1480,6 @@ var
 begin
 
 
-
 {
   if isXP() then
     MemoLogs.Lines.Add('OS is XP')
@@ -1533,7 +1532,7 @@ begin
   if (ParamCount() >= 1) and (ParamStr(1) = '/taskschd') then
   begin         
     Masquer1Click(nil);
-    Sleep(5000);
+    //Sleep(1000);
     TimerBootNoXP.Enabled := True;
     exit;
   end;
@@ -4577,7 +4576,6 @@ var canClose: Boolean;
 begin
   Masquer1Click(nil);
   if Pos('dwm.exe', listProcesses()) = 0 then exit;
-  Sleep(5000);
   TTimer(Sender).Enabled := False;
   SetCurrentDir(ExtractFileDir(Application.ExeName));
   ExecAndContinue(Application.ExeName, '/background', SW_SHOW);

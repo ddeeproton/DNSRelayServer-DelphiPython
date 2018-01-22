@@ -148,14 +148,13 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
-                VertScrollBar.Position = 52
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = -52
+                  Top = 0
                   Width = 263
                   Height = 360
                   Align = alTop
@@ -17094,7 +17093,6 @@ object Form1: TForm1
   end
   object TimerBootNoXP: TTimer
     Enabled = False
-    Interval = 5000
     OnTimer = TimerBootNoXPTimer
     Left = 384
     Top = 184
