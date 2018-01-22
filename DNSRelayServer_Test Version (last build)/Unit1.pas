@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.298';
+  CurrentApplicationVersion: string = '0.4.299';
   isDevVersion: Boolean = False;
 
 type
@@ -2141,7 +2141,7 @@ end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
-
+  if Self.Visible then exit;
   Self.Show;
   try
 
@@ -2229,7 +2229,7 @@ begin
     Form1.Constraints.MinHeight := 300;
     h := ResizePanelConfig_oldHeight;
     w := ResizePanelConfig_oldWidth;
-    Afficher1Click(nil);
+    //Afficher1Click(nil);
   end else
   begin
     Form1.Constraints.MinHeight := ToolBar3.Height + 40;
@@ -2873,7 +2873,7 @@ begin
   TimerHideMessage.Enabled := False;
   TimerSaveChangeAndRestart.Enabled := False;
   if startedInBackground then exit;
-  Afficher1Click(nil);
+  //Afficher1Click(nil);
   PanelRestart.Visible := False;
   PanelMessage.Visible := False;
 
@@ -3676,7 +3676,7 @@ procedure TForm1.DsactiverlefiltragedufichierHost1Click(Sender: TObject);
 begin
   ButtonDisableHost.Down := not ButtonDisableHost.Down;
   ButtonDisableHostClick(ButtonDisableHost);
-  Afficher1Click(nil);
+  //Afficher1Click(nil);
   RefreshModeFilter();
 end;
 
@@ -3684,7 +3684,7 @@ procedure TForm1.DsactiverlefiltrageBlackword1Click(Sender: TObject);
 begin
   ButtonDisableBlackhost.Down := not ButtonDisableBlackhost.Down;
   ButtonDisableBlackhostClick(ButtonDisableBlackhost);
-  Afficher1Click(nil);
+  //Afficher1Click(nil);
   RefreshModeFilter();
 
 end;
@@ -3935,7 +3935,7 @@ begin
   ToolButton8Click(nil);
   PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Afficher1Click(nil);
+  //Afficher1Click(nil);
 end;
 
 procedure TForm1.DNSMatres1Click(Sender: TObject);
@@ -3945,7 +3945,7 @@ begin
   ToolButton8Click(nil);
   PageControl1.TabIndex := 1;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Afficher1Click(nil);
+  //Afficher1Click(nil);
 end;
 
 procedure TForm1.Carterseau1Click(Sender: TObject);
@@ -3955,7 +3955,7 @@ begin
   ToolButton8Click(nil);
   PageControl1.TabIndex := 2;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  Afficher1Click(nil);
+  //Afficher1Click(nil);
 end;
 
 procedure TForm1.Affichage1Click(Sender: TObject);
