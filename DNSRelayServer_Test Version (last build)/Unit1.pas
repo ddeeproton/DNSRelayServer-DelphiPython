@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.303';
+  CurrentApplicationVersion: string = '0.4.304';
   isDevVersion: Boolean = False;
 
 type
@@ -702,7 +702,7 @@ begin
     begin
       //if MessageDlg(PChar('Le port 53 est déjà utilisé. Désirez-vous forcer la fermerture des processus python et essayer à nouveau?'#13#13'(si ce message persiste, soit le port 53 est utilisé par un autre processus, soit vous avez indiqué une mauvaise adresse IP.'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
       //begin
-        Form1.MemoLogs.Lines.Add('Close all python.exe process');
+        Form1.MemoLogs.Lines.Add('Error: Port '+IntToStr(SpinPort.Value)+'  already used');
         KillTask('python.exe');
         Form1.ButtonRefreshNetCardClick(nil);
         ServerDoStart := True;
@@ -953,6 +953,14 @@ var
   //net: tNetworkInterfaceList;
 begin
   try
+
+
+  ToolButton11.ImageIndex := 13;
+  ToolButton11.Caption := 'Arrêter';
+  ToolButton11.Enabled := True;
+  ToolButton11.Hint := 'Arrêter le serveur DNS';
+
+
   //KillTask('python.exe');
 
   // Close others instances
@@ -961,18 +969,18 @@ begin
   Application.ProcessMessages;
   CloseProcess(Form1.Hint);
   Form1.Caption := Form1.Hint;
+  Application.ProcessMessages;
 
   ButtonCloseClick(nil);
+  sleep(2000);
+  ServerDoStart := True;
   ButtonRefreshNetCardClick(nil);
   //closeProcessCreated;
 
   ImageList4.GetIcon(2, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  ToolButton11.ImageIndex := 13;
-  ToolButton11.Caption := 'Arrêter';
-  ToolButton11.Enabled := True;
-  ToolButton11.Hint := 'Arrêter le serveur DNS';
-  ServerDoStart := True;
+
+
 
   //PanelRestart.Visible := False;
   //Splitter1.Visible := True;
@@ -1024,6 +1032,7 @@ begin
   end;
 
 
+  {
   Application.ProcessMessages;
   if not ServerDoStart then
   begin
@@ -1031,7 +1040,7 @@ begin
     onServerDNSStop();
     exit;
   end;
-
+  }
 
 
   Application.ProcessMessages;
@@ -1111,7 +1120,8 @@ begin
   end;
 
 
-  if not CheckBoxNoTestDNSMaster.Checked then
+  if not FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg') then
+  //if not CheckBoxNoTestDNSMaster.Checked then
   begin
     DNSMasterSerialized := '';
     MemoLogs.Lines.Add('Test DNS Master...');
@@ -1203,6 +1213,7 @@ begin
 
   Application.ProcessMessages;
 
+  {
   // Can cancel
   if not ServerDoStart then
   begin
@@ -1210,7 +1221,7 @@ begin
     onServerDNSStop();
     exit;
   end;
-
+  }
 
 
   for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
@@ -1232,16 +1243,17 @@ begin
 
   LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
 
-  if Notebook1.PageIndex = 5 then
-  begin
-    gotoMainPage(5);
+
+  //if Notebook1.PageIndex = 5 then
+  //begin
+    //gotoMainPage(5);
     {
     Panel1.Visible := False;
     Splitter1.Visible := False;
     GroupBox5.Align := alClient;
     ResizePanelConfig();
     }
-  end;
+  //end;
 
   //if not Panel1.Visible then
   Application.ProcessMessages;
@@ -1292,6 +1304,8 @@ var
   i: Integer;
 begin
   try
+    MemoLogs.Lines.Add('Close server');
+    KillTask('python.exe');
     ImageList4.GetIcon(2, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
 
@@ -1301,7 +1315,7 @@ begin
     Application.ProcessMessages;
     //Notebook1.PageIndex := 4;
 
-    KillTask('python.exe');
+    {
     i := 0;
     while (i < Length(listThreads)) and (listThreads[i] <> nil) do
     begin
@@ -1316,7 +1330,7 @@ begin
     begin
       listThreads[i].Terminate;
       Inc(i);
-    end;   
+    end;
     Sleep(1000);
 
     i := 0;
@@ -1326,7 +1340,8 @@ begin
       listThreads[i].Free;
       Inc(i);
     end;
-
+    }
+    
     SetLength(listThreads, 0);
 
 
@@ -1771,26 +1786,6 @@ begin
   //TActionManageIP.getIPCustomHostFiles(ComboBoxSelectIPhostfile, '_hostfile.txt');
   TActionManageIP.load();
 
-  startedInBackground := False;
-  autostarted := False;
-  for i:=0 to ParamCount() do
-  begin
-    if ParamStr(i) = '/background' then
-    begin
-      Masquer1Click(nil);
-      ServerDoStart := True;
-      ButtonStartClick(nil);
-      startedInBackground := True;
-      autostarted := True;
-      TimerStartInBackground.Enabled := True;
-    end;
-    if ParamStr(i) = '/autostart' then
-    begin
-      ServerDoStart := True;
-      ButtonStartClick(nil);
-      autostarted := True;
-    end;
-  end;
 
   ListViewCreate(ListView1);
   ListView1.Clear;
@@ -1987,12 +1982,15 @@ begin
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
 
+
+
   if not ServerDoStart
   and CheckBoxAutostartDNSOnBoot.Checked
   and not autostarted then
   begin
     ServerDoStart := True;
     ButtonStartClick(nil);
+    exit;
   {
     ServerDoStart := True;
     ImageList4.GetIcon(2, Application.Icon);
@@ -2863,6 +2861,7 @@ begin
 end;
 
 procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
+var i: Integer;
 begin
   TTimer(Sender).Enabled := False;
 
@@ -2897,6 +2896,40 @@ begin
     //KillProcess(Self.Handle);
     Application.Terminate;
     exit;
+  end;
+
+
+  startedInBackground := False;
+  autostarted := False;
+  for i:=0 to ParamCount() do
+  begin
+    if ParamStr(i) = '/background' then
+    begin
+      //ButtonCloseClick(nil);
+      //sleep(1000);
+      //ServerDoStart := True;
+      Masquer1Click(nil);
+      startedInBackground := True;
+      autostarted := True;
+      ButtonStartClick(nil);
+      TimerStartInBackground.Enabled := True;
+      exit;
+{
+
+      ServerDoStart := True;
+      ButtonStartClick(nil);
+      startedInBackground := True;
+      autostarted := True;
+      TimerStartInBackground.Enabled := True;
+}
+    end;
+    if ParamStr(i) = '/autostart' then
+    begin
+      ServerDoStart := True;
+      ButtonStartClick(nil);
+      autostarted := True;
+      exit;
+    end;
   end;
 
 end;
@@ -4580,6 +4613,7 @@ begin
   TTimer(Sender).Enabled := False;
   SetCurrentDir(ExtractFileDir(Application.ExeName));
   ExecAndContinue(Application.ExeName, '/background', SW_SHOW);
+  StopDNS1Click(nil);
   canClose := True;
   FormCloseQuery(nil, canClose);
   //KillTask(ExtractFileName(Application.ExeName));

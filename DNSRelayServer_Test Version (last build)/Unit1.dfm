@@ -66,7 +66,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 48
+    Top = 50
     Width = 472
     Height = 10
     Cursor = crVSplit
@@ -1970,7 +1970,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 472
-    Height = 48
+    Height = 50
     Align = alTop
     BevelOuter = bvNone
     Color = clWhite
