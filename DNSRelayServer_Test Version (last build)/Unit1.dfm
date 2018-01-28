@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 481
-  Top = 169
-  Width = 505
-  Height = 471
+  Left = 453
+  Top = 198
+  Width = 521
+  Height = 552
   Caption = 'DNS Relay Server'
   Color = clWhite
   Constraints.MinHeight = 300
@@ -66,8 +66,8 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 53
-    Width = 472
+    Top = 58
+    Width = 488
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -79,7 +79,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 66
+    Top = 79
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet4
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -518,13 +518,14 @@ object Form1: TForm1
                 Height = 267
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 64
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox17: TGroupBox
                   Left = 0
-                  Top = 0
+                  Top = -64
                   Width = 273
                   Height = 331
                   Align = alTop
@@ -1883,7 +1884,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 465
+    Top = 473
     Width = 313
     Height = 82
     Caption = '           '
@@ -1969,107 +1970,117 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 472
-    Height = 53
+    Width = 488
+    Height = 58
     Align = alTop
     BevelOuter = bvNone
-    Color = clWhite
+    ParentColor = True
     TabOrder = 2
-    object ToolBar3: TToolBar
-      Left = 1
-      Top = 1
-      Width = 352
-      Height = 52
-      Align = alNone
-      ButtonHeight = 46
-      ButtonWidth = 47
-      Caption = 'ToolBar3'
-      Color = clWhite
-      Customizable = True
-      EdgeInner = esNone
-      EdgeOuter = esNone
-      Flat = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Images = ImageList2
-      ParentColor = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
+    DesignSize = (
+      488
+      58)
+    object Panel8: TPanel
+      Left = 96
+      Top = 5
+      Width = 345
+      Height = 51
+      Anchors = [akTop]
+      BevelOuter = bvNone
       TabOrder = 0
-      Transparent = True
-      Wrapable = False
-      object ToolButton11: TToolButton
-        Left = 0
+      object ButtonStartStop: TButton
+        Left = 43
         Top = 0
+        Width = 70
+        Height = 25
         Hint = 'Click pour d'#233'marrer'
         Caption = 'D'#233'marrer'
-        ImageIndex = 7
         ParentShowHint = False
         ShowHint = True
+        TabOrder = 0
         OnClick = ToolButton11Click
       end
-      object ToolButton8: TToolButton
-        Left = 47
+      object ToolButtonBlockAll: TButton
+        Left = 115
         Top = 0
-        Hint = 'Config'
-        Caption = 'Config'
-        Grouped = True
-        ImageIndex = 6
-        OnClick = ToolButton8Click
-      end
-      object ToolButton4: TToolButton
-        Left = 94
-        Top = 0
-        Hint = 'Clients'
-        Caption = 'Clients'
-        Grouped = True
-        ImageIndex = 12
-        OnClick = ToolButton4Click
-      end
-      object ToolButtonBlackwords: TToolButton
-        Left = 141
-        Top = 0
-        Hint = 'Blacklist'
-        Caption = 'ToolButtonBlackwords'
-        ImageIndex = 14
-        OnClick = ToolButtonBlackwordsClick
-      end
-      object ToolButton6: TToolButton
-        Left = 188
-        Top = 0
-        Hint = 'Web Filter'
-        Caption = 'Web Filter'
-        Grouped = True
-        ImageIndex = 1
+        Width = 72
+        Height = 25
+        Caption = 'Block All'
         ParentShowHint = False
         ShowHint = True
-        OnClick = ToolButton6Click
-      end
-      object ToolButtonBlockAll: TToolButton
-        Left = 235
-        Top = 0
-        Hint = 'Tout Bloquer'
-        Caption = 'ToolButtonBlockAll'
-        ImageIndex = 15
+        TabOrder = 1
         OnClick = ToolButtonBlockAllClick
       end
-      object ToolButton5: TToolButton
-        Left = 282
+      object Button10: TButton
+        Left = 189
         Top = 0
-        Hint = 'Masquer'
+        Width = 73
+        Height = 25
         Caption = 'Masquer'
-        ImageIndex = 10
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
         OnClick = Masquer1Click
+      end
+      object Button5: TButton
+        Left = 177
+        Top = 25
+        Width = 71
+        Height = 25
+        Caption = 'Web Filter'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 3
+        OnClick = ToolButton6Click
+      end
+      object Button8: TButton
+        Left = 119
+        Top = 25
+        Width = 57
+        Height = 25
+        Caption = 'Blacklist'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 4
+        OnClick = ToolButtonBlackwordsClick
+      end
+      object Button7: TButton
+        Left = 59
+        Top = 25
+        Width = 59
+        Height = 25
+        Caption = 'Clients'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 5
+        OnClick = ToolButton4Click
+      end
+      object Button6: TButton
+        Left = 4
+        Top = 25
+        Width = 54
+        Height = 25
+        Caption = 'Config'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 6
+        OnClick = ToolButton8Click
+      end
+      object ButtonShowLogs: TButton
+        Left = 249
+        Top = 25
+        Width = 56
+        Height = 25
+        Caption = 'Logs'
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 7
+        OnClick = ButtonShowLogsClick
       end
     end
   end
   object PanelRestart: TPanel
-    Left = 0
-    Top = 594
+    Left = 3
+    Top = 602
     Width = 313
     Height = 33
     TabOrder = 3
@@ -2113,8 +2124,8 @@ object Form1: TForm1
     end
   end
   object PanelMessage: TPanel
-    Left = 0
-    Top = 553
+    Left = 8
+    Top = 561
     Width = 313
     Height = 33
     TabOrder = 4
@@ -2162,8 +2173,8 @@ object Form1: TForm1
     end
   end
   object ImageList1: TImageList
-    Left = 386
-    Top = 334
+    Left = 394
+    Top = 374
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2966,8 +2977,8 @@ object Form1: TForm1
   end
   object PopupMenu1: TPopupMenu
     Images = ImageList3
-    Left = 386
-    Top = 242
+    Left = 394
+    Top = 282
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -3113,8 +3124,8 @@ object Form1: TForm1
     DrawingStyle = dsTransparent
     Height = 40
     Width = 40
-    Left = 415
-    Top = 334
+    Left = 423
+    Top = 374
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -7250,12 +7261,12 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
-    Left = 387
-    Top = 395
+    Left = 395
+    Top = 435
   end
   object ImageList3: TImageList
-    Left = 386
-    Top = 362
+    Left = 394
+    Top = 402
     Bitmap = {
       494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -7928,12 +7939,12 @@ object Form1: TForm1
     Enabled = False
     Interval = 2000
     OnTimer = TimerSaveChangeAndRestartTimer
-    Left = 415
-    Top = 151
+    Left = 423
+    Top = 223
   end
   object PopupMenuListView: TPopupMenu
-    Left = 386
-    Top = 298
+    Left = 394
+    Top = 338
     object Autoriser1: TMenuItem
       Bitmap.Data = {
         AA030000424DAA03000000000000360000002800000011000000110000000100
@@ -8057,14 +8068,14 @@ object Form1: TForm1
     Enabled = False
     Interval = 500
     OnTimer = Timer1Timer
-    Left = 386
-    Top = 93
+    Left = 394
+    Top = 165
   end
   object ImageList4: TImageList
     Height = 80
     Width = 71
-    Left = 444
-    Top = 334
+    Left = 452
+    Top = 374
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -16867,26 +16878,26 @@ object Form1: TForm1
     Enabled = False
     Interval = 5000
     OnTimer = TimerUpdateOnLoadTimer
-    Left = 387
-    Top = 39
+    Left = 395
+    Top = 111
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerAfterFormCreateTimer
-    Left = 415
-    Top = 11
+    Left = 423
+    Top = 83
   end
   object TimerCheckUpdate: TTimer
     Enabled = False
     Interval = 120000
     OnTimer = TimerCheckUpdateTimer
-    Left = 387
-    Top = 11
+    Left = 395
+    Top = 83
   end
   object PopupMenuDNSMaster: TPopupMenu
-    Left = 386
-    Top = 270
+    Left = 394
+    Top = 310
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16920,25 +16931,25 @@ object Form1: TForm1
     Enabled = False
     Interval = 1
     OnTimer = TimerStartInBackgroundTimer
-    Left = 387
-    Top = 67
+    Left = 395
+    Top = 139
   end
   object TimerRestart: TTimer
     Enabled = False
     Interval = 3000
     OnTimer = TimerRestartTimer
-    Left = 415
-    Top = 39
+    Left = 423
+    Top = 111
   end
   object TimerResetAlertPosition: TTimer
     Enabled = False
     OnTimer = TimerResetAlertPositionTimer
-    Left = 415
-    Top = 123
+    Left = 423
+    Top = 195
   end
   object PopupMenuBlacklist: TPopupMenu
-    Left = 414
-    Top = 270
+    Left = 422
+    Top = 310
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -16956,12 +16967,12 @@ object Form1: TForm1
     end
   end
   object ColorDialog1: TColorDialog
-    Left = 414
-    Top = 395
+    Left = 422
+    Top = 435
   end
   object PopupMenuTheme: TPopupMenu
-    Left = 442
-    Top = 270
+    Left = 450
+    Top = 310
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -16983,8 +16994,8 @@ object Form1: TForm1
     end
   end
   object PopupMenuForAllDNSRules: TPopupMenu
-    Left = 441
-    Top = 242
+    Left = 449
+    Top = 282
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -16999,8 +17010,8 @@ object Form1: TForm1
     end
   end
   object PopupMenuLogs: TPopupMenu
-    Left = 414
-    Top = 242
+    Left = 422
+    Top = 282
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -17029,72 +17040,72 @@ object Form1: TForm1
     Enabled = False
     Interval = 2000
     OnTimer = TimerHideMessageTimer
-    Left = 415
-    Top = 95
+    Left = 423
+    Top = 167
   end
   object TimerAlert: TTimer
     Enabled = False
     Interval = 10000
     OnTimer = TimerAlertTimer
-    Left = 387
-    Top = 123
+    Left = 395
+    Top = 195
   end
   object TimerFadeIn: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeInTimer
-    Left = 444
-    Top = 67
+    Left = 452
+    Top = 139
   end
   object TimerFadeOut: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeOutTimer
-    Left = 444
-    Top = 95
+    Left = 452
+    Top = 167
   end
   object TimerAfterFormCreateLong: TTimer
     Interval = 10000
     OnTimer = TimerAfterFormCreateLongTimer
-    Left = 444
-    Top = 11
+    Left = 452
+    Top = 83
   end
   object TimerRemoteAccess: TTimer
     Enabled = False
     OnTimer = TimerRemoteAccessTimer
-    Left = 444
-    Top = 123
+    Left = 452
+    Top = 195
   end
   object TimerCheckSystemChanges: TTimer
     Interval = 30000
     OnTimer = CheckSystemChangesTimer
-    Left = 444
-    Top = 39
+    Left = 452
+    Top = 111
   end
   object TimerExecOnDisconnected: TTimer
     Enabled = False
     Interval = 60000
     OnTimer = TimerExecOnDisconnectedTimer
-    Left = 387
-    Top = 151
+    Left = 395
+    Top = 223
   end
   object TimerClearCache: TTimer
     Enabled = False
     OnTimer = TimerClearCacheTimer
-    Left = 415
-    Top = 67
+    Left = 423
+    Top = 139
   end
   object TimerSaveChange: TTimer
     Enabled = False
     Interval = 2000
     OnTimer = TimerSaveChangeTimer
-    Left = 444
-    Top = 151
+    Left = 452
+    Top = 223
   end
   object TimerBootNoXP: TTimer
     Enabled = False
     OnTimer = TimerBootNoXPTimer
-    Left = 384
-    Top = 184
+    Left = 394
+    Top = 252
   end
 end

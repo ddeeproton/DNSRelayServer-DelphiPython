@@ -5,15 +5,15 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost, Systray, Registry, md5,  ListViewManager, HostParser, XPMan,
+  UnitHost, Systray, Registry, md5,  ListViewManager, HostParser, //XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.309.2';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.309';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -70,18 +70,11 @@ type
     TimerRestart: TTimer;
     TimerResetAlertPosition: TTimer;
     Panel5: TPanel;
-    ToolBar3: TToolBar;
-    ToolButton11: TToolButton;
-    ToolButton8: TToolButton;
-    ToolButton4: TToolButton;
-    ToolButton6: TToolButton;
-    ToolButton5: TToolButton;
     Alertes1: TMenuItem;
     connus1: TMenuItem;
     inconnus1: TMenuItem;
     bloques1: TMenuItem;
     N5: TMenuItem;
-    ToolButtonBlackwords: TToolButton;
     GroupBox1: TGroupBox;
     ListBoxBlacklist: TListBox;
     PopupMenuBlacklist: TPopupMenu;
@@ -131,7 +124,6 @@ type
     Filrage1: TMenuItem;
     DsactiverlefiltragedufichierHost1: TMenuItem;
     DsactiverlefiltrageBlackword1: TMenuItem;
-    ToolButtonBlockAll: TToolButton;
     N7: TMenuItem;
     toutbloquer1: TMenuItem;
     Panel7: TPanel;
@@ -303,6 +295,15 @@ type
     TimerClearCache: TTimer;
     TimerSaveChange: TTimer;
     TimerBootNoXP: TTimer;
+    Panel8: TPanel;
+    ButtonStartStop: TButton;
+    ToolButtonBlockAll: TButton;
+    Button10: TButton;
+    Button5: TButton;
+    Button8: TButton;
+    Button7: TButton;
+    Button6: TButton;
+    ButtonShowLogs: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -344,8 +345,6 @@ type
       var Handled: Boolean);
     procedure Modifier1Click(Sender: TObject);
     procedure refreshListView1Click();
-    procedure CheckBoxToggleMenuTitleClick(Sender: TObject);
-    procedure CheckBoxMenuPositionClick(Sender: TObject);
     procedure onServerDNSStart();
     procedure onServerDNSStop();
     procedure Timer1Timer(Sender: TObject);
@@ -480,6 +479,7 @@ type
     procedure Alertes1Click(Sender: TObject);
     procedure Config1Click(Sender: TObject);
     procedure TimerBootNoXPTimer(Sender: TObject);
+    procedure ButtonShowLogsClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -881,16 +881,28 @@ begin
 end;
 
 procedure TForm1.onServerDNSStart();
+var 
+  bmp: TBitmap;
 begin
   Application.ProcessMessages;
   try
   ImageList4.GetIcon(3, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  ToolButton11.ImageIndex := 8;
-  ToolButton11.Caption := 'Arrêter';
+  //ToolButton11.ImageIndex := 8;
+  ButtonStartStop.Caption := 'Arrêter';
+  {
+  SpeedButton1.Glyph.Assign(nil);
+  bmp := TBitmap.Create;
+  ImageList2.GetBitmap(8, bmp);
+  SpeedButton1.Glyph.Assign(bmp);
+  SpeedButton1.Hint := 'Arrêter le serveur DNS';
+
+  Image1.Picture.Assign(nil);
+  ImageList2.GetBitmap(8, Image1.Picture.Bitmap);
+  }
   isServerStarted := True;
-  ToolButton11.Enabled := True;
-  ToolButton11.Hint := 'Arrêter le serveur DNS';
+  //ToolButton11.Enabled := True;
+  ButtonStartStop.Hint := 'Arrêter le serveur DNS';
   ServerFailStartCount := 0;
   TimerRestart.Enabled := False;
   TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
@@ -903,16 +915,30 @@ begin
 end;
 
 procedure TForm1.onServerDNSStop();
+var 
+  bmp: TBitmap; 
 begin
   try
   if ServerDoStart then
   begin
     ImageList4.GetIcon(2, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-    ToolButton11.ImageIndex := 13;
-    ToolButton11.Caption := 'Arrêter';
-    ToolButton11.Enabled := True;
-    ToolButton11.Hint := 'Arrêter le serveur DNS';
+    //ToolButton11.ImageIndex := 13;
+    ButtonStartStop.Caption := 'Arrêter';
+    ButtonStartStop.Enabled := True;
+    ButtonStartStop.Hint := 'Arrêter le serveur DNS';
+    {
+    SpeedButton1.Glyph.Assign(nil);
+    bmp := TBitmap.Create;
+    ImageList2.GetBitmap(13, bmp);
+    SpeedButton1.Glyph.Assign(bmp);
+    SpeedButton1.Hint := 'Arrêter le serveur DNS';
+    Image1.Picture.Assign(nil);
+    ImageList2.GetBitmap(13, Image1.Picture.Bitmap);
+    }
+
+
+
     inc(ServerFailStartCount);
     TimerRestart.Enabled := True;
     exit;
@@ -920,10 +946,20 @@ begin
   else begin
     ImageList4.GetIcon(1, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-    ToolButton11.ImageIndex := 7;
-    ToolButton11.Caption := 'Démarrer';
-    ToolButton11.Enabled := True;
-    ToolButton11.Hint := 'Démarrer le serveur DNS';
+    //ToolButton11.ImageIndex := 7;
+    ButtonStartStop.Caption := 'Démarrer';
+    ButtonStartStop.Enabled := True;
+    ButtonStartStop.Hint := 'Démarrer le serveur DNS';
+    {
+    SpeedButton1.Glyph.Assign(nil);
+    bmp := TBitmap.Create;
+    ImageList2.GetBitmap(7, bmp);
+    SpeedButton1.Glyph.Assign(bmp);
+    SpeedButton1.Hint := 'Démarrer le serveur DNS';
+    Image1.Picture.Assign(nil);
+    ImageList2.GetBitmap(7, Image1.Picture.Bitmap);
+    }
+
     TimerCheckSystemChanges.Enabled := False;
   end;
 
@@ -951,14 +987,28 @@ var
   i, j, count: Integer;
   filepath, dns, script, config_cache_memory, config_display_log: string;
   //net: tNetworkInterfaceList;
+  bmp: TBitmap;
 begin
   try
 
 
-  ToolButton11.ImageIndex := 13;
-  ToolButton11.Caption := 'Arrêter';
-  ToolButton11.Enabled := True;
-  ToolButton11.Hint := 'Arrêter le serveur DNS';
+  //ToolButton11.ImageIndex := 13;
+  ButtonStartStop.Caption := 'Arrêter';
+  ButtonStartStop.Enabled := True;
+  ButtonStartStop.Hint := 'Arrêter le serveur DNS';
+  {
+  SpeedButton1.Glyph.Assign(nil);
+  bmp := TBitmap.Create;
+  ImageList2.GetBitmap(13, bmp);
+  SpeedButton1.Glyph.Assign(bmp);
+  SpeedButton1.Hint := 'Arrêter le serveur DNS';
+  SpeedButton1.NumGlyphs := 1;
+  Image1.Picture.Assign(nil);
+  ImageList2.GetBitmap(13, Image1.Picture.Bitmap);
+  }
+
+  ImageList4.GetIcon(2, Application.Icon);
+  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
 
 
   //KillTask('python.exe');
@@ -976,9 +1026,6 @@ begin
   ServerDoStart := True;
   ButtonRefreshNetCardClick(nil);
   //closeProcessCreated;
-
-  ImageList4.GetIcon(2, Application.Icon);
-  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
 
 
 
@@ -1022,7 +1069,7 @@ begin
   then begin
     FormInstall.Show;
     FormInstall.ButtonInstallClick(nil);
-    ToolButton11.Enabled := True;
+    ButtonStartStop.Enabled := True;
     FormInstall.TimerWatchThread.Enabled := True;
     //if ServerDoStart then TimerRestart.Enabled := True;
     exit;
@@ -1062,7 +1109,7 @@ begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé.');
     MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
     MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
-    ToolButton11.Enabled := True;
+    ButtonStartStop.Enabled := True;
     if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
@@ -1087,20 +1134,31 @@ begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé');
     MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur (ou attendre le redémarrage).');
 
-    ToolButton11.Enabled := True;
-    ToolButton8Click(ToolButton8);
+    ButtonStartStop.Enabled := True;
+    ToolButton8Click(ButtonStartStop);
 
     // bug ?
     //PageControl1.TabIndex := 0;
     //PageControl1.ActivePageIndex := PageControl1.TabIndex;
 
-    ToolButton11.ImageIndex := 7;
+    //ButtonStartStop.ImageIndex := 7;
+    {
+    SpeedButton1.Glyph.Assign(nil);
+    bmp := TBitmap.Create;
+    ImageList2.GetBitmap(7, bmp);
+    SpeedButton1.Glyph.Assign(bmp);
+    SpeedButton1.Hint := 'Démarrer le serveur DNS';
+    SpeedButton1.NumGlyphs := 1;
+    Image1.Picture.Assign(nil);
+    ImageList2.GetBitmap(7, Image1.Picture.Bitmap);
+    }
+
     //if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
 
 
-  ToolButton11.Enabled := True;
+  ButtonStartStop.Enabled := True;
 
   {
   DNSMasterSerialized := '';
@@ -1159,7 +1217,7 @@ begin
     MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
     MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
     ButtonRefreshNetCardClick(nil);
-    ToolButton11.Enabled := True;
+    ButtonStartStop.Enabled := True;
     if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
@@ -1300,8 +1358,8 @@ begin
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
-var
-  i: Integer;
+var 
+  bmp: TBitmap; 
 begin
   try
     MemoLogs.Lines.Add('Close server');
@@ -1352,10 +1410,20 @@ begin
 
     //if ToolButton11.ImageIndex = 13 then
     //begin
-      ToolButton11.ImageIndex := 7;
-      ToolButton11.Caption := 'Démarrer';
-      ToolButton11.Enabled := True;
-      ToolButton11.Hint := 'Démarrer le serveur DNS';
+      //ToolButton11.ImageIndex := 7;
+      ButtonStartStop.Caption := 'Démarrer';
+      ButtonStartStop.Enabled := True;
+      ButtonStartStop.Hint := 'Démarrer le serveur DNS';
+      {
+      SpeedButton1.Glyph.Assign(nil);
+      bmp := TBitmap.Create;
+      ImageList2.GetBitmap(7, bmp);
+      SpeedButton1.Glyph.Assign(bmp);
+      SpeedButton1.Hint := 'Arrêter le serveur DNS';
+      Image1.Picture.Assign(nil);
+      ImageList2.GetBitmap(7, Image1.Picture.Bitmap);
+      }
+
     //end;
   except
     On E : EOSError do exit;
@@ -1634,7 +1702,6 @@ begin
   ScrollBox5.Align := alClient;
   ScrollBox6.Align := alClient;
   ScrollBox6.VertScrollBar.Position := 0;
-  ToolBar3.Align := alClient;
 
   GroupBox5.Align := alBottom;
   PanelRestart.Align := alBottom;
@@ -1749,10 +1816,14 @@ begin
   ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
   DsactiverlefiltragedufichierHost1.Checked := ButtonDisableHost.Down;
   DsactiverlefiltrageBlackword1.Checked := ButtonDisableBlackhost.Down;
+  {
   ToolButtonBlockAll.Down := FileExists(DataDirectoryPath + 'disableAll.cfg')
                          or (FileExists(DataDirectoryPath + 'disableHost.cfg')
                          and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
-  toutbloquer1.Checked := ToolButtonBlockAll.Down;
+  }
+  toutbloquer1.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg')
+                      or (FileExists(DataDirectoryPath + 'disableHost.cfg')
+                      and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
 
   AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
   DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
@@ -1832,7 +1903,6 @@ begin
 
 
   Form1.Color := bg;
-
   GroupBox2.Color := bg;
   GroupBox3.Color := bg;
   GroupBox4.Color := bg;
@@ -1850,6 +1920,7 @@ begin
   Panel5.Color := bg;
   Panel6.Color := bg;
   Panel7.Color := bg;
+  Panel8.Color := bg;
   Panel11.Color := bg;
   PanelMessage.Color := bg;
 
@@ -1857,7 +1928,6 @@ begin
 
   ToolBar1.Color := bg;
   ToolBar2.Color := bg;
-  ToolBar3.Color := bg;
   ToolBar4.Color := bg;
   CheckBoxStartWithWindows.Color := bg;
   CheckBoxAutostartDNSOnBoot.Color := bg;
@@ -1868,7 +1938,7 @@ begin
 
   bg2 := changeColor(bg, SpinEditContraste.Position, SpinEditContraste.Position, SpinEditContraste.Position);
 
-  EditFilehost.Color := bg2;   
+  EditFilehost.Color := bg2;
   EditThemeName.Color := bg2;
   EditExecOnDisconnected.Color := bg2;
   ListView1.Color := bg2;
@@ -1890,7 +1960,8 @@ begin
   EditBTC.Color := bg2;
 
   bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
-                               
+
+
   EditFilehost.Font.Color := bg2;
   EditThemeName.Font.Color := bg2;
   EditExecOnDisconnected.Font.Color := bg2;
@@ -2241,7 +2312,7 @@ begin
     //Afficher1Click(nil);
   end else
   begin
-    Form1.Constraints.MinHeight := ToolBar3.Height + 40;
+    Form1.Constraints.MinHeight := Panel5.Height + 40;
     if Form1.Width <> Form1.Constraints.MinWidth then
     begin
       ResizePanelConfig_oldWidth := Form1.Width;
@@ -2293,6 +2364,15 @@ var
   isVisibleChanged: Boolean;
   oldVisibility: Boolean;
 begin
+  Notebook1.PageIndex := inexPage;
+  Panel1.Visible := True;
+  Splitter1.Visible := True;
+  Notebook1.Visible := True;
+  GroupBox5.Visible := True;  
+  GroupBox5.Align := alClient;
+  ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  exit;
+
    {
   if Notebook1.PageIndex <> inexPage then
   begin
@@ -2320,13 +2400,13 @@ begin
     //GroupBox5.Height := 100;
     if isVisibleChanged or isApplicationLoading then ComboBoxPosLogsSelect(ComboBoxPosLogs);
   end;
-
+  {
   ToolButton8.Down := Panel1.Visible and (inexPage = 0);
   ToolButtonBlackwords.Down := Panel1.Visible and (inexPage = 1);
   ToolButton4.Down := Panel1.Visible and (inexPage = 2);
   ToolButton6.Down := Panel1.Visible and (inexPage = 3);
   ToolButton3.Down := Panel1.Visible and (inexPage = 4);
-
+  }
   Notebook1.PageIndex := inexPage;
   //ResizePanelConfig();
   PanelMessage.Visible := False;
@@ -2590,19 +2670,6 @@ begin
     ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
   end;
 
-end;
-
-procedure TForm1.CheckBoxToggleMenuTitleClick(Sender: TObject);
-begin
-  ToolBar3.ShowCaptions := TCheckBox(Sender).Checked;
-end;
-
-procedure TForm1.CheckBoxMenuPositionClick(Sender: TObject);
-begin
-  if TCheckBox(Sender).Checked then
-    ToolBar3.Align := alTop
-  else
-    ToolBar3.Align := alLeft;
 end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
@@ -3748,9 +3815,11 @@ var
 begin
   GetCursorPos(Pos);
   PopupMenuForAllDNSRules.Popup(Pos.X,Pos.Y);
+  {
   ToolButtonBlockAll.Down := FileExists(DataDirectoryPath + 'disableAll.cfg')
   or (FileExists(DataDirectoryPath + 'disableHost.cfg')
   and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
+  }
 end;
 
 
@@ -3851,9 +3920,11 @@ begin
 
   AllowAll.Checked := False;
   toutbloquer1.Checked := False;
+  {
   ToolButtonBlockAll.Down := False;
   ButtonDisableBlackhost.Down := False;
   ButtonDisableHost.Down := False;
+  }
   DsactiverlefiltragedufichierHost1.Checked := False;
   DsactiverlefiltrageBlackword1.Checked := False;
   Toutautoriser1.Checked := False;
@@ -3880,7 +3951,7 @@ begin
 
   AllowAll.Checked := not FileExists(DataDirectoryPath + 'disableAll.cfg');
   toutbloquer1.Checked := not AllowAll.Checked;
-  ToolButtonBlockAll.Down := not AllowAll.Checked;
+  //ToolButtonBlockAll.Down := not AllowAll.Checked;
   DsactiverlefiltragedufichierHost1.Checked := AllowAll.Checked;
   DsactiverlefiltrageBlackword1.Checked := AllowAll.Checked;
   Toutautoriser1.Checked := AllowAll.Checked;
@@ -4630,6 +4701,13 @@ begin
   //KillTask(ExtractFileName(Application.ExeName));
   KillProcess(Self.Handle);
   Application.Terminate;
+end;
+
+procedure TForm1.ButtonShowLogsClick(Sender: TObject);
+begin
+  GroupBox5.Align := alClient;
+  GroupBox5.Visible := True;
+  Splitter1.Visible := False;
 end;
 
 end.

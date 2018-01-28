@@ -113,7 +113,7 @@ begin
   //Self.Top := Screen.WorkAreaHeight - Self.Height;
   //Self.SendToBack;
 
-  Desactiverlebloquagedetouslesdomaines1.Visible := Form1.ToolButtonBlockAll.Down;
+  //Desactiverlebloquagedetouslesdomaines1.Visible := Form1.ToolButtonBlockAll.Down;
 
   {
   if Form1.ToolButtonBlockAll.Down then
@@ -375,7 +375,7 @@ procedure TFormAlert.Desactiverlebloquagedetouslesdomaines1Click(
 begin
   Form1.MemoLogs.Lines.Add('Bloquage de tous les domaines [désactivé].');
   DeleteFile(Form1.DataDirectoryPath + 'disableAll.cfg');
-  Form1.ToolButtonBlockAll.Down := False;
+  //Form1.ToolButtonBlockAll.Down := False;
   Desactiverlebloquagedetouslesdomaines1.Checked := False;
   RestartRequired();
   FormCreate(nil);
@@ -426,7 +426,7 @@ procedure TFormAlert.Bloquertout1Click(Sender: TObject);
 begin
   with Form1 do
   begin
-    ToolButtonBlockAll.Down := True;
+    //ToolButtonBlockAll.Down := True;
     ToolButtonBlockAllClick(ToolButtonBlockAll);
     
     PanelAllowed.Visible := not PanelAllowed.Visible;
