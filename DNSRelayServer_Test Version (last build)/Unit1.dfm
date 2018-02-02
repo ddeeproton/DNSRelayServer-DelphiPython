@@ -1425,7 +1425,7 @@ object Form1: TForm1
                       Width = 17
                       Height = 17
                       TabOrder = 1
-                      OnClick = CheckBoxUpdateSilentClick
+                      OnClick = CheckBoxShowDebugClick
                     end
                   end
                 end

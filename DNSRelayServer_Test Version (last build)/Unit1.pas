@@ -484,6 +484,7 @@ type
     procedure TimerBootNoXPTimer(Sender: TObject);
     procedure ButtonShowLogsClick(Sender: TObject);
     procedure debug(log: String);
+    procedure CheckBoxShowDebugClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1786,7 +1787,7 @@ begin
   TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-
+  CheckBoxShowDebug.Checked := FileExists(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
 
 
   //CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
@@ -4735,6 +4736,19 @@ begin
   GroupBox5.Align := alClient;
   GroupBox5.Visible := True;
   Splitter1.Visible := False;
+end;
+
+procedure TForm1.CheckBoxShowDebugClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxShowDebug.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 end.
