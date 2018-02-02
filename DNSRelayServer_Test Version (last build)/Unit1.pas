@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.309';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.310.1';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -304,6 +304,9 @@ type
     Button7: TButton;
     Button6: TButton;
     ButtonShowLogs: TButton;
+    SpeedButton1: TSpeedButton;
+    Label40: TLabel;
+    CheckBoxShowDebug: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -480,6 +483,7 @@ type
     procedure Config1Click(Sender: TObject);
     procedure TimerBootNoXPTimer(Sender: TObject);
     procedure ButtonShowLogsClick(Sender: TObject);
+    procedure debug(log: String);
   private
     { Private declarations }
   public
@@ -566,7 +570,11 @@ implementation
 
 {$R *.dfm}
 
-
+procedure TForm1.debug(log: String);
+begin
+  if CheckBoxShowDebug.Checked then
+    MemoLogs.Lines.Add('Debug: '+log);
+end;
 
 procedure TForm1.OnOutput(txt:String);
 var
@@ -2050,7 +2058,8 @@ end;
 
 
 procedure TForm1.TimerAfterFormCreateLongTimer(Sender: TObject);
-begin
+begin                                
+  debug('TimerAfterFormCreateLongTimer');
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
 
@@ -2531,7 +2540,8 @@ begin
 end;
 
 procedure TForm1.TimerSaveChangeAndRestartTimer(Sender: TObject);
-begin
+begin                    
+  debug('TimerSaveChangeAndRestartTimer');
   TimerSaveChangeTimer(Sender);
   if isServerStarted then PanelRestart.Visible := True;
 end;
@@ -2540,7 +2550,8 @@ procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
 var
   i: Integer;
   txt: String;
-begin
+begin                     
+  debug('TimerSaveChangeTimer');
   TTimer(Sender).Enabled := False;
   if isApplicationLoading then exit;
 
@@ -2674,7 +2685,8 @@ end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 var i, j: Integer;
-begin
+begin                        
+  debug('Timer1Timer');
   Timer1.Enabled := False;
   if listThreads = nil then exit;
   if Length(listThreads) = 0 then exit;
@@ -2897,7 +2909,8 @@ begin
 end;
 
 procedure TForm1.TimerUpdateOnLoadTimer(Sender: TObject);
-begin
+begin                          
+  debug('TimerUpdateOnLoadTimer');
   TTimer(Sender).Enabled := False;
 
   if FormInstall = nil then
@@ -2940,7 +2953,8 @@ end;
 
 procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
 var i: Integer;
-begin
+begin              
+  debug('TimerAfterFormCreateTimer');
   TTimer(Sender).Enabled := False;
 
 
@@ -3115,6 +3129,7 @@ end;
 
 procedure TForm1.TimerCheckUpdateTimer(Sender: TObject);
 begin
+  debug('TimerCheckUpdateTimer');
   if FormInstall = nil then
   begin
     FormInstall := TFormInstall.Create(Form1);
@@ -3152,7 +3167,8 @@ begin
 end;
 
 procedure TForm1.TimerStartInBackgroundTimer(Sender: TObject);
-begin
+begin                     
+  debug('TimerStartInBackgroundTimer');
   TTimer(Sender).Enabled := False;
   Masquer1Click(nil);
 end;
@@ -3228,13 +3244,15 @@ end;
 
 
 procedure TForm1.TimerRestartTimer(Sender: TObject);
-begin
+begin                           
+  debug('TimerRestartTimer');
   TTimer(Sender).Enabled := False;
   ButtonStartClick(nil);
 end;
 
 procedure TForm1.TimerResetAlertPositionTimer(Sender: TObject);
-begin
+begin                           
+  debug('TimerResetAlertPositionTimer');
   TTimer(Sender).Enabled := False;
   LastPositionFormAlertTop := 0;
 end;
@@ -4134,7 +4152,8 @@ begin
 end;
 
 procedure TForm1.TimerHideMessageTimer(Sender: TObject);
-begin
+begin                            
+  debug('TimerHideMessageTimer');
   TTimer(Sender).Enabled := False;
   PanelMessage.Visible := False;
 end;
@@ -4228,7 +4247,8 @@ end;
 
 
 procedure TForm1.TimerAlertTimer(Sender: TObject);
-begin
+begin                          
+  debug('TimerAlertTimer');
   TTimer(Sender).Enabled := False;
   AlertManager.ShowAllAlert(AlertManager.MainListAlert);
   TTimer(Sender).Enabled := True;
@@ -4237,13 +4257,15 @@ end;
 
 
 procedure TForm1.TimerFadeInTimer(Sender: TObject);
-begin     
+begin                              
+  debug('TimerFadeInTimer');
   SetFormOpacity(Self.Handle, opacity);
   if opacity < 100 then opacity := opacity + 10 else TTimer(Sender).Enabled := False;
 end;
 
 procedure TForm1.TimerFadeOutTimer(Sender: TObject);
-begin  
+begin                          
+  debug('TimerFadeOutTimer');
   SetFormOpacity(Self.Handle, opacity);
   if opacity > 10 then
     opacity := opacity - 10
@@ -4283,7 +4305,8 @@ procedure TForm1.CheckSystemChangesTimer(Sender: TObject);
 var
   i: Integer;
   net: tNetworkInterfaceList;
-begin
+begin         
+  debug('CheckSystemChangesTimer');
   if not GetNetworkInterfaces(net) then exit;
   if (oldNet <> nil) and (net <> nil) then
   begin
@@ -4323,7 +4346,8 @@ end;
 procedure TForm1.TimerRemoteAccessTimer(Sender: TObject);
 var
   f: string;
-begin
+begin           
+  debug('TimerRemoteAccessTimer');
   f := DataDirectoryPath + 'action.server.restart.txt';
   if FileExists(f) then
   begin
@@ -4585,7 +4609,8 @@ begin
 end;
 
 procedure TForm1.TimerExecOnDisconnectedTimer(Sender: TObject);
-begin
+begin                      
+  debug('TimerExecOnDisconnectedTimer');
   TTimer(Sender).Enabled := False;
 end;
 
@@ -4640,7 +4665,8 @@ begin
 end;
 
 procedure TForm1.TimerClearCacheTimer(Sender: TObject);
-begin
+begin          
+  debug('TimerClearCacheTimer');
   ActionDNS.clearCache;
 end;
 
@@ -4689,7 +4715,8 @@ end;
 
 procedure TForm1.TimerBootNoXPTimer(Sender: TObject);
 var canClose: Boolean;
-begin
+begin          
+  debug('TimerBootNoXPTimer');
   Masquer1Click(nil);
   if Pos('dwm.exe', listProcesses()) = 0 then exit;
   TTimer(Sender).Enabled := False;
