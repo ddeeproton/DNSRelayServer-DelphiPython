@@ -2513,6 +2513,8 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFF}
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       Spacing = 0
       OnClick = ToolButton11Click
     end

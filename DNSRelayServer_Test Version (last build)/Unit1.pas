@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.311';
+  CurrentApplicationVersion: string = '0.4.312';
   isDevVersion: Boolean = False;
 
 type
@@ -482,6 +482,7 @@ type
     procedure ButtonShowLogsClick(Sender: TObject);
     procedure debug(log: String);
     procedure CheckBoxShowDebugClick(Sender: TObject);
+    procedure setButtonStartText(state: Integer);
   private
     { Private declarations }
   public
@@ -894,8 +895,7 @@ begin
   ImageList4.GetIcon(3, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   //ToolButton11.ImageIndex := 8;
-  SpeedButton1.Caption := 'Arrêter';
-  Panel9.Color := clRed;
+  setButtonStartText(1);
   {
   SpeedButton1.Glyph.Assign(nil);
   bmp := TBitmap.Create;
@@ -931,10 +931,8 @@ begin
     ImageList4.GetIcon(2, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
     //ToolButton11.ImageIndex := 13;
-    SpeedButton1.Caption := 'Arrêter';
-    SpeedButton1.Enabled := True;
-    SpeedButton1.Hint := 'Arrêter le serveur DNS';
-    Panel9.Color := clGreen;
+
+    setButtonStartText(2);
     {
     SpeedButton1.Glyph.Assign(nil);
     bmp := TBitmap.Create;
@@ -955,10 +953,8 @@ begin
     ImageList4.GetIcon(1, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
     //ToolButton11.ImageIndex := 7;
-    SpeedButton1.Caption := 'Démarrer';
-    SpeedButton1.Enabled := True;
-    SpeedButton1.Hint := 'Démarrer le serveur DNS';
-    Panel9.Color := clRed;
+    setButtonStartText(0);
+
     {
     SpeedButton1.Glyph.Assign(nil);
     bmp := TBitmap.Create;
@@ -990,347 +986,6 @@ end;
 
 
 
-
-procedure TForm1.ButtonStartClick(Sender: TObject);
-var
-  i, j, count: Integer;
-  filepath, dns, script, config_cache_memory, config_display_log: string;
-  //net: tNetworkInterfaceList;
-  bmp: TBitmap;
-begin
-  try
-
-
-  //ToolButton11.ImageIndex := 13;
-  SpeedButton1.Caption := 'Arrêter';
-  SpeedButton1.Enabled := True;
-  SpeedButton1.Hint := 'Arrêter le serveur DNS';
-  Panel9.Color := clGreen;
-  {
-  SpeedButton1.Glyph.Assign(nil);
-  bmp := TBitmap.Create;
-  ImageList2.GetBitmap(13, bmp);
-  SpeedButton1.Glyph.Assign(bmp);
-  SpeedButton1.Hint := 'Arrêter le serveur DNS';
-  SpeedButton1.NumGlyphs := 1;
-  Image1.Picture.Assign(nil);
-  ImageList2.GetBitmap(13, Image1.Picture.Bitmap);
-  }
-
-  ImageList4.GetIcon(2, Application.Icon);
-  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-
-
-  //KillTask('python.exe');
-
-  // Close others instances
-  Form1.Hint := Form1.Caption;
-  Form1.Caption := 'DRS Loading...';
-  Application.ProcessMessages;
-  CloseProcess(Form1.Hint);
-  Form1.Caption := Form1.Hint;
-  Application.ProcessMessages;
-
-  ButtonCloseClick(nil);
-  sleep(2000);
-  ServerDoStart := True;
-  ButtonRefreshNetCardClick(nil);
-  //closeProcessCreated;
-
-
-
-  //PanelRestart.Visible := False;
-  //Splitter1.Visible := True;
-  //GroupBox5.Visible := True;
-
-  Application.ProcessMessages;
-  {
-  Sleep(1000);
-  Application.ProcessMessages;
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
-
-  //ComboBoxPosLogsSelect(ComboBoxPosLogs);
-
-  {
-  if Form1.WindowState = wsNormal then
-  begin
-    if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
-      Form1.Top := Screen.WorkAreaHeight - Form1.Height;
-  end;
-  }
-  if FormInstall = nil then
-  begin
-    FormInstall := TFormInstall.Create(Self);
-  end;
-  Application.ProcessMessages;
-
-
-  FormInstall.CheckInstallation;
-
-  if not FormInstall.isPythonInstalled
-  or not FormInstall.isDNSInstalled
-  or not FormInstall.isSetuptoolInstalled
-  then begin
-    FormInstall.Show;
-    FormInstall.ButtonInstallClick(nil);
-    SpeedButton1.Enabled := True;
-    FormInstall.TimerWatchThread.Enabled := True;
-    //if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end else
-  begin
-    FormInstall.Close;
-  end;
-
-
-  {
-  Application.ProcessMessages;
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
-
-
-  Application.ProcessMessages;
-
-  filepath := String(EditFilehost.Text);
-  if FileExists(filepath) = False then
-    WriteInFile(filepath, '127.0.0.1	localhost');
-
-
-
-
-  if not FileExists(BlackListCfgFile) then
-    WriteInFile(BlackListCfgFile, 'doubleclick'#13#10+
-                                  'godaddy'#13#10+
-                                  'googleads');
-
-  if not FileExists(filepath) then
-  begin
-    MemoLogs.Lines.Add('Erreur: Lancement annulé.');
-    MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
-    MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
-    SpeedButton1.Enabled := True;
-    if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end;
-
-  {
-  Application.ProcessMessages;
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
-
-  count := 0;
-  for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
-  begin
-    if CheckListBoxDNSRelayIP.Checked[i] then inc(count);
-  end;
-  if count = 0 then
-  begin
-    MemoLogs.Lines.Add('Erreur: Lancement annulé');
-    MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur (ou attendre le redémarrage).');
-
-    SpeedButton1.Enabled := True;
-    ToolButton8Click(SpeedButton1);
-
-    // bug ?
-    //PageControl1.TabIndex := 0;
-    //PageControl1.ActivePageIndex := PageControl1.TabIndex;
-
-    //ButtonStartStop.ImageIndex := 7;
-    {
-    SpeedButton1.Glyph.Assign(nil);
-    bmp := TBitmap.Create;
-    ImageList2.GetBitmap(7, bmp);
-    SpeedButton1.Glyph.Assign(bmp);
-    SpeedButton1.Hint := 'Démarrer le serveur DNS';
-    SpeedButton1.NumGlyphs := 1;
-    Image1.Picture.Assign(nil);
-    ImageList2.GetBitmap(7, Image1.Picture.Bitmap);
-    }
-
-    //if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end;
-
-
-  SpeedButton1.Enabled := True;
-
-  {
-  DNSMasterSerialized := '';
-  for i := 0 to ListBoxDNSMaster.Items.Count -1 do
-  begin
-    dns := ListBoxDNSMaster.Items.Strings[i];
-    if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
-    DNSMasterSerialized := DNSMasterSerialized + dns;
-  end;
-  }
-
-  DNSMasterSerialized := '';
-  for i := 0 to ConfigDNSMaster.Count -1 do
-  begin
-    if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
-    DNSMasterSerialized := DNSMasterSerialized + ConfigDNSMaster[i];
-  end;
-
-
-  if not FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg') then
-  //if not CheckBoxNoTestDNSMaster.Checked then
-  begin
-    DNSMasterSerialized := '';
-    MemoLogs.Lines.Add('Test DNS Master...');
-    DNSMasterSerialized := '';
-    for i := 0 to ConfigDNSMaster.Count -1 do
-    begin
-      dns := ConfigDNSMaster[i];
-      MemoLogs.Lines.Add('Master '+ dns +'... ');
-      if ActionDNS.resolveDNSByPython('a.root-servers.net', dns) = '' then
-      begin
-        DNSMasterSerialized := '';
-        MemoLogs.Lines.Add('Erreur: Lancement annulé.');
-        MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
-        MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
-        MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
-        if ServerDoStart then TimerRestart.Enabled := True;
-        exit;
-      end;
-      if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
-      DNSMasterSerialized := DNSMasterSerialized + dns;
-      MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
-      MemoLogs.Lines.Add('Master '+ dns +'... OK');
-    end;
-  end;
-
-
-
-
-
-  //ToolButton11.Enabled := False;
-
-  if DNSMasterSerialized = '' then
-  begin
-    MemoLogs.Lines.Add('Erreur: Lancement annulé');
-    MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
-    MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
-    ButtonRefreshNetCardClick(nil);
-    SpeedButton1.Enabled := True;
-    if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end;
-
-  {
-  Application.ProcessMessages;
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
-
-  //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
-  //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
-  config_cache_memory := '1';
-  config_display_log := 'True';
-
-  if CheckBoxNoCacheDNS.Checked then config_cache_memory := '0';
-  if CheckBoxPureServer.Checked then config_display_log := 'False';
-
-
-
-  ServerDNS.createScript(config_cache_memory, config_display_log);
-
-  if PythonPath = '' then PythonPath := getPythonPath();
-
-  //if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
-  //begin
-  if FileExists(DataDirectoryPath + 'relayDNS.pyo') then DeleteFile(DataDirectoryPath + 'relayDNS.pyo');
-  script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
-  filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
-  WriteInFile(filepath, script);
-  LaunchAndWait(filepath,'', launchAndWWindow);
-  //end;
-
-  if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
-  begin
-    MemoLogs.Lines.Add('Erreur: Lancement annulé');
-    MemoLogs.Lines.Add('   La compilation du serveur à échoué. Mauvaise installation de Python 2.7?');
-    if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end;
-
-
-  if CheckBoxAllowModifyNetCard.Checked then
-  begin
-    ButtonNetCardIntegrationClick(ButtonNetCardIntegration);
-  end;
-
-  Application.ProcessMessages;
-
-  {
-  // Can cancel
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
-
-
-  for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
-  begin
-    if CheckListBoxDNSRelayIP.Checked[i]
-    and (CheckListBoxDNSRelayIP.Items.Strings[i] <> '127.0.0.1') then
-    begin
-      j := Length(listThreads);
-      SetLength(listThreads, j+1);
-      listThreads[j] := Unit1.ThreadProcess.Create(True);
-      listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
-      listThreads[j].output := TStringList.Create;
-      listThreads[j].EnMemo := MemoLogs;
-      listThreads[j].indexThread := i;
-      listThreads[j].Suspended := False;
-    end;
-  end;
-
-
-  LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
-
-
-  //if Notebook1.PageIndex = 5 then
-  //begin
-    //gotoMainPage(5);
-    {
-    Panel1.Visible := False;
-    Splitter1.Visible := False;
-    GroupBox5.Align := alClient;
-    ResizePanelConfig();
-    }
-  //end;
-
-  //if not Panel1.Visible then
-  Application.ProcessMessages;
-  except
-    On E : EOSError do exit;
-    On E : EAccessViolation do exit;
-  end;
-
-end;
 
 
 
@@ -1417,14 +1072,10 @@ begin
                         
     Application.ProcessMessages;
     Sleep(100);
-
+    setButtonStartText(0);
     //if ToolButton11.ImageIndex = 13 then
     //begin
       //ToolButton11.ImageIndex := 7;
-      SpeedButton1.Caption := 'Démarrer';
-      SpeedButton1.Enabled := True;
-      SpeedButton1.Hint := 'Démarrer le serveur DNS';
-      Panel9.Color := clRed;
       {
       SpeedButton1.Glyph.Assign(nil);
       bmp := TBitmap.Create;
@@ -2755,6 +2406,345 @@ begin
 end;
 
 
+
+procedure TForm1.ButtonStartClick(Sender: TObject);
+var
+  i, j, count: Integer;
+  filepath, dns, script, config_cache_memory, config_display_log: string;
+  //net: tNetworkInterfaceList;
+  bmp: TBitmap;
+begin
+  try
+
+
+  //ToolButton11.ImageIndex := 13;
+  setButtonStartText(2);
+  {
+  SpeedButton1.Glyph.Assign(nil);
+  bmp := TBitmap.Create;
+  ImageList2.GetBitmap(13, bmp);
+  SpeedButton1.Glyph.Assign(bmp);
+  SpeedButton1.Hint := 'Arrêter le serveur DNS';
+  SpeedButton1.NumGlyphs := 1;
+  Image1.Picture.Assign(nil);
+  ImageList2.GetBitmap(13, Image1.Picture.Bitmap);
+  }
+
+  ImageList4.GetIcon(2, Application.Icon);
+  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+
+
+  //KillTask('python.exe');
+
+  // Close others instances
+  Form1.Hint := Form1.Caption;
+  Form1.Caption := 'DRS Loading...';
+  Application.ProcessMessages;
+  CloseProcess(Form1.Hint);
+  Form1.Caption := Form1.Hint;
+  Application.ProcessMessages;
+
+  ButtonCloseClick(nil);
+  sleep(2000);
+  ServerDoStart := True;
+  ButtonRefreshNetCardClick(nil);
+  //closeProcessCreated;
+
+
+
+  //PanelRestart.Visible := False;
+  //Splitter1.Visible := True;
+  //GroupBox5.Visible := True;
+
+  Application.ProcessMessages;
+  {
+  Sleep(1000);
+  Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);
+    onServerDNSStop();
+    exit;
+  end;
+  }
+
+  //ComboBoxPosLogsSelect(ComboBoxPosLogs);
+
+  {
+  if Form1.WindowState = wsNormal then
+  begin
+    if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
+      Form1.Top := Screen.WorkAreaHeight - Form1.Height;
+  end;
+  }
+  if FormInstall = nil then
+  begin
+    FormInstall := TFormInstall.Create(Self);
+  end;
+  Application.ProcessMessages;
+
+
+  FormInstall.CheckInstallation;
+
+  if not FormInstall.isPythonInstalled
+  or not FormInstall.isDNSInstalled
+  or not FormInstall.isSetuptoolInstalled
+  then begin
+    FormInstall.Show;
+    FormInstall.ButtonInstallClick(nil);
+    SpeedButton1.Enabled := True;
+    FormInstall.TimerWatchThread.Enabled := True;
+    //if ServerDoStart then TimerRestart.Enabled := True;
+    exit;
+  end else
+  begin
+    FormInstall.Close;
+  end;
+
+
+  {
+  Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);
+    onServerDNSStop();
+    exit;
+  end;
+  }
+
+
+  Application.ProcessMessages;
+
+  filepath := String(EditFilehost.Text);
+  if FileExists(filepath) = False then
+    WriteInFile(filepath, '127.0.0.1	localhost');
+
+
+
+
+  if not FileExists(BlackListCfgFile) then
+    WriteInFile(BlackListCfgFile, 'doubleclick'#13#10+
+                                  'godaddy'#13#10+
+                                  'googleads');
+
+  if not FileExists(filepath) then
+  begin
+    MemoLogs.Lines.Add('Erreur: Lancement annulé.');
+    MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
+    MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
+    SpeedButton1.Enabled := True;
+    if ServerDoStart then TimerRestart.Enabled := True;
+    exit;
+  end;
+
+  {
+  Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);
+    onServerDNSStop();
+    exit;
+  end;
+  }
+
+  count := 0;
+  for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
+  begin
+    if CheckListBoxDNSRelayIP.Checked[i] then inc(count);
+  end;
+  if count = 0 then
+  begin
+    MemoLogs.Lines.Add('Erreur: Lancement annulé');
+    MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur (ou attendre le redémarrage).');
+
+    SpeedButton1.Enabled := True;
+    ToolButton8Click(SpeedButton1);
+
+    // bug ?
+    //PageControl1.TabIndex := 0;
+    //PageControl1.ActivePageIndex := PageControl1.TabIndex;
+
+    //ButtonStartStop.ImageIndex := 7;
+    {
+    SpeedButton1.Glyph.Assign(nil);
+    bmp := TBitmap.Create;
+    ImageList2.GetBitmap(7, bmp);
+    SpeedButton1.Glyph.Assign(bmp);
+    SpeedButton1.Hint := 'Démarrer le serveur DNS';
+    SpeedButton1.NumGlyphs := 1;
+    Image1.Picture.Assign(nil);
+    ImageList2.GetBitmap(7, Image1.Picture.Bitmap);
+    }
+
+    //if ServerDoStart then TimerRestart.Enabled := True;
+    exit;
+  end;
+
+
+  SpeedButton1.Enabled := True;
+
+  {
+  DNSMasterSerialized := '';
+  for i := 0 to ListBoxDNSMaster.Items.Count -1 do
+  begin
+    dns := ListBoxDNSMaster.Items.Strings[i];
+    if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
+    DNSMasterSerialized := DNSMasterSerialized + dns;
+  end;
+  }
+
+  DNSMasterSerialized := '';
+  for i := 0 to ConfigDNSMaster.Count -1 do
+  begin
+    if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
+    DNSMasterSerialized := DNSMasterSerialized + ConfigDNSMaster[i];
+  end;
+
+
+  if not FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg') then
+  //if not CheckBoxNoTestDNSMaster.Checked then
+  begin
+    DNSMasterSerialized := '';
+    MemoLogs.Lines.Add('Test DNS Master...');
+    DNSMasterSerialized := '';
+    for i := 0 to ConfigDNSMaster.Count -1 do
+    begin
+      dns := ConfigDNSMaster[i];
+      MemoLogs.Lines.Add('Master '+ dns +'... ');
+      if ActionDNS.resolveDNSByPython('a.root-servers.net', dns) = '' then
+      begin
+        DNSMasterSerialized := '';
+        MemoLogs.Lines.Add('Erreur: Lancement annulé.');
+        MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
+        MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
+        MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
+        if ServerDoStart then TimerRestart.Enabled := True;
+        exit;
+      end;
+      if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
+      DNSMasterSerialized := DNSMasterSerialized + dns;
+      MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
+      MemoLogs.Lines.Add('Master '+ dns +'... OK');
+    end;
+  end;
+
+
+
+
+
+  //ToolButton11.Enabled := False;
+
+  if DNSMasterSerialized = '' then
+  begin
+    MemoLogs.Lines.Add('Erreur: Lancement annulé');
+    MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
+    MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
+    ButtonRefreshNetCardClick(nil);
+    SpeedButton1.Enabled := True;
+    if ServerDoStart then TimerRestart.Enabled := True;
+    exit;
+  end;
+
+  {
+  Application.ProcessMessages;
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);
+    onServerDNSStop();
+    exit;
+  end;
+  }
+
+  //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
+  //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
+  config_cache_memory := '1';
+  config_display_log := 'True';
+
+  if CheckBoxNoCacheDNS.Checked then config_cache_memory := '0';
+  if CheckBoxPureServer.Checked then config_display_log := 'False';
+
+
+
+  ServerDNS.createScript(config_cache_memory, config_display_log);
+
+  if PythonPath = '' then PythonPath := getPythonPath();
+
+  //if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
+  //begin
+  if FileExists(DataDirectoryPath + 'relayDNS.pyo') then DeleteFile(DataDirectoryPath + 'relayDNS.pyo');
+  script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
+  filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
+  WriteInFile(filepath, script);
+  LaunchAndWait(filepath,'', launchAndWWindow);
+  //end;
+
+  if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
+  begin
+    MemoLogs.Lines.Add('Erreur: Lancement annulé');
+    MemoLogs.Lines.Add('   La compilation du serveur à échoué. Mauvaise installation de Python 2.7?');
+    if ServerDoStart then TimerRestart.Enabled := True;
+    exit;
+  end;
+
+
+  if CheckBoxAllowModifyNetCard.Checked then
+  begin
+    ButtonNetCardIntegrationClick(ButtonNetCardIntegration);
+  end;
+
+  Application.ProcessMessages;
+
+  {
+  // Can cancel
+  if not ServerDoStart then
+  begin
+    ButtonCloseClick(nil);
+    onServerDNSStop();
+    exit;
+  end;
+  }
+
+
+  for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
+  begin
+    if CheckListBoxDNSRelayIP.Checked[i]
+    and (CheckListBoxDNSRelayIP.Items.Strings[i] <> '127.0.0.1') then
+    begin
+      j := Length(listThreads);
+      SetLength(listThreads, j+1);
+      listThreads[j] := Unit1.ThreadProcess.Create(True);
+      listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
+      listThreads[j].output := TStringList.Create;
+      listThreads[j].EnMemo := MemoLogs;
+      listThreads[j].indexThread := i;
+      listThreads[j].Suspended := False;
+    end;
+  end;
+
+
+  LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
+
+
+  //if Notebook1.PageIndex = 5 then
+  //begin
+    //gotoMainPage(5);
+    {
+    Panel1.Visible := False;
+    Splitter1.Visible := False;
+    GroupBox5.Align := alClient;
+    ResizePanelConfig();
+    }
+  //end;
+
+  //if not Panel1.Visible then
+  Application.ProcessMessages;
+  setButtonStartText(1);
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
+
+end;
 
 
 
@@ -4750,6 +4740,33 @@ begin
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
 end;
+
+procedure TForm1.setButtonStartText(state: Integer);
+begin
+  //
+  if state = 0 then
+  begin
+    SpeedButton1.Caption := 'Arrêté';
+    SpeedButton1.Enabled := True;
+    SpeedButton1.Hint := 'Démarrer le serveur DNS';
+    Panel9.Color := clRed;
+  end;
+  if state = 1 then
+  begin  
+    SpeedButton1.Caption := 'Démarré';
+    SpeedButton1.Enabled := True;
+    SpeedButton1.Hint := 'Arrêter le serveur DNS';
+    Panel9.Color := clRed;
+  end;
+  if state = 2 then
+  begin   
+    SpeedButton1.Caption := '';
+    SpeedButton1.Enabled := True;
+    SpeedButton1.Hint := '';
+    Panel9.Color := clGray;
+  end;
+end;
+
 
 end.
 
