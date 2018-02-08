@@ -66,7 +66,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 58
+    Top = 65
     Width = 626
     Height = 10
     Cursor = crVSplit
@@ -1959,7 +1959,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 626
-    Height = 58
+    Height = 65
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
@@ -1968,9 +1968,14 @@ object Form1: TForm1
       Left = 2
       Top = 2
       Width = 151
-      Height = 54
+      Height = 58
       Hint = 'Click pour d'#233'marrer'
       Caption = 'D'#233'marrer'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
       Glyph.Data = {
         C6420000424DC642000000000000360000002800000050000000470000000100
         18000000000090420000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -2507,12 +2512,13 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFF}
+      ParentFont = False
       Spacing = 0
       OnClick = ToolButton11Click
     end
     object Panel8: TPanel
       Left = 157
-      Top = 5
+      Top = 9
       Width = 460
       Height = 51
       BevelOuter = bvNone
@@ -2596,8 +2602,8 @@ object Form1: TForm1
       end
     end
     object Panel9: TPanel
-      Left = 8
-      Top = 16
+      Left = 16
+      Top = 24
       Width = 19
       Height = 19
       Color = clRed
