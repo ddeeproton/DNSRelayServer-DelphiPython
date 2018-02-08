@@ -427,7 +427,7 @@ begin
   with Form1 do
   begin
     //ToolButtonBlockAll.Down := True;
-    ToolButtonBlockAllClick(ToolButtonBlockAll);
+    ToolButtonBlockAllClick(nil);
     
     PanelAllowed.Visible := not PanelAllowed.Visible;
     PanelDisallowed.Visible := not PanelDisallowed.Visible;

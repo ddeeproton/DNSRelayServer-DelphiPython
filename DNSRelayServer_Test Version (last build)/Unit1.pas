@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.312';
+  CurrentApplicationVersion: string = '0.4.313';
   isDevVersion: Boolean = False;
 
 type
@@ -292,19 +292,19 @@ type
     TimerClearCache: TTimer;
     TimerSaveChange: TTimer;
     TimerBootNoXP: TTimer;
-    Panel8: TPanel;
-    ToolButtonBlockAll: TButton;
-    Button10: TButton;
-    Button5: TButton;
-    Button8: TButton;
-    Button7: TButton;
-    Button6: TButton;
-    ButtonShowLogs: TButton;
     SpeedButton1: TSpeedButton;
     Label40: TLabel;
     CheckBoxShowDebug: TCheckBox;
     Relancerlapplication1: TMenuItem;
     Panel9: TPanel;
+    MainMenu1: TMainMenu;
+    Clients2: TMenuItem;
+    Blacklist2: TMenuItem;
+    webfilter1: TMenuItem;
+    Logs1: TMenuItem;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    Config2: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1582,7 +1582,6 @@ begin
   Panel5.Color := bg;
   Panel6.Color := bg;
   Panel7.Color := bg;
-  Panel8.Color := bg;
   Panel11.Color := bg;
   PanelMessage.Color := bg;
 
