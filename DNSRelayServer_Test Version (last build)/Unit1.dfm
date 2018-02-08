@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 498
-  Top = 181
-  Width = 520
+  Left = 361
+  Top = 137
+  Width = 650
   Height = 552
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -67,7 +67,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 58
-    Width = 487
+    Width = 626
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet3
+            ActivePage = TabSheet1
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -148,19 +148,20 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 104
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = 0
-                  Width = 263
+                  Top = -104
+                  Width = 264
                   Height = 360
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
-                    263
+                    264
                     360)
                   object Label1: TLabel
                     Left = 16
@@ -339,7 +340,7 @@ object Form1: TForm1
                   object EditFilehost: TEdit
                     Left = 16
                     Top = 151
-                    Width = 192
+                    Width = 193
                     Height = 21
                     Anchors = [akLeft, akTop, akRight]
                     Color = clWhite
@@ -393,7 +394,7 @@ object Form1: TForm1
                     OnClick = CheckBoxPureServerClick
                   end
                   object Button1: TButton
-                    Left = 215
+                    Left = 216
                     Top = 151
                     Width = 35
                     Height = 23
@@ -526,12 +527,12 @@ object Form1: TForm1
                 object GroupBox17: TGroupBox
                   Left = 0
                   Top = -64
-                  Width = 273
+                  Width = 274
                   Height = 331
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
-                    273
+                    274
                     331)
                   object Panel12: TPanel
                     Left = 34
@@ -546,15 +547,15 @@ object Form1: TForm1
                   object GroupBox15: TGroupBox
                     Left = 8
                     Top = 11
-                    Width = 258
+                    Width = 259
                     Height = 53
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 1
                     DesignSize = (
-                      258
+                      259
                       53)
                     object Panel10: TPanel
-                      Left = 33
+                      Left = 34
                       Top = 170
                       Width = 193
                       Height = 55
@@ -566,7 +567,7 @@ object Form1: TForm1
                     object Panel11: TPanel
                       Left = 2
                       Top = 15
-                      Width = 254
+                      Width = 255
                       Height = 25
                       Align = alTop
                       BevelOuter = bvNone
@@ -599,17 +600,17 @@ object Form1: TForm1
                   object GroupBox7: TGroupBox
                     Left = 8
                     Top = 70
-                    Width = 258
+                    Width = 259
                     Height = 249
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 2
                     DesignSize = (
-                      258
+                      259
                       249)
                     object Label7: TLabel
                       Left = 8
                       Top = 63
-                      Width = 229
+                      Width = 230
                       Height = 91
                       Anchors = [akLeft, akTop, akRight]
                       Caption = 
@@ -622,7 +623,7 @@ object Form1: TForm1
                       WordWrap = True
                     end
                     object Panel4: TPanel
-                      Left = 33
+                      Left = 34
                       Top = 170
                       Width = 193
                       Height = 55
@@ -661,7 +662,7 @@ object Form1: TForm1
                     object Panel2: TPanel
                       Left = 2
                       Top = 15
-                      Width = 254
+                      Width = 255
                       Height = 45
                       Align = alTop
                       BevelOuter = bvNone
@@ -1077,22 +1078,22 @@ object Form1: TForm1
                 object GroupBox22: TGroupBox
                   Left = 0
                   Top = 0
-                  Width = 272
+                  Width = 273
                   Height = 316
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
-                    272
+                    273
                     316)
                   object GroupBox14: TGroupBox
                     Left = 7
                     Top = 9
-                    Width = 258
+                    Width = 259
                     Height = 81
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 0
                     DesignSize = (
-                      258
+                      259
                       81)
                     object Label37: TLabel
                       Left = 30
@@ -1108,7 +1109,7 @@ object Form1: TForm1
                     object Label38: TLabel
                       Left = 12
                       Top = 40
-                      Width = 234
+                      Width = 235
                       Height = 33
                       Anchors = [akLeft, akTop, akRight]
                       AutoSize = False
@@ -1129,17 +1130,17 @@ object Form1: TForm1
                   object GroupBox13: TGroupBox
                     Left = 8
                     Top = 94
-                    Width = 257
+                    Width = 258
                     Height = 211
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 1
                     DesignSize = (
-                      257
+                      258
                       211)
                     object Label39: TLabel
                       Left = 16
                       Top = 16
-                      Width = 235
+                      Width = 236
                       Height = 17
                       Anchors = [akLeft, akTop, akRight]
                       AutoSize = False
@@ -1165,7 +1166,7 @@ object Form1: TForm1
                     object MemoHelpWebAdmin: TMemo
                       Left = 8
                       Top = 72
-                      Width = 242
+                      Width = 243
                       Height = 129
                       Anchors = [akLeft, akTop, akRight]
                       ReadOnly = True
@@ -1266,12 +1267,12 @@ object Form1: TForm1
                 object GroupBox11: TGroupBox
                   Left = 0
                   Top = -49
-                  Width = 272
+                  Width = 273
                   Height = 290
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
-                    272
+                    273
                     290)
                   object GroupBox20: TGroupBox
                     Left = 8
@@ -1990,20 +1991,18 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 487
+    Width = 626
     Height = 58
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 2
-    DesignSize = (
-      487
-      58)
     object SpeedButton1: TSpeedButton
-      Left = 16
-      Top = 8
-      Width = 89
-      Height = 25
+      Left = 2
+      Top = 2
+      Width = 151
+      Height = 54
+      Hint = 'Click pour d'#233'marrer'
       Caption = 'D'#233'marrer'
       Glyph.Data = {
         C6420000424DC642000000000000360000002800000050000000470000000100
@@ -2541,47 +2540,36 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFF}
+      Spacing = 0
+      OnClick = ToolButton11Click
     end
     object Panel8: TPanel
-      Left = 95
+      Left = 157
       Top = 5
-      Width = 345
+      Width = 460
       Height = 51
-      Anchors = [akTop]
       BevelOuter = bvNone
       TabOrder = 0
-      object ButtonStartStop: TButton
-        Left = 43
-        Top = 0
-        Width = 70
-        Height = 25
-        Hint = 'Click pour d'#233'marrer'
-        Caption = 'D'#233'marrer'
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 0
-        OnClick = ToolButton11Click
-      end
       object ToolButtonBlockAll: TButton
-        Left = 115
-        Top = 0
+        Left = 307
+        Top = 24
         Width = 72
         Height = 25
         Caption = 'Block All'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 1
+        TabOrder = 0
         OnClick = ToolButtonBlockAllClick
       end
       object Button10: TButton
-        Left = 189
-        Top = 0
+        Left = 381
+        Top = 24
         Width = 73
         Height = 25
         Caption = 'Masquer'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 2
+        TabOrder = 1
         OnClick = Masquer1Click
       end
       object Button5: TButton
@@ -2592,7 +2580,7 @@ object Form1: TForm1
         Caption = 'Web Filter'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 3
+        TabOrder = 2
         OnClick = ToolButton6Click
       end
       object Button8: TButton
@@ -2603,7 +2591,7 @@ object Form1: TForm1
         Caption = 'Blacklist'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 4
+        TabOrder = 3
         OnClick = ToolButtonBlackwordsClick
       end
       object Button7: TButton
@@ -2614,7 +2602,7 @@ object Form1: TForm1
         Caption = 'Clients'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 5
+        TabOrder = 4
         OnClick = ToolButton4Click
       end
       object Button6: TButton
@@ -2625,7 +2613,7 @@ object Form1: TForm1
         Caption = 'Config'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 6
+        TabOrder = 5
         OnClick = ToolButton8Click
       end
       object ButtonShowLogs: TButton
@@ -2636,9 +2624,18 @@ object Form1: TForm1
         Caption = 'Logs'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 7
+        TabOrder = 6
         OnClick = ButtonShowLogsClick
       end
+    end
+    object Panel9: TPanel
+      Left = 8
+      Top = 16
+      Width = 19
+      Height = 19
+      Color = clRed
+      TabOrder = 1
+      OnClick = ToolButton11Click
     end
   end
   object PanelRestart: TPanel
@@ -3677,6 +3674,10 @@ object Form1: TForm1
     end
     object N1: TMenuItem
       Caption = '-'
+    end
+    object Relancerlapplication1: TMenuItem
+      Caption = 'Relancer l'#39'application'
+      OnClick = Relancerlapplication1Click
     end
     object Quitter1: TMenuItem
       Caption = 'Quitter'

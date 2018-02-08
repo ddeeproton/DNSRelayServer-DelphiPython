@@ -1,5 +1,5 @@
 unit Unit1;
-             
+
 interface
 
 uses
@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.310.1';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.310';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -296,7 +296,6 @@ type
     TimerSaveChange: TTimer;
     TimerBootNoXP: TTimer;
     Panel8: TPanel;
-    ButtonStartStop: TButton;
     ToolButtonBlockAll: TButton;
     Button10: TButton;
     Button5: TButton;
@@ -307,6 +306,8 @@ type
     SpeedButton1: TSpeedButton;
     Label40: TLabel;
     CheckBoxShowDebug: TCheckBox;
+    Relancerlapplication1: TMenuItem;
+    Panel9: TPanel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -552,7 +553,6 @@ var
   SlaveDNSIPConfig: string = 'SlaveDNSIP.cfg';
   SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
   TimeCheckUpdateFile: string = 'TimeCheckUpdate.cfg';
-  SpinEditTTLCacheFile: string = 'SpinEditTTLCache.cfg';
   BlackListCfgFile: string = 'blackhost.txt';
   DirCustomHost : string = 'customhost';
 
@@ -898,7 +898,8 @@ begin
   ImageList4.GetIcon(3, Application.Icon);
   Systray.ModifIconeTray(Caption, Application.Icon.Handle);
   //ToolButton11.ImageIndex := 8;
-  ButtonStartStop.Caption := 'Arrêter';
+  SpeedButton1.Caption := 'Arrêter';
+  Panel9.Color := clRed;
   {
   SpeedButton1.Glyph.Assign(nil);
   bmp := TBitmap.Create;
@@ -911,7 +912,8 @@ begin
   }
   isServerStarted := True;
   //ToolButton11.Enabled := True;
-  ButtonStartStop.Hint := 'Arrêter le serveur DNS';
+  SpeedButton1.Hint := 'Arrêter le serveur DNS';
+  Panel9.Color := clGreen;
   ServerFailStartCount := 0;
   TimerRestart.Enabled := False;
   TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
@@ -933,9 +935,10 @@ begin
     ImageList4.GetIcon(2, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
     //ToolButton11.ImageIndex := 13;
-    ButtonStartStop.Caption := 'Arrêter';
-    ButtonStartStop.Enabled := True;
-    ButtonStartStop.Hint := 'Arrêter le serveur DNS';
+    SpeedButton1.Caption := 'Arrêter';
+    SpeedButton1.Enabled := True;
+    SpeedButton1.Hint := 'Arrêter le serveur DNS';
+    Panel9.Color := clGreen;
     {
     SpeedButton1.Glyph.Assign(nil);
     bmp := TBitmap.Create;
@@ -956,9 +959,10 @@ begin
     ImageList4.GetIcon(1, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
     //ToolButton11.ImageIndex := 7;
-    ButtonStartStop.Caption := 'Démarrer';
-    ButtonStartStop.Enabled := True;
-    ButtonStartStop.Hint := 'Démarrer le serveur DNS';
+    SpeedButton1.Caption := 'Démarrer';
+    SpeedButton1.Enabled := True;
+    SpeedButton1.Hint := 'Démarrer le serveur DNS';
+    Panel9.Color := clRed;
     {
     SpeedButton1.Glyph.Assign(nil);
     bmp := TBitmap.Create;
@@ -1002,9 +1006,10 @@ begin
 
 
   //ToolButton11.ImageIndex := 13;
-  ButtonStartStop.Caption := 'Arrêter';
-  ButtonStartStop.Enabled := True;
-  ButtonStartStop.Hint := 'Arrêter le serveur DNS';
+  SpeedButton1.Caption := 'Arrêter';
+  SpeedButton1.Enabled := True;
+  SpeedButton1.Hint := 'Arrêter le serveur DNS';
+  Panel9.Color := clGreen;
   {
   SpeedButton1.Glyph.Assign(nil);
   bmp := TBitmap.Create;
@@ -1078,7 +1083,7 @@ begin
   then begin
     FormInstall.Show;
     FormInstall.ButtonInstallClick(nil);
-    ButtonStartStop.Enabled := True;
+    SpeedButton1.Enabled := True;
     FormInstall.TimerWatchThread.Enabled := True;
     //if ServerDoStart then TimerRestart.Enabled := True;
     exit;
@@ -1118,7 +1123,7 @@ begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé.');
     MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
     MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
-    ButtonStartStop.Enabled := True;
+    SpeedButton1.Enabled := True;
     if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
@@ -1143,8 +1148,8 @@ begin
     MemoLogs.Lines.Add('Erreur: Lancement annulé');
     MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur (ou attendre le redémarrage).');
 
-    ButtonStartStop.Enabled := True;
-    ToolButton8Click(ButtonStartStop);
+    SpeedButton1.Enabled := True;
+    ToolButton8Click(SpeedButton1);
 
     // bug ?
     //PageControl1.TabIndex := 0;
@@ -1167,7 +1172,7 @@ begin
   end;
 
 
-  ButtonStartStop.Enabled := True;
+  SpeedButton1.Enabled := True;
 
   {
   DNSMasterSerialized := '';
@@ -1226,7 +1231,7 @@ begin
     MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
     MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
     ButtonRefreshNetCardClick(nil);
-    ButtonStartStop.Enabled := True;
+    SpeedButton1.Enabled := True;
     if ServerDoStart then TimerRestart.Enabled := True;
     exit;
   end;
@@ -1420,9 +1425,10 @@ begin
     //if ToolButton11.ImageIndex = 13 then
     //begin
       //ToolButton11.ImageIndex := 7;
-      ButtonStartStop.Caption := 'Démarrer';
-      ButtonStartStop.Enabled := True;
-      ButtonStartStop.Hint := 'Démarrer le serveur DNS';
+      SpeedButton1.Caption := 'Démarrer';
+      SpeedButton1.Enabled := True;
+      SpeedButton1.Hint := 'Démarrer le serveur DNS';
+      Panel9.Color := clRed;
       {
       SpeedButton1.Glyph.Assign(nil);
       bmp := TBitmap.Create;
@@ -1775,8 +1781,8 @@ begin
     ListBoxBlacklist.Items.LoadFromFile(BlackListCfgFile);
 
   SpinEditTTLCache.Value := 24;
-  if FileExists(SpinEditTTLCacheFile) then
-     SpinEditTTLCache.Value := StrToInt(ReadFromFile(SpinEditTTLCacheFile));
+  if FileExists(DataDirectoryPath + 'SpinEditTTLCache.cfg') then
+     SpinEditTTLCache.Value := StrToInt(ReadFromFile(DataDirectoryPath + 'SpinEditTTLCache.cfg'));
   TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
   TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
 
@@ -1967,6 +1973,7 @@ begin
   ComboBoxSelectIPhostfile.Color := bg2;
   EditSourceURL.Color := bg2;
   EditBTC.Color := bg2;
+  SpinEditTTLCache.Color := bg2;
 
   bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
 
@@ -1991,6 +1998,7 @@ begin
   ComboBoxSelectIPhostfile.Font.Color := bg2;
   EditSourceURL.Font.Color := bg2;
   EditBTC.Font.Color := bg2;
+  SpinEditTTLCache.Font.Color := bg2;
 end;
 procedure TForm1.setThemeFont(color:TColor);
 begin
@@ -2536,6 +2544,9 @@ end;
 procedure TForm1.SpinEditTTLCacheChange(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+
+  //WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
+
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
 end;
@@ -2564,7 +2575,7 @@ begin
   WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
   WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
 
-  WriteInFile(SpinEditTTLCacheFile, IntToStr(SpinEditTTLCache.Value));
+  WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
   TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
   TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
 
@@ -2692,14 +2703,19 @@ begin
   if listThreads = nil then exit;
   if Length(listThreads) = 0 then exit;
   for j := 0 to Length(listThreads) - 1 do
-  begin                                    
-    if j >= Length(listThreads) then exit;
-    if listThreads[j] = nil then exit;
-    if listThreads[j].Terminated then exit;
-    if listThreads[j].output.Count = 0 then exit;
-    for i := 0 to listThreads[j].output.Count - 1 do
-    begin
-      OnOutput(listThreads[j].output[i]);
+  begin
+    try
+      if j >= Length(listThreads) -1 then exit;
+      if listThreads[j] = nil then exit;
+      if listThreads[j].Terminated then exit;
+      if listThreads[j].output.Count = 0 then exit;
+      for i := 0 to listThreads[j].output.Count - 1 do
+      begin
+        OnOutput(listThreads[j].output[i]);
+      end;
+    except
+      On E : EOSError do exit;
+      On E : EAccessViolation do exit;
     end;
     listThreads[j].output := TStringList.Create;
   end;
