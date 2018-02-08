@@ -67,7 +67,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 65
+    Top = 60
     Width = 504
     Height = 10
     Cursor = crVSplit
@@ -1960,14 +1960,14 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 504
-    Height = 65
+    Height = 60
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 2
     DesignSize = (
       504
-      65)
+      60)
     object SpeedButton3: TSpeedButton
       Left = 215
       Top = 2
