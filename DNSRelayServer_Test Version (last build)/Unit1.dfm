@@ -1975,11 +1975,7 @@ object Form1: TForm1
       Height = 58
       Anchors = [akTop]
       Caption = 'Block All'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
+      Flat = True
       Glyph.Data = {
         360C0000424D360C000000000000360000002800000020000000200000000100
         180000000000000C000000000000000000000000000000000000000000000000
@@ -2079,7 +2075,6 @@ object Form1: TForm1
         000000000000000000000000000000000000000000000000142EF5142EF5142E
         F5142EF5142EF5142EF5142EF5142EF5142EF500000000000000000000000000
         0000000000000000000000000000000000000000000000000000}
-      ParentFont = False
       OnClick = ToolButtonBlockAllClick
     end
     object SpeedButton2: TSpeedButton
@@ -2089,11 +2084,7 @@ object Form1: TForm1
       Height = 58
       Anchors = [akTop, akRight]
       Caption = 'Masquer'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
+      Flat = True
       Glyph.Data = {
         12140000424D1214000000000000360000002800000029000000290000000100
         180000000000DC13000000000000000000000000000000000000FFFFFFFFFFFF
@@ -2256,7 +2247,6 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00}
-      ParentFont = False
       OnClick = Masquer1Click
     end
     object SpeedButton1: TSpeedButton
@@ -2266,11 +2256,7 @@ object Form1: TForm1
       Height = 58
       Hint = 'Click pour d'#233'marrer'
       Caption = 'D'#233'marrer'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
+      Flat = True
       Glyph.Data = {
         C6420000424DC642000000000000360000002800000050000000470000000100
         18000000000090420000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -2807,7 +2793,6 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFF}
-      ParentFont = False
       ParentShowHint = False
       ShowHint = True
       Spacing = 0
@@ -17858,7 +17843,8 @@ object Form1: TForm1
     Top = 240
   end
   object MainMenu1: TMainMenu
-    Left = 168
+    Left = 448
+    Top = 248
     object Config2: TMenuItem
       Caption = 'Config'
       OnClick = ToolButton8Click
