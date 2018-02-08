@@ -2,6 +2,9 @@
 
 # DNS Relay Server
 
+### Télécharger le setup d'installation Windows:
+
+https://github.com/ddeeproton/DNSRelayServer-DelphiPython/tree/master/Setup%20installation/DNSRelayServerSetup_0.4.312.exe
 
 ### Description:
 
@@ -35,9 +38,6 @@ Les versions 0.x signifient que vous êtes sur une version béta. Ce qui signifie 
 
 Ce prorgamme est gratuit et le restera toujours. 
 
-### Télécharger le setup d'installation:
-
-https://github.com/ddeeproton/DNSRelayServer-DelphiPython/tree/master/Setup%20installation
 
 ### Télécharger le code source:
 
