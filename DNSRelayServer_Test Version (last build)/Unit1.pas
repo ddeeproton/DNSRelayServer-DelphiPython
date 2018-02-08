@@ -240,9 +240,6 @@ type
     TabSheet9: TTabSheet;
     GroupBox18: TGroupBox;
     Label45: TLabel;
-    Label47: TLabel;
-    EditBTC: TEdit;
-    ButtonCopyEditBTC: TButton;
     EditSourceURL: TEdit;
     ButtonCopyEditSourceURL: TButton;
     GroupBox20: TGroupBox;
@@ -474,7 +471,6 @@ type
     procedure ButtonTesterClick(Sender: TObject);
     procedure CheckBoxBindAllIPClick(Sender: TObject);
     procedure ButtonCopyEditSourceURLClick(Sender: TObject);
-    procedure ButtonCopyEditBTCClick(Sender: TObject);
     procedure TimerClearCacheTimer(Sender: TObject);
     procedure TimerSaveChangeTimer(Sender: TObject);
     procedure SpinEditTTLCacheChange(Sender: TObject);
@@ -1972,7 +1968,6 @@ begin
   ComboBoxSelectIPBlackhost.Color := bg2;
   ComboBoxSelectIPhostfile.Color := bg2;
   EditSourceURL.Color := bg2;
-  EditBTC.Color := bg2;
   SpinEditTTLCache.Color := bg2;
 
   bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
@@ -1997,7 +1992,6 @@ begin
   ComboBoxSelectIPBlackhost.Font.Color := bg2;
   ComboBoxSelectIPhostfile.Font.Color := bg2;
   EditSourceURL.Font.Color := bg2;
-  EditBTC.Font.Color := bg2;
   SpinEditTTLCache.Font.Color := bg2;
 end;
 procedure TForm1.setThemeFont(color:TColor);
@@ -2038,7 +2032,6 @@ begin
   Label44.Font.Color := color;
   Label45.Font.Color := color;
   Label46.Font.Color := color;
-  Label47.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
@@ -4667,15 +4660,6 @@ procedure TForm1.ButtonCopyEditSourceURLClick(Sender: TObject);
 begin
   EditSourceURL.SelectAll;
   EditSourceURL.CopyToClipboard;
-  LabelMessage.Caption := PChar('Copié!');
-  PanelMessage.Visible := True;
-  TimerHideMessage.Enabled := True;
-end;
-
-procedure TForm1.ButtonCopyEditBTCClick(Sender: TObject);
-begin
-  EditBTC.SelectAll;
-  EditBTC.CopyToClipboard;           
   LabelMessage.Caption := PChar('Copié!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;

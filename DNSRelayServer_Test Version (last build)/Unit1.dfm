@@ -125,7 +125,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet9
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -1439,12 +1439,12 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 113
+                Height = 65
                 Align = alTop
                 TabOrder = 0
                 DesignSize = (
                   303
-                  113)
+                  65)
                 object Label45: TLabel
                   Left = 10
                   Top = 12
@@ -1458,39 +1458,6 @@ object Form1: TForm1
                   Font.Style = [fsBold]
                   ParentFont = False
                 end
-                object Label47: TLabel
-                  Left = 8
-                  Top = 60
-                  Width = 141
-                  Height = 13
-                  Caption = 'Donation (Bitcoin / BTC)'
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clBlack
-                  Font.Height = -11
-                  Font.Name = 'MS Sans Serif'
-                  Font.Style = [fsBold]
-                  ParentFont = False
-                end
-                object EditBTC: TEdit
-                  Left = 8
-                  Top = 75
-                  Width = 237
-                  Height = 21
-                  Anchors = [akLeft, akTop, akRight]
-                  ReadOnly = True
-                  TabOrder = 0
-                  Text = '1EBbyNT66hDpnKXcF6FVP555JgWA8VakDu'
-                end
-                object ButtonCopyEditBTC: TButton
-                  Left = 251
-                  Top = 74
-                  Width = 44
-                  Height = 22
-                  Anchors = [akTop, akRight]
-                  Caption = 'Copier'
-                  TabOrder = 1
-                  OnClick = ButtonCopyEditBTCClick
-                end
                 object EditSourceURL: TEdit
                   Left = 8
                   Top = 27
@@ -1498,7 +1465,7 @@ object Form1: TForm1
                   Height = 21
                   Anchors = [akLeft, akTop, akRight]
                   ReadOnly = True
-                  TabOrder = 2
+                  TabOrder = 0
                   Text = 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython'
                 end
                 object ButtonCopyEditSourceURL: TButton
@@ -1508,7 +1475,7 @@ object Form1: TForm1
                   Height = 22
                   Anchors = [akTop, akRight]
                   Caption = 'Copier'
-                  TabOrder = 3
+                  TabOrder = 1
                   OnClick = ButtonCopyEditSourceURLClick
                 end
               end
