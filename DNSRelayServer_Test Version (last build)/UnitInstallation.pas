@@ -64,6 +64,8 @@ type
     function Unzip(path, destination:string):Boolean;
 
     function isMicrosoftVisualInstalled():Boolean;
+    procedure installMicrosoftVisual();
+
   private
     { Private declarations }
   public
@@ -317,9 +319,7 @@ begin
   begin
     if not isMicrosoftVisualInstalled() then
     begin
-      // Download and install
-
-      //exit;
+      installMicrosoftVisual;
     end;
     CheckInstallation();
     installSetuptools();
@@ -660,6 +660,19 @@ begin
   if FileExists(pythonFile) then DeleteFile(pythonFile);
   result := outExec = '[ok]';
   showMessage('"'+outExec+'"');
+end;
+
+procedure TFormInstall.installMicrosoftVisual();
+var
+  urlMicrosoftVisual, fileMicrosoftVisual: String;
+begin
+  urlMicrosoftVisual := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/DNSRelayServer_Test%20Version%20(last%20build)/setup/vcredist_x86.exe';
+  fileMicrosoftVisual := ExtractFilePath(Application.ExeName)+installDirectoryPath+'vcredist_x86.exe';
+  LabelPython.Caption := PChar('Visual studio (1/2)...');
+  Download(urlMicrosoftVisual, fileMicrosoftVisual);
+  if not FileExists(fileMicrosoftVisual) then exit;
+  LabelPython.Caption := PChar('Visual studio (2/2)...');
+  ExecAndWait(fileMicrosoftVisual, '/q', launchAndWWindow);
 end;
 
 end.
