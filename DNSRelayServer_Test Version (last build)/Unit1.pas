@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.316.3';
+  CurrentApplicationVersion: string = '0.4.316.4';
   isDevVersion: Boolean = True;
 
 type
