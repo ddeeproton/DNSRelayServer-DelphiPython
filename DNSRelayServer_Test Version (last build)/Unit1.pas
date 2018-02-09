@@ -2844,11 +2844,18 @@ begin
   if (Pos(CurrentApplicationVersion, lastversion) = 1) and (isDev = isDevVersion ) then
   begin
     if isSilent then
+    begin
       //Form1.MemoLogs.Lines.Add('Vous êtes à jour')
-    else
-      ShowMessage('Vous êtes à jour')
-  end
-  else begin
+      exit;
+    end else begin
+
+      if MessageDlg(PChar('Vous êtes à jour :)'#13#10#13#10'Forcer malgré tout la réinstallation?'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then
+      begin
+        exit;
+      end;
+    end;
+  end;
+
     if lastversion = '' then
     begin
       if isSilent then
@@ -2888,7 +2895,7 @@ begin
           ShowMessage('La mise à jour à échoué. '+#13+url);
       end;
     end;
-  end;
+
 end;
 
 procedure TForm1.CheckBoxUpdateClick(Sender: TObject);
