@@ -46,6 +46,8 @@ type
     Label12: TLabel;
     Label13: TLabel;
     TimerWatchThread: TTimer;
+    Label8: TLabel;
+    LabelMSVisual: TLabel;
     procedure ButtonInstallClick(Sender: TObject);
     function getPythonPath():string;
     procedure installPython();
@@ -74,6 +76,7 @@ type
     isDNSInstalled: bool;
     isSetuptoolInstalled: bool;
     isWgetInstalled: bool;
+    isMSVisualInstalled: bool;
     procedure CheckInstallation();
   end;
 
@@ -85,6 +88,7 @@ type
     LabelPython: string;
     LabelDNSResolver: string;
     LabelSetuptools: string;
+    LabelMSVisual: string;
   end;
 var
   FormInstall: TFormInstall;
@@ -174,6 +178,7 @@ begin
   isSetuptoolInstalled := FileExists(PythonPath+'Lib\site-packages\setuptools-20.0-py2.7.egg-info')
                       or FileExists(PythonPath+'Lib\site-packages\setuptools-20.0-py2.7.egg')
                       or FileExists(PythonPath+'Lib\site-packages\setuptools-20.0.dev0-py2.7.egg');
+  isMSVisualInstalled := isMicrosoftVisualInstalled;
 
   if isWgetInstalled then
     r := 'Installé'
@@ -210,6 +215,17 @@ begin
     else
       r := installThread.LabelSetuptools;
   LabelSetuptools.Caption := PChar(r);
+
+  if isMSVisualInstalled then
+    r := 'Installé'
+  else
+    if (installThread = nil) or (installThread.LabelMSVisual = '') then
+      r := 'Non installé'
+    else
+      r := installThread.LabelMSVisual;
+  LabelMSVisual.Caption := PChar(r);
+
+
   Application.ProcessMessages;
   if (installThread <> nil) and not installThread.Terminated then
   begin
@@ -217,6 +233,7 @@ begin
     installThread.LabelPython := LabelPython.Caption;
     installThread.LabelDNSResolver := LabelDNSResolver.Caption;
     installThread.LabelSetuptools := LabelSetuptools.Caption;
+    installThread.LabelMSVisual := LabelMSVisual.Caption;
   end;
 end;
 
@@ -660,9 +677,9 @@ begin
   pythonScript := 'print "[ok]"'#13#10;
   pythonFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'checkPythonRequirements.py';
   WriteInFile(pythonFile, pythonScript);
-  outExec := ExecAndRead(pythonFile);
+  outExec := ExecAndRead('"'+getPythonPath+'python.exe" "'+pythonFile+'"');
   if FileExists(pythonFile) then DeleteFile(pythonFile);
-  result := outExec = '[ok]';
+  result := outExec = '[ok]'#13#10;
 end;
 
 procedure TFormInstall.installMicrosoftVisual();
@@ -671,15 +688,16 @@ var
 begin
   urlMicrosoftVisual := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/DNSRelayServer_Test Version (last build)/setup/vcredist_x86.exe';
   fileMicrosoftVisual := ExtractFilePath(Application.ExeName)+installDirectoryPath+'vcredist_x86.exe';
-  LabelPython.Caption := PChar('Visual studio (1/2)...');
+  LabelMSVisual.Caption := PChar('Downloading...');
   Download(urlMicrosoftVisual, fileMicrosoftVisual);
   if not FileExists(fileMicrosoftVisual) then
   begin
     ShowMessage('no file downloaded');
     exit;
   end;
-  LabelPython.Caption := PChar('Visual studio (2/2)...');
+  LabelMSVisual.Caption := PChar('Installation...');
   ExecAndWait(fileMicrosoftVisual, '/q', launchAndWWindow);
+  CheckInstallation();
 end;
 
 end.

@@ -5,15 +5,15 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost, Systray, Registry, md5,  ListViewManager, HostParser, //XPMan,
+  UnitHost, Systray, Registry, md5,  ListViewManager, HostParser, XPMan,
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.315';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.316.1';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -2444,7 +2444,7 @@ begin
   Application.ProcessMessages;
 
   ButtonCloseClick(nil);
-  sleep(2000);
+  //sleep(2000);
   ServerDoStart := True;
   ButtonRefreshNetCardClick(nil);
   //closeProcessCreated;
@@ -2480,12 +2480,12 @@ begin
   begin
     FormInstall := TFormInstall.Create(Self);
   end;
-  Application.ProcessMessages;
 
 
   FormInstall.CheckInstallation;
 
-  if not FormInstall.isPythonInstalled
+  if not FormInstall.isPythonInstalled   
+  or not FormInstall.isMSVisualInstalled
   or not FormInstall.isDNSInstalled
   or not FormInstall.isSetuptoolInstalled
   then begin

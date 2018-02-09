@@ -1,9 +1,9 @@
 object FormInstall: TFormInstall
-  Left = 163
-  Top = 113
+  Left = 450
+  Top = 149
   BorderStyle = bsDialog
   Caption = 'DNS Server - Install'
-  ClientHeight = 217
+  ClientHeight = 251
   ClientWidth = 465
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object FormInstall: TFormInstall
     Left = 0
     Top = 0
     Width = 465
-    Height = 217
+    Height = 249
     Color = clBtnFace
     ParentColor = False
     TabOrder = 0
@@ -32,7 +32,7 @@ object FormInstall: TFormInstall
         Left = 8
         Top = 8
         Width = 449
-        Height = 201
+        Height = 233
         BevelInner = bvRaised
         BevelOuter = bvLowered
         TabOrder = 0
@@ -629,7 +629,7 @@ object FormInstall: TFormInstall
         end
         object LabelDNSResolver: TLabel
           Left = 296
-          Top = 160
+          Top = 184
           Width = 38
           Height = 13
           Caption = 'inconnu'
@@ -642,7 +642,7 @@ object FormInstall: TFormInstall
         end
         object Label4: TLabel
           Left = 112
-          Top = 160
+          Top = 184
           Width = 171
           Height = 13
           Caption = 'Plugin Python (DNS Resolver)'
@@ -655,7 +655,7 @@ object FormInstall: TFormInstall
         end
         object Label6: TLabel
           Left = 112
-          Top = 136
+          Top = 160
           Width = 155
           Height = 13
           Caption = 'Plugin Python (Setup tools)'
@@ -668,7 +668,7 @@ object FormInstall: TFormInstall
         end
         object LabelSetuptools: TLabel
           Left = 296
-          Top = 136
+          Top = 160
           Width = 38
           Height = 13
           Caption = 'inconnu'
@@ -718,6 +718,32 @@ object FormInstall: TFormInstall
           Font.Style = []
           ParentFont = False
           WordWrap = True
+        end
+        object Label8: TLabel
+          Left = 112
+          Top = 136
+          Width = 149
+          Height = 13
+          Caption = 'Microsoft Visual C++ 2008'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object LabelMSVisual: TLabel
+          Left = 296
+          Top = 136
+          Width = 38
+          Height = 13
+          Caption = 'inconnu'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
         end
       end
     end
