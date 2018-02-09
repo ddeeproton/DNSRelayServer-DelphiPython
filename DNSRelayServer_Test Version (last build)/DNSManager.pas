@@ -69,8 +69,6 @@ begin
     ''#13#10+
     'setDNS(ArgumentsToArray())'#13#10+  
     ''#13#10+
-    'WScript.Echo WScript.Version '#13#10+ 
-    ''#13#10+
     'On Error Resume Next'#13#10+
     'function ArgumentsToArray()'#13#10+
     '  Dim i, res()'#13#10+
@@ -110,9 +108,9 @@ begin
     '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
     '    For Each Value in OS'#13#10+
     '      DblValue = Trim(left(Value.Version, 3))'#13#10+
-    '      if isNumeric(DblValue) and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
+    '      if WScript.Version >= 5.8 and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
     '      if not isNumeric(DblValue) then DblValue = replace(DblValue, "." , ",")'#13#10+
-    '      if isNumeric(DblValue) and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
+    '      if WScript.Version <= 5.8 and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
     '    Next'#13#10+
     '    Set Shell = CreateObject("Shell.Application")'#13#10+
     '    Shell.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ uac", "", "runas"'#13#10+
