@@ -108,7 +108,7 @@ begin
     '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
     '    For Each Value in OS'#13#10+
     '      MsgBox("""" & Trim(left(Value.Version, 3))) & """"'#13#10+
-    '      if CDbl(Trim(left(Value.Version, 3))) < 6.0 then exit do'#13#10+
+    '      if CDbl(replace(Trim(left(Value.Version, 3)), "." , ",")) < 6.0 then exit do'#13#10+
     '    Next'#13#10+
     '    Set Shell = CreateObject("Shell.Application")'#13#10+
     '    Shell.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ uac", "", "runas"'#13#10+
