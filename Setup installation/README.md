@@ -2,6 +2,9 @@
 
 # DNS Relay Server
 
+### Télécharger le setup d'installation Windows:
+
+https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup%20installation/DNSRelayServerSetup_0.4.314.exe
 
 ### Description:
 
@@ -35,9 +38,6 @@ Les versions 0.x signifient que vous êtes sur une version béta. Ce qui signifie 
 
 Ce prorgamme est gratuit et le restera toujours. 
 
-### Télécharger le setup d'installation:
-
-https://github.com/ddeeproton/DNSRelayServer-DelphiPython/tree/master/Setup%20installation
 
 ### Télécharger le code source:
 
@@ -49,3 +49,6 @@ https://github.com/ddeeproton/DNSRelayServer-DelphiPython/archive/master.zip
 Compile avec:
 
 -Delphi 5, 6, 7, 2006, 2007, et +
+
+Téléchargez gratuitement Delphi 6 ici et si nécessaire, executez en mode admin le setup d'installation. 
+https://delphi.developpez.com/telecharger-gratuit/delphi6-perso/
