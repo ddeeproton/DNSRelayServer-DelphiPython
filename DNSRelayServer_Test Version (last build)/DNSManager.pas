@@ -270,7 +270,10 @@ begin
     '    Set WMI = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
     '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
     '    For Each Value in OS'#13#10+
-    '      if CDbl(Trim(left(Value.Version, 3))) < 6.0 then exit do'#13#10+
+    '      DblValue = Trim(left(Value.Version, 3))'#13#10+
+    '      if WScript.Version <> "5.8" and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
+    '      if not isNumeric(DblValue) then DblValue = replace(DblValue, "." , ",")'#13#10+
+    '      if WScript.Version = "5.7" and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
     '    Next'#13#10+
     '    Set Shell = CreateObject("Shell.Application")'#13#10+
     '    Shell.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ uac", "", "runas"'#13#10+
@@ -373,7 +376,10 @@ begin
     '    Set WMI = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
     '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
     '    For Each Value in OS'#13#10+
-    '      if CDbl(Trim(left(Value.Version, 3))) < 6.0 then exit do'#13#10+
+    '      DblValue = Trim(left(Value.Version, 3))'#13#10+
+    '      if WScript.Version <> "5.8" and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
+    '      if not isNumeric(DblValue) then DblValue = replace(DblValue, "." , ",")'#13#10+
+    '      if WScript.Version = "5.7" and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
     '    Next'#13#10+
     '    WScript.Echo "Script de réparation de connexion réseau. Veuillez répondre oui au dialogue suivant afin de réparer votre connexion Internet. Et non, si le serveur DNS Relai s''est déjà lancé et que vous voulez continuer à l''utiliser."'#13#10+
     '    Set Shell = CreateObject("Shell.Application")'#13#10+
