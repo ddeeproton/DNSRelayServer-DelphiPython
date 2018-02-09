@@ -61,8 +61,9 @@ type
     function ExecBat(bat:string):Boolean;
 
     function Download(url,path:string):Boolean;
-    function InstallPythonComponent(path:string):Boolean;
     function Unzip(path, destination:string):Boolean;
+
+    function isMicrosoftVisualInstalled():Boolean;
   private
     { Private declarations }
   public
@@ -116,12 +117,6 @@ begin
   ExecBat('"'+wget+'" -O "'+path+'" "'+url+'" --no-check-certificate');
 end;
 
-
-
-function TFormInstall.InstallPythonComponent(path:string):Boolean;
-begin
-//
-end;
 
 
 function TFormInstall.Unzip(path, destination:string):Boolean;
@@ -289,7 +284,7 @@ begin
   if not DirectoryExists(ExtractFilePath(Application.ExeName)+installDirectoryPath) then
     makeDir(ExtractFilePath(Application.ExeName)+installDirectoryPath);
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
-  url := 'http://eternallybored.org/misc/wget/current/wget.exe';
+  url := 'http://eternallybored.org/misc/wget/1.19.4/32/wget.exe';
   if URLDownloadToFile(nil, PChar(url), PChar(exePath), 0 , nil) <> 0 then
   begin
     //Error
@@ -320,6 +315,12 @@ var
 begin
   if isPythonInstalled then
   begin
+    if not isMicrosoftVisualInstalled() then
+    begin
+      // Download and install
+
+      //exit;
+    end;
     CheckInstallation();
     installSetuptools();
     exit;
@@ -350,6 +351,7 @@ begin
     installPython();
     exit;
   end;
+
   LabelPython.Caption := PChar('Installation... 1/3');
   Application.ProcessMessages;
   if not FileExists(exePath) then begin CheckInstallation(); exit; end;
@@ -645,6 +647,19 @@ begin
   LabelSetuptools.Caption := PChar(installThread.LabelSetuptools);
    }
   Application.ProcessMessages;
+end;
+
+function TFormInstall.isMicrosoftVisualInstalled():Boolean;
+var
+  pythonScript, pythonFile, outExec: String;
+begin
+  pythonScript := 'print "[ok]"'#13#10;
+  pythonFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'checkPythonRequirements.py';
+  WriteInFile(pythonFile, pythonScript);
+  outExec := ExecAndRead(pythonFile);
+  if FileExists(pythonFile) then DeleteFile(pythonFile);
+  result := outExec = '[ok]';
+  showMessage('"'+outExec+'"');
 end;
 
 end.
