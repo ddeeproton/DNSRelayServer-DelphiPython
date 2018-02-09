@@ -116,7 +116,9 @@ function TFormInstall.Download(url,path:string):Boolean;
 var wget: string;
 begin
   wget := ExtractFilePath(Application.ExeName)+installDirectoryPath+'wget.exe';
-  ExecBat('"'+wget+'" -O "'+path+'" "'+url+'" --no-check-certificate');
+  //ExecBat('"'+wget+'" -O "'+path+'" "'+url+'" --no-check-certificate');
+  WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'download.bat', '"'+wget+'" -O "'+path+'" "'+url+'" --no-check-certificate');
+  LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'download.bat', '', launchAndWWindow);
 end;
 
 
@@ -317,10 +319,6 @@ var
 begin
   if isPythonInstalled then
   begin
-    if not isMicrosoftVisualInstalled() then
-    begin
-      installMicrosoftVisual;
-    end;
     CheckInstallation();
     installSetuptools();
     exit;
@@ -390,7 +388,13 @@ begin
     installDNS();
     exit;
   end;
-
+  if not isMicrosoftVisualInstalled() then
+  begin
+    //ShowMessage('install');
+    installMicrosoftVisual;
+  end else begin
+    //ShowMessage('NO install');
+  end;
   LabelSetuptools.Caption := PChar('cheking...');
   Application.ProcessMessages;
 
@@ -659,7 +663,6 @@ begin
   outExec := ExecAndRead(pythonFile);
   if FileExists(pythonFile) then DeleteFile(pythonFile);
   result := outExec = '[ok]';
-  showMessage('"'+outExec+'"');
 end;
 
 procedure TFormInstall.installMicrosoftVisual();
