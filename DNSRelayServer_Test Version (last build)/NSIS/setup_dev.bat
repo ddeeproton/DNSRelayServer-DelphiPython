@@ -93,5 +93,3 @@ echo ==============================
 
 "..\..\Setup installation\test versions (bugged)\DNSRelayServerSetup_%v%_alpha.exe"
 
-
-@pause

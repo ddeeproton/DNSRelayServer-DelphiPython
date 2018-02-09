@@ -673,7 +673,11 @@ begin
   fileMicrosoftVisual := ExtractFilePath(Application.ExeName)+installDirectoryPath+'vcredist_x86.exe';
   LabelPython.Caption := PChar('Visual studio (1/2)...');
   Download(urlMicrosoftVisual, fileMicrosoftVisual);
-  if not FileExists(fileMicrosoftVisual) then exit;
+  if not FileExists(fileMicrosoftVisual) then
+  begin
+    ShowMessage('no file downloaded');
+    exit;
+  end;
   LabelPython.Caption := PChar('Visual studio (2/2)...');
   ExecAndWait(fileMicrosoftVisual, '/q', launchAndWWindow);
 end;
