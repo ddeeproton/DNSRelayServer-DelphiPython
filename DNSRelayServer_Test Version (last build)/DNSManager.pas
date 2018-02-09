@@ -109,7 +109,7 @@ begin
     '    For Each Value in OS'#13#10+
     '      DblValue = Trim(left(Value.Version, 3))'#13#10+
     '      if WScript.Version <> "5.8" and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
-    '      if not isNumeric(DblValue) then DblValue = replace(DblValue, "." , ",")'#13#10+
+    '      DblValue = replace(DblValue, "." , ",")'#13#10+
     '      if WScript.Version = "5.7" and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
     '    Next'#13#10+
     '    Set Shell = CreateObject("Shell.Application")'#13#10+
@@ -245,7 +245,7 @@ begin
     '  Dim objWMIService, objNicConfig, colNicConfigs '#13#10+
     '  Dim strComputer '#13#10+
     '  Dim intReturn '#13#10+
-    '  Call GetAdminPrivilege()'#13#10+
+    //'  Call GetAdminPrivilege()'#13#10+
     '  Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2") '#13#10+
     '  Set colNicConfigs = objWMIService.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True")  '#13#10+
     '  For Each objNicConfig In colNicConfigs '#13#10+
