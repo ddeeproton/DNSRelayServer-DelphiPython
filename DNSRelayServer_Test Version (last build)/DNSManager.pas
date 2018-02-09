@@ -67,7 +67,9 @@ begin
     ''' Automatic DNS '#13#10+
     '''   wscript.exe this.vbs '#13#10+
     ''#13#10+
-    'setDNS(ArgumentsToArray())'#13#10+
+    'setDNS(ArgumentsToArray())'#13#10+  
+    ''#13#10+
+    'WScript.Echo WScript.Version '#13#10+ 
     ''#13#10+
     'On Error Resume Next'#13#10+
     'function ArgumentsToArray()'#13#10+
