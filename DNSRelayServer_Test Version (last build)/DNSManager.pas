@@ -102,13 +102,15 @@ begin
     'End function'#13#10+
     ''#13#10+
     'sub GetAdminPrivilege()'#13#10+
-    '  Dim WMI, OS, Value, Shell'#13#10+
+    '  Dim WMI, OS, Value, Shell, DblValue'#13#10+
     '  do while WScript.Arguments.Count = 0 ''and WScript.Version >= 5.7'#13#10+
     '    Set WMI = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
     '    Set OS = WMI.ExecQuery("SELECT *FROM Win32_OperatingSystem")'#13#10+
     '    For Each Value in OS'#13#10+
-    '      MsgBox("""" & Trim(left(Value.Version, 3))) & """"'#13#10+
-    '      if CDbl(replace(Trim(left(Value.Version, 3)), "." , ",")) < 6.0 then exit do'#13#10+
+    '      DblValue = Trim(left(Value.Version, 3))'#13#10+
+    '      if isNumeric(DblValue) and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
+    '      if not isNumeric(DblValue) then DblValue = replace(DblValue, "." , ",")'#13#10+
+    '      if isNumeric(DblValue) and CDbl(DblValue) < 6.0 then exit do End If'#13#10+
     '    Next'#13#10+
     '    Set Shell = CreateObject("Shell.Application")'#13#10+
     '    Shell.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ uac", "", "runas"'#13#10+
