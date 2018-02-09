@@ -91,7 +91,7 @@ begin
     'function setDNS(listIP)'#13#10+
     '    Dim res,objNetCard,arrDNSServers,objWMIService,colNetCards'#13#10+
     '    res = False'#13#10+
-    '    Call GetAdminPrivilege()'#13#10+
+    //'    Call GetAdminPrivilege()'#13#10+
     '    Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")'#13#10+
     '    Set colNetCards = objWMIService.ExecQuery("Select * From Win32_NetworkAdapterConfiguration Where IPEnabled = True")'#13#10+
     '    For Each objNetCard in colNetCards'#13#10+
