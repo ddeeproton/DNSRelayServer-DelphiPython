@@ -163,7 +163,7 @@ Section "Uninstall"
   RMDir /r "$SMPROGRAMS\DNS Relay Server"
   
   Exec 'DNSRelayServer.exe /uninst'
-  Sleep 5000
+  Sleep 7000
 
   Delete "$INSTDIR\wget.exe"
   Delete "$INSTDIR\DNSRelayServer.exe"

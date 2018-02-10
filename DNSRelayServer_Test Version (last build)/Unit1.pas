@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.316';
+  CurrentApplicationVersion: string = '0.4.317';
   isDevVersion: Boolean = False;
 
 type
@@ -1465,7 +1465,9 @@ begin
   CheckBoxBindAllIPClick(nil);
   ButtonRefreshNetCardClick(nil);
 
-
+  //===============================
+  RefreshModeFilter;
+  {
   CheckBoxAlertEventsKnown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
   CheckBoxAlertEventsUnknown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
   CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
@@ -1478,11 +1480,13 @@ begin
   ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
   DsactiverlefiltragedufichierHost1.Checked := ButtonDisableHost.Down;
   DsactiverlefiltrageBlackword1.Checked := ButtonDisableBlackhost.Down;
+  }
   {
   ToolButtonBlockAll.Down := FileExists(DataDirectoryPath + 'disableAll.cfg')
                          or (FileExists(DataDirectoryPath + 'disableHost.cfg')
                          and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
   }
+  {
   toutbloquer1.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg')
                       or (FileExists(DataDirectoryPath + 'disableHost.cfg')
                       and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
@@ -1498,6 +1502,9 @@ begin
 
   Toutnormale1.Checked := not AllowAll.Checked and not DisallowAll.Checked;
   Toutnormal1.Checked := Toutnormale1.Checked;
+  }
+  //================
+
 
   CheckBoxNoTestDNSMaster.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
   CheckBoxNoCacheDNS.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
@@ -3893,10 +3900,12 @@ begin
   AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
   Toutautoriser1.Checked := AllowAll.Checked;
   DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
+
   ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
   ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
   Toutnormale1.Checked := not AllowAll.Checked and not DisallowAll.Checked;
   Toutnormal1.Checked := Toutnormale1.Checked;
+  toutbloquer1.Checked := DisallowAll.Checked;
   if isServerStarted then ActionDNS.clearCache; //ButtonApplyChangesClick(nil);
 end;
 
