@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 191
-  Top = 148
+  Left = 198
+  Top = 156
   Width = 528
   Height = 542
   Caption = 'DNS Relay Server'

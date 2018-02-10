@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.320';
+  CurrentApplicationVersion: string = '0.4.321';
   isDevVersion: Boolean = False;
 
 type
@@ -1990,7 +1990,7 @@ end;
 procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i, j, count: Integer;
-  filepath, dns, script, config_cache_memory, config_display_log: string;
+  filepath, dns, script, config_cache_memory, config_display_log, bat, cmd: string;
   bmp: TBitmap;
 begin
   try
@@ -2154,11 +2154,14 @@ begin
       if CheckListBoxDNSRelayIP.Checked[i]
       and (CheckListBoxDNSRelayIP.Items.Strings[i] <> '127.0.0.1') then
       begin
+        bat := DataDirectoryPath+'relayDNS'+IntToStr(i)+'.bat';
+        cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
+        WriteInFile(bat, '@start "titre" /B /WAIT /REALTIME '+cmd+#13#10'@exit');
+        if CheckBoxShowDebug.Checked then MemoLogs.Lines.Add(cmd);
         j := Length(listThreads);
         SetLength(listThreads, j+1);
         listThreads[j] := Unit1.ThreadProcess.Create(True);
-        listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
-        if CheckBoxShowDebug.Checked then MemoLogs.Lines.Add(listThreads[j].cmd);
+        listThreads[j].cmd := bat;
         listThreads[j].output := TStringList.Create;
         listThreads[j].EnMemo := MemoLogs;
         listThreads[j].indexThread := i;
