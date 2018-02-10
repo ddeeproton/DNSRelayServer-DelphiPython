@@ -334,10 +334,11 @@ procedure TFormInstall.installPython();
 var
   exePath, url, wget: string;
 begin
+
   if isPythonInstalled then
   begin
     CheckInstallation();
-    installSetuptools();
+    installMicrosoftVisual;
     exit;
   end;
   exePath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'python-2.7.13.msi';
@@ -394,6 +395,34 @@ begin
 end;
 
 
+procedure TFormInstall.installMicrosoftVisual();
+var
+  urlMicrosoftVisual, fileMicrosoftVisual: String;
+begin
+  if isMicrosoftVisualInstalled() then
+  begin
+    //ShowMessage('install');
+    CheckInstallation;
+    installSetuptools();
+    exit;
+  end else begin
+    //ShowMessage('NO install');
+  end;
+
+  urlMicrosoftVisual := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/DNSRelayServer_Test Version (last build)/setup/vcredist_x86.exe';
+  fileMicrosoftVisual := ExtractFilePath(Application.ExeName)+installDirectoryPath+'vcredist_x86.exe';
+  LabelMSVisual.Caption := PChar('Downloading...');
+  Download(urlMicrosoftVisual, fileMicrosoftVisual);
+  if not FileExists(fileMicrosoftVisual) then
+  begin
+    ShowMessage('no file downloaded');
+    exit;
+  end;
+  LabelMSVisual.Caption := PChar('Installation...');
+  ExecAndWait(fileMicrosoftVisual, '/q', launchAndWWindow);
+  CheckInstallation();
+end;
+
 
 procedure TFormInstall.installSetuptools();
 var
@@ -405,13 +434,7 @@ begin
     installDNS();
     exit;
   end;
-  if not isMicrosoftVisualInstalled() then
-  begin
-    //ShowMessage('install');
-    installMicrosoftVisual;
-  end else begin
-    //ShowMessage('NO install');
-  end;
+
   LabelSetuptools.Caption := PChar('cheking...');
   Application.ProcessMessages;
 
@@ -680,24 +703,6 @@ begin
   outExec := ExecAndRead('"'+getPythonPath+'python.exe" "'+pythonFile+'"');
   if FileExists(pythonFile) then DeleteFile(pythonFile);
   result := outExec = '[ok]'#13#10;
-end;
-
-procedure TFormInstall.installMicrosoftVisual();
-var
-  urlMicrosoftVisual, fileMicrosoftVisual: String;
-begin
-  urlMicrosoftVisual := 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/DNSRelayServer_Test Version (last build)/setup/vcredist_x86.exe';
-  fileMicrosoftVisual := ExtractFilePath(Application.ExeName)+installDirectoryPath+'vcredist_x86.exe';
-  LabelMSVisual.Caption := PChar('Downloading...');
-  Download(urlMicrosoftVisual, fileMicrosoftVisual);
-  if not FileExists(fileMicrosoftVisual) then
-  begin
-    ShowMessage('no file downloaded');
-    exit;
-  end;
-  LabelMSVisual.Caption := PChar('Installation...');
-  ExecAndWait(fileMicrosoftVisual, '/q', launchAndWWindow);
-  CheckInstallation();
 end;
 
 end.
