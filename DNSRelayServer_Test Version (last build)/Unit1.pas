@@ -12,8 +12,8 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.316.5';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.316';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
