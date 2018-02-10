@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.318';
+  CurrentApplicationVersion: string = '0.4.319';
   isDevVersion: Boolean = False;
 
 type
@@ -327,7 +327,6 @@ type
     procedure Afficher1Click(Sender: TObject);
     procedure Quitter1Click(Sender: TObject);
     procedure ToolButton7Click(Sender: TObject);
-    procedure ToolButton5Click(Sender: TObject);
     procedure ToolButton4Click(Sender: TObject);
     procedure ToolButton6Click(Sender: TObject);
     procedure ToolButton3Click(Sender: TObject);
@@ -372,7 +371,6 @@ type
     procedure TimerStartInBackgroundTimer(Sender: TObject);
     procedure toujoursenavant1Click(Sender: TObject);
     procedure setTheme(color, bg:TColor);
-    procedure CheckBoxSwitchThemeClick(Sender: TObject);
     procedure CheckBoxAlertEventsKnownClick(Sender: TObject);
     procedure CheckBoxAlertEventsUnknownClick(Sender: TObject);
     procedure CheckBoxAlertEventDisallowedClick(Sender: TObject);
@@ -421,7 +419,6 @@ type
     procedure DsactiverlefiltragedufichierHost1Click(Sender: TObject);
     procedure DsactiverlefiltrageBlackword1Click(Sender: TObject);
     procedure ToolButtonBlockAllClick(Sender: TObject);
-    procedure PageControl1Change(Sender: TObject);
     procedure DisallowAllClick(Sender: TObject);
     procedure AllowAllClick(Sender: TObject);
     procedure AjouterBlackworkds1Click(Sender: TObject);
@@ -559,7 +556,7 @@ var
   LastPositionFormAlertTop: integer = 0;
   CountFormAlert: integer = 0;
   startedInBackground: Boolean = False;
-  //currentFormStyle : TFormStyle;
+
   lastLogOutput: string = '';
   isApplicationLoading: Boolean = True;
   opacity: Integer = 0;
@@ -618,19 +615,15 @@ begin
       if form1.ListView1.Items[i].Caption =  domain then isNew := false;
     end;
 
-      //ip := getDomain(Form1.EditFilehost.Text, domain);
     ip := ipdomain;
     ip := onlyChars(ip);
-      //if ipdomain = '' then imgIndex := 0
-      //else
+
     if Pos('127.0.0', ip) = 0 then imgIndex := 0
     else imgIndex := 3;
 
     if isNew then
     begin
       EditerLigne2(form1.ListView1, -1, imgIndex, domain, ipdomain, imgIndex = 3);
-      //i := form1.ListView1.Items.Count;
-      //EditerLigne2(form1.ListView1, i, imgIndex, ipdomain, domain, imgIndex = 3);
       Form1.refreshListView1Click();
     end;
 
@@ -652,10 +645,6 @@ begin
       
       data.domain := domain;
       data.typeAlert := imgIndex;
-      {
-      AlertManager.AddAlert(AlertManager.MainListAlert, data);
-      }
-      //TimerAlert.Enabled := True;
 
       if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
       begin
@@ -747,31 +736,19 @@ var
     sl: TStringList;
     txt: string;
   begin
-    //if Form1.CheckBoxPureServer.Checked then exit;
 
     repeat
 
       BytesRead := 0;
-      {Llenamos un troncho de la pipe, igual a nuestro buffer}
       PeekNamedPipe(PaLeer, nil, 0, nil, tb, nil);
       if tb^=0 then
         break;
       ReadFile(PaLeer,Buffer[0],CUANTOBUFFER,BytesRead,nil);
-      {La convertimos en una string terminada en cero}
       Buffer[BytesRead]:= #0;
-      {Convertimos caracteres DOS a ANSI}
       OemToAnsi(Buffer,Buffer);
 
       txt := StringReplace(String(Buffer), ';EOL;', '', [rfReplaceAll, rfIgnoreCase]);
-      //form1.MemoLogs.Lines.Text := form1.MemoLogs.Lines.Text + txt;
 
-      {
-      if Pos(';EOL;', txt) = 0 then
-      begin
-        output.Add(txt);
-      end
-      else begin
-      }
       sl:=TStringList.Create;
       SplitStr(String(Buffer),';EOL;',sl);
       for i:=0 to sl.Count-1 do
@@ -779,14 +756,9 @@ var
         txt := String(sl.Strings[i]);
         txt := StringReplace(txt, #13#10, '', [rfReplaceAll, rfIgnoreCase]);
         output.Add(txt);
-        //OnOut0put(txt);
       end;
       form1.Timer1.Enabled := True;
-      //end;
 
-
-      //EnMemo.Lines.Add(String(Buffer));
-      //form1.Memo1MemoLogs.Lines.Add(String(Buffer));
     until (BytesRead < CUANTOBUFFER);
   end;
 
@@ -797,7 +769,7 @@ begin
     binherithandle       := true;
     lpsecuritydescriptor := nil;
   end;
-  {Creamos el pipe...}
+
   if Createpipe (PaLeer, PaEscribir, @Seguridades, 0) then
   begin
     Buffer  := AllocMem(CUANTOBUFFER + 1);
@@ -825,16 +797,13 @@ begin
       try
         form1.onServerDNSStart();
         h := ProcessInfo.hProcess;
-
     	  form1.onProcessCreated(ProcessInfo.dwProcessId);
-        {Espera a que termine la ejecucion}
         new(tb);
         repeat
           CuandoSale := WaitForSingleObject( ProcessInfo.hProcess,100);
           readFromPipe;
           Application.ProcessMessages;
         until (CuandoSale <> WAIT_TIMEOUT);
-        {Leemos la Pipe}
         dispose(tb);
       except
         On E : EOSError do exit;
@@ -852,8 +821,6 @@ begin
       On E : EAccessViolation do exit;
     end;
 
-
-
     try
       if Assigned(EnMemo) and (EnMemo <> nil) then
         EnMemo.Lines.Add(String('Stoped'));
@@ -863,7 +830,6 @@ begin
       On E : EListError do Application.Terminate;
     end;
 
-
   end;
 
 end;
@@ -872,13 +838,7 @@ end;
 procedure ThreadProcess.Execute();
 begin
   //RunDosInMemo('ping.exe 127.0.0.1', Form1.Memo1MemoLogs);
-  Sleep(1000);
-  try
-    RunDosInMemo(cmd, EnMemo);
-  except
-    On E : EOSError do Application.Terminate;
-    On E : EAccessViolation do Application.Terminate;
-  end;
+  RunDosInMemo(cmd, EnMemo);
 end;
 
 procedure ThreadProcess.Execute2(cmd:String; EnMemo:TMemo);
@@ -892,29 +852,15 @@ var
 begin
   Application.ProcessMessages;
   try
-  ImageList4.GetIcon(3, Application.Icon);
-  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-  //ToolButton11.ImageIndex := 8;
-  setButtonStartText(1);
-  {
-  SpeedButton1.Glyph.Assign(nil);
-  bmp := TBitmap.Create;
-  ImageList2.GetBitmap(8, bmp);
-  SpeedButton1.Glyph.Assign(bmp);
-  SpeedButton1.Hint := 'Arrêter le serveur DNS';
-
-  Image1.Picture.Assign(nil);
-  ImageList2.GetBitmap(8, Image1.Picture.Bitmap);
-  }
-  isServerStarted := True;
-  //ToolButton11.Enabled := True;
-  SpeedButton1.Hint := 'Arrêter le serveur DNS';
-  Panel9.Color := clGreen;
-  ServerFailStartCount := 0;
-  TimerRestart.Enabled := False;
-  TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
-  ServerDoStart := True;
-  Application.ProcessMessages;
+    ImageList4.GetIcon(3, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+    setButtonStartText(1);
+    isServerStarted := True;
+    ServerFailStartCount := 0;
+    TimerRestart.Enabled := False;
+    TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
+    ServerDoStart := True;
+    Application.ProcessMessages;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
@@ -926,67 +872,32 @@ var
   bmp: TBitmap; 
 begin
   try
-  if ServerDoStart then
-  begin
-    ImageList4.GetIcon(2, Application.Icon);
-    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-    //ToolButton11.ImageIndex := 13;
-
-    setButtonStartText(2);
-    {
-    SpeedButton1.Glyph.Assign(nil);
-    bmp := TBitmap.Create;
-    ImageList2.GetBitmap(13, bmp);
-    SpeedButton1.Glyph.Assign(bmp);
-    SpeedButton1.Hint := 'Arrêter le serveur DNS';
-    Image1.Picture.Assign(nil);
-    ImageList2.GetBitmap(13, Image1.Picture.Bitmap);
-    }
-
-
-
-    inc(ServerFailStartCount);
-    TimerRestart.Enabled := True;
-    exit;
-  end
-  else begin
-    ImageList4.GetIcon(1, Application.Icon);
-    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-    //ToolButton11.ImageIndex := 7;
-    setButtonStartText(0);
-
-    {
-    SpeedButton1.Glyph.Assign(nil);
-    bmp := TBitmap.Create;
-    ImageList2.GetBitmap(7, bmp);
-    SpeedButton1.Glyph.Assign(bmp);
-    SpeedButton1.Hint := 'Démarrer le serveur DNS';
-    Image1.Picture.Assign(nil);
-    ImageList2.GetBitmap(7, Image1.Picture.Bitmap);
-    }
-
-    TimerCheckSystemChanges.Enabled := False;
-  end;
-
-  isServerStarted := False;
-
-  if CheckBoxAllowModifyNetCard.Checked then
-  begin
-    ButtonNetCardDesintegrationClick(nil);
-  end;
-
-
-  Application.ProcessMessages;
+    if ServerDoStart then
+    begin
+      ImageList4.GetIcon(2, Application.Icon);
+      Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+      setButtonStartText(2);
+      inc(ServerFailStartCount);
+      TimerRestart.Enabled := True;
+      exit;
+    end
+    else begin
+      ImageList4.GetIcon(1, Application.Icon);
+      Systray.ModifIconeTray(Caption, Application.Icon.Handle);
+      setButtonStartText(0);
+      TimerCheckSystemChanges.Enabled := False;
+    end;
+    isServerStarted := False;
+    if CheckBoxAllowModifyNetCard.Checked then
+    begin
+      ButtonNetCardDesintegrationClick(nil);
+    end;
+    Application.ProcessMessages;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
   end;
 end;
-
-
-
-
-
 
 
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -1007,19 +918,8 @@ begin
       TTimer(Form1.Controls[i]).Enabled := False;
   end;
   Application.ProcessMessages;
-
   if FormDialogIP <> nil then FormDialogIP.Close;
-
-  //CanClose := False;
-  //if Length(listThreads) > 0 then onServerDNSStop();
   Systray.EnleveIconeTray();
-
-  //if ServerDoStart or isServerStarted then ButtonCloseClick(Sender);
-  //Application.ProcessMessages;
-  //Sleep(2000);
-
-  //Application.Terminate;
-  //ProcessManager.DestroyProcess(Application.Handle);
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
@@ -1031,81 +931,15 @@ begin
     KillTask('python.exe');
     ImageList4.GetIcon(2, Application.Icon);
     Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-
     Timer1.Enabled := False;
-    // bug?
-    //PanelRestart.Visible := False;
     Application.ProcessMessages;
-    //Notebook1.PageIndex := 4;
-
-    {
-    i := 0;
-    while (i < Length(listThreads)) and (listThreads[i] <> nil) do
-    begin
-      DestroyProcess(listThreads[i].h);
-      Application.ProcessMessages;
-      Inc(i);
-    end;
-    Sleep(1000);
-
-    i := 0;
-    while (i < Length(listThreads)) and (listThreads[i] <> nil) do
-    begin
-      listThreads[i].Terminate;
-      Inc(i);
-    end;
-    Sleep(1000);
-
-    i := 0;
-    while (i < Length(listThreads)) and (listThreads[i] <> nil) do
-    begin
-      Application.ProcessMessages;
-      listThreads[i].Free;
-      Inc(i);
-    end;
-    }
-    
-    SetLength(listThreads, 0);
-
-
-
-                        
+    SetLength(listThreads, 0);                 
     Application.ProcessMessages;
-    Sleep(100);
     setButtonStartText(0);
-    //if ToolButton11.ImageIndex = 13 then
-    //begin
-      //ToolButton11.ImageIndex := 7;
-      {
-      SpeedButton1.Glyph.Assign(nil);
-      bmp := TBitmap.Create;
-      ImageList2.GetBitmap(7, bmp);
-      SpeedButton1.Glyph.Assign(bmp);
-      SpeedButton1.Hint := 'Arrêter le serveur DNS';
-      Image1.Picture.Assign(nil);
-      ImageList2.GetBitmap(7, Image1.Picture.Bitmap);
-      }
-
-    //end;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
   end;
- {
-  for i:=0 to Length(listThreads) do
-  begin
-    if Assigned(listThreads[i]) then
-      if not listThreads[i].Terminated then
-        listThreads[i].DoTerminate;
-  end;
-
-  for i:=0 to Length(listThreads) do
-  begin
-    if Assigned(listThreads[i]) then
-      listThreads[i].Destroy;
-  end;
-
-           }
 end;
 
 // Add DNS MASTER
@@ -1158,7 +992,6 @@ begin
     exit;
   end;
   dns := ListBoxDNSMaster.Items.Strings[i];
-  //txt := InputBox('Update DNS Master', 'Exemple 209.244.0.3', txt);
   if not InputQuery('Update DNS Master', 'Exemple 209.244.0.3', dns) then exit;
   ListBoxDNSMaster.Items.Strings[i] := dns;
   ConfigDNSMaster[i] := dns;
@@ -1223,18 +1056,6 @@ var
   canClose: Boolean;
 
 begin
-
-
-{
-  if isXP() then
-    MemoLogs.Lines.Add('OS is XP')
-  else
-    MemoLogs.Lines.Add('OS is not XP');
-}
-
-  //MemoLogs.Lines.Add('Current OS: '+IntToStr(SysUtils.Win32MajorVersion));
-  //MemoLogs.Lines.Add(Application.ExeName);
-  //if IsUserAnAdmin() then ShowMessage('admin') else ShowMessage('no admin');
   if not IsUserAnAdmin() then
   begin
     param := '';
@@ -1247,19 +1068,14 @@ begin
     KillProcess(Self.Handle);
     Application.Terminate;
   end;
-
   forOldVersions();
-
-  // Masque la fenêtre de la taskbar
+  // Hide window from taskbar
   SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
-
   TimerAfterFormCreate.Enabled := True;
-  //PageControl1.OwnerDraw := True;   (bug win7)
   ServerDoStart := False;
   ServerFailStartCount := 0;
   GroupBoxUpdateTheme.Visible := False;
   GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
-  //PanelMessage.Visible := False;
 
   Form1.Width := Form1.Constraints.MinWidth * 2;
   Form1.Height := Form1.Constraints.MinHeight * 2;
@@ -1270,15 +1086,10 @@ begin
   Form1.Top := Screen.WorkAreaHeight - Form1.Height;
   Form1.Left := Screen.WorkAreaWidth - Form1.Width;
 
-  //GroupBox5.Height := Form1.Height div 2;
-  //GroupBox5.Width := Form1.Width div 2;
-  //ShowMessage(ExecAndRead('ping.exe 127.0.0.1'));
-
   if (ParamCount() >= 1) and (ParamStr(1) = '/taskschd') then
   begin         
     Masquer1Click(nil);
     StopDNS1Click(nil);
-    //Sleep(1000);
     TimerBootNoXP.Enabled := True;
     exit;
   end;
@@ -1305,8 +1116,6 @@ begin
     KillProcess(Self.Handle);
     Application.Terminate;
   end;
-
-
 
   if isDevVersion then txt := ' alpha' else txt := '';
   Form1.Caption := PChar('DNS Relay Server '+CurrentApplicationVersion+txt);
@@ -1351,11 +1160,9 @@ begin
   GroupBox2.Align := alClient;
   GroupBox3.Align := alClient;
   GroupBox4.Align := alClient;
-  //GroupBox5.Align := alClient;
   GroupBox6.Align := alClient;
   Notebook1.Align := alClient;
   PageControl1.Align := alClient;
-  //ListBoxBlacklist.Align := alClient;
   ScrollBox1.Align := alClient;
   ScrollBox2.Align := alClient;
   ScrollBox3.Align := alClient;
@@ -1403,16 +1210,10 @@ begin
   if FileExists(DataDirectoryPath + 'EditExecOnDisconnected.cfg') then
     EditExecOnDisconnected.Text := ReadFromFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg');
 
-  //if FileExists(SlaveDNSIPConfig) then
-  //  CheckListBoxDNSRelayIP.Items.LoadFromFile(SlaveDNSIPConfig);
-  //CBoxDNSServerSlaveIP.Text := ReadFromFile(SlaveDNSIPConfig);
-
-  //SpinEditAlertDuration.Value := 10;
   if FileExists(DataDirectoryPath + 'alertDisplayDuration.cfg') then
     SpinEditAlertDuration.Value := StrToInt(ReadFromFile(DataDirectoryPath + 'alertDisplayDuration.cfg'))
   else SpinEditAlertDuration.Value := 10;
   if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
-
 
   if FileExists(SlaveDNSPortConfig) then
     SpinPort.Value := StrToInt(ReadFromFile(SlaveDNSPortConfig));
@@ -1427,7 +1228,7 @@ begin
   if FileExists(BlackListCfgFile) then
     ListBoxBlacklist.Items.LoadFromFile(BlackListCfgFile);
 
-  SpinEditTTLCache.Value := 24;
+  SpinEditTTLCache.Value := 1;
   if FileExists(DataDirectoryPath + 'SpinEditTTLCache.cfg') then
      SpinEditTTLCache.Value := StrToInt(ReadFromFile(DataDirectoryPath + 'SpinEditTTLCache.cfg'));
   TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
@@ -1442,8 +1243,6 @@ begin
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
   CheckBoxShowDebug.Checked := FileExists(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
 
-
-  //CheckBoxSwitchTheme.Checked := FileExists(DataDirectoryPath + 'checkSwitchTheme.cfg');
   ComboBoxCurrentTheme.OnSelect := nil;
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
     ComboBoxCurrentTheme.Items.LoadFromFile(DataDirectoryPath + 'ThemeNames.cfg');
@@ -1451,8 +1250,6 @@ begin
   ComboBoxCurrentTheme.ItemIndex := 0;
   if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then
     ComboBoxCurrentTheme.ItemIndex := StrToInt( ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'));
-  //ShowMessage(inttostr(StrToInt(ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'))));
-  //ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
   ComboBoxCurrentThemeSelect(ComboBoxCurrentTheme);
 
   ComboBoxPosLogs.ItemIndex := 1;
@@ -1465,46 +1262,7 @@ begin
   CheckBoxBindAllIPClick(nil);
   ButtonRefreshNetCardClick(nil);
 
-  //===============================
   RefreshModeFilter;
-  {
-  CheckBoxAlertEventsKnown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
-  CheckBoxAlertEventsUnknown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
-  CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
-  inconnus1.Checked := CheckBoxAlertEventsUnknown.Checked;
-  connus1.Checked := CheckBoxAlertEventsKnown.Checked;
-  bloques1.Checked := CheckBoxAlertEventDisallowed.Checked;
-
-
-  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
-  DsactiverlefiltragedufichierHost1.Checked := ButtonDisableHost.Down;
-  DsactiverlefiltrageBlackword1.Checked := ButtonDisableBlackhost.Down;
-  }
-  {
-  ToolButtonBlockAll.Down := FileExists(DataDirectoryPath + 'disableAll.cfg')
-                         or (FileExists(DataDirectoryPath + 'disableHost.cfg')
-                         and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
-  }
-  {
-  toutbloquer1.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg')
-                      or (FileExists(DataDirectoryPath + 'disableHost.cfg')
-                      and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
-
-  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
-  Toutautoriser1.Checked := AllowAll.Checked;
-  //ToolButtonBlockAll.Down := AllowAll.Checked;
-  ButtonDisableBlackhost.Down := AllowAll.Checked;
-  ButtonDisableHost.Down := AllowAll.Checked;
-  DsactiverlefiltragedufichierHost1.Checked := AllowAll.Checked;
-  DsactiverlefiltrageBlackword1.Checked := AllowAll.Checked;
-
-  Toutnormale1.Checked := not AllowAll.Checked and not DisallowAll.Checked;
-  Toutnormal1.Checked := Toutnormale1.Checked;
-  }
-  //================
-
 
   CheckBoxNoTestDNSMaster.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
   CheckBoxNoCacheDNS.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
@@ -1513,33 +1271,20 @@ begin
   CheckBoxRemoteAccess.Checked := FileExists(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg');
   TimerRemoteAccess.Enabled := CheckBoxRemoteAccess.Checked;
 
-
   CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
 
   CheckBoxExecOnDisconnected.Checked := FileExists(DataDirectoryPath + 'CheckBoxExecOnDisconnected.cfg');
 
-  //TimerCheckSystemChanges.Enabled := CheckBoxRestartOnNetworkInterfaceChange.Checked;
-
-
   refreshCheckBox(CheckBoxStartWithWindows);
 
-  //TActionManageIP.getIPCustomHostFiles(ComboBoxSelectIPBlackhost, '_blackhost.txt');
-  //TActionManageIP.getIPCustomHostFiles(ComboBoxSelectIPhostfile, '_hostfile.txt');
   TActionManageIP.load();
-
 
   ListViewCreate(ListView1);
   ListView1.Clear;
   getDomains(EditFilehost.Text, ListView1);
 
-
-
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
-  //setTheme(RGB(10,30,40), RGB(220,155,220));
-
-  //ComboBoxSelectIPBlackhost.Items.s
 end;
-
 
 
 procedure TForm1.setTheme(color, bg:TColor);
@@ -1569,8 +1314,6 @@ procedure TForm1.setThemeBg(bg:TColor);
 var
   bg2:TColor;
 begin
-
-
   Form1.Color := bg;
   GroupBox2.Color := bg;
   GroupBox3.Color := bg;
@@ -1651,6 +1394,8 @@ begin
   EditSourceURL.Font.Color := bg2;
   SpinEditTTLCache.Font.Color := bg2;
 end;
+
+
 procedure TForm1.setThemeFont(color:TColor);
 begin
   LabelUpdateTheme.Font.Color := color;
@@ -1722,8 +1467,6 @@ begin
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
 
-
-
   if not ServerDoStart
   and CheckBoxAutostartDNSOnBoot.Checked
   and not autostarted then
@@ -1731,13 +1474,6 @@ begin
     ServerDoStart := True;
     ButtonStartClick(nil);
     exit;
-  {
-    ServerDoStart := True;
-    ImageList4.GetIcon(2, Application.Icon);
-    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-    ToolButton11.ImageIndex := 13;
-    TimerRestart.Enabled := True;
-   }
   end;
 
 end;
@@ -1770,25 +1506,14 @@ end;
 procedure TForm1.MemoLogsChange(Sender: TObject);
 var LineCount: Integer;
 begin
-  //if not CheckBoxScrollLogs.Checked then exit;
   LineCount := TMemo(Sender).Perform(EM_GETLINECOUNT, 0, 0) - 1;
   SendMessage(TMemo(Sender).Handle, EM_LINESCROLL, 0, LineCount);
 end;
 
 
 procedure TForm1.onProcessCreated(h: Cardinal);
-//var txt: string;
 begin
   WriteInFile(SlaveDNSProcesslist, IntToStr(h));
-  {
-  exit;
-  txt := '';
-  if FileExists(SlaveDNSProcesslist) then
-    txt := txt + lireFichier(SlaveDNSProcesslist);
-  if txt <> '' then
-    txt := txt + ';';
-  ecrireDansUnFichier(SlaveDNSProcesslist, txt+IntToStr(h));
-  }
 end;
 
 procedure TForm1.closeProcessCreated();
@@ -1797,7 +1522,6 @@ var
   txt: string;
   sl: TStringList;
   h: Cardinal;
-
 begin
   if not FileExists(SlaveDNSProcesslist) then exit;
 
@@ -1845,15 +1569,14 @@ procedure TForm1.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Intege
 var
   Pos:TPoint;
 begin
-  //action kan on clique
-  GetCursorPos(Pos);//positon de la souris;
+  GetCursorPos(Pos);
   case X of
-    WM_LBUTTONDBLCLK: Afficher1Click(nil); //Double klik gauche
-    WM_LBUTTONDOWN:  Afficher1Click(nil);    //Bouton gauche pousse
-    WM_LBUTTONUP: ; //PopupMenu1.Popup(Pos.X,Pos.Y); //Bouton gauche lève
-    WM_RBUTTONDBLCLK:; //Double klik droit
-    WM_RBUTTONDOWN:;    //Bouton droit pousse
-    WM_RBUTTONUP:PopupMenu1.Popup(Pos.X,Pos.Y); //Bouton droite lève: Popup
+    WM_LBUTTONDBLCLK: Afficher1Click(nil); 
+    WM_LBUTTONDOWN:  Afficher1Click(nil); 
+    WM_LBUTTONUP: ; //PopupMenu1.Popup(Pos.X,Pos.Y); 
+    WM_RBUTTONDBLCLK:; 
+    WM_RBUTTONDOWN:;   
+    WM_RBUTTONUP:PopupMenu1.Popup(Pos.X,Pos.Y);
   end;
 end;
 
@@ -1862,58 +1585,16 @@ procedure TForm1.Masquer1Click(Sender: TObject);
 begin
   Top := -Form1.Height;
   Left := -Form1.Width;
-  //Self.Hide;
-  {
-  TimerFadeIn.Enabled := False;
-  TimerFadeOut.Enabled := True;
-  }
-  {
-  Top := Screen.Height;
-  Left := Screen.Width;
-  Top := -Form1.Height;
-  Left := -Form1.Width;
-  }
-
-  //currentFormStyle := Self.FormStyle;
-  //Self.FormStyle := fsStayOnTop;
-  //Systray.EnleveIconeTray;
-  //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
-
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
-  //if opacity > 10 then exit;
   Self.Show;
   try
-
-  //if Top > Screen.WorkAreaHeight - Self.Height then
     Top := Screen.WorkAreaHeight - Self.Height;
-  //if Left > Screen.WorkAreaWidth - Self.Width then
     Left := Screen.WorkAreaWidth - Self.Width;
-  //Self.WindowState := wsNormal;
-  //TimerFadeOut.Enabled := False;
-  //TimerFadeIn.Enabled := True;
-  Application.Restore;
-  Application.BringToFront;
-  {
-  ToolBar3.Realign;
-  ToolBar3.Repaint;
-  ToolBar3.Update;
-  ToolBar3.Refresh;
-  }
-  //Self.FormStyle := currentFormStyle;
-  {
-
-  Application.BringToFront;
-  //Systray.EnleveIconeTray;
-  //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
-  {
-  // Restaure la fenêtre de la taskbar
-  SetWindowLong(Application.Handle, GWL_EXSTYLE,
-      GetWindowLong(Application.Handle, GWL_EXSTYLE)
-      or WS_EX_TOOLWINDOW);
-      }
+    Application.Restore;
+    Application.BringToFront;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
@@ -1933,7 +1614,6 @@ begin
   Notebook1.PageIndex := 5;
 end;
          
-
 var
   ResizePanelConfig_oldHeight: Integer = 0;
   ResizePanelConfig_oldWidth: Integer = 0;
@@ -1942,42 +1622,12 @@ procedure TForm1.ResizePanelConfig();
 var h, w: Integer;
 begin
   refreshCheckBox(CheckBoxStartWithWindows);
-
   if Form1.WindowState = wsMaximized then exit;
-  {
-  if GroupBox5.Visible and ((Splitter1.Align = alLeft) or (Splitter1.Align = alRight)) then
-  begin
-    if Form1.Width < 450 + GroupBox5.Width then
-      Form1.Width := 450 + GroupBox5.Width;
-  end else begin
-    if Form1.Width < 420 then
-      Form1.Width := 420;
-  end;
-
-  if Splitter1.Visible then
-  begin
-    if Form1.Height < 540 then
-    begin
-      GroupBox5.Height := 100;
-      Form1.Height := 540;
-
-    end;
-  end else begin
-    if Form1.Height < 350 then Form1.Height := 350;
-  end;
-  if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
-    Form1.Top := Screen.WorkAreaHeight - Form1.Height;
-
-  if Form1.Left > Screen.WorkAreaWidth - Form1.Width then
-    Form1.Left := Screen.WorkAreaWidth - Form1.Width;
-  }
-  // Main
   if GroupBox5.Visible or Panel1.Visible then
   begin
     Form1.Constraints.MinHeight := 300;
     h := ResizePanelConfig_oldHeight;
     w := ResizePanelConfig_oldWidth;
-    //Afficher1Click(nil);
   end else
   begin
     Form1.Constraints.MinHeight := Panel5.Height + 40;
@@ -1992,12 +1642,6 @@ begin
   if h > Form1.Height then Form1.Height := h;
   if w > Form1.Width then Form1.Width := w;
   Application.ProcessMessages;
-  //Sleep(1000);
-end;
-
-procedure TForm1.ToolButton5Click(Sender: TObject);
-begin
-  //Notebook1.PageIndex := 1;
 end;
 
 procedure TForm1.ToolButton8Click(Sender: TObject);
@@ -2039,45 +1683,6 @@ begin
   GroupBox5.Visible := True;  
   GroupBox5.Align := alClient;
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
-  exit;
-
-   {
-  if Notebook1.PageIndex <> inexPage then
-  begin
-    Panel1.Visible := False;
-    Splitter1.Visible := False;
-  end;
-    }
-  isIndexChanged := Notebook1.PageIndex <> inexPage;
-  oldVisibility := Panel1.Visible;
-
-  Panel1.Visible := not Panel1.Visible or isIndexChanged;
-  Splitter1.Visible := Panel1.Visible;
-
-  isVisibleChanged :=  Panel1.Visible <> oldVisibility;
-  //Splitter1.Visible := (GroupBox5.Visible and Panel1.Visible);
-
-  if not Panel1.Visible then
-  begin
-    GroupBox5.Align := alClient;
-    GroupBox5.Visible := True;
-    Splitter1.Visible := False;
-  end else begin
-    //Splitter1.Align := alBottom;
-    //GroupBox5.Align := alBottom;
-    //GroupBox5.Height := 100;
-    if isVisibleChanged or isApplicationLoading then ComboBoxPosLogsSelect(ComboBoxPosLogs);
-  end;
-  {
-  ToolButton8.Down := Panel1.Visible and (inexPage = 0);
-  ToolButtonBlackwords.Down := Panel1.Visible and (inexPage = 1);
-  ToolButton4.Down := Panel1.Visible and (inexPage = 2);
-  ToolButton6.Down := Panel1.Visible and (inexPage = 3);
-  ToolButton3.Down := Panel1.Visible and (inexPage = 4);
-  }
-  Notebook1.PageIndex := inexPage;
-  //ResizePanelConfig();
-  PanelMessage.Visible := False;
 end;
 
 
@@ -2194,9 +1799,6 @@ end;
 procedure TForm1.SpinEditTTLCacheChange(Sender: TObject);
 begin
   if isApplicationLoading then exit;
-
-  //WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
-
   TimerSaveChange.Enabled := False;
   TimerSaveChange.Enabled := True;
 end;
@@ -2216,15 +1818,11 @@ begin
   debug('TimerSaveChangeTimer');
   TTimer(Sender).Enabled := False;
   if isApplicationLoading then exit;
-
   WriteInFile(FilehostPathConfig, EditFilehost.Text);
-  //CheckListBoxDNSRelayIP.Items.SaveToFile(SlaveDNSIPConfig);
-  //WriteInFile(SlaveDNSIPConfig, CBoxDNSServerSlaveIP.Text);
   WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
   WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
   WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
   WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
-
   WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
   TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
   TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
@@ -2244,6 +1842,7 @@ begin
   TimerHideMessage.Enabled := True;
 end;
 
+
 procedure TForm1.ToolButton10Click(Sender: TObject);
 begin
   if MessageDlg(PChar('Effacer les domaines inconnus (ceux avec une boule noir) ?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
@@ -2252,7 +1851,6 @@ begin
   getDomains(EditFilehost.Text, ListView1);
   ListView1.OnChange := ListView1Change;
 end;
-
 
 
 procedure TForm1.Autoriser1Click(Sender: TObject);
@@ -2265,7 +1863,6 @@ begin
   MemoLogs.Lines.Add('Débloquage de '+SelectedListItem.Caption);
   SelectedListItem.Delete;
   refreshListView1Click();
-  //if isServerStarted then PanelRestart.Visible := True;
   if isServerStarted then ActionDNS.clearCache;
 end;
 
@@ -2275,13 +1872,12 @@ var
 begin
   SelectedListItem := ListView1.Selected;
   if not Assigned(SelectedListItem) then exit;
-  //txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]);
   ip := SelectedListItem.SubItems.Strings[0];
+  //txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]); // This method can't cancel input
   if not InputQuery('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', ip) then exit;
   setDomain( EditFilehost.Text, SelectedListItem.Caption, ip);
   SelectedListItem.SubItems.Strings[0] := ip;
   refreshListView1Click();
-  //if isServerStarted then PanelRestart.Visible := True;
   if isServerStarted then ActionDNS.clearCache;
 end;
 
@@ -2294,7 +1890,6 @@ begin
   SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
   MemoLogs.Lines.Add('Bloquage de '+SelectedListItem.Caption);
   refreshListView1Click();
-  //if isServerStarted then PanelRestart.Visible := True;
   if isServerStarted then ActionDNS.clearCache;
 end;
 
@@ -2304,12 +1899,8 @@ var
   ListItem:TListItem;
   CurPos:TPoint;
 begin
-  // Si on clique dans la case à cocher, on séléctionne la ligne
-  // Donc on récupère la position de la souris sur l'écran
   GetcursorPos(MousePos);
-  // on indique sa position en fonction du ListView
   CurPos:=TListView(Sender).ScreenToClient(MousePos);
-  // On récupère la ligne du listView où se trouve la souris
   ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
   if Assigned(ListItem) then
   begin
@@ -2326,24 +1917,15 @@ var
 begin
   for i := 0 to ListView1.items.count - 1 do
   begin
-            {
-    //ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].SubItems.Strings[0]);
-
-
-    //ip := onlyChars(ip);
-    //ShowMessage('"'+ip+'"');
-    if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
-    else }
     ip := getDomain(EditFilehost.Text, ListView1.Items.Item[i].Caption);
     ipdomain := ListView1.Items.Item[i].SubItems.Strings[0];
     if Pos('127.0.0.', ipdomain) > 0 then ListView1.Items.Item[i].ImageIndex := 3
     else if ip = '' then ListView1.Items.Item[i].ImageIndex := 0
     else ListView1.Items.Item[i].ImageIndex := 1;
-    // On coche la case du proxy actuel (si actif) et decoche les autres
     ListView1.Items.Item[i].Checked := ListView1.Items.Item[i].ImageIndex > 0;
   end;
-
 end;
+
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 var i, j: Integer;
@@ -2355,7 +1937,7 @@ begin
   for j := 0 to Length(listThreads) - 1 do
   begin
     try
-      if j >= Length(listThreads) -1 then exit;
+      if j > Length(listThreads) -1 then exit;
       if listThreads[j] = nil then exit;
       if listThreads[j].Terminated then exit;
       if listThreads[j].output.Count = 0 then exit;
@@ -2372,42 +1954,32 @@ begin
 end;
 
 
-
 procedure TForm1.ButtonForceStartClick(Sender: TObject);
 begin
   KillTask('python.exe');
   ButtonStartClick(nil);
 end;
 
+
 procedure TForm1.ToolButton11Click(Sender: TObject);
 begin
-
-
   if not TToolButton(Sender).Enabled then exit;
   TToolButton(Sender).Enabled := False;
   if not ServerDoStart then
   begin
-    //if MessageDlg('Démarrer le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
-    //begin
-      ButtonStartClick(nil);
-    //end;
+    ButtonStartClick(nil);
   end
   else begin
     //if MessageDlg('Arrêter le serveur?',  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     //begin
       ServerDoStart := False;
-      //ToolButton11.Enabled := False;
       TimerRestart.Enabled := False;
-
       Application.ProcessMessages;
       ButtonCloseClick(nil);
-
-
     //end;
   end;
   PanelRestart.Visible := False;
   Application.ProcessMessages;
-  Sleep(1000);
   TToolButton(Sender).Enabled := True;
 end;
 
@@ -2417,342 +1989,193 @@ procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i, j, count: Integer;
   filepath, dns, script, config_cache_memory, config_display_log: string;
-  //net: tNetworkInterfaceList;
   bmp: TBitmap;
 begin
   try
+    setButtonStartText(2);
+    ImageList4.GetIcon(2, Application.Icon);
+    Systray.ModifIconeTray(Caption, Application.Icon.Handle);
 
+    // Close others instances
+    Form1.Hint := Form1.Caption;
+    Form1.Caption := 'DRS Loading...';
+    Application.ProcessMessages;
+    CloseProcess(Form1.Hint);
+    Form1.Caption := Form1.Hint;
+    Application.ProcessMessages;
 
-  //ToolButton11.ImageIndex := 13;
-  setButtonStartText(2);
-  {
-  SpeedButton1.Glyph.Assign(nil);
-  bmp := TBitmap.Create;
-  ImageList2.GetBitmap(13, bmp);
-  SpeedButton1.Glyph.Assign(bmp);
-  SpeedButton1.Hint := 'Arrêter le serveur DNS';
-  SpeedButton1.NumGlyphs := 1;
-  Image1.Picture.Assign(nil);
-  ImageList2.GetBitmap(13, Image1.Picture.Bitmap);
-  }
-
-  ImageList4.GetIcon(2, Application.Icon);
-  Systray.ModifIconeTray(Caption, Application.Icon.Handle);
-
-
-  //KillTask('python.exe');
-
-  // Close others instances
-  Form1.Hint := Form1.Caption;
-  Form1.Caption := 'DRS Loading...';
-  Application.ProcessMessages;
-  CloseProcess(Form1.Hint);
-  Form1.Caption := Form1.Hint;
-  Application.ProcessMessages;
-
-  ButtonCloseClick(nil);
-  //sleep(2000);
-  ServerDoStart := True;
-  ButtonRefreshNetCardClick(nil);
-  //closeProcessCreated;
-
-
-
-  //PanelRestart.Visible := False;
-  //Splitter1.Visible := True;
-  //GroupBox5.Visible := True;
-
-  Application.ProcessMessages;
-  {
-  Sleep(1000);
-  Application.ProcessMessages;
-  if not ServerDoStart then
-  begin
     ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
+    ServerDoStart := True;
+    ButtonRefreshNetCardClick(nil);
+    Application.ProcessMessages;
 
-  //ComboBoxPosLogsSelect(ComboBoxPosLogs);
+    if FormInstall = nil then
+    begin
+      FormInstall := TFormInstall.Create(Self);
+    end;
+    FormInstall.CheckInstallation;
 
-  {
-  if Form1.WindowState = wsNormal then
-  begin
-    if Form1.Top > Screen.WorkAreaHeight - Form1.Height then
-      Form1.Top := Screen.WorkAreaHeight - Form1.Height;
-  end;
-  }
-  if FormInstall = nil then
-  begin
-    FormInstall := TFormInstall.Create(Self);
-  end;
+    if not FormInstall.isPythonInstalled   
+    or not FormInstall.isMSVisualInstalled
+    or not FormInstall.isDNSInstalled
+    or not FormInstall.isSetuptoolInstalled
+    then begin
+      FormInstall.Show;
+      FormInstall.ButtonInstallClick(nil);
+      SpeedButton1.Enabled := True;
+      FormInstall.TimerWatchThread.Enabled := True;
+      exit;
+    end else
+    begin
+      FormInstall.Close;
+    end;
 
+    Application.ProcessMessages;
 
-  FormInstall.CheckInstallation;
-
-  if not FormInstall.isPythonInstalled   
-  or not FormInstall.isMSVisualInstalled
-  or not FormInstall.isDNSInstalled
-  or not FormInstall.isSetuptoolInstalled
-  then begin
-    FormInstall.Show;
-    FormInstall.ButtonInstallClick(nil);
-    SpeedButton1.Enabled := True;
-    FormInstall.TimerWatchThread.Enabled := True;
-    //if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end else
-  begin
-    FormInstall.Close;
-  end;
-
-
-  {
-  Application.ProcessMessages;
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
-
-
-  Application.ProcessMessages;
-
-  filepath := String(EditFilehost.Text);
-  if FileExists(filepath) = False then
-    WriteInFile(filepath, '127.0.0.1	localhost');
+    filepath := String(EditFilehost.Text);
+    if FileExists(filepath) = False then
+      WriteInFile(filepath, '127.0.0.1	localhost');
 
 
 
 
-  if not FileExists(BlackListCfgFile) then
-    WriteInFile(BlackListCfgFile, 'doubleclick'#13#10+
-                                  'godaddy'#13#10+
-                                  'googleads');
+    if not FileExists(BlackListCfgFile) then
+      WriteInFile(BlackListCfgFile, 'doubleclick'#13#10+
+                                    'godaddy'#13#10+
+                                    'googleads');
 
-  if not FileExists(filepath) then
-  begin
-    MemoLogs.Lines.Add('Erreur: Lancement annulé.');
-    MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
-    MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
-    SpeedButton1.Enabled := True;
-    if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end;
+    if not FileExists(filepath) then
+    begin
+      MemoLogs.Lines.Add('Erreur: Lancement annulé.');
+      MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
+      MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
+      SpeedButton1.Enabled := True;
+      if ServerDoStart then TimerRestart.Enabled := True;
+      exit;
+    end;
 
-  {
-  Application.ProcessMessages;
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
+    count := 0;
+    for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
+    begin
+      if CheckListBoxDNSRelayIP.Checked[i] then inc(count);
+    end;
+    if count = 0 then
+    begin
+      MemoLogs.Lines.Add('Erreur: Lancement annulé');
+      MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur (ou attendre le redémarrage).');
 
-  count := 0;
-  for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
-  begin
-    if CheckListBoxDNSRelayIP.Checked[i] then inc(count);
-  end;
-  if count = 0 then
-  begin
-    MemoLogs.Lines.Add('Erreur: Lancement annulé');
-    MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur (ou attendre le redémarrage).');
+      SpeedButton1.Enabled := True;
+      ToolButton8Click(SpeedButton1);
+      exit;
+    end;
+
 
     SpeedButton1.Enabled := True;
-    ToolButton8Click(SpeedButton1);
 
-    // bug ?
-    //PageControl1.TabIndex := 0;
-    //PageControl1.ActivePageIndex := PageControl1.TabIndex;
-
-    //ButtonStartStop.ImageIndex := 7;
-    {
-    SpeedButton1.Glyph.Assign(nil);
-    bmp := TBitmap.Create;
-    ImageList2.GetBitmap(7, bmp);
-    SpeedButton1.Glyph.Assign(bmp);
-    SpeedButton1.Hint := 'Démarrer le serveur DNS';
-    SpeedButton1.NumGlyphs := 1;
-    Image1.Picture.Assign(nil);
-    ImageList2.GetBitmap(7, Image1.Picture.Bitmap);
-    }
-
-    //if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end;
-
-
-  SpeedButton1.Enabled := True;
-
-  {
-  DNSMasterSerialized := '';
-  for i := 0 to ListBoxDNSMaster.Items.Count -1 do
-  begin
-    dns := ListBoxDNSMaster.Items.Strings[i];
-    if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
-    DNSMasterSerialized := DNSMasterSerialized + dns;
-  end;
-  }
-
-  DNSMasterSerialized := '';
-  for i := 0 to ConfigDNSMaster.Count -1 do
-  begin
-    if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
-    DNSMasterSerialized := DNSMasterSerialized + ConfigDNSMaster[i];
-  end;
-
-
-  if not FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg') then
-  //if not CheckBoxNoTestDNSMaster.Checked then
-  begin
-    DNSMasterSerialized := '';
-    MemoLogs.Lines.Add('Test DNS Master...');
     DNSMasterSerialized := '';
     for i := 0 to ConfigDNSMaster.Count -1 do
     begin
-      dns := ConfigDNSMaster[i];
-      MemoLogs.Lines.Add('Master '+ dns +'... ');
-      if ActionDNS.resolveDNSByPython('a.root-servers.net', dns) = '' then
-      begin
-        DNSMasterSerialized := '';
-        MemoLogs.Lines.Add('Erreur: Lancement annulé.');
-        MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
-        MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
-        MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
-        if ServerDoStart then TimerRestart.Enabled := True;
-        exit;
-      end;
       if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
-      DNSMasterSerialized := DNSMasterSerialized + dns;
-      MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
-      MemoLogs.Lines.Add('Master '+ dns +'... OK');
+      DNSMasterSerialized := DNSMasterSerialized + ConfigDNSMaster[i];
     end;
-  end;
 
 
-
-
-
-  //ToolButton11.Enabled := False;
-
-  if DNSMasterSerialized = '' then
-  begin
-    MemoLogs.Lines.Add('Erreur: Lancement annulé');
-    MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
-    MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
-    ButtonRefreshNetCardClick(nil);
-    SpeedButton1.Enabled := True;
-    if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end;
-
-  {
-  Application.ProcessMessages;
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
-
-  //MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
-  //MemoLogs.Lines.Add('Test DNS Master... DNS is OK :)');
-  config_cache_memory := '1';
-  config_display_log := 'True';
-
-  if CheckBoxNoCacheDNS.Checked then config_cache_memory := '0';
-  if CheckBoxPureServer.Checked then config_display_log := 'False';
-
-
-
-  ServerDNS.createScript(config_cache_memory, config_display_log);
-
-  if PythonPath = '' then PythonPath := getPythonPath();
-
-  //if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
-  //begin
-  if FileExists(DataDirectoryPath + 'relayDNS.pyo') then DeleteFile(DataDirectoryPath + 'relayDNS.pyo');
-  script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
-  filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
-  WriteInFile(filepath, script);
-  LaunchAndWait(filepath,'', launchAndWWindow);
-  //end;
-
-  if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
-  begin
-    MemoLogs.Lines.Add('Erreur: Lancement annulé');
-    MemoLogs.Lines.Add('   La compilation du serveur à échoué. Mauvaise installation de Python 2.7?');
-    if ServerDoStart then TimerRestart.Enabled := True;
-    exit;
-  end;
-
-
-  if CheckBoxAllowModifyNetCard.Checked then
-  begin
-    ButtonNetCardIntegrationClick(ButtonNetCardIntegration);
-  end;
-
-  Application.ProcessMessages;
-
-  {
-  // Can cancel
-  if not ServerDoStart then
-  begin
-    ButtonCloseClick(nil);
-    onServerDNSStop();
-    exit;
-  end;
-  }
-
-
-  for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
-  begin
-    if CheckListBoxDNSRelayIP.Checked[i]
-    and (CheckListBoxDNSRelayIP.Items.Strings[i] <> '127.0.0.1') then
+    if not FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg') then
     begin
-      j := Length(listThreads);
-      SetLength(listThreads, j+1);
-      listThreads[j] := Unit1.ThreadProcess.Create(True);
-      listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
-      listThreads[j].output := TStringList.Create;
-      listThreads[j].EnMemo := MemoLogs;
-      listThreads[j].indexThread := i;
-      listThreads[j].Suspended := False;
+      DNSMasterSerialized := '';
+      MemoLogs.Lines.Add('Test DNS Master...');
+      DNSMasterSerialized := '';
+      for i := 0 to ConfigDNSMaster.Count -1 do
+      begin
+        dns := ConfigDNSMaster[i];
+        MemoLogs.Lines.Add('Master '+ dns +'... ');
+        if ActionDNS.resolveDNSByPython('a.root-servers.net', dns) = '' then
+        begin
+          DNSMasterSerialized := '';
+          MemoLogs.Lines.Add('Erreur: Lancement annulé.');
+          MemoLogs.Lines.Add('   Impossible d''atteindre le serveur DNS Master '+dns);
+          MemoLogs.Lines.Add('   Veuillez vous connecter à Internet et essayer à nouveau');
+          MemoLogs.Lines.Add('   ou indiquer un autre serveur DNS dans la section "DNS Master"');
+          if ServerDoStart then TimerRestart.Enabled := True;
+          exit;
+        end;
+        if DNSMasterSerialized <> '' then DNSMasterSerialized := DNSMasterSerialized + ' ';
+        DNSMasterSerialized := DNSMasterSerialized + dns;
+        MemoLogs.Lines.Delete(MemoLogs.Lines.Count - 1);
+        MemoLogs.Lines.Add('Master '+ dns +'... OK');
+      end;
     end;
-  end;
+
+    if DNSMasterSerialized = '' then
+    begin
+      MemoLogs.Lines.Add('Erreur: Lancement annulé');
+      MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
+      MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
+      ButtonRefreshNetCardClick(nil);
+      SpeedButton1.Enabled := True;
+      if ServerDoStart then TimerRestart.Enabled := True;
+      exit;
+    end;
+
+    config_cache_memory := '1';
+    config_display_log := 'True';
+
+    if CheckBoxNoCacheDNS.Checked then config_cache_memory := '0';
+    if CheckBoxPureServer.Checked then config_display_log := 'False';
+
+    ServerDNS.createScript(config_cache_memory, config_display_log);
+
+    if PythonPath = '' then PythonPath := getPythonPath();
+
+    if FileExists(DataDirectoryPath + 'relayDNS.pyo') then DeleteFile(DataDirectoryPath + 'relayDNS.pyo');
+    script := '"'+PythonPath+'python.exe" -O -m py_compile "'+DataDirectoryPath + 'relayDNS.py"';
+    filepath := ExtractFilePath(Application.ExeName)+installDirectoryPath+'compile_relayDNS.bat';
+    WriteInFile(filepath, script);
+    LaunchAndWait(filepath,'', launchAndWWindow);
+
+    if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
+    begin
+      MemoLogs.Lines.Add('Erreur: Lancement annulé');
+      MemoLogs.Lines.Add('   La compilation du serveur à échoué. Mauvaise installation de Python 2.7?');
+      if ServerDoStart then TimerRestart.Enabled := True;
+      exit;
+    end;
 
 
-  LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
+    if CheckBoxAllowModifyNetCard.Checked then
+    begin
+      ButtonNetCardIntegrationClick(ButtonNetCardIntegration);
+    end;
 
+    Application.ProcessMessages;
 
-  //if Notebook1.PageIndex = 5 then
-  //begin
-    //gotoMainPage(5);
-    {
-    Panel1.Visible := False;
-    Splitter1.Visible := False;
-    GroupBox5.Align := alClient;
-    ResizePanelConfig();
-    }
-  //end;
+    for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
+    begin
+      if CheckListBoxDNSRelayIP.Checked[i]
+      and (CheckListBoxDNSRelayIP.Items.Strings[i] <> '127.0.0.1') then
+      begin
+        j := Length(listThreads);
+        SetLength(listThreads, j+1);
+        listThreads[j] := Unit1.ThreadProcess.Create(True);
+        listThreads[j].cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
+        if CheckBoxShowDebug.Checked then MemoLogs.Lines.Add(listThreads[j].cmd);
+        listThreads[j].output := TStringList.Create;
+        listThreads[j].EnMemo := MemoLogs;
+        listThreads[j].indexThread := i;
+        listThreads[j].Suspended := False;
+      end;
+    end;
 
-  //if not Panel1.Visible then
-  Application.ProcessMessages;
-  setButtonStartText(1);
+    LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
+
+    Application.ProcessMessages;
+    setButtonStartText(1);
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
   end;
 
 end;
-
-
 
 
 procedure TForm1.ButtonUpdateClick(Sender: TObject);
@@ -2775,11 +2198,10 @@ begin
   TButton(Sender).Enabled := True;
 end;
 
+
 procedure TForm1.ButtonUpdateDevClick(Sender: TObject);
 begin
   if MessageDlg(PChar('Attention, cette mise à jour est destinée à son développement. Vous allez mettre à jour le serveur dans une version d''essai qui est potentiellement instable. Voulez-vous continuer?'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then exit;
-
-
   TButton(Sender).Enabled := False;
 
   if FormInstall = nil then
@@ -2798,6 +2220,7 @@ begin
   TButton(Sender).Enabled := True;
 end;
 
+
 procedure TUpdate.DoUpdate(isSilent: Boolean);
 begin
   UpdateUrl(
@@ -2808,6 +2231,7 @@ begin
     false
   );
 end;
+
 
 procedure TUpdate.DoUpdateDevelopper(isSilent: Boolean);
 begin
@@ -2820,12 +2244,12 @@ begin
   );
 end;
 
+
 procedure TUpdate.UpdateUrl(urlLastVersion, urlUpdate, suffixe: string; isSilent, isDev: Boolean);
 var
   lastversion, lastverFile, url, msg: string;
   canClose: Boolean;
 begin
-  //url := 'https://raw.gith4ubusercontent.com/ddeeproton/DNSRelayServer-DelphiPython/master/Special version/BlackEdition/lastversion.txt';
   url := urlLastVersion+'?'+DateTimeToStr(Now);
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
   if FileExists(lastverFile) then DeleteFile(lastverFile);
@@ -2863,47 +2287,46 @@ begin
     end;
   end;
 
-    if lastversion = '' then
+  if lastversion = '' then
+  begin
+    if isSilent then
+      //Form1.MemoLogs.Lines.Add('Le téléchargement a échoué.')
+    else
+      ShowMessage('Le téléchargement a échoué.'+#13+url);
+
+    exit;
+  end;
+  msg := 'Mise à jour version "'+lastversion+'" disponible :)'+#13+'Mettre à jour?';
+  if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar(msg),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
+  begin
+    url := urlUpdate+lastversion+suffixe+'.exe';
+    lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'DNSRelayServerSetup_'+lastversion+'.exe';
+    downloadFile(url, lastverFile);
+    if FileExists(lastverFile) and (FileSize(lastverFile) > 0) then
     begin
-      if isSilent then
-        //Form1.MemoLogs.Lines.Add('Le téléchargement a échoué.')
+
+      if Form1.CheckBoxUpdateSilent.Checked then
+        ExecAndWait(lastverFile, '/S', SW_HIDE)
       else
-        ShowMessage('Le téléchargement a échoué.'+#13+url);
+        ExecAndWait(lastverFile, '', SW_SHOWNORMAL);
 
-      exit;
+      canClose := True;
+      Form1.FormCloseQuery(nil, canClose);
+      KillTask('python.exe');
+      KillTask(ExtractFileName(Application.ExeName));
+      Application.Terminate;
+
+    end
+    else begin
+      if isSilent then
+        //Form1.MemoLogs.Lines.Add('La mise à jour à échoué.')
+      else
+        ShowMessage('La mise à jour à échoué. '+#13+url);
     end;
-    msg := 'Mise à jour version "'+lastversion+'" disponible :)'+#13+'Mettre à jour?';
-    if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar(msg),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
-    begin
-      url := urlUpdate+lastversion+suffixe+'.exe';
-      lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'DNSRelayServerSetup_'+lastversion+'.exe';
-      downloadFile(url, lastverFile);
-      if FileExists(lastverFile) and (FileSize(lastverFile) > 0) then
-      begin
-        //if (isSilent and Form1.CheckBoxUpdateSilent.Checked) or (MessageDlg(PChar('Le serveur va redémarrer. Continuer?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES) then
-        //begin
-          if Form1.CheckBoxUpdateSilent.Checked then
-            ExecAndWait(lastverFile, '/S', SW_HIDE)
-          else
-            ExecAndWait(lastverFile, '', SW_SHOWNORMAL);
-
-          canClose := True;
-          Form1.FormCloseQuery(nil, canClose);
-          KillTask('python.exe');
-          KillTask(ExtractFileName(Application.ExeName));
-          Application.Terminate;
-
-        //end;
-      end
-      else begin
-        if isSilent then
-          //Form1.MemoLogs.Lines.Add('La mise à jour à échoué.')
-        else
-          ShowMessage('La mise à jour à échoué. '+#13+url);
-      end;
-    end;
+  end;
 
 end;
+
 
 procedure TForm1.CheckBoxUpdateClick(Sender: TObject);
 begin
@@ -2920,6 +2343,7 @@ begin
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
 end;
+
 
 procedure TForm1.TimerUpdateOnLoadTimer(Sender: TObject);
 begin                          
@@ -2939,6 +2363,7 @@ begin
 
   ThreadUpdate := TUpdate.Create(false);
 end;
+
 
 procedure TForm1.ButtonRefreshNetCardClick(Sender: TObject);
 var
@@ -2964,6 +2389,7 @@ begin
   end;
 end;
 
+
 procedure TForm1.TimerAfterFormCreateTimer(Sender: TObject);
 var i: Integer;
 begin              
@@ -2973,32 +2399,16 @@ begin
 
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
   ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
-  //SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
   TimerHideMessage.Enabled := False;
   TimerSaveChangeAndRestart.Enabled := False;
   if startedInBackground then exit;
-  //Afficher1Click(nil);
+
   PanelRestart.Visible := False;
   PanelMessage.Visible := False;
-
-  {
-  Application.ShowMainForm := true;
-  Form1.BringToFront;
-  Application.BringToFront;
-  Self.Show;
-  BringToFront;
-  SetFocus;
-  FlashWindow(Application.Handle, true);
-  ShowWindow(Application.Handle, SW_SHOW);
-  }
 
   if (ParamCount() >= 1) and (ParamStr(1) = '/uninst') then
   begin
     ButtonNetCardDesintegrationClick(nil);
-    //canClose := True;
-    //FormCloseQuery(nil, canClose);
-    //KillTask(ExtractFileName(Application.ExeName));
-    //KillProcess(Self.Handle);
     Application.Terminate;
     exit;
   end;
@@ -3010,23 +2420,13 @@ begin
   begin
     if ParamStr(i) = '/background' then
     begin
-      //ButtonCloseClick(nil);
-      //sleep(1000);
-      //ServerDoStart := True;
       Masquer1Click(nil);
       startedInBackground := True;
       autostarted := True;
       ButtonStartClick(nil);
       TimerStartInBackground.Enabled := True;
       exit;
-{
 
-      ServerDoStart := True;
-      ButtonStartClick(nil);
-      startedInBackground := True;
-      autostarted := True;
-      TimerStartInBackground.Enabled := True;
-}
     end;
     if ParamStr(i) = '/autostart' then
     begin
@@ -3128,11 +2528,6 @@ begin
 end;
 
 procedure TForm1.ButtonNetCardDesintegrationClick(Sender: TObject);
-{
-var
-  i: Integer;
-  dns: string;
-}
 begin
   ActionDNS.setDNS('');
   ActionDNS.setDNSOnBoot(False);
@@ -3163,21 +2558,18 @@ procedure TForm1.ListBoxDNSMasterContextPopup(Sender: TObject;
 var
   Point : TPoint;
 begin
-  //On prend les coordonnées du curseur de souris...
   GetCursorPos(Point);
-
-  //Cette ensemble de procédure permet de simuler le click.
-  //Un click gauche est constitué de deux clicks : quand le
-  //bouton est en haut, et quand le bouton est en bas.
   Mouse_Event(MOUSEEVENTF_LEFTDOWN, Point.X, Point.Y, 0, 0);
   Mouse_Event(MOUSEEVENTF_LEFTUP, Point.X, Point.Y, 0, 0);
   Application.ProcessMessages;
 end;
 
+
 procedure TForm1.Mettrejour1Click(Sender: TObject);
 begin
   ButtonUpdateClick(ButtonUpdate);
 end;
+
 
 procedure TForm1.TimerStartInBackgroundTimer(Sender: TObject);
 begin                     
@@ -3186,31 +2578,13 @@ begin
   Masquer1Click(nil);
 end;
 
+
 procedure TForm1.toujoursenavant1Click(Sender: TObject);
 begin
   toujoursenavant1.Checked := not toujoursenavant1.Checked;
   if toujoursenavant1.Checked then Form1.FormStyle := fsStayOnTop
   else Form1.FormStyle := fsNormal;
-  //Systray.EnleveIconeTray;
-  //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
 end;
-
-procedure TForm1.CheckBoxSwitchThemeClick(Sender: TObject);
-begin
-{
-  if TCheckbox(Sender).Checked then
-    //setTheme(clWhite, clBlack)
-    setTheme(RGB(250,250,250), RGB(10,10,10))
-  else
-    setTheme(clBlack, clWhite);
-  if TCheckBox(Sender).Checked then
-    WriteInFile(DataDirectoryPath + 'checkSwitchTheme.cfg', '1')
-  else
-    DeleteFile(DataDirectoryPath + 'checkSwitchTheme.cfg');
-    }
-end;
-
-
 
 procedure TForm1.CheckBoxAlertEventsKnownClick(Sender: TObject);
 begin
@@ -3263,6 +2637,7 @@ begin
   ButtonStartClick(nil);
 end;
 
+
 procedure TForm1.TimerResetAlertPositionTimer(Sender: TObject);
 begin                           
   debug('TimerResetAlertPositionTimer');
@@ -3270,11 +2645,13 @@ begin
   LastPositionFormAlertTop := 0;
 end;
 
+
 procedure TForm1.StartDNS1Click(Sender: TObject);
 begin
   ServerDoStart := True;
   ButtonStartClick(nil);
 end;
+
 
 procedure TForm1.StopDNS1Click(Sender: TObject);
 begin
@@ -3282,11 +2659,13 @@ begin
   ButtonCloseClick(nil);
 end;
 
+
 procedure TForm1.inconnus1Click(Sender: TObject);
 begin
   CheckBoxAlertEventsUnknown.Checked := not CheckBoxAlertEventsUnknown.Checked;
   CheckBoxAlertEventsUnknownClick(CheckBoxAlertEventsUnknown);
 end;
+
 
 procedure TForm1.connus1Click(Sender: TObject);
 begin
@@ -3294,12 +2673,12 @@ begin
   CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
 end;
 
+
 procedure TForm1.bloques1Click(Sender: TObject);
 begin
   CheckBoxAlertEventDisallowed.Checked := not CheckBoxAlertEventDisallowed.Checked;
   CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
 end;
-
 
 
 procedure TForm1.Ajouter2Click(Sender: TObject);
@@ -3309,9 +2688,9 @@ begin
   if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', ip) then exit;
   ListBoxBlacklist.Items.Add(ip);
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-  //if isServerStarted then PanelRestart.Visible := True;
   if isServerStarted then ActionDNS.clearCache;
 end;
+
 
 procedure TForm1.Modifier3Click(Sender: TObject);
 var
@@ -3328,9 +2707,9 @@ begin
   if not InputQuery('Update Blackword', txt, txt) then exit;
   ListBoxBlacklist.Items.Strings[i] := txt;
   ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
-  //if isServerStarted then PanelRestart.Visible := True;
   if isServerStarted then ActionDNS.clearCache;
 end;
+
 
 procedure TForm1.Supprimer2Click(Sender: TObject);
 var
@@ -3371,7 +2750,6 @@ procedure TForm1.ButtonApplyChangesClick(Sender: TObject);
 begin
   PanelRestart.Visible := False;
   KillTask('python.exe');
-  //ButtonStartClick(nil);
 end;
 
 procedure TForm1.PageControl1DrawTab(Control: TCustomTabControl;
@@ -3380,28 +2758,11 @@ begin
   Control.Canvas.Brush.Color := Color;
   if Active then
   begin
-    Control.Canvas.TextOut (Rect.Left +6, Rect.Top +5, (Control as
-TPageControl).Pages[TabIndex].Caption);
+    Control.Canvas.TextOut (Rect.Left +6, Rect.Top +5, (Control as TPageControl).Pages[TabIndex].Caption);
   end
   else
-    Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as
-TPageControl).Pages[TabIndex].Caption);
-{
-  Control.Canvas.Brush.Color := Color;
-  if Active then
-  begin
-    Control.Canvas.TextOut (Rect.Left +6, Rect.Top +5, (Control as
-TPageControl).Pages[TabIndex].Caption);
-    Control.Canvas.Pen.Color := Color;
-    Control.Canvas.MoveTo (Rect.Left +1, Rect.Bottom -2);
-    Control.Canvas.LineTo (Rect.Right,   Rect.Bottom -2);
-  end
-  else
-    Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as
-TPageControl).Pages[TabIndex].Caption);
-} 
+    Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as TPageControl).Pages[TabIndex].Caption);
 end;
-
 
 
 procedure TForm1.LabelToCheckboxClick(Sender: TObject);
@@ -3414,16 +2775,17 @@ begin
   Checkbox.SetFocus;
 end;
 
+
 procedure TForm1.LabelCheckboxMouseEnter(Sender: TObject);
 begin
   TLabel(Sender).Font.Style := [fsUnderline];
 end;
 
+
 procedure TForm1.LabelCheckboxMouseLeave(Sender: TObject);
 begin
   TLabel(Sender).Font.Style := [];
 end;
-
 
 
 procedure TForm1.ButtonMenuThemeClick(Sender: TObject);
@@ -3441,13 +2803,12 @@ begin
   GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
 end;
 
+
 procedure TForm1.ComboBoxCurrentThemeSelect(Sender: TObject);
 var
   i:Integer;
   ThemesList, s:TStringList;
 begin
-
-
   i := ComboBoxCurrentTheme.ItemIndex;
   if i = -1 then exit;
 
@@ -3483,8 +2844,6 @@ begin
     ComboBoxCurrentTheme.Items.Add('Sylver');
     ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
     ComboBoxCurrentTheme.ItemIndex := 0;
-    //WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
-
   end;
 
   if (i >= 0) and (i < ThemesList.Count) then
@@ -3494,7 +2853,6 @@ begin
     if s.Count >= 6 then
     begin
       setTheme(RGB(StrToInt(s[0]),StrToInt(s[1]),StrToInt(s[2])), RGB(StrToInt(s[3]),StrToInt(s[4]),StrToInt(s[5])));
-      //WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(i));
       if Notebook1.PageIndex = 0 then
       begin
         Notebook1.PageIndex := 4;
@@ -3515,7 +2873,6 @@ begin
 end;
 
 
-
 procedure TForm1.Ajouter3Click(Sender: TObject);
 begin
   LabelUpdateTheme.Caption := PChar('Ajouter un thème');
@@ -3526,6 +2883,7 @@ begin
   ScrollBoxAffichage.VertScrollBar.Position := GroupBoxUpdateTheme.Top - 50;
 end;
 
+
 procedure TForm1.Modifier4Click(Sender: TObject);
 begin
   LabelUpdateTheme.Caption := PChar('Modifier un thème');
@@ -3535,6 +2893,7 @@ begin
   GroupBoxAffichage.Height := GroupBoxUpdateTheme.Top + GroupBoxUpdateTheme.Height + GroupBox23.Top;
   ScrollBoxAffichage.VertScrollBar.Position := GroupBoxUpdateTheme.Top - 50;
 end;
+
 
 procedure TForm1.Supprimer3Click(Sender: TObject);
 var
@@ -3580,9 +2939,6 @@ begin
   ComboBoxCurrentThemeSelect(ComboBoxCurrentTheme);
   GroupBoxUpdateTheme.Visible := False;    
   GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
-
-
-
 end;
 
 
@@ -3652,6 +3008,7 @@ begin
   GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
 end;
 
+
 procedure TForm1.Restaurer1Click(Sender: TObject);
 begin
   if MessageDlg(PChar('Restaurer les templates à leur origine?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
@@ -3661,7 +3018,6 @@ begin
   ComboBoxCurrentThemeSelect(nil);
   ComboBoxCurrentThemeSelect(nil);
 end;
-
 
 
 procedure TForm1.ShapeColorTextMouseUp(Sender: TObject;
@@ -3675,6 +3031,7 @@ begin
   Notebook1.PageIndex := 0;
 end;
 
+
 procedure TForm1.ShapeColorBackgroundMouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
@@ -3687,12 +3044,12 @@ begin
 end;
 
 
-
 procedure TForm1.ToolButtonDisplayOrangeClick(Sender: TObject);
 begin
   //if MessageDlg(PChar('Voulez-vous effacer les boules rouges de la liste?'+#13#10+'(efface juste l''affichage)'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   ListViewEraseFromImageIndex(ListView1, 3);
 end;
+
 
 procedure TForm1.ToolButtonDisplayGreenClick(Sender: TObject);
 begin
@@ -3700,17 +3057,20 @@ begin
   ListViewEraseFromImageIndex(ListView1, 1);
 end;
 
+
 procedure TForm1.ToolButtonDisplayGrayClick(Sender: TObject);
 begin
   //if MessageDlg(PChar('Voulez-vous effacer les boules grises de la liste?'+#13#10+'(efface juste l''affichage)'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   ListViewEraseFromImageIndex(ListView1, 0);
 end;
 
+
 procedure TForm1.ButtonClearLogsClick(Sender: TObject);
 begin
   //if MessageDlg(PChar('Voulez-vous effacer les logs?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   MemoLogs.Clear;
 end;
+
 
 procedure TForm1.FormResize(Sender: TObject);
 begin
@@ -3719,17 +3079,10 @@ begin
   ListView1.Columns.Items[0].Width := ListView1.Width - ListView1.Columns.Items[1].Width - 25;
 end;
 
+
 procedure TForm1.ComboBoxPosLogsSelect(Sender: TObject);
 begin
   WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
-
-{
-  if Sender = nil then
-  begin
-    Panel1.Visible := True;
-    Splitter1.Visible := True;
-  end;
-  }
   if ComboBoxPosLogs.ItemIndex = 0 then
   begin
     GroupBox5.Align := alTop;
@@ -3814,29 +3167,20 @@ begin
   Application.ProcessMessages;
 end;
 
+
 procedure TForm1.DsactiverlefiltragedufichierHost1Click(Sender: TObject);
 begin
   ButtonDisableHost.Down := not ButtonDisableHost.Down;
   ButtonDisableHostClick(ButtonDisableHost);
-  //Afficher1Click(nil);
   RefreshModeFilter();
 end;
+
 
 procedure TForm1.DsactiverlefiltrageBlackword1Click(Sender: TObject);
 begin
   ButtonDisableBlackhost.Down := not ButtonDisableBlackhost.Down;
   ButtonDisableBlackhostClick(ButtonDisableBlackhost);
-  //Afficher1Click(nil);
   RefreshModeFilter();
-
-end;
-
-
-
-procedure TForm1.PageControl1Change(Sender: TObject);
-begin
-  // bug?
-  //ResizePanelConfig();
 end;
 
 
@@ -3846,21 +3190,12 @@ var
 begin
   GetCursorPos(Pos);
   PopupMenuForAllDNSRules.Popup(Pos.X,Pos.Y);
-  {
-  ToolButtonBlockAll.Down := FileExists(DataDirectoryPath + 'disableAll.cfg')
-  or (FileExists(DataDirectoryPath + 'disableHost.cfg')
-  and FileExists(DataDirectoryPath + 'disableBlackhost.cfg'));
-  }
 end;
-
-
 
 
 procedure TForm1.ButtonDisableHostClick(Sender: TObject);
 begin
   PanelRestart.Visible := True;
-  //TToolButton(Sender).Down := not TToolButton(Sender).Down;
-
   if FileExists(DataDirectoryPath + 'disableHost.cfg') then
   begin
     MemoLogs.Lines.Add('Activation du fichier Host.');
@@ -3912,7 +3247,6 @@ end;
 
 procedure TForm1.AllowAllClick(Sender: TObject);
 begin
-  // if all allowed
   if FileExists(DataDirectoryPath + 'disableHost.cfg')
   and FileExists(DataDirectoryPath + 'disableBlackhost.cfg')
   and not FileExists(DataDirectoryPath + 'disableAll.cfg') then
@@ -3953,11 +3287,7 @@ begin
 
   AllowAll.Checked := False;
   toutbloquer1.Checked := False;
-  {
-  ToolButtonBlockAll.Down := False;
-  ButtonDisableBlackhost.Down := False;
-  ButtonDisableHost.Down := False;
-  }
+
   DsactiverlefiltragedufichierHost1.Checked := False;
   DsactiverlefiltrageBlackword1.Checked := False;
   Toutautoriser1.Checked := False;
@@ -3984,7 +3314,6 @@ begin
 
   AllowAll.Checked := not FileExists(DataDirectoryPath + 'disableAll.cfg');
   toutbloquer1.Checked := not AllowAll.Checked;
-  //ToolButtonBlockAll.Down := not AllowAll.Checked;
   DsactiverlefiltragedufichierHost1.Checked := AllowAll.Checked;
   DsactiverlefiltrageBlackword1.Checked := AllowAll.Checked;
   Toutautoriser1.Checked := AllowAll.Checked;
@@ -3992,9 +3321,6 @@ begin
   RefreshModeFilter();
 
 end;
-
-
-
 
 
 procedure TForm1.AjouterBlackworkds1Click(Sender: TObject);
@@ -4011,6 +3337,7 @@ begin
   if isServerStarted then PanelRestart.Visible := True;
 end;
 
+
 procedure TForm1.ToolButtonMenuLogsClick(Sender: TObject);
 var
   Pos:TPoint;
@@ -4019,11 +3346,13 @@ begin
   PopupMenuLogs.Popup(Pos.X,Pos.Y);
 end;
 
+
 procedure TForm1.Afficherenhaut1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 0;
   ComboBoxPosLogsSelect(nil);
 end;
+
 
 procedure TForm1.Afficherenbas1Click(Sender: TObject);
 begin
@@ -4032,12 +3361,14 @@ begin
   GotoMainPage(Notebook1.PageIndex);
 end;
 
+
 procedure TForm1.Affichergauche1Click(Sender: TObject);
 begin
   ComboBoxPosLogs.ItemIndex := 2;
   ComboBoxPosLogsSelect(nil);     
   GotoMainPage(Notebook1.PageIndex);
 end;
+
 
 procedure TForm1.Afficherdroite1Click(Sender: TObject);
 begin
@@ -4054,6 +3385,7 @@ begin
   GotoMainPage(Notebook1.PageIndex);
 end;
 
+
 procedure TForm1.Activertouteslesalertes1Click(Sender: TObject);
 begin
   CheckBoxAlertEventsUnknown.Checked := True;
@@ -4063,6 +3395,7 @@ begin
   CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
   CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
 end;
+
 
 procedure TForm1.Dsactivertouteslesalertes1Click(Sender: TObject);
 begin
@@ -4074,7 +3407,6 @@ begin
   CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
 end;
 
-//https://download.sysinternals.com/files/TCPView.zip
 
 procedure TForm1.DNS1Click(Sender: TObject);
 begin
@@ -4083,8 +3415,8 @@ begin
   ToolButton8Click(nil);
   PageControl1.TabIndex := 0;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  //Afficher1Click(nil);
 end;
+
 
 procedure TForm1.DNSMatres1Click(Sender: TObject);
 begin                     
@@ -4093,8 +3425,8 @@ begin
   ToolButton8Click(nil);
   PageControl1.TabIndex := 1;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  //Afficher1Click(nil);
 end;
+
 
 procedure TForm1.Carterseau1Click(Sender: TObject);
 begin
@@ -4103,8 +3435,8 @@ begin
   ToolButton8Click(nil);
   PageControl1.TabIndex := 2;
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
-  //Afficher1Click(nil);
 end;
+
 
 procedure TForm1.Affichage1Click(Sender: TObject);
 begin
@@ -4115,6 +3447,7 @@ begin
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Afficher1Click(nil);
 end;
+
 
 procedure TForm1.Alertes2Click(Sender: TObject);
 begin
@@ -4137,6 +3470,7 @@ begin
   Afficher1Click(nil);
 end;
 
+
 procedure TForm1.Relancerlapplication1Click(Sender: TObject);
 var
   i: Integer;
@@ -4149,10 +3483,10 @@ begin
   ExecAndBringToFront(Application.ExeName, param);
   canClose := True;
   FormCloseQuery(nil, canClose);
-  //KillTask(ExtractFileName(Application.ExeName));
   KillProcess(Self.Handle);
   Application.Terminate;
 end;
+
 
 procedure TForm1.SpinEditAlertDurationChange(Sender: TObject);
 begin
@@ -4161,10 +3495,12 @@ begin
   if TSpinEdit(Sender).Value < 3 then TSpinEdit(Sender).Value := 3;
 end;
 
+
 procedure TForm1.SpeedButtonCloseMessageClick(Sender: TObject);
 begin
   PanelMessage.Visible := False;
 end;
+
 
 procedure TForm1.TimerHideMessageTimer(Sender: TObject);
 begin                            
@@ -4173,26 +3509,25 @@ begin
   PanelMessage.Visible := False;
 end;
 
+
 procedure TForm1.CheckListBoxDNSRelayIPClickCheck(Sender: TObject);
 begin
   if isServerStarted then PanelRestart.Visible := True;
   TimerSaveChangeAndRestart.Enabled := True;
 end;
 
+
 procedure TForm1.ListView1KeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-
-  //MemoLogs.Lines.Add(inttostr(Key));
-  // 46 = key Del
   if (Key = 46) and (Shift = []) then
   begin
     if MessageDlg(PChar('Bloquer ['+ListView1.Selected.Caption+']?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
     begin
       Bloquerledomaine1Click(Bloquerledomaine1);
     end;
-  end;     
-  // 46 = key Ins
+  end;    
+  // 45 = Ins 
   if (Key = 45) and (Shift = []) then
   begin
     if MessageDlg(PChar('Autoriser ['+ListView1.Selected.Caption+']?'),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
@@ -4200,12 +3535,10 @@ begin
       Autoriser1Click(Autoriser1);
     end;
   end;
-
   // Del + Shift
   if (Key = 46) and (Shift = [ssShift]) then AjouterBlackworkds1Click(AjouterBlackworkds1);
   // Ins + Shift
   if (Key = 45) and (Shift = [ssShift]) then Modifier1Click(Modifier1);
-
 end;
 
 procedure TForm1.CheckBoxNoTestDNSMasterClick(Sender: TObject);
@@ -4215,12 +3548,11 @@ begin
     WriteInFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
-
-
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
 end;
+
 
 procedure TForm1.CheckBoxNoCacheDNSClick(Sender: TObject);
 begin
@@ -4251,6 +3583,7 @@ begin
   TimerHideMessage.Enabled := True;
 end;
 
+
 procedure TForm1.Button3Click(Sender: TObject);
 begin
   ShowMessage('En cours d''implémentation :)');
@@ -4258,7 +3591,6 @@ begin
     FormNetConfig := TFormNetConfig.Create(Self);
   FormNetConfig.Show;
 end;
-
 
 
 procedure TForm1.TimerAlertTimer(Sender: TObject);
@@ -4270,13 +3602,13 @@ begin
 end;
 
 
-
 procedure TForm1.TimerFadeInTimer(Sender: TObject);
 begin                              
   debug('TimerFadeInTimer');
   SetFormOpacity(Self.Handle, opacity);
   if opacity < 100 then opacity := opacity + 10 else TTimer(Sender).Enabled := False;
 end;
+
 
 procedure TForm1.TimerFadeOutTimer(Sender: TObject);
 begin                          
@@ -4286,7 +3618,6 @@ begin
     opacity := opacity - 10
   else
   begin
-    //Top := Screen.Height;
     Top := -Form1.Height;
     Left := -Form1.Width;
     TTimer(Sender).Enabled := False;
@@ -4298,7 +3629,6 @@ end;
 // ==== Detect Network Interface Change ===
 var
   oldNet: tNetworkInterfaceList;
-
 
 function FindNetworkInterface(net:tNetworkInterface;netList:tNetworkInterfaceList):Boolean;
 var
@@ -4315,6 +3645,7 @@ begin
   end;
   result := false;
 end;
+
 
 procedure TForm1.CheckSystemChangesTimer(Sender: TObject);
 var
@@ -4522,6 +3853,7 @@ begin
   ComboBox.ItemIndex := 0;
 end;
 
+
 class function TActionManageIP.loadListIP(suffix: string = '_hostfile.txt'): TStrings;
 var
   i: Integer;
@@ -4548,7 +3880,6 @@ begin
 end;
 
 
-
 class procedure TActionManageIP.eraseIP(ip: string);
 var
   i: Integer;
@@ -4563,14 +3894,13 @@ begin
   
 end;
 
+
 class procedure TActionManageIP.addIP(HideShowForm1: Boolean = False);
 var
   i: integer;
   ip: string;
   list : array[0..1] of string;
 begin
-
-
   if FormDialogIP = nil then FormDialogIP := TFormDialogIP.Create(nil);
 
   if HideShowForm1 then
@@ -4623,23 +3953,24 @@ begin
   TimerHideMessage.Enabled := True;
 end;
 
+
 procedure TForm1.TimerExecOnDisconnectedTimer(Sender: TObject);
 begin                      
   debug('TimerExecOnDisconnectedTimer');
   TTimer(Sender).Enabled := False;
 end;
 
+
 procedure TForm1.ButtonTesterClick(Sender: TObject);
 begin
   ProcessManager.ExecAndContinue(EditExecOnDisconnected.Text, '', SW_SHOWNORMAL);
 end;
 
+
 procedure TForm1.CheckBoxBindAllIPClick(Sender: TObject);
 var isCheck: Boolean;
 begin
-
   isCheck := CheckBoxBindAllIP.Checked;
-
   if isCheck then
   begin
     CheckListBoxDNSRelayIP.Clear;
@@ -4660,7 +3991,6 @@ begin
 end;
 
 
-
 procedure TForm1.ButtonCopyEditSourceURLClick(Sender: TObject);
 begin
   EditSourceURL.SelectAll;
@@ -4670,12 +4000,12 @@ begin
   TimerHideMessage.Enabled := True;
 end;
 
+
 procedure TForm1.TimerClearCacheTimer(Sender: TObject);
 begin          
   debug('TimerClearCacheTimer');
   ActionDNS.clearCache;
 end;
-
 
 
 procedure TForm1.forOldVersions();
@@ -4710,6 +4040,7 @@ begin
   Afficher1Click(nil);
 end;
 
+
 procedure TForm1.Config1Click(Sender: TObject);
 begin
   ToolButton8Click(nil);
@@ -4736,12 +4067,14 @@ begin
   Application.Terminate;
 end;
 
+
 procedure TForm1.ButtonShowLogsClick(Sender: TObject);
 begin
   GroupBox5.Align := alClient;
   GroupBox5.Visible := True;
   Splitter1.Visible := False;
 end;
+
 
 procedure TForm1.CheckBoxShowDebugClick(Sender: TObject);
 begin
@@ -4755,6 +4088,7 @@ begin
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
 end;
+
 
 procedure TForm1.setButtonStartText(state: Integer);
 begin
@@ -4771,7 +4105,7 @@ begin
     SpeedButton1.Caption := 'Démarré';
     SpeedButton1.Enabled := True;
     SpeedButton1.Hint := 'Arrêter le serveur DNS';
-    Panel9.Color := clRed;
+    Panel9.Color := clGreen;
   end;
   if state = 2 then
   begin   

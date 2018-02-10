@@ -132,7 +132,6 @@ object Form1: TForm1
             ShowHint = False
             Style = tsButtons
             TabOrder = 0
-            OnChange = PageControl1Change
             OnDrawTab = PageControl1DrawTab
             object TabSheet1: TTabSheet
               Caption = 'Serveur DNS'
