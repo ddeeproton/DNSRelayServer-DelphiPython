@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.321';
+  CurrentApplicationVersion: string = '0.4.322';
   isDevVersion: Boolean = False;
 
 type
@@ -1071,8 +1071,7 @@ begin
     Application.Terminate;
   end;
   forOldVersions();
-  // Hide window from taskbar
-  SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+
   TimerAfterFormCreate.Enabled := True;
   ServerDoStart := False;
   ServerFailStartCount := 0;
@@ -1585,8 +1584,15 @@ end;
 
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin
+  //  To hide the form, Don't use Hide; (because buggy on refresh),
+  // use this code instead:
   Top := -Form1.Height;
   Left := -Form1.Width;
+  // hide from task bar and task list
+  SetWindowLong(Handle, GWL_EXSTYLE,
+                GetWindowLong(Handle, GWL_EXSTYLE) or
+                WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
+  ShowWindow(Application.Handle, SW_HIDE);
 end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
@@ -1597,6 +1603,18 @@ begin
     Left := Screen.WorkAreaWidth - Self.Width;
     Application.Restore;
     Application.BringToFront;
+
+    // hide from task bar:
+    SetWindowLong(
+      Handle,
+      GWL_EXSTYLE, //GWL_STYLE,  //GWL_EXSTYLE
+      //GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW
+      GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_APPWINDOW and WS_EX_TOOLWINDOW
+    );
+    ShowWindow(Application.Handle, SW_SHOW);
+    // Hide window from taskbar
+    //SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
