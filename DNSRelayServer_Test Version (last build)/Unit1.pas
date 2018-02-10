@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.319';
+  CurrentApplicationVersion: string = '0.4.320';
   isDevVersion: Boolean = False;
 
 type
@@ -51,7 +51,6 @@ type
     N3: TMenuItem;
     TimerCheckUpdate: TTimer;
     GroupBox5: TGroupBox;
-    MemoLogs: TMemo;
     Splitter1: TSplitter;
     PopupMenuDNSMaster: TPopupMenu;
     Ajouter1: TMenuItem;
@@ -305,6 +304,7 @@ type
     SpeedButton2: TSpeedButton;
     SpeedButton3: TSpeedButton;
     Config2: TMenuItem;
+    MemoLogs: TMemo;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -795,7 +795,7 @@ begin
     then
     begin
       try
-        form1.onServerDNSStart();
+        //form1.onServerDNSStart();
         h := ProcessInfo.hProcess;
     	  form1.onProcessCreated(ProcessInfo.dwProcessId);
         new(tb);
@@ -927,6 +927,7 @@ var
   bmp: TBitmap; 
 begin
   try
+    setButtonStartText(2);
     MemoLogs.Lines.Add('Close server');
     KillTask('python.exe');
     ImageList4.GetIcon(2, Application.Icon);
@@ -1056,6 +1057,7 @@ var
   canClose: Boolean;
 
 begin
+
   if not IsUserAnAdmin() then
   begin
     param := '';
@@ -2022,8 +2024,8 @@ begin
     then begin
       FormInstall.Show;
       FormInstall.ButtonInstallClick(nil);
-      SpeedButton1.Enabled := True;
       FormInstall.TimerWatchThread.Enabled := True;
+      setButtonStartText(0);
       exit;
     end else
     begin
@@ -2049,7 +2051,7 @@ begin
       MemoLogs.Lines.Add('Erreur: Lancement annulé.');
       MemoLogs.Lines.Add('   Le chemin du fichier host est introuvable.');
       MemoLogs.Lines.Add('   Veuillez définir le chemin du fichier host en cliquant sur le bouton "Config"');
-      SpeedButton1.Enabled := True;
+      setButtonStartText(0);
       if ServerDoStart then TimerRestart.Enabled := True;
       exit;
     end;
@@ -2064,13 +2066,11 @@ begin
       MemoLogs.Lines.Add('Erreur: Lancement annulé');
       MemoLogs.Lines.Add('   Veuillez cocher une IP dans le panneau de config du serveur (ou attendre le redémarrage).');
 
-      SpeedButton1.Enabled := True;
+      setButtonStartText(0);
       ToolButton8Click(SpeedButton1);
       exit;
     end;
 
-
-    SpeedButton1.Enabled := True;
 
     DNSMasterSerialized := '';
     for i := 0 to ConfigDNSMaster.Count -1 do
@@ -2112,7 +2112,7 @@ begin
       MemoLogs.Lines.Add('   Vous n''avez aucun DNS Master dans votre liste.');
       MemoLogs.Lines.Add('   Veuillez définir un Master DNS dans votre liste (exemple 209.244.0.3)');
       ButtonRefreshNetCardClick(nil);
-      SpeedButton1.Enabled := True;
+      setButtonStartText(0);
       if ServerDoStart then TimerRestart.Enabled := True;
       exit;
     end;
@@ -2169,7 +2169,8 @@ begin
     LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
 
     Application.ProcessMessages;
-    setButtonStartText(1);
+    Sleep(1000);
+    onServerDNSStart();
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
@@ -4098,22 +4099,29 @@ begin
     SpeedButton1.Caption := 'Arrêté';
     SpeedButton1.Enabled := True;
     SpeedButton1.Hint := 'Démarrer le serveur DNS';
+    SpeedButton1.Enabled := True;
     Panel9.Color := clRed;
+    Panel9.Enabled := True;
   end;
   if state = 1 then
-  begin  
+  begin
     SpeedButton1.Caption := 'Démarré';
     SpeedButton1.Enabled := True;
     SpeedButton1.Hint := 'Arrêter le serveur DNS';
+    SpeedButton1.Enabled := True;
     Panel9.Color := clGreen;
+    Panel9.Enabled := True;
   end;
   if state = 2 then
-  begin   
+  begin
     SpeedButton1.Caption := '';
     SpeedButton1.Enabled := True;
     SpeedButton1.Hint := '';
+    SpeedButton1.Enabled := False;
     Panel9.Color := clGray;
+    Panel9.Enabled := False;
   end;
+  Application.ProcessMessages;
 end;
 
 

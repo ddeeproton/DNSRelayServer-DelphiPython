@@ -156,12 +156,12 @@ object Form1: TForm1
                   Left = 0
                   Top = 0
                   Width = 264
-                  Height = 360
+                  Height = 365
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     264
-                    360)
+                    365)
                   object Label1: TLabel
                     Left = 16
                     Top = 15
@@ -1891,24 +1891,6 @@ object Form1: TForm1
       Height = 13
       Caption = 'Logs'
     end
-    object MemoLogs: TMemo
-      Left = 2
-      Top = 39
-      Width = 309
-      Height = 41
-      Anchors = [akLeft, akTop, akRight, akBottom]
-      Color = clWhite
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'Courier New'
-      Font.Style = []
-      ParentFont = False
-      ScrollBars = ssBoth
-      TabOrder = 0
-      WordWrap = False
-      OnChange = MemoLogsChange
-    end
     object Panel7: TPanel
       Left = 2
       Top = 15
@@ -1917,7 +1899,7 @@ object Form1: TForm1
       BevelOuter = bvNone
       BorderWidth = 10
       Color = clWhite
-      TabOrder = 1
+      TabOrder = 0
       object ToolBar5: TToolBar
         Left = 2
         Top = 1
@@ -1950,6 +1932,24 @@ object Form1: TForm1
           OnClick = ToolButtonMenuLogsClick
         end
       end
+    end
+    object MemoLogs: TMemo
+      Left = 2
+      Top = 40
+      Width = 309
+      Height = 39
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      Color = clWhite
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Courier New'
+      Font.Style = []
+      ParentFont = False
+      ScrollBars = ssBoth
+      TabOrder = 1
+      WordWrap = False
+      OnChange = MemoLogsChange
     end
   end
   object Panel5: TPanel
