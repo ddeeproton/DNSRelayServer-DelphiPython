@@ -126,7 +126,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet5
+            ActivePage = TabSheet1
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
