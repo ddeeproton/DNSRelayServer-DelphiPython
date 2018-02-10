@@ -1,11 +1,11 @@
 A faire:
 --------
 -proposer un filtrage basé sur une whitelist d'ipclients 
--implémenter le check au lancement du serveur si l'install du framework MS est nécessaire ou pas. Si oui faire l'installation automatique.
--Vérifier les multiples lancements
 -implémenter un agent qui répare la connexion
 -refaire l'affichage du log 
 -ecrire les logs dans un fichier
 -implémenter une interface web
 -finir d'implémenter dans le gui, la fusion du blackhost avec hostfile.
 
+-[done] Vérifier les multiples lancements
+-[done] implémenter le check au lancement du serveur si l'install du framework MS est nécessaire ou pas. Si oui faire l'installation automatique.
