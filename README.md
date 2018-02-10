@@ -4,7 +4,7 @@
 
 ### Télécharger le setup d'installation Windows:
 
-https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup%20installation/DNSRelayServerSetup_0.4.321.exe
+https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup%20installation/DNSRelayServerSetup_0.4.322.exe
 
 ### Description:
 
