@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.323';
+  CurrentApplicationVersion: string = '0.4.324';
   isDevVersion: Boolean = False;
 
 type
@@ -1589,11 +1589,6 @@ begin
   Top := -Form1.Height;
   Left := -Form1.Width;
   // hide from task bar and task list
-  {
-  SetWindowLong(Handle, GWL_EXSTYLE,
-                GetWindowLong(Handle, GWL_EXSTYLE) or
-                WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
-  }
   SetWindowLong(Handle, GWL_EXSTYLE,
                 GetWindowLong(Handle, GWL_EXSTYLE) or
                 WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
@@ -1608,17 +1603,13 @@ begin
     Left := Screen.WorkAreaWidth - Self.Width;
     Application.Restore;
     Application.BringToFront;
-
-    // hide from task bar:
+    // show from task bar:
     SetWindowLong(
       Handle,
-      GWL_EXSTYLE, //GWL_STYLE,  //GWL_EXSTYLE
-      //GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW
+      GWL_EXSTYLE,
       GetWindowLong(Handle, GWL_EXSTYLE) and WS_EX_TOOLWINDOW and WS_EX_APPWINDOW
     );
     ShowWindow(Application.Handle, SW_SHOW);
-    // Hide window from taskbar
-    //SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
