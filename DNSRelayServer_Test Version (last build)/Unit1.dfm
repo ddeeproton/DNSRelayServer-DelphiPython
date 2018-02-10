@@ -1,6 +1,6 @@
 object Form1: TForm1
   Left = 191
-  Top = 147
+  Top = 148
   Width = 528
   Height = 542
   Caption = 'DNS Relay Server'
@@ -126,7 +126,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet5
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -920,6 +920,7 @@ object Form1: TForm1
                       Position = 30
                       TabOrder = 2
                       TickStyle = tsNone
+                      OnChange = ComboBoxCurrentThemeSelect
                     end
                   end
                   object GroupBox23: TGroupBox

@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.317';
+  CurrentApplicationVersion: string = '0.4.318';
   isDevVersion: Boolean = False;
 
 type
@@ -2973,7 +2973,7 @@ begin
 
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
   ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
-  SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
+  //SpinEditContraste.OnChange := ComboBoxCurrentThemeSelect;
   TimerHideMessage.Enabled := False;
   TimerSaveChangeAndRestart.Enabled := False;
   if startedInBackground then exit;
