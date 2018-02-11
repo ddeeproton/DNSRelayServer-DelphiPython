@@ -73,7 +73,7 @@ begin
   with Form1 do begin
   if CountFormAlert > 20 then exit;
   inc(CountFormAlert);
-  FormAlert := TFormAlert.Create(nil);
+  FormAlert := TFormAlert.Create(Form1);
   FormAlert.Hint := IntToStr(data.index);
 
   if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;

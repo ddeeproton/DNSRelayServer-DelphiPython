@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 198
-  Top = 156
-  Width = 528
+  Left = 310
+  Top = 140
+  Width = 530
   Height = 542
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -68,7 +68,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 60
-    Width = 504
+    Width = 506
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -126,7 +126,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet6
             MultiLine = True
             ParentShowHint = False
             ShowHint = False
@@ -1955,17 +1955,17 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 504
+    Width = 506
     Height = 60
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 2
     DesignSize = (
-      504
+      506
       60)
     object SpeedButton3: TSpeedButton
-      Left = 215
+      Left = 216
       Top = 2
       Width = 101
       Height = 58
@@ -2074,7 +2074,7 @@ object Form1: TForm1
       OnClick = ToolButtonBlockAllClick
     end
     object SpeedButton2: TSpeedButton
-      Left = 392
+      Left = 394
       Top = 2
       Width = 110
       Height = 58

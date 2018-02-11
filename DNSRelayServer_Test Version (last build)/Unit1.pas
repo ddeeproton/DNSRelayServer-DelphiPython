@@ -653,7 +653,11 @@ begin
         begin
           FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
-          FormAlert.Show;
+          // Don't do FormAlert.Show; because you loose the focus.
+          // Use this code instead
+          ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
+          FormAlert.Visible := true;
+          FormAlert.Repaint;
         end;
       end;
       if (imgIndex = 1) and CheckBoxAlertEventsUnknown.Checked then // connu
@@ -663,7 +667,11 @@ begin
         begin
           FormAlert.PanelAllowed.Visible := True;
           FormAlert.PanelDisallowed.Visible := False;
-          FormAlert.Show;
+          // Don't do FormAlert.Show; because you loose the focus.
+          // Use this code instead
+          ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
+          FormAlert.Visible := true;
+          FormAlert.Repaint;
         end;
       end;
       if (imgIndex = 3) and CheckBoxAlertEventDisallowed.Checked then // bloqué
@@ -673,7 +681,11 @@ begin
         begin
           FormAlert.PanelAllowed.Visible := False;
           FormAlert.PanelDisallowed.Visible := True;
-          FormAlert.Show;
+          // Don't do FormAlert.Show; because you loose the focus.
+          // Use this code instead
+          ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
+          FormAlert.Visible := true;
+          FormAlert.Repaint;
         end;
       end;
 
@@ -1243,6 +1255,16 @@ begin
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
   CheckBoxShowDebug.Checked := FileExists(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
+
+  connus1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
+  CheckBoxAlertEventsKnown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
+
+  inconnus1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
+  CheckBoxAlertEventsUnknown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsUnknown.cfg');
+
+  bloques1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
+  CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
+
 
   ComboBoxCurrentTheme.OnSelect := nil;
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
@@ -3611,7 +3633,7 @@ end;
 
 
 procedure TForm1.TimerAlertTimer(Sender: TObject);
-begin                          
+begin
   debug('TimerAlertTimer');
   TTimer(Sender).Enabled := False;
   AlertManager.ShowAllAlert(AlertManager.MainListAlert);

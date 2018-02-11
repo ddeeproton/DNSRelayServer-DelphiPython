@@ -64,6 +64,10 @@ type
     procedure SpeedButton1DblClick(Sender: TObject);
   private
     { Private declarations }
+
+    procedure CreateParams(var Params: TCreateParams); override;
+    //procedure WMMouseActivate(var Message: TWMMouseActivate); message WM_MOUSEACTIVATE;
+
   public
     { Public declarations }
     opacity: Integer;
@@ -84,7 +88,11 @@ procedure TFormAlert.FormCreate(Sender: TObject);
 var
   i: integer;
   domain, txt: string;
+
+
 begin
+  //SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_NOACTIVATE);
+
   try
   
 
@@ -481,4 +489,17 @@ begin
   Self.Free;
 end;
 
+
+procedure TFormAlert.CreateParams(var Params: TCreateParams);
+begin
+  inherited;
+  //Params.ExStyle := Params.ExStyle + WS_EX_NOACTIVATE;
+end;
+
+{
+procedure TFormAlert.WMMouseActivate(var Message: TWMMouseActivate);
+begin
+  Message.Result := MA_NOACTIVATE;
+end;
+}
 end.
