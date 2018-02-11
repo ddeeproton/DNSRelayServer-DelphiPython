@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP;
 
 var
-  CurrentApplicationVersion: string = '0.4.324';
+  CurrentApplicationVersion: string = '0.4.325';
   isDevVersion: Boolean = False;
 
 type
@@ -3529,9 +3529,9 @@ end;
 
 procedure TForm1.SpinEditAlertDurationChange(Sender: TObject);
 begin
-  TimerSaveChangeAndRestart.Enabled := False;
-  TimerSaveChangeAndRestart.Enabled := True;
   if TSpinEdit(Sender).Value < 3 then TSpinEdit(Sender).Value := 3;
+  TimerSaveChange.Enabled := False;
+  TimerSaveChange.Enabled := True; 
 end;
 
 
