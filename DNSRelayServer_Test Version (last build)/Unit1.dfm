@@ -3742,7 +3742,6 @@ object Form1: TForm1
     end
     object Filrage1: TMenuItem
       Caption = 'Filrage'
-      OnClick = ToolButton6Click
       object DsactiverlefiltragedufichierHost1: TMenuItem
         Caption = 'D'#233'sactiver le filtrage Host'
         OnClick = DsactiverlefiltragedufichierHost1Click
@@ -3770,7 +3769,6 @@ object Form1: TForm1
     object Config1: TMenuItem
       Caption = 'Config'
       ImageIndex = 15
-      OnClick = Config1Click
       object DNS1: TMenuItem
         Caption = 'Serveur DNS'
         OnClick = DNS1Click
@@ -3816,7 +3814,6 @@ object Form1: TForm1
     end
     object Alertes1: TMenuItem
       Caption = 'Alertes'
-      OnClick = Alertes1Click
       object connus1: TMenuItem
         Caption = 'connus'
         OnClick = connus1Click
