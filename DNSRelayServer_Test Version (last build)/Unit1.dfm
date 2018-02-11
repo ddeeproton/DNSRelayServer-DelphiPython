@@ -3814,20 +3814,16 @@ object Form1: TForm1
     end
     object Alertes1: TMenuItem
       Caption = 'Alertes'
-      SubMenuImages = ImageList3
       object connus1: TMenuItem
-        Caption = 'connus'
-        ImageIndex = 1
+        Caption = 'connus (vert)'
         OnClick = connus1Click
       end
       object inconnus1: TMenuItem
-        Caption = 'inconnus'
-        ImageIndex = 0
+        Caption = 'inconnus (vert)'
         OnClick = inconnus1Click
       end
       object bloques1: TMenuItem
-        Caption = 'bloqu'#233's'
-        ImageIndex = 3
+        Caption = 'bloqu'#233's (rouge)'
         OnClick = bloques1Click
       end
     end
