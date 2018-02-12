@@ -64,10 +64,6 @@ type
     procedure SpeedButton1DblClick(Sender: TObject);
   private
     { Private declarations }
-
-    procedure CreateParams(var Params: TCreateParams); override;
-    //procedure WMMouseActivate(var Message: TWMMouseActivate); message WM_MOUSEACTIVATE;
-
   public
     { Public declarations }
     opacity: Integer;
@@ -88,22 +84,10 @@ procedure TFormAlert.FormCreate(Sender: TObject);
 var
   i: integer;
   domain, txt: string;
-
-
 begin
-  //SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_NOACTIVATE);
 
   try
-  
 
-  // Masque la fenêtre de la taskbar
-  //SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
-
-
-  //Self.FormStyle := fsStayOnTop;
-  //Self.Show;
-  //Systray.EnleveIconeTray;
-  //Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   PanelAllowed.Top := 0;
   PanelDisallowed.Top := 0;
   Self.Height := PanelAllowed.Height;
@@ -115,36 +99,47 @@ begin
     + Label1.Left;
   Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
 
-  //PanelAllowed.Visible := True;
-  //PanelDisallowed.Visible := False;
-  
-  //Self.Top := Screen.WorkAreaHeight - Self.Height;
-  //Self.SendToBack;
 
-  //Desactiverlebloquagedetouslesdomaines1.Visible := Form1.ToolButtonBlockAll.Down;
-
-  {
-  if Form1.ToolButtonBlockAll.Down then
-  begin
-    PanelAllowed.Visible := False;
-    PanelDisallowed.Visible := True;
-  end;
-  }
-  
   AutoriserledomainedufichierHost1.Visible := False;
   AutoriserledomaineBlackwords1.Visible := False;
   ButtonDisableBlockHost.Visible := False;
   ButtonDisableBlockBlackwords.Visible := False;
+  
   domain := Label1.Caption;
+
+  if Self.Hint = '0' then
+  begin
+    PanelAllowed.Visible := True;
+    PanelDisallowed.Visible := False;
+
+    AutoriserledomainedufichierHost1.Visible := True;
+    AutoriserledomaineBlackwords1.Visible := True;
+  end;
+  if Self.Hint = '1' then
+  begin
+    PanelAllowed.Visible := True;
+    PanelDisallowed.Visible := False;
+
+    AutoriserledomainedufichierHost1.Visible := True;
+    AutoriserledomaineBlackwords1.Visible := True;
+  end;
+  if Self.Hint = '3' then
+  begin
+    PanelAllowed.Visible := False;
+    PanelDisallowed.Visible := True;
+
+    ButtonDisableBlockHost.Visible := True;
+    ButtonDisableBlockBlackwords.Visible := True;
+  end;
+  {
   if domain <> '' then
   begin
     txt := ReadFromFile(form1.EditFilehost.Text);
     if Pos('127.0.0.1	'+domain, txt) > 0 then
     begin
       AutoriserledomainedufichierHost1.Visible := True;
-      //PanelAllowed.Visible := False;
-      //PanelDisallowed.Visible := True;
-      if not Form1.ButtonDisableHost.Down then ButtonDisableBlockHost.Visible := True;
+      if not Form1.ButtonDisableHost.Down then
+        ButtonDisableBlockHost.Visible := True;
     end;
     with Form1 do
     begin
@@ -154,14 +149,16 @@ begin
         if Pos(txt, domain) > 0 then
         begin
           AutoriserledomaineBlackwords1.Visible := True;
-          //PanelAllowed.Visible := False;
-          //PanelDisallowed.Visible := True;
-          if not Form1.ButtonDisableBlackhost.Down then ButtonDisableBlockBlackwords.Visible := True;
+          if not Form1.ButtonDisableBlackhost.Down then
+            ButtonDisableBlockBlackwords.Visible := True;
         end;
       end;
     end;
 
   end;
+
+  }
+  
   Edit1.Width := Label1.Width + 5;
   Edit1.Text := Label1.Caption;
 
@@ -490,16 +487,4 @@ begin
 end;
 
 
-procedure TFormAlert.CreateParams(var Params: TCreateParams);
-begin
-  inherited;
-  //Params.ExStyle := Params.ExStyle + WS_EX_NOACTIVATE;
-end;
-
-{
-procedure TFormAlert.WMMouseActivate(var Message: TWMMouseActivate);
-begin
-  Message.Result := MA_NOACTIVATE;
-end;
-}
 end.

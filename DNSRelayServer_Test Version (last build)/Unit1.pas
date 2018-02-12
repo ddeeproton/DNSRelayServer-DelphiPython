@@ -9,10 +9,10 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
-  UnitDialogIP, UnitManageIP;
+  UnitDialogIP, UnitManageIP, UxTheme;
 
 var
-  CurrentApplicationVersion: string = '0.4.328';
+  CurrentApplicationVersion: string = '0.4.329';
   isDevVersion: Boolean = False;
 
 type
@@ -389,8 +389,6 @@ type
       Shift: TShiftState);
     procedure ButtonClosePanelRestartClick(Sender: TObject);
     procedure ButtonApplyChangesClick(Sender: TObject);
-    procedure PageControl1DrawTab(Control: TCustomTabControl;
-      TabIndex: Integer; const Rect: TRect; Active: Boolean);
     procedure LabelToCheckboxClick(Sender: TObject);
     procedure LabelCheckboxMouseEnter(Sender: TObject);
     procedure LabelCheckboxMouseLeave(Sender: TObject);
@@ -530,6 +528,8 @@ type
     class procedure eraseIP(ip: string);
   end;
 
+
+
 var
   Form1: TForm1;
   FormHost: TFormHost;
@@ -577,7 +577,7 @@ var
   isNew, isRepeated: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
-  date, time, ipserver, ipclient, ipdomain, domain, ip, logs, tab, status:string;
+  date, time, ipserver, ipclient, ipdomain, domain, ip, logs, tab, status, hostdata, blackhost:string;
   FormAlert: TFormAlert;
   data: TRecordAlert;
 begin
@@ -602,12 +602,12 @@ begin
 
     SetLength(domain, Length(domain)-1);
 
-
     if form1.ListBoxIpClients.Items.IndexOf(ipclient) = -1 then
     begin
       form1.ListBoxIpClients.Items.Add(ipclient);
     end;
 
+  
     isNew := true;
     for i := 0 to form1.ListView1.Items.Count-1 do
     begin
@@ -618,8 +618,35 @@ begin
     ip := ipdomain;
     ip := onlyChars(ip);
 
-    if Pos('127.0.0', ip) = 0 then imgIndex := 0
-    else imgIndex := 3;
+    if Pos('127.0.0', ip) = 0 then
+      imgIndex := 1
+    else begin
+
+      imgIndex := 0;
+
+
+      // Check if rule in host file
+      hostdata := ReadFromFile(form1.EditFilehost.Text);
+      if Pos(' '+domain+#1310, hostdata) > 0 then
+      begin
+        imgIndex := 3;
+      end;
+
+      // Check if blackhosted
+      with Form1 do
+      begin
+        for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+        begin
+          blackhost := ListBoxBlacklist.Items.Strings[i];
+          if Pos(blackhost, domain) > 0 then
+          begin
+            imgIndex := 3;
+          end;
+        end;
+      end;
+
+
+    end;
 
     if isNew then
     begin
@@ -640,19 +667,30 @@ begin
       if ipdomain = '127.0.0.4' then status := 'BLOCKED by DNS Master fail';
       if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
-      if form1.MemoLogs.Visible then form1.MemoLogs.Lines.Add(logs);
+      if form1.MemoLogs.Visible then
+        form1.MemoLogs.Lines.Add(logs);
 
-      
+
       data.domain := domain;
       data.typeAlert := imgIndex;
 
+      AlertManager.createNewAlert(FormAlert, data);
+
+      // Don't do FormAlert.Show; because you loose the focus.
+      // Use this code instead
+      ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
+      FormAlert.Visible := true;
+      FormAlert.Repaint;
+
+      {
       if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
       begin
         AlertManager.createNewAlert(FormAlert, data);
         if FormAlert <> nil then
         begin
-          FormAlert.PanelAllowed.Visible := True;
-          FormAlert.PanelDisallowed.Visible := False;
+          //FormAlert.PanelAllowed.Visible := True;
+          //FormAlert.PanelDisallowed.Visible := False;
+          FormAlert.FormCreate(nil);
           // Don't do FormAlert.Show; because you loose the focus.
           // Use this code instead
           ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
@@ -665,8 +703,9 @@ begin
         AlertManager.createNewAlert(FormAlert, data);
         if FormAlert <> nil then
         begin
-          FormAlert.PanelAllowed.Visible := True;
-          FormAlert.PanelDisallowed.Visible := False;
+          //FormAlert.PanelAllowed.Visible := True;
+          //FormAlert.PanelDisallowed.Visible := False;
+          FormAlert.FormCreate(nil);
           // Don't do FormAlert.Show; because you loose the focus.
           // Use this code instead
           ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
@@ -679,8 +718,9 @@ begin
         AlertManager.createNewAlert(FormAlert, data);
         if FormAlert <> nil then
         begin
-          FormAlert.PanelAllowed.Visible := False;
-          FormAlert.PanelDisallowed.Visible := True;
+          //FormAlert.PanelAllowed.Visible := False;
+          //FormAlert.PanelDisallowed.Visible := True;
+          FormAlert.FormCreate(nil);
           // Don't do FormAlert.Show; because you loose the focus.
           // Use this code instead
           ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
@@ -688,7 +728,7 @@ begin
           FormAlert.Repaint;
         end;
       end;
-
+      }
 
       if ipdomain = '127.0.0.4' then //status := 'BLOCKED by DNS Master fail';
       begin
@@ -702,6 +742,7 @@ begin
           end;
         end;
       end;
+
     end;
   end
   else begin
@@ -1083,6 +1124,8 @@ begin
     Application.Terminate;
   end;
   forOldVersions();
+
+  SetWindowTheme(PageControl1.Handle, '', ''); 
 
   TimerAfterFormCreate.Enabled := True;
   ServerDoStart := False;
@@ -2791,17 +2834,6 @@ begin
   KillTask('python.exe');
 end;
 
-procedure TForm1.PageControl1DrawTab(Control: TCustomTabControl;
-  TabIndex: Integer; const Rect: TRect; Active: Boolean);
-begin
-  Control.Canvas.Brush.Color := Color;
-  if Active then
-  begin
-    Control.Canvas.TextOut (Rect.Left +6, Rect.Top +5, (Control as TPageControl).Pages[TabIndex].Caption);
-  end
-  else
-    Control.Canvas.TextOut (Rect.Left +2, Rect.Top +4, (Control as TPageControl).Pages[TabIndex].Caption);
-end;
 
 
 procedure TForm1.LabelToCheckboxClick(Sender: TObject);
