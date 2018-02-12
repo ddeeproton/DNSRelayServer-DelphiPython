@@ -1,5 +1,6 @@
 A faire:
 --------
+-factoriser le code des alertes
 -refaire l'affichage du log 
 -ecrire les logs dans un fichier
 -implémenter une interface web
