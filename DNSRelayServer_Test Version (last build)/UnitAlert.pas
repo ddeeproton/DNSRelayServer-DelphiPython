@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, DNSManager,
-  HostParser, Buttons, ImgList, Menus, FilesManager, WindowsManager, UnitRestartAlert;
+  Dialogs, StdCtrls, ExtCtrls, DNSManager, RulesManager, Menus, Buttons,
+  HostParser, ImgList, FilesManager, WindowsManager, UnitRestartAlert;
 
 type
   TFormAlert = class(TForm)
@@ -67,6 +67,7 @@ type
   public
     { Public declarations }
     opacity: Integer;
+    dataip: String;
   end;
 
 var
@@ -82,90 +83,175 @@ var
 
 procedure TFormAlert.FormCreate(Sender: TObject);
 var
-  i: integer;
-  domain, txt: string;
+  i, imgIndex: integer;
+  domain, txt, ip, hostdata, blackhost: string;
 begin
 
+  SetWindowLong(Handle, GWL_EXSTYLE,
+                GetWindowLong(Handle, GWL_EXSTYLE) or
+                WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
+  ShowWindow(Handle, SW_HIDE);
+
   try
+    domain := Label1.Caption;
+    ip := dataip;
 
-  PanelAllowed.Top := 0;
-  PanelDisallowed.Top := 0;
-  Self.Height := PanelAllowed.Height;
-  Self.Width := Label1.Width
-    + ButtonMenuForAllowed.Width
-    + SpeedButtonClosePanelUpdateTheme.Width
-    + CheckBoxStay.Width
-    + 10
-    + Label1.Left;
-  Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
+    {
+    if Pos('127.0.0', ip) = 0 then
+      imgIndex := 1
+    else begin
+
+      imgIndex := 0;
 
 
-  AutoriserledomainedufichierHost1.Visible := False;
-  AutoriserledomaineBlackwords1.Visible := False;
-  ButtonDisableBlockHost.Visible := False;
-  ButtonDisableBlockBlackwords.Visible := False;
-  
-  domain := Label1.Caption;
-
-  if Self.Hint = '0' then
-  begin
-    PanelAllowed.Visible := True;
-    PanelDisallowed.Visible := False;
-
-    AutoriserledomainedufichierHost1.Visible := True;
-    AutoriserledomaineBlackwords1.Visible := True;
-  end;
-  if Self.Hint = '1' then
-  begin
-    PanelAllowed.Visible := True;
-    PanelDisallowed.Visible := False;
-
-    AutoriserledomainedufichierHost1.Visible := True;
-    AutoriserledomaineBlackwords1.Visible := True;
-  end;
-  if Self.Hint = '3' then
-  begin
-    PanelAllowed.Visible := False;
-    PanelDisallowed.Visible := True;
-
-    ButtonDisableBlockHost.Visible := True;
-    ButtonDisableBlockBlackwords.Visible := True;
-  end;
-  {
-  if domain <> '' then
-  begin
-    txt := ReadFromFile(form1.EditFilehost.Text);
-    if Pos('127.0.0.1	'+domain, txt) > 0 then
-    begin
-      AutoriserledomainedufichierHost1.Visible := True;
-      if not Form1.ButtonDisableHost.Down then
-        ButtonDisableBlockHost.Visible := True;
-    end;
-    with Form1 do
-    begin
-      for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+      // Check if rule in host file
+      hostdata := ReadFromFile(form1.EditFilehost.Text);
+      if Pos(' '+domain+#1310, hostdata) > 0 then
       begin
-        txt := ListBoxBlacklist.Items.Strings[i];
-        if Pos(txt, domain) > 0 then
+        imgIndex := 3;
+      end;
+
+      // Check if blackhosted
+      with Form1 do
+      begin
+        for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
         begin
-          AutoriserledomaineBlackwords1.Visible := True;
-          if not Form1.ButtonDisableBlackhost.Down then
-            ButtonDisableBlockBlackwords.Visible := True;
+          blackhost := ListBoxBlacklist.Items.Strings[i];
+          if Pos(blackhost, domain) > 0 then
+          begin
+            imgIndex := 3;
+          end;
         end;
       end;
+
+
+    end;
+    }
+
+
+    PanelAllowed.Top := 0;
+    PanelDisallowed.Top := 0;
+    Self.Height := PanelAllowed.Height;
+    Self.Width := Label1.Width
+      + ButtonMenuForAllowed.Width
+      + SpeedButtonClosePanelUpdateTheme.Width
+      + CheckBoxStay.Width
+      + 10
+      + Label1.Left;
+    Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
+
+
+    if Rules.IsBlacklistDomain(domain) or Rules.IsBlackHostDomain(domain) then
+    begin
+      PanelAllowed.Visible := False;
+      PanelDisallowed.Visible := True;
+    end else begin
+      PanelAllowed.Visible := True;
+      PanelDisallowed.Visible := False;
     end;
 
-  end;
 
-  }
-  
-  Edit1.Width := Label1.Width + 5;
-  Edit1.Text := Label1.Caption;
+    if Rules.IsBlackHostDomain(domain) then
+    begin
+      AutoriserledomainedufichierHost1.Visible := True;
+      ButtonDisableBlockHost.Visible := False;
+    end else begin
+      AutoriserledomainedufichierHost1.Visible := False;
+      ButtonDisableBlockHost.Visible := True;
+    end;
 
-  if Sender = nil then exit;
-  opacity := 0;
-  SetFormOpacity(Self.Handle, opacity);
-  TimerFadeIn.Enabled := True;
+    if Rules.IsBlacklistDomain(domain) then
+    begin
+      AutoriserledomaineBlackwords1.Visible := True;
+      ButtonDisableBlockBlackwords.Visible := False;
+    end else begin
+      AutoriserledomaineBlackwords1.Visible := False;
+      ButtonDisableBlockBlackwords.Visible := True;
+    end;
+
+    if Form1.DsactiverlefiltragedufichierHost1.Checked
+    or Form1.DisallowAll.Checked then
+    begin
+      Desactiverlebloquagedetouslesdomaines1.Visible := True;
+      ButtonDisableBlockHost.Visible := True;
+    end else begin
+      Desactiverlebloquagedetouslesdomaines1.Visible := False;
+      ButtonDisableBlockHost.Visible := False;
+    end;
+
+
+    {
+    //Autoriser le domaine (fichier Host)
+    AutoriserledomainedufichierHost1.Visible := True;
+    //Autoriser le domaine (Blackwords)
+    AutoriserledomaineBlackwords1.Visible := True;
+    // Bloquer par le fichier host
+    ButtonDisableBlockHost.Visible := False;
+    // Bloquer le domaine (Blackwords)
+    ButtonDisableBlockBlackwords.Visible := False;
+    }
+
+    {
+    if imgIndex = 0 then
+    begin
+      PanelAllowed.Visible := True;
+      PanelDisallowed.Visible := False;
+
+      AutoriserledomainedufichierHost1.Visible := True;
+      AutoriserledomaineBlackwords1.Visible := True;
+    end;
+    if imgIndex = 1 then
+    begin
+      PanelAllowed.Visible := True;
+      PanelDisallowed.Visible := False;
+
+      AutoriserledomainedufichierHost1.Visible := True;
+      AutoriserledomaineBlackwords1.Visible := True;
+    end;
+    if imgIndex = 3 then
+    begin
+      PanelAllowed.Visible := False;
+      PanelDisallowed.Visible := True;
+
+      ButtonDisableBlockHost.Visible := True;
+      ButtonDisableBlockBlackwords.Visible := True;
+    end;
+    }
+    {
+    if domain <> '' then
+    begin
+      txt := ReadFromFile(form1.EditFilehost.Text);
+      if Pos('127.0.0.1	'+domain, txt) > 0 then
+      begin
+        AutoriserledomainedufichierHost1.Visible := True;
+        if not Form1.ButtonDisableHost.Down then
+          ButtonDisableBlockHost.Visible := True;
+      end;
+      with Form1 do
+      begin
+        for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
+        begin
+          txt := ListBoxBlacklist.Items.Strings[i];
+          if Pos(txt, domain) > 0 then
+          begin
+            AutoriserledomaineBlackwords1.Visible := True;
+            if not Form1.ButtonDisableBlackhost.Down then
+              ButtonDisableBlockBlackwords.Visible := True;
+          end;
+        end;
+      end;
+
+    end;
+
+    }
+
+    Edit1.Width := Label1.Width + 5;
+    Edit1.Text := Label1.Caption;
+
+    if Sender = nil then exit;
+    opacity := 0;
+    SetFormOpacity(Self.Handle, opacity);
+    TimerFadeIn.Enabled := True;
 
   except
     On E : EOSError do exit;

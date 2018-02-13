@@ -22,11 +22,6 @@ uses
   //IdException;
   Registry, md5;
 
-  
-  
-  
-
- 
 type
   ActionDNS = class
   private

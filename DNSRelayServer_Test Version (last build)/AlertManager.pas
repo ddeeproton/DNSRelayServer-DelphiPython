@@ -7,9 +7,11 @@ uses
 
 const
   TAILLE_MAX_PILE = 300;
+
 type
   TRecordAlert = record
     index: Integer;
+    ip: String;
     domain: String;
     typeAlert: Integer;
     FormAlert: TFormAlert;
@@ -82,6 +84,7 @@ begin
   FormAlert.Label1.Caption := data.domain;
   FormAlert.Label2.Caption := data.domain;
   FormAlertLastShow := data.domain;
+  FormAlert.dataip := data.ip;
   FormAlert.Color := Form1.Color;
   FormAlert.Label1.Font.Color := Form1.Font.Color;
   FormAlert.Label2.Font.Color := Form1.Font.Color;

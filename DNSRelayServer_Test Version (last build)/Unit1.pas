@@ -9,10 +9,10 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
-  UnitDialogIP, UnitManageIP, UxTheme;
+  UnitDialogIP, UnitManageIP, RulesManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.329';
+  CurrentApplicationVersion: string = '0.4.330';
   isDevVersion: Boolean = False;
 
 type
@@ -544,10 +544,10 @@ var
   MasterDNSFile: string = 'MasterDNSFile.cfg';
   SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
   FilehostPathConfig: string = 'FileHostPath.cfg';
+  BlackListCfgFile: string = 'blackhost.txt';
   SlaveDNSIPConfig: string = 'SlaveDNSIP.cfg';
   SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
   TimeCheckUpdateFile: string = 'TimeCheckUpdate.cfg';
-  BlackListCfgFile: string = 'blackhost.txt';
   DirCustomHost : string = 'customhost';
 
   FormAlertLastShow: string = '';
@@ -618,35 +618,6 @@ begin
     ip := ipdomain;
     ip := onlyChars(ip);
 
-    if Pos('127.0.0', ip) = 0 then
-      imgIndex := 1
-    else begin
-
-      imgIndex := 0;
-
-
-      // Check if rule in host file
-      hostdata := ReadFromFile(form1.EditFilehost.Text);
-      if Pos(' '+domain+#1310, hostdata) > 0 then
-      begin
-        imgIndex := 3;
-      end;
-
-      // Check if blackhosted
-      with Form1 do
-      begin
-        for i:= 0 to ListBoxBlacklist.Items.Count - 1 do
-        begin
-          blackhost := ListBoxBlacklist.Items.Strings[i];
-          if Pos(blackhost, domain) > 0 then
-          begin
-            imgIndex := 3;
-          end;
-        end;
-      end;
-
-
-    end;
 
     if isNew then
     begin
@@ -670,17 +641,24 @@ begin
       if form1.MemoLogs.Visible then
         form1.MemoLogs.Lines.Add(logs);
 
+      if ((status = 'OK') and
+          (CheckBoxAlertEventsKnown.Checked
+           or CheckBoxAlertEventsUnknown.Checked))
+      or ((status <> 'OK') and CheckBoxAlertEventDisallowed.Checked) then // bloqué
+      begin
+        data.ip := ip;
+        data.domain := domain;
+        data.typeAlert := imgIndex;
 
-      data.domain := domain;
-      data.typeAlert := imgIndex;
+        AlertManager.createNewAlert(FormAlert, data);
 
-      AlertManager.createNewAlert(FormAlert, data);
+        // Don't do FormAlert.Show; because you loose the focus.
+        // Use this code instead
+        ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
+        FormAlert.Visible := true;
+        FormAlert.Repaint;
+      end;
 
-      // Don't do FormAlert.Show; because you loose the focus.
-      // Use this code instead
-      ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
-      FormAlert.Visible := true;
-      FormAlert.Repaint;
 
       {
       if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
@@ -1125,7 +1103,7 @@ begin
   end;
   forOldVersions();
 
-  SetWindowTheme(PageControl1.Handle, '', ''); 
+  //SetWindowTheme(PageControl1.Handle, '', ''); 
 
   TimerAfterFormCreate.Enabled := True;
   ServerDoStart := False;

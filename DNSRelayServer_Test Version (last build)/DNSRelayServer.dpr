@@ -20,7 +20,8 @@ uses
   UnitRestartAlert in 'UnitRestartAlert.pas' {FormRestart},
   AlertManager in 'AlertManager.pas',
   UnitDialogIP in 'UnitDialogIP.pas' {FormDialogIP},
-  UnitManageIP in 'UnitManageIP.pas' {FormManageIP};
+  UnitManageIP in 'UnitManageIP.pas' {FormManageIP},
+  RulesManager in 'RulesManager.pas';
 
 {$R *.res}
 
