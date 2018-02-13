@@ -150,6 +150,17 @@ begin
       PanelDisallowed.Visible := False;
     end;
 
+    if Rules.IsBlackHostDomain(domain) then
+    begin
+      if Form1.CheckBoxShowDebug.Checked then
+        Form1.MemoLogs.Lines.Add('Debug: IsBlackHostDomain');
+    end;
+
+    if Rules.IsBlacklistDomain(domain) then
+    begin
+      if Form1.CheckBoxShowDebug.Checked then
+        Form1.MemoLogs.Lines.Add('Debug: IsBlacklistDomain');
+    end;
 
     if Rules.IsBlackHostDomain(domain) then
     begin

@@ -95,10 +95,25 @@ end;
 class function Rules.IsBlacklistDomain(domain: string): Boolean;
 var
   hostdata: String;
+  i: Integer;
 begin
+  result := False;
+  for i := 0 to Form1.ListBoxBlacklist.Items.Count - 1 do
+  begin
+    if Pos(Form1.ListBoxBlacklist.Items.Strings[i], domain) > 0 then
+    begin
+      result := True;
+      exit;
+    end;
+  end;
+  {
+  exit;
   // Check if rule in host file
   hostdata := ReadFromFile(Unit1.BlackListCfgFile);
-  result := Pos(domain+#1310, hostdata) = 0;
+  result := Pos(domain+#1310, hostdata) > 0;
+  if Form1.CheckBoxShowDebug.Checked then
+    Form1.MemoLogs.Lines.Add(IntToStr(Pos(domain+#1310, hostdata)));
+  }
 end;
 
 
