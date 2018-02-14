@@ -2639,10 +2639,25 @@ end;
 
 
 procedure TForm1.TimerStartInBackgroundTimer(Sender: TObject);
-begin                     
+var
+  i :Integer;
+  isParamBackground: Boolean;
+begin
   debug('TimerStartInBackgroundTimer');
   TTimer(Sender).Enabled := False;
-  Masquer1Click(nil);
+
+  isParamBackground := False;
+  for i:=0 to ParamCount() do
+  begin
+    if ParamStr(i) = '/background' then
+    begin
+      isParamBackground := True;
+    end;
+  end;
+
+  if CheckBoxStartWithWindows.Checked
+  or isParamBackground then
+    Masquer1Click(nil);
 end;
 
 

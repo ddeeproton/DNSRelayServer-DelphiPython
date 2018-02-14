@@ -17657,7 +17657,6 @@ object Form1: TForm1
   end
   object TimerStartInBackground: TTimer
     Enabled = False
-    Interval = 1
     OnTimer = TimerStartInBackgroundTimer
     Left = 395
     Top = 135
