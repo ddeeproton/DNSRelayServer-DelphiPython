@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.331';
+  CurrentApplicationVersion: string = '0.4.332';
   isDevVersion: Boolean = False;
 
 type
@@ -1108,7 +1108,7 @@ begin
   SetWindowLong(Handle, GWL_EXSTYLE,
                 GetWindowLong(Handle, GWL_EXSTYLE) or
                 WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
-  //ShowWindow(Application.Handle, SW_HIDE);
+  ShowWindow(Application.Handle, SW_HIDE);
 
   //SetWindowTheme(PageControl1.Handle, '', '');
 
