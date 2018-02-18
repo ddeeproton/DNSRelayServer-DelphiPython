@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.332';
+  CurrentApplicationVersion: string = '0.4.333';
   isDevVersion: Boolean = False;
 
 type
@@ -478,6 +478,7 @@ type
     procedure debug(log: String);
     procedure CheckBoxShowDebugClick(Sender: TObject);
     procedure setButtonStartText(state: Integer);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -561,6 +562,7 @@ var
   isApplicationLoading: Boolean = True;
   opacity: Integer = 0;
   autostarted: Boolean = False;
+  isFormHideOnStart: Boolean = False;
 implementation
 
 {$R *.dfm}
@@ -570,6 +572,28 @@ begin
   if CheckBoxShowDebug.Checked then
     MemoLogs.Lines.Add('Debug: '+log);
 end;
+
+procedure TForm1.FormShow(Sender: TObject);
+var
+  i: Integer;
+begin
+  if isFormHideOnStart then exit;
+  isFormHideOnStart := True;
+  for i:=0 to ParamCount() do
+  begin
+    if ParamStr(i) = '/background' then
+    begin
+      Masquer1Click(nil);
+      startedInBackground := True;
+      autostarted := True;
+      ButtonStartClick(nil);
+      TimerStartInBackground.Enabled := True;
+      exit;
+
+    end;
+  end;
+end;
+
 
 procedure TForm1.OnOutput(txt:String);
 var
@@ -2404,7 +2428,7 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
 
-  ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+  //ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -2485,6 +2509,7 @@ begin
   autostarted := False;
   for i:=0 to ParamCount() do
   begin
+    {
     if ParamStr(i) = '/background' then
     begin
       Masquer1Click(nil);
@@ -2495,6 +2520,7 @@ begin
       exit;
 
     end;
+    }
     if ParamStr(i) = '/autostart' then
     begin
       ServerDoStart := True;
@@ -2591,13 +2617,13 @@ begin
 
   MemoLogs.Lines.Add('Set DNS '+dnslist);
   ActionDNS.setDNS(dnslist);
-  ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
+  //ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 end;
 
 procedure TForm1.ButtonNetCardDesintegrationClick(Sender: TObject);
 begin
   ActionDNS.setDNS('');
-  ActionDNS.setDNSOnBoot(False);
+  //ActionDNS.setDNSOnBoot(False);
   //ActionDNS.setIPToDHCP();
   MemoLogs.Lines.Add('Go to DHCP');
 end;
@@ -4193,6 +4219,7 @@ begin
   end;
   Application.ProcessMessages;
 end;
+
 
 
 end.
