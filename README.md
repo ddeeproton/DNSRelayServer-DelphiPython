@@ -1,10 +1,17 @@
 ![](preview.png)
 
+
 # DNS Relay Server
 
 ### Télécharger le setup d'installation Windows:
 
 https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup%20installation/DNSRelayServerSetup_0.4.333.exe
+
+### Bug
+
+Pour que le filtrage DNS puisse fonctionner, désactivez l'IPv6 dans les paramètres de vos cartes réseau (voir image).
+
+![](bug.png)
 
 ### Description:
 
