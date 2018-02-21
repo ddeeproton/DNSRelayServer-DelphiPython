@@ -131,7 +131,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet3
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -2796,14 +2796,11 @@ object Form1: TForm1
       Spacing = 0
       OnClick = ToolButton11Click
     end
-    object Panel9: TPanel
-      Left = 69
-      Top = 36
-      Width = 19
-      Height = 19
-      Color = clRed
-      TabOrder = 0
-      OnClick = ToolButton11Click
+    object Shape3: TShape
+      Left = 16
+      Top = 32
+      Width = 17
+      Height = 17
     end
   end
   object PanelRestart: TPanel

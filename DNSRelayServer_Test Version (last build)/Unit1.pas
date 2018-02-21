@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.333';
+  CurrentApplicationVersion: string = '0.4.334';
   isDevVersion: Boolean = False;
 
 type
@@ -295,7 +295,6 @@ type
     Label40: TLabel;
     CheckBoxShowDebug: TCheckBox;
     Relancerlapplication1: TMenuItem;
-    Panel9: TPanel;
     MainMenu1: TMainMenu;
     Clients2: TMenuItem;
     Blacklist2: TMenuItem;
@@ -305,6 +304,7 @@ type
     SpeedButton3: TSpeedButton;
     Config2: TMenuItem;
     MemoLogs: TMemo;
+    Shape3: TShape;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1112,6 +1112,7 @@ var
   canClose: Boolean;
 
 begin
+
 
   if not IsUserAnAdmin() then
   begin
@@ -4196,8 +4197,8 @@ begin
     SpeedButton1.Enabled := True;
     SpeedButton1.Hint := 'Démarrer le serveur DNS';
     SpeedButton1.Enabled := True;
-    Panel9.Color := clRed;
-    Panel9.Enabled := True;
+    Shape3.brush.Color := clRed;
+    Shape3.Enabled := True;
   end;
   if state = 1 then
   begin
@@ -4205,8 +4206,8 @@ begin
     SpeedButton1.Enabled := True;
     SpeedButton1.Hint := 'Arrêter le serveur DNS';
     SpeedButton1.Enabled := True;
-    Panel9.Color := clGreen;
-    Panel9.Enabled := True;
+    Shape3.brush.Color := clGreen;
+    Shape3.Enabled := True;
   end;
   if state = 2 then
   begin
@@ -4214,8 +4215,8 @@ begin
     SpeedButton1.Enabled := True;
     SpeedButton1.Hint := '';
     SpeedButton1.Enabled := False;
-    Panel9.Color := clGray;
-    Panel9.Enabled := False;
+    Shape3.brush.Color := clGray;
+    Shape3.Enabled := False;
   end;
   Application.ProcessMessages;
 end;
