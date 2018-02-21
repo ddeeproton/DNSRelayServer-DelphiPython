@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.334';
+  CurrentApplicationVersion: string = '0.4.335';
   isDevVersion: Boolean = False;
 
 type
@@ -592,6 +592,8 @@ begin
 
     end;
   end;
+  Masquer1Click(nil);
+  Afficher1Click(nil);
 end;
 
 
@@ -2023,10 +2025,10 @@ begin
   debug('Timer1Timer');
   Timer1.Enabled := False;
   if listThreads = nil then exit;
-  if Length(listThreads) = 0 then exit;
-  for j := 0 to Length(listThreads) - 1 do
-  begin
-    try
+  if Length(listThreads) = 0 then exit; 
+  try
+    for j := 0 to Length(listThreads) - 1 do
+    begin
       if j > Length(listThreads) -1 then exit;
       if listThreads[j] = nil then exit;
       if listThreads[j].Terminated then exit;
@@ -2035,11 +2037,13 @@ begin
       begin
         OnOutput(listThreads[j].output[i]);
       end;
-    except
-      On E : EOSError do exit;
-      On E : EAccessViolation do exit;
+      if listThreads[j] = nil then exit;
+      listThreads[j].output := TStringList.Create;
     end;
-    listThreads[j].output := TStringList.Create;
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+    On E : ERangeError do exit;
   end;
 end;
 
