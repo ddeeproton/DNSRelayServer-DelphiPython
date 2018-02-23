@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.336';
+  CurrentApplicationVersion: string = '0.4.337';
   isDevVersion: Boolean = False;
 
 type
@@ -3349,6 +3349,7 @@ end;
 
 procedure TForm1.AllowAllClick(Sender: TObject);
 begin
+{
   if FileExists(DataDirectoryPath + 'disableHost.cfg')
   and FileExists(DataDirectoryPath + 'disableBlackhost.cfg')
   and not FileExists(DataDirectoryPath + 'disableAll.cfg') then
@@ -3356,7 +3357,7 @@ begin
     ToutNormal1Click(nil);
     exit;
   end;
-
+}
   if not FileExists(DataDirectoryPath + 'disableHost.cfg') then
     WriteInFile(DataDirectoryPath + 'disableHost.cfg', '1');
 
