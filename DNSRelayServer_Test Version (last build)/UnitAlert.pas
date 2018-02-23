@@ -141,7 +141,8 @@ begin
     Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
 
 
-    if Rules.IsBlacklistDomain(domain) or Rules.IsBlackHostDomain(domain) then
+    //if Rules.IsBlacklistDomain(domain) or Rules.IsBlackHostDomain(domain) then
+    if Pos('127.0.0', ip) > 0 then // if is blocked
     begin
       PanelAllowed.Visible := False;
       PanelDisallowed.Visible := True;

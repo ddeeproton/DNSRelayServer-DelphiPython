@@ -31,7 +31,7 @@ var
 begin
   // Check if rule in host file
   hostdata := ReadFromFile(form1.EditFilehost.Text);
-  result := Pos('127.0.0.1 '+domain+#1310, hostdata) > 0;
+  result := Pos('127.0.0.1	'+domain+#1310, hostdata) > 0;
 end;
 
 class procedure Rules.BlackHostDomain(domain: string);
