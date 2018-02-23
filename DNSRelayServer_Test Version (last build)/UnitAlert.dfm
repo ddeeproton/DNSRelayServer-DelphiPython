@@ -368,7 +368,7 @@ object FormAlert: TFormAlert
   end
   object TimerFadeOut: TTimer
     Enabled = False
-    Interval = 1
+    Interval = 100
     OnTimer = TimerFadeOutTimer
     Left = 136
     Top = 48

@@ -561,14 +561,19 @@ end;
 procedure TFormAlert.TimerFadeInTimer(Sender: TObject);
 begin
   SetFormOpacity(Self.Handle, opacity);
-  if opacity < 100 then Inc(opacity) else TTimer(Sender).Enabled := False;
+  if opacity < 100 then
+    //Inc(opacity)
+    opacity := opacity + 20
+  else
+    TTimer(Sender).Enabled := False;
 end;
 
 procedure TFormAlert.TimerFadeOutTimer(Sender: TObject);
 begin
   SetFormOpacity(Self.Handle, opacity);
   if opacity > 0 then
-    Dec(opacity)
+    //Dec(opacity)
+    opacity := opacity - 20
   else
   begin
     TTimer(Sender).Enabled := False;
