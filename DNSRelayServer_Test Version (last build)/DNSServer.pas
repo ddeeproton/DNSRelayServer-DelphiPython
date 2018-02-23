@@ -297,12 +297,13 @@ begin
     '		if os.path.isdir(config_dircustomhost):'#13#10+
     '			customhostfile = config_dircustomhost + "/" + ipclient + "_hostfile.txt"'#13#10+
     '			if os.path.isfile(customhostfile):'#13#10+
-    '				IPHost = self.checkHost(domain, customhostfile)'#13#10+
-    '				if os.path.isfile(currentDir + "/disableHost.cfg") == False and IPHost <> '''':'#13#10+
-    '					#if config_display:'#13#10+
-    '					#	print "Host file domain:"'#13#10+
-    '					self.addToCache(ipclient, domain, IPHost)'#13#10+
-    '					return IPHost'#13#10+
+    '				if os.path.isfile(currentDir + "/disableHost.cfg") == False :'#13#10+
+    '					IPHost = self.checkHost(domain, customhostfile)'#13#10+
+    '					if IPHost <> '''':'#13#10+
+    '						#if config_display:'#13#10+
+    '						#	print "Host file domain:"'#13#10+
+    '						self.addToCache(ipclient, domain, IPHost)'#13#10+
+    '						return IPHost'#13#10+
     ''#13#10+
     '		if os.path.isdir(config_dircustomhost):'#13#10+
     '			customblackhostfile = config_dircustomhost + "/" + ipclient + "_blackhost.txt"'#13#10+
