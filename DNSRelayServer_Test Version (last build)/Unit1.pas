@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager;
 
 var
-  CurrentApplicationVersion: string = '0.4.335';
+  CurrentApplicationVersion: string = '0.4.336';
   isDevVersion: Boolean = False;
 
 type
@@ -4210,7 +4210,7 @@ begin
     SpeedButton1.Enabled := True;
     SpeedButton1.Hint := 'Arrêter le serveur DNS';
     SpeedButton1.Enabled := True;
-    Shape3.brush.Color := clGreen;
+    Shape3.brush.Color := clLime;
     Shape3.Enabled := True;
   end;
   if state = 2 then

@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 199
-  Top = 122
+  Left = 192
+  Top = 149
   Width = 520
   Height = 542
   Caption = 'DNS Relay Server'
@@ -2801,6 +2801,7 @@ object Form1: TForm1
       Top = 32
       Width = 17
       Height = 17
+      Brush.Color = clRed
     end
   end
   object PanelRestart: TPanel
