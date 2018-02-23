@@ -87,10 +87,6 @@ var
   domain, txt, ip, hostdata, blackhost: string;
 begin
 
-  SetWindowLong(Handle, GWL_EXSTYLE,
-                GetWindowLong(Handle, GWL_EXSTYLE) or
-                WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
-  ShowWindow(Handle, SW_HIDE);
 
   try
     domain := Label1.Caption;
@@ -141,8 +137,9 @@ begin
     Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
 
 
-    //if Rules.IsBlacklistDomain(domain) or Rules.IsBlackHostDomain(domain) then
-    if Pos('127.0.0', ip) > 0 then // if is blocked
+
+    //if Pos('127.0.0', ip) > 0 then // if is blocked
+    if Rules.IsBlacklistDomain(domain) or Rules.IsBlackHostDomain(domain) then
     begin
       PanelAllowed.Visible := False;
       PanelDisallowed.Visible := True;
@@ -261,6 +258,12 @@ begin
     Edit1.Text := Label1.Caption;
 
     if Sender = nil then exit;
+
+    SetWindowLong(Handle, GWL_EXSTYLE,
+                  GetWindowLong(Handle, GWL_EXSTYLE) or
+                  WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
+    ShowWindow(Handle, SW_HIDE);
+
     opacity := 0;
     SetFormOpacity(Self.Handle, opacity);
     TimerFadeIn.Enabled := True;
@@ -280,6 +283,7 @@ begin
     PanelAllowed.Visible := not PanelAllowed.Visible;
     PanelDisallowed.Visible := not PanelDisallowed.Visible;
     FormCreate(nil);
+    
     {
     //if not Form1.isServerStarted then exit;
     if (Unit1.FormRestart <> nil) then
@@ -372,7 +376,6 @@ begin
   Form1.MemoLogs.Lines.Add('Bloquage de '+domain);
   Form1.refreshListView1Click();
   RestartRequired();
-  FormCreate(nil);
 end;
 
 procedure TFormAlert.BloquerparfichierBlackwords1Click(Sender: TObject);
