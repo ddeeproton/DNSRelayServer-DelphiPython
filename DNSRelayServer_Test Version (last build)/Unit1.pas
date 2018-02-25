@@ -9,11 +9,11 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
-  UnitDialogIP, UnitManageIP, RulesManager;
+  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat;
 
 var
-  CurrentApplicationVersion: string = '0.4.342';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.343.1';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
