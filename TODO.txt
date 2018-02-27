@@ -1,9 +1,22 @@
 A faire:
 --------
+[Netstat]
+-Mettre les icones du processus dans Netstat
+-Mettre le menu dans Netstat (fermer la connexion, fermer le processus, ouvrir le dossier du processus, etc.)
+-Garder la position du scroll dans Netstat après rafraichissement (peut-être bloquer le rafraichissement si le menu est affiché)
+
+[Alertes]
 -factoriser le code des alertes
+-Détecter les connexions TCP/UDP qui n'ont pas utilisés de DNS pour la connexion et proposer de kill
+
+[Logs]
 -refaire l'affichage du log 
 -ecrire les logs dans un fichier
+
+[GUI]
 -implémenter une interface web
+
+[]
 -finir d'implémenter dans le gui, la fusion du blackhost avec hostfile.
 
 -[done] implémenter un agent qui répare la connexion

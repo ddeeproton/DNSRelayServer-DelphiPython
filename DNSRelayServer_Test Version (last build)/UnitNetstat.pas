@@ -47,7 +47,7 @@ const
 
 type
   TConnection = record
-    Protocol : Byte;
+    Protocol : String;
     ConnectionState: Cardinal;
     LocalAddress : String;
     LocalRawPort : Cardinal;
@@ -163,7 +163,7 @@ begin
       SetLength(connectionArray, Length(connectionArray) + 1);
       with connectionArray[Length(connectionArray) - 1] do
       begin
-        Protocol := PROTOCOL_TCP;
+        Protocol := 'TCP';
         ConnectionState := TcpTable^.table[i].dwState;
 
         LocalAddress := IpAddressToString(TcpTable^.table[i].dwLocalAddr);
@@ -203,7 +203,7 @@ begin
       SetLength(connectionArray, Length(connectionArray) + 1);
       with connectionArray[Length(connectionArray) - 1] do
       begin
-        Protocol := PROTOCOL_UDP;
+        Protocol := 'UDP';
         ConnectionState := 0;
 
 
@@ -243,7 +243,7 @@ const
 var
   ConnectionToDelete : TMibTcpRow;
 begin
-  if Connection.Protocol = PROTOCOL_TCP then
+  if Connection.Protocol = 'TCP' then
   begin
     ConnectionToDelete.dwState := MIB_TCP_STATE_DELETE_TCB;
     ConnectionToDelete.dwLocalAddr := Connection.LocalAddress;

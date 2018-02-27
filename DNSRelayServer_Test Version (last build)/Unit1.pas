@@ -4293,15 +4293,9 @@ begin
 
   for i:=0 to Length(Connections) - 1 do
   begin
-    if Connections[i].Protocol = 0 then
-      Protocol := 'TCP';
-
-    if Connections[i].Protocol = 1 then
-      Protocol := 'UDP';
-
     ListView2.Items.Add();
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
-    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Protocol);
+    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].Protocol);
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].LocalAddress);
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].LocalRawPort));
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].RemoteAddress);
