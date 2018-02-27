@@ -9,7 +9,7 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
-  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat;
+  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat, UnitTaskManager;
 
 var
   CurrentApplicationVersion: string = '0.4.343.1';
@@ -1393,7 +1393,7 @@ begin
 
   AjouterUneColone(ListView2.Columns.Add,
                    'Local Port',
-                   100);
+                   50);
 
   AjouterUneColone(ListView2.Columns.Add,
                    'Remote Address',
@@ -1401,7 +1401,7 @@ begin
 
   AjouterUneColone(ListView2.Columns.Add,
                    'Remote Port',
-                   100);
+                   50);
 
   AjouterUneColone(ListView2.Columns.Add,
                    'State',
@@ -4299,8 +4299,7 @@ begin
     if Connections[i].Protocol = 1 then
       Protocol := 'UDP';
 
-
-    ListView2.Items.Add.Caption := 'Process';
+    ListView2.Items.Add();
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Protocol);
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].LocalAddress);
@@ -4308,6 +4307,10 @@ begin
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].RemoteAddress);
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].RemoteRawPort));
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+    // Set caption after all (at the end) to prevent some issues
+    ListView2.Items.Item[ListView2.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
+    
+
   end;
   //UnitNetstat.CloseConnection(Connections[0]);
 end;

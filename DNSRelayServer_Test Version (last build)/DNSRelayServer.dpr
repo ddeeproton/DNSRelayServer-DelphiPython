@@ -21,7 +21,8 @@ uses
   AlertManager in 'AlertManager.pas',
   UnitDialogIP in 'UnitDialogIP.pas' {FormDialogIP},
   UnitManageIP in 'UnitManageIP.pas' {FormManageIP},
-  RulesManager in 'RulesManager.pas';
+  RulesManager in 'RulesManager.pas',
+  UnitTaskManager in 'UnitTaskManager.pas';
 
 {$R *.res}
 

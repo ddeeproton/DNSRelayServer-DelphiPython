@@ -32,7 +32,7 @@ end;
 interface
 
 uses
-  windows, Winsock;
+  windows, Winsock, sysutils;
 
 const
   PROTOCOL_TCP = 0;
@@ -64,8 +64,7 @@ function ConvertRawPortToRealPort(RawPort : DWORD) : DWORD;
 
 implementation
 
-uses
-  sysutils;
+
 
 const
   TCPIP_OWNING_MODULE_SIZE = 16;
