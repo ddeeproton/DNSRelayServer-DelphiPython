@@ -4286,9 +4286,12 @@ var
   i: Integer;
   Connections: TConnectionArray;
   Protocol: String;
+  pos: TPoint;
 begin
   UnitNetstat.GetConnections(Connections);
 
+
+  pos := ListView2.ViewOrigin;
   ListView2.Clear;
 
   for i:=0 to Length(Connections) - 1 do
@@ -4302,10 +4305,11 @@ begin
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].RemoteRawPort));
     ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
     // Set caption after all (at the end) to prevent some issues
+    // Mettre cette ligne à la fin pour éviter un bug à l'affichage
     ListView2.Items.Item[ListView2.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
-    
-
   end;
+
+  ListView2.Scroll(pos.X, pos.Y);
   //UnitNetstat.CloseConnection(Connections[0]);
 end;
 
