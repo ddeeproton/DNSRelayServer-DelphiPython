@@ -1,170 +1,268 @@
 unit UnitNetstat;
-
+// Source: http://www.delphipraxis.net/136039-api-recvfrom-sendto-etc-gehookt-programm-crasht-2.html
 {
-Use:
-procedure TForm1.Button1Click(Sender: TObject);
+How to use:
+
+procedure TForm1.Button3Click(Sender: TObject);
 var
-  TCPList: TConnexionList;
   i: Integer;
+  Connections: TConnectionArray;
+  Protocol: String;
 begin
-  Memo1.Clear;
-  TCPList := Nestat.GetCurrentTCPConnections;
-  for i := 0 to Length(TCPList)-1 do
+  UnitNetstat.GetConnections(Connections);
+
+  for i:=0 to Length(Connections) - 1 do
   begin
+    if Connections[i].Protocol = 0 then
+      Protocol := 'TCP';
+
+    if Connections[i].Protocol = 1 then
+      Protocol := 'UDP';
+
     Memo1.Lines.Add(
-      'Remote IP: '+TCPList[i][Nestat.RemoteIP]+#9
+      Protocol
+      +' '+Connections[i].RemoteAddress
+      +' '+IntToStr(Connections[i].ProcessID)
     );
+   
   end;
+  //UnitNetstat.CloseConnection(Connections[0]);
 end;
 }
-
 interface
 
 uses
-  Windows, Winsock, PsAPI, Classes, SysUtils;
+  windows, Winsock;
 
 const
-  ANY_SIZE = 1;
-  iphlpapi = 'iphlpapi.dll';  //For using the DLL
-  TCP_TABLE_OWNER_PID_ALL = 5;
+  PROTOCOL_TCP = 0;
+  PROTOCOL_UDP = 1;
+
+  TcpConnectionStates :
+    array[0..12] of string =
+    (
+      '', 'CLOSED', 'LISTENING', 'SYN SENT', 'SYN RECIEVED', 'ESTABLISHED', 'FIN WAIT1', 'FIN WAIT2', 'CLOSE WAIT',
+      'CLOSING', 'LAST ACKNOWLEDGMENT', 'TIME WAIT', 'DELETE TCP'
+    );
 
 type
-  //The type of the TCP table structure to retrieve.
-  //This parameter can be one of the values from the TCP_TABLE_CLASS enumeration.
-
-  TCP_TABLE_CLASS = Integer;
-
-  PMibTcpRowOwnerPid = ^TMibTcpRowOwnerPid;
-  TMibTcpRowOwnerPid  = packed record
-    dwState     : DWORD;
-    dwLocalAddr : DWORD;
-    dwLocalPort : DWORD;
-    dwRemoteAddr: DWORD;
-    dwRemotePort: DWORD;
-    dwOwningPid : DWORD;
+  TConnection = record
+    Protocol : Byte;
+    ConnectionState: Cardinal;
+    LocalAddress : String;
+    LocalRawPort : Cardinal;
+    RemoteAddress : String;
+    RemoteRawPort : Cardinal;
+    ProcessID : Cardinal;
   end;
+  TConnectionArray = array of TConnection;
 
-  PMIB_TCPTABLE_OWNER_PID  = ^MIB_TCPTABLE_OWNER_PID;
-  MIB_TCPTABLE_OWNER_PID = packed record
-    dwNumEntries: DWord;
-    table: array [0..ANY_SIZE - 1] OF TMibTcpRowOwnerPid;
-  end;
-
-  TConnexionList = array of TStringList;
-  
-  Nestat = class
-  private
-    { Private declarations }
-  public
-    { Public declarations }
-    class function GetCurrentTCPConnections: TConnexionList;
-    class function RemoteIP: Integer;
-    class function RemotePort: Integer;
-    class function LocalIP: Integer;
-    class function LocalPort: Integer;
-    class function PID: Integer;
-    class function State: Integer;
-  end;
-
-var
-  GetExtendedTcpTable:function(pTcpTable: Pointer; dwSize: PDWORD; bOrder: BOOL; lAf: ULONG; TableClass: TCP_TABLE_CLASS; Reserved: ULONG): DWord; stdcall;
+function GetConnections(var ConnectionArray : TConnectionArray) : boolean;
+function CloseConnection(var Connection : TConnection) : boolean;
+function IpAddressToString(IpAddress : DWORD) : string;
+function ConvertRawPortToRealPort(RawPort : DWORD) : DWORD;
 
 implementation
 
-class function Nestat.RemoteIP: Integer;
-begin
-  result := 0;
-end;
+uses
+  sysutils;
 
-class function Nestat.RemotePort: Integer;
-begin
-  result := 1;
-end;
-
-class function Nestat.LocalIP: Integer;
-begin
-  result := 2;
-end;
-
-class function Nestat.LocalPort: Integer;
-begin
-  result := 3;
-end;
-
-class function Nestat.PID: Integer;
-begin
-  result := 4;
-end;
-
-class function Nestat.State: Integer;
-begin
-  result := 5;
-end;
- 
-class function Nestat.GetCurrentTCPConnections: TConnexionList;
 const
-  StateNames: array[0..12] of String = (
-    'TIME_WAIT',
-    'CLOSED',
-    'LISTENING',
-    'SYN_SENT',
-    'SYN_RCVD',
-    'ESTABLISHED',
-    'FIN_WAIT1',
-    'FIN_WAIT2',
-    'CLOSE_WAIT',
-    'CLOSING',
-    'LAST_ACK',
-    'TIME_WAIT',
-    'DELETE_TCB'
-  );
-var
-  Error, TableSize: DWORD;
-  i: integer;
-  IpAddress: in_addr;
-  RemoteIP, LocalIP, PID, LocalPort, RemotePort, State : string;
-  FExtendedTcpTable: PMIB_TCPTABLE_OWNER_PID;
+  TCPIP_OWNING_MODULE_SIZE = 16;
+  AF_INET = 2;
+
+type
+  TTcpTableClass = (
+    TCP_TABLE_BASIC_LISTENER,
+    TCP_TABLE_BASIC_CONNECTIONS,
+    TCP_TABLE_BASIC_ALL,
+    TCP_TABLE_OWNER_PID_LISTENER,
+    TCP_TABLE_OWNER_PID_CONNECTIONS,
+    TCP_TABLE_OWNER_PID_ALL,
+    TCP_TABLE_OWNER_MODULE_LISTENER,
+    TCP_TABLE_OWNER_MODULE_CONNECTIONS,
+    TCP_TABLE_OWNER_MODULE_ALL) ;
+
+  TUdpTableClass = (
+    UDP_TABLE_BASIC,
+    UDP_TABLE_OWNER_PID,
+    UDP_TABLE_OWNER_MODULE );
+
+  _MIB_TCPROW_OWNER_PID = packed record
+    dwState: LongInt;
+    dwLocalAddr: DWORD;
+    dwLocalPort: DWORD;
+    dwRemoteAddr: DWORD;
+    dwRemotePort: DWORD;
+    dwOwningPid: DWORD;
+  end;
+  TMibTcpRowOwnerPID = _MIB_TCPROW_OWNER_PID;
+  PMibTcpRowOwnerPID = ^_MIB_TCPROW_OWNER_PID;
+
+  _MIB_TCPTABLE_OWNER_PID = packed record
+    dwNumEntries: DWORD;
+    table: array[0..0] of TMibTcpRowOwnerPID;
+  end;
+  TMibTcpTableOwnerPID = _MIB_TCPTABLE_OWNER_PID;
+  PMibTcpTableOwnerPID = ^_MIB_TCPTABLE_OWNER_PID;
+
+  _MIB_UDPROW_OWNER_PID = packed record
+    dwState: LongInt;
+    dwLocalAddr: DWORD;
+    dwLocalPort: DWORD;
+    dwRemoteAddr: DWORD;
+    dwRemotePort: DWORD;
+    dwOwningPid: DWORD;
+  end;
+  TMibUdpRowOwnerPID = _MIB_UDPROW_OWNER_PID;
+  PMibUdpRowOwnerPID = ^_MIB_UDPROW_OWNER_PID;
+
+  _MIB_UDPTABLE_OWNER_PID = packed record
+    dwNumEntries: DWORD;
+    table: Array[0..0] of TMibUdpRowOwnerPID;
+  end;
+  TMibUdpTableOwnerPID = _MIB_UDPTABLE_OWNER_PID;
+  PMibUdpTableOwnerPID = ^_MIB_UDPTABLE_OWNER_PID;
+
+  _MIB_TCPROW = packed record
+    dwState: LongInt;
+    dwLocalAddr: String;
+    dwLocalPort: DWORD;
+    dwRemoteAddr: String;
+    dwRemotePort: DWORD;
+  end;
+  TMibTcpRow = _MIB_TCPROW;
+  PMibTcpRow = ^_MIB_TCPROW;
+
+function GetExtendedTcpTable(pTcpTable: Pointer; pdwSize: PDWORD; bOrder: BOOL; ulAf: LongWord;
+  TableClass: TTcpTableClass; Reserved: LongWord): DWORD; stdcall; external 'iphlpapi.dll';
+
+function GetExtendedUdpTable( pUdpTable: Pointer; pdwSize: PDWORD; bOrder: BOOL; ulAf: LongWord;
+  TableClass: TUdpTableClass; Reserved: LongWord): LongInt; stdcall; external 'iphlpapi.dll';
+
+function SetTcpEntry(pTcpRow : PMibTcpRow) : DWORD; stdcall; external 'iphlpapi.dll';
+
+function GetTcpConnections(var ConnectionArray : TConnectionArray) : boolean; forward;
+function GetUdpConnections(var ConnectionArray : TConnectionArray) : boolean; forward;
+
+function GetConnections(var ConnectionArray : TConnectionArray) : boolean;
 begin
-  TableSize := 0;
-  SetLength(result, 0);
-  try
-    GetExtendedTcpTable := GetProcAddress(LoadLibrary(iphlpapi), 'GetExtendedTcpTable');
-    Error := GetExtendedTcpTable(nil, @TableSize, False,AF_INET, TCP_TABLE_OWNER_PID_ALL, 0);
-    if Error <> ERROR_INSUFFICIENT_BUFFER then Exit;
-    GetMem(FExtendedTcpTable, TableSize);
-    try
-      if GetExtendedTcpTable(FExtendedTcpTable, @TableSize, TRUE,AF_INET,TCP_TABLE_OWNER_PID_ALL, 0) = NO_ERROR then
+  Result := GetTcpConnections(ConnectionArray) and GetUdpConnections(ConnectionArray);
+end;
+
+function GetTcpConnections(var ConnectionArray : TConnectionArray) : boolean;
+var
+  i : Integer;           
+  Size : DWORD;
+  IpAddress: in_addr;   
+  TcpTable : PMibTcpTableOwnerPID;
+begin
+  GetExtendedTcpTable(nil, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0);
+  GetMem(TcpTable, size);
+  if GetExtendedTcpTable(TcpTable, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0) = NO_ERROR then
+  begin
+    Result := TRUE;
+    for i := 0 to TcpTable^.dwNumEntries - 1 do
+    begin
+      SetLength(connectionArray, Length(connectionArray) + 1);
+      with connectionArray[Length(connectionArray) - 1] do
       begin
-        for i := 0 to FExtendedTcpTable.dwNumEntries - 1 do
-        begin
-          //Remote
-          IpAddress.s_addr := FExtendedTcpTable.Table[i].dwRemoteAddr;
-          RemoteIP := string(inet_ntoa(IpAddress));
-          RemotePort := IntToStr(ntohs(FExtendedTcpTable.Table[i].dwRemotePort));
-          // Local
-          IpAddress.s_addr := FExtendedTcpTable.Table[i].dwLocalAddr;
-          LocalIP := string(inet_ntoa(IpAddress));
-          LocalPort := IntToStr(ntohs(FExtendedTcpTable.Table[i].dwLocalPort));
-          // Other
-          PID := IntToStr(FExtendedTcpTable.Table[i].dwOwningPid);
-          State := StateNames[FExtendedTcpTable.Table[i].dwState];
-          // Return
-          SetLength(result, Length(result)+1); 
-          result[Length(result)-1] := TStringList.Create;
-          result[Length(result)-1].Add(RemoteIP);
-          result[Length(result)-1].Add(RemotePort);
-          result[Length(result)-1].Add(LocalIP);
-          result[Length(result)-1].Add(LocalPort);
-          result[Length(result)-1].Add(PID);
-          result[Length(result)-1].Add(State);
-        end;
+        Protocol := PROTOCOL_TCP;
+        ConnectionState := TcpTable^.table[i].dwState;
+
+        //LocalAddress := TcpTable^.table[i].dwLocalAddr;
+        IpAddress.s_addr := TcpTable^.table[i].dwLocalAddr;
+        LocalAddress := string(inet_ntoa(IpAddress));
+
+        LocalRawPort := ntohs(TcpTable^.table[i].dwLocalPort);
+
+        //RemoteAddress := TcpTable^.table[i].dwRemoteAddr;
+        IpAddress.s_addr := TcpTable^.table[i].dwRemoteAddr;
+        RemoteAddress := string(inet_ntoa(IpAddress));
+
+        RemoteRawPort := ntohs(TcpTable^.table[i].dwRemotePort);
+
+        ProcessID := TcpTable^.table[i].dwOwningPid;
       end;
-    finally
-      FreeMem(FExtendedTcpTable);
     end;
-  except
-    on E: Exception do Exit;
-  end;  
+  end else
+    Result := FALSE;
+  FreeMem(TcpTable);
+end;
+
+function GetUdpConnections(var ConnectionArray : TConnectionArray) : boolean;
+var              
+  i : Integer;
+  Size : DWORD;
+  IpAddress: in_addr;
+  UdpTable : PMibUdpTableOwnerPID;
+begin
+  GetExtendedUdpTable(nil, @size, FALSE, AF_INET, UDP_TABLE_OWNER_PID, 0);
+  GetMem(UdpTable, size);
+  if GetExtendedUdpTable(UdpTable, @size, FALSE, AF_INET, UDP_TABLE_OWNER_PID, 0) = NO_ERROR then
+  begin
+    Result := TRUE;
+    for i := 0 to UdpTable^.dwNumEntries - 1 do
+    begin
+      SetLength(connectionArray, Length(connectionArray) + 1);
+      with connectionArray[Length(connectionArray) - 1] do
+      begin
+        Protocol := PROTOCOL_UDP;
+        ConnectionState := 0;
+
+        //LocalAddress := UdpTable^.table[i].dwLocalAddr;
+        IpAddress.s_addr := UdpTable^.table[i].dwLocalAddr;
+        LocalAddress := string(inet_ntoa(IpAddress));
+
+        //LocalRawPort := UdpTable^.table[i].dwLocalPort;
+        LocalRawPort := ntohs(UdpTable^.table[i].dwLocalPort);
+
+        IpAddress.s_addr := UdpTable^.table[i].dwRemoteAddr;
+        RemoteAddress := string(inet_ntoa(IpAddress));
+
+        RemoteRawPort := ntohs(UdpTable^.table[i].dwRemotePort);
+        ProcessID := UdpTable^.table[i].dwOwningPid;
+      end;
+    end;
+  end else
+    Result := FALSE;
+  FreeMem(UdpTable);
+end;
+
+function IpAddressToString(IpAddress : DWORD) : string;
+type
+  TIpAddressAsArray = array[0..3] of byte;
+  PIpAddressAsArray = ^TIpAddressAsArray;
+begin
+  Result := Format('%d.%d.%d.%d', [
+    PIpAddressAsArray(@IpAddress)^[0],
+    PIpAddressAsArray(@IpAddress)^[1],
+    PIpAddressAsArray(@IpAddress)^[2],
+    PIpAddressAsArray(@IpAddress)^[3]
+  ]);
+end;
+
+function CloseConnection(var Connection : TConnection) : boolean;
+const
+  MIB_TCP_STATE_DELETE_TCB = 12;
+var
+  ConnectionToDelete : TMibTcpRow;
+begin
+  if Connection.Protocol = PROTOCOL_TCP then
+  begin
+    ConnectionToDelete.dwState := MIB_TCP_STATE_DELETE_TCB;
+    ConnectionToDelete.dwLocalAddr := Connection.LocalAddress;
+    ConnectionToDelete.dwLocalPort := Connection.LocalRawPort;
+    ConnectionToDelete.dwRemoteAddr := Connection.RemoteAddress;
+    ConnectionToDelete.dwRemotePort := Connection.RemoteRawPort;
+    Result := SetTcpEntry(@ConnectionToDelete) = NO_ERROR;
+  end
+  else Result := FALSE;
+end;
+
+function ConvertRawPortToRealPort(RawPort : DWORD) : DWORD;
+begin
+  Result := (RawPort div 256) + (RawPort mod 256) * 256;
 end;
 
 
