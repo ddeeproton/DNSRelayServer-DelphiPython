@@ -94,6 +94,7 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
+      PageIndex = 4
       TabOrder = 0
       object TPage
         Left = 0
@@ -131,7 +132,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet3
+            ActivePage = TabSheet1
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -1700,7 +1701,7 @@ object Form1: TForm1
             object ToolBar2: TToolBar
               Left = 5
               Top = 2
-              Width = 195
+              Width = 199
               Height = 24
               Align = alNone
               ButtonWidth = 25
@@ -1818,51 +1819,118 @@ object Form1: TForm1
         Left = 0
         Top = 0
         Caption = 'Logs'
+        object GroupBox6: TGroupBox
+          Left = 16
+          Top = 32
+          Width = 305
+          Height = 297
+          Caption = '             '
+          TabOrder = 0
+          DesignSize = (
+            305
+            297)
+          object Label25: TLabel
+            Left = 11
+            Top = -1
+            Width = 34
+            Height = 13
+            Caption = 'Netstat'
+          end
+          object ListView2: TListView
+            Left = 2
+            Top = 37
+            Width = 301
+            Height = 258
+            Anchors = [akLeft, akTop, akRight, akBottom]
+            BevelWidth = 10
+            Color = clWhite
+            Columns = <>
+            GridLines = True
+            ReadOnly = True
+            RowSelect = True
+            SmallImages = ImageList3
+            SortType = stText
+            TabOrder = 0
+            ViewStyle = vsReport
+            OnChange = ListView1Change
+            OnContextPopup = ListView1ContextPopup
+            OnKeyUp = ListView1KeyUp
+          end
+          object Panel8: TPanel
+            Left = 4
+            Top = 11
+            Width = 207
+            Height = 24
+            Anchors = [akLeft, akTop, akRight]
+            BevelOuter = bvNone
+            BorderWidth = 1
+            Color = clWhite
+            TabOrder = 1
+            object ToolBar3: TToolBar
+              Left = 0
+              Top = 2
+              Width = 81
+              Height = 24
+              Align = alNone
+              ButtonWidth = 25
+              Color = clWhite
+              EdgeInner = esNone
+              EdgeOuter = esNone
+              Flat = True
+              Images = ImageList3
+              ParentColor = False
+              TabOrder = 0
+              Transparent = True
+              object ToolButtonRefreshNetstat: TToolButton
+                Left = 0
+                Top = 0
+                Hint = 'Rafraichir la liste des connexions'
+                Caption = 'ToolButton2'
+                ImageIndex = 7
+                ParentShowHint = False
+                ShowHint = True
+                OnClick = ToolButtonRefreshNetstatClick
+              end
+            end
+          end
+        end
       end
       object TPage
         Left = 0
         Top = 0
         Caption = 'config'
-        object GroupBox6: TGroupBox
-          Left = 8
-          Top = 24
-          Width = 303
-          Height = 175
-          Caption = '                                '
-          Color = clWhite
+        DesignSize = (
+          344
+          360)
+        object GroupBox8: TGroupBox
+          Left = 16
+          Top = 32
+          Width = 328
+          Height = 297
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = '              '
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          ParentColor = False
           ParentFont = False
           TabOrder = 0
-          object Label25: TLabel
-            Left = 13
-            Top = 0
-            Width = 87
+          object Label47: TLabel
+            Left = 11
+            Top = -1
+            Width = 37
             Height = 13
-            Caption = 'DNS Relay Server'
+            Caption = 'License'
           end
           object Memo1: TMemo
             Left = 1
             Top = 14
-            Width = 301
-            Height = 160
+            Width = 326
+            Height = 282
             Align = alClient
-            Color = clWhite
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -13
-            Font.Name = 'MS Sans Serif'
-            Font.Style = []
             Lines.Strings = (
-              'Memo1'
-              '')
-            ParentFont = False
-            ReadOnly = True
-            ScrollBars = ssVertical
+              'Memo1')
             TabOrder = 0
           end
         end
@@ -17856,6 +17924,10 @@ object Form1: TForm1
     object Logs1: TMenuItem
       Caption = 'Logs'
       OnClick = ButtonShowLogsClick
+    end
+    object Netstat1: TMenuItem
+      Caption = 'Netstat'
+      OnClick = Netstat1Click
     end
   end
 end

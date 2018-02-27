@@ -107,11 +107,8 @@ type
   PMibTcpTableOwnerPID = ^_MIB_TCPTABLE_OWNER_PID;
 
   _MIB_UDPROW_OWNER_PID = packed record
-    dwState: LongInt;
     dwLocalAddr: DWORD;
     dwLocalPort: DWORD;
-    dwRemoteAddr: DWORD;
-    dwRemotePort: DWORD;
     dwOwningPid: DWORD;
   end;
   TMibUdpRowOwnerPID = _MIB_UDPROW_OWNER_PID;
@@ -154,7 +151,7 @@ function GetTcpConnections(var ConnectionArray : TConnectionArray) : boolean;
 var
   i : Integer;           
   Size : DWORD;
-  IpAddress: in_addr;   
+  //IpAddress: in_addr;
   TcpTable : PMibTcpTableOwnerPID;
 begin
   GetExtendedTcpTable(nil, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0);
@@ -170,15 +167,15 @@ begin
         Protocol := PROTOCOL_TCP;
         ConnectionState := TcpTable^.table[i].dwState;
 
-        //LocalAddress := TcpTable^.table[i].dwLocalAddr;
-        IpAddress.s_addr := TcpTable^.table[i].dwLocalAddr;
-        LocalAddress := string(inet_ntoa(IpAddress));
+        LocalAddress := IpAddressToString(TcpTable^.table[i].dwLocalAddr);
+        //IpAddress.s_addr := TcpTable^.table[i].dwLocalAddr;
+        //LocalAddress := string(inet_ntoa(IpAddress));
 
         LocalRawPort := ntohs(TcpTable^.table[i].dwLocalPort);
 
-        //RemoteAddress := TcpTable^.table[i].dwRemoteAddr;
-        IpAddress.s_addr := TcpTable^.table[i].dwRemoteAddr;
-        RemoteAddress := string(inet_ntoa(IpAddress));
+        RemoteAddress := IpAddressToString(TcpTable^.table[i].dwRemoteAddr);
+        //IpAddress.s_addr := TcpTable^.table[i].dwRemoteAddr;
+        //RemoteAddress := string(inet_ntoa(IpAddress));
 
         RemoteRawPort := ntohs(TcpTable^.table[i].dwRemotePort);
 
@@ -194,7 +191,7 @@ function GetUdpConnections(var ConnectionArray : TConnectionArray) : boolean;
 var              
   i : Integer;
   Size : DWORD;
-  IpAddress: in_addr;
+  //IpAddress: in_addr;
   UdpTable : PMibUdpTableOwnerPID;
 begin
   GetExtendedUdpTable(nil, @size, FALSE, AF_INET, UDP_TABLE_OWNER_PID, 0);
@@ -210,17 +207,16 @@ begin
         Protocol := PROTOCOL_UDP;
         ConnectionState := 0;
 
-        //LocalAddress := UdpTable^.table[i].dwLocalAddr;
-        IpAddress.s_addr := UdpTable^.table[i].dwLocalAddr;
-        LocalAddress := string(inet_ntoa(IpAddress));
+
+        LocalAddress := IpAddressToString(UdpTable^.table[i].dwLocalAddr);
+        //IpAddress.s_addr := UdpTable^.table[i].dwLocalAddr;
+        //LocalAddress := string(inet_ntoa(IpAddress));
 
         //LocalRawPort := UdpTable^.table[i].dwLocalPort;
         LocalRawPort := ntohs(UdpTable^.table[i].dwLocalPort);
 
-        IpAddress.s_addr := UdpTable^.table[i].dwRemoteAddr;
-        RemoteAddress := string(inet_ntoa(IpAddress));
-
-        RemoteRawPort := ntohs(UdpTable^.table[i].dwRemotePort);
+        RemoteAddress := '*';
+        RemoteRawPort := 0;
         ProcessID := UdpTable^.table[i].dwOwningPid;
       end;
     end;

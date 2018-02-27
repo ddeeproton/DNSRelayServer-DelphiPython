@@ -39,8 +39,6 @@ type
     GroupBox4: TGroupBox;
     ListView1: TListView;
     Timer1: TTimer;
-    GroupBox6: TGroupBox;
-    Memo1: TMemo;
     N2: TMenuItem;
     StartDNS1: TMenuItem;
     StopDNS1: TMenuItem;
@@ -101,7 +99,6 @@ type
     Label22: TLabel;
     Label23: TLabel;
     Label24: TLabel;
-    Label25: TLabel;
     ColorDialog1: TColorDialog;
     TabSheet6: TTabSheet;
     PopupMenuTheme: TPopupMenu;
@@ -305,6 +302,16 @@ type
     Config2: TMenuItem;
     MemoLogs: TMemo;
     Shape3: TShape;
+    Netstat1: TMenuItem;
+    GroupBox8: TGroupBox;
+    Label47: TLabel;
+    Memo1: TMemo;
+    GroupBox6: TGroupBox;
+    Label25: TLabel;
+    ListView2: TListView;
+    Panel8: TPanel;
+    ToolBar3: TToolBar;
+    ToolButtonRefreshNetstat: TToolButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -479,6 +486,8 @@ type
     procedure CheckBoxShowDebugClick(Sender: TObject);
     procedure setButtonStartText(state: Integer);
     procedure FormShow(Sender: TObject);
+    procedure Netstat1Click(Sender: TObject);
+    procedure ToolButtonRefreshNetstatClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1229,6 +1238,7 @@ begin
   GroupBox3.Align := alClient;
   GroupBox4.Align := alClient;
   GroupBox6.Align := alClient;
+  GroupBox8.Align := alClient;
   Notebook1.Align := alClient;
   PageControl1.Align := alClient;
   ScrollBox1.Align := alClient;
@@ -1362,6 +1372,41 @@ begin
   getDomains(EditFilehost.Text, ListView1);
 
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
+
+
+  // ListViewNetstat
+  AjouterUneColone(ListView2.Columns.Add,
+                   'Process',
+                   100);
+
+  AjouterUneColone(ListView2.Columns.Add,
+                   'PID',
+                   50);
+
+  AjouterUneColone(ListView2.Columns.Add,
+                   'Protocol',
+                   50);
+
+  AjouterUneColone(ListView2.Columns.Add,
+                   'Local Address',
+                   100);
+
+  AjouterUneColone(ListView2.Columns.Add,
+                   'Local Port',
+                   100);
+
+  AjouterUneColone(ListView2.Columns.Add,
+                   'Remote Address',
+                   100);
+
+  AjouterUneColone(ListView2.Columns.Add,
+                   'Remote Port',
+                   100);
+
+  AjouterUneColone(ListView2.Columns.Add,
+                   'State',
+                   100);
+  ToolButtonRefreshNetstatClick(nil);
 end;
 
 
@@ -1410,6 +1455,7 @@ begin
   Panel5.Color := bg;
   Panel6.Color := bg;
   Panel7.Color := bg;
+  Panel8.Color := bg;
   Panel11.Color := bg;
   PanelMessage.Color := bg;
 
@@ -1417,6 +1463,7 @@ begin
 
   ToolBar1.Color := bg;
   ToolBar2.Color := bg;
+  ToolBar3.Color := bg;
   ToolBar4.Color := bg;
   CheckBoxStartWithWindows.Color := bg;
   CheckBoxAutostartDNSOnBoot.Color := bg;
@@ -1431,6 +1478,7 @@ begin
   EditThemeName.Color := bg2;
   EditExecOnDisconnected.Color := bg2;
   ListView1.Color := bg2;
+  ListView2.Color := bg2;
   Memo1.Color := bg2;
   MemoLogs.Color := bg2;
   MemoHelpWebAdmin.Color := bg2;
@@ -1455,6 +1503,7 @@ begin
   EditThemeName.Font.Color := bg2;
   EditExecOnDisconnected.Font.Color := bg2;
   ListView1.Font.Color := bg2;
+  ListView2.Font.Color := bg2;
   Memo1.Font.Color := bg2;
   MemoLogs.Font.Color := bg2;
   MemoHelpWebAdmin.Font.Color := bg2;
@@ -4227,6 +4276,41 @@ begin
 end;
 
 
+procedure TForm1.Netstat1Click(Sender: TObject);
+begin
+  GotoMainPage(4);
+end;
+
+procedure TForm1.ToolButtonRefreshNetstatClick(Sender: TObject);
+var
+  i: Integer;
+  Connections: TConnectionArray;
+  Protocol: String;
+begin
+  UnitNetstat.GetConnections(Connections);
+
+  ListView2.Clear;
+
+  for i:=0 to Length(Connections) - 1 do
+  begin
+    if Connections[i].Protocol = 0 then
+      Protocol := 'TCP';
+
+    if Connections[i].Protocol = 1 then
+      Protocol := 'UDP';
+
+
+    ListView2.Items.Add.Caption := 'Process';
+    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
+    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Protocol);
+    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].LocalAddress);
+    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].LocalRawPort));
+    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].RemoteAddress);
+    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].RemoteRawPort));
+    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+  end;
+  //UnitNetstat.CloseConnection(Connections[0]);
+end;
 
 end.
 
