@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
 
 var
-  CurrentApplicationVersion: string = '0.4.347';
+  CurrentApplicationVersion: string = '0.4.348';
   isDevVersion: Boolean = False;
 
 type
@@ -4410,8 +4410,9 @@ begin
   Connections := nil;
   UnitNetstat2.GetConnections(Connections);
 
-
-  pos := ListViewNetstat.ViewOrigin;
+  pos.Y := ListViewNetstat.ViewOrigin.Y;
+  pos.X := ListViewNetstat.Left;
+  //pos := ListViewNetstat.ViewOrigin;
   ListViewNetstat.Clear;
   {
   for i:=0 to Length(Connections) - 1 do
@@ -4511,7 +4512,8 @@ begin
   end;
 
 
-  ListViewNetstat.Scroll(pos.X, pos.Y);
+  ListViewNetstat.Scroll(pos.X  - 2, pos.Y);
+  
   try
     if lastSelectedIndex > -1 then
       ListViewNetstat.Selected := ListViewNetstat.Items[lastSelectedIndex];
