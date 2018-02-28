@@ -9,10 +9,11 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
-  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
+  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock,
+  Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.348';
+  CurrentApplicationVersion: string = '0.4.349';
   isDevVersion: Boolean = False;
 
 type
@@ -323,6 +324,9 @@ type
     Rafraichirtoutesles5secondes1: TMenuItem;
     Pause1: TMenuItem;
     TimerRefreshNetstat: TTimer;
+    CheckBoxServerHTTP: TCheckBox;
+    Label48: TLabel;
+    TcpServer1: TTcpServer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -508,6 +512,9 @@ type
     procedure Rafraichirtoutesles2secondes1Click(Sender: TObject);
     procedure Rafraichirtoutesles5secondes1Click(Sender: TObject);
     procedure Pause1Click(Sender: TObject);
+    procedure CheckBoxServerHTTPClick(Sender: TObject);
+    procedure TcpServer1Accept(Sender: TObject;
+      ClientSocket: TCustomIpClient);
     
   private
     { Private declarations }
@@ -1386,7 +1393,10 @@ begin
   CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
 
   CheckBoxExecOnDisconnected.Checked := FileExists(DataDirectoryPath + 'CheckBoxExecOnDisconnected.cfg');
-
+  
+  CheckBoxServerHTTP.Checked := FileExists(DataDirectoryPath + 'CheckBoxServerHTTP.cfg');
+  TcpServer1.Active := CheckBoxServerHTTP.Checked;
+  
   refreshCheckBox(CheckBoxStartWithWindows);
 
   TActionManageIP.load();
@@ -1592,6 +1602,7 @@ begin
   Label44.Font.Color := color;
   Label45.Font.Color := color;
   Label46.Font.Color := color;
+  Label48.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
@@ -3777,7 +3788,7 @@ begin
     WriteInFile(DataDirectoryPath + 'CheckBoxPureServer.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxPureServer.cfg');
-    
+
   PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -4615,6 +4626,35 @@ begin
   TimerRefreshNetstat.Enabled := False;  
   TimerRefreshNetstat.Interval := 0;  
   WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', IntToStr(TimerRefreshNetstat.Interval));
+end;
+
+procedure TForm1.CheckBoxServerHTTPClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxServerHTTP.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxServerHTTP.cfg');
+
+  TcpServer1.Active := TCheckBox(Sender).Checked;
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.TcpServer1Accept(Sender: TObject;
+  ClientSocket: TCustomIpClient);
+var
+  txt : String;
+  a: TStream;
+begin
+  txt := '';
+  while ClientSocket.WaitForData() do
+    txt := txt + ClientSocket.Receiveln()+'<br>';
+  Sleep(500);
+  ClientSocket.Sendln('<h1>Blocked by DNS Relay Server</h1>');
+  ClientSocket.Sendln('<pre>'+txt+'</pre>');
+  ClientSocket.Close;
 end;
 
 end.
