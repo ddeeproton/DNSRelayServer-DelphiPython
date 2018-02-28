@@ -1,38 +1,8 @@
-unit UnitNetstat;
-// Source: http://www.delphipraxis.net/136039-api-recvfrom-sendto-etc-gehookt-programm-crasht-2.html
-{
-How to use:
-
-procedure TForm1.Button3Click(Sender: TObject);
-var
-  i: Integer;
-  Connections: TConnectionArray;
-  Protocol: String;
-begin
-  UnitNetstat.GetConnections(Connections);
-
-  for i:=0 to Length(Connections) - 1 do
-  begin
-    if Connections[i].Protocol = 0 then
-      Protocol := 'TCP';
-
-    if Connections[i].Protocol = 1 then
-      Protocol := 'UDP';
-
-    Memo1.Lines.Add(
-      Protocol
-      +' '+Connections[i].RemoteAddress
-      +' '+IntToStr(Connections[i].ProcessID)
-    );
-   
-  end;
-  //UnitNetstat.CloseConnection(Connections[0]);
-end;
-}
+unit UnitNetstat2;
 interface
 
 uses
-  windows, Winsock, sysutils;
+  windows;
 
 const
   PROTOCOL_TCP = 0;
@@ -47,13 +17,11 @@ const
 
 type
   TConnection = record
-    Protocol : String;
+    Protocol : Byte;
     ConnectionState: Cardinal;
-    LocalAddress : String;
-    //LocalAddrDWORD: Cardinal;
+    LocalAddress : Cardinal;
     LocalRawPort : Cardinal;
-    RemoteAddress : String;
-    //RemoteAddrDWORD : Cardinal;
+    RemoteAddress : Cardinal;
     RemoteRawPort : Cardinal;
     ProcessID : Cardinal;
   end;
@@ -66,7 +34,8 @@ function ConvertRawPortToRealPort(RawPort : DWORD) : DWORD;
 
 implementation
 
-
+uses
+  sysutils;
 
 const
   TCPIP_OWNING_MODULE_SIZE = 16;
@@ -124,11 +93,9 @@ type
 
   _MIB_TCPROW = packed record
     dwState: LongInt;
-    dwLocalAddr: String;
-    //dwLocalAddrDWORD: DWORD;
+    dwLocalAddr: DWORD;
     dwLocalPort: DWORD;
-    dwRemoteAddr: String;
-    //dwRemoteAddrDWORD: DWORD;
+    dwRemoteAddr: DWORD;
     dwRemotePort: DWORD;
   end;
   TMibTcpRow = _MIB_TCPROW;
@@ -152,82 +119,61 @@ end;
 
 function GetTcpConnections(var ConnectionArray : TConnectionArray) : boolean;
 var
-  i : Integer;           
-  Size : DWORD;
-  //IpAddress: in_addr;
   TcpTable : PMibTcpTableOwnerPID;
+  Size : DWORD;
+  i : Integer;
 begin
   GetExtendedTcpTable(nil, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0);
   GetMem(TcpTable, size);
   if GetExtendedTcpTable(TcpTable, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0) = NO_ERROR then
-  begin
-    Result := TRUE;
-    for i := 0 to TcpTable^.dwNumEntries - 1 do
     begin
-      SetLength(connectionArray, Length(connectionArray) + 1);
-      with connectionArray[Length(connectionArray) - 1] do
-      begin
-        Protocol := 'TCP';
-        ConnectionState := TcpTable^.table[i].dwState;
-
-        //LocalAddrDWORD := TcpTable^.table[i].dwLocalAddr;
-        //RemoteAddrDWORD := TcpTable^.table[i].dwRemoteAddr;
-
-        LocalAddress := IpAddressToString(TcpTable^.table[i].dwLocalAddr);
-        //IpAddress.s_addr := TcpTable^.table[i].dwLocalAddr;
-        //LocalAddress := string(inet_ntoa(IpAddress));
-
-        LocalRawPort := ntohs(TcpTable^.table[i].dwLocalPort);
-
-        RemoteAddress := IpAddressToString(TcpTable^.table[i].dwRemoteAddr);
-        //IpAddress.s_addr := TcpTable^.table[i].dwRemoteAddr;
-        //RemoteAddress := string(inet_ntoa(IpAddress));
-
-        RemoteRawPort := ntohs(TcpTable^.table[i].dwRemotePort);
-
-        ProcessID := TcpTable^.table[i].dwOwningPid;
-      end;
-    end;
-  end else
-    Result := FALSE;
+      Result := TRUE;
+      for i := 0 to TcpTable^.dwNumEntries - 1 do
+        begin
+          SetLength(connectionArray, Length(connectionArray) + 1);
+          with connectionArray[Length(connectionArray) - 1] do
+            begin
+              Protocol := PROTOCOL_TCP;
+              ConnectionState := TcpTable^.table[i].dwState;
+              LocalAddress := TcpTable^.table[i].dwLocalAddr;
+              LocalRawPort := TcpTable^.table[i].dwLocalPort;
+              RemoteAddress := TcpTable^.table[i].dwRemoteAddr;
+              RemoteRawPort := TcpTable^.table[i].dwRemotePort;
+              ProcessID := TcpTable^.table[i].dwOwningPid;
+            end;
+        end;
+    end else
+      Result := FALSE;
   FreeMem(TcpTable);
 end;
 
 function GetUdpConnections(var ConnectionArray : TConnectionArray) : boolean;
-var              
-  i : Integer;
-  Size : DWORD;
-  //IpAddress: in_addr;
+var
   UdpTable : PMibUdpTableOwnerPID;
+  Size : DWORD;
+  i : Integer;
 begin
   GetExtendedUdpTable(nil, @size, FALSE, AF_INET, UDP_TABLE_OWNER_PID, 0);
   GetMem(UdpTable, size);
   if GetExtendedUdpTable(UdpTable, @size, FALSE, AF_INET, UDP_TABLE_OWNER_PID, 0) = NO_ERROR then
-  begin
-    Result := TRUE;
-    for i := 0 to UdpTable^.dwNumEntries - 1 do
     begin
-      SetLength(connectionArray, Length(connectionArray) + 1);
-      with connectionArray[Length(connectionArray) - 1] do
-      begin
-        Protocol := 'UDP';
-        ConnectionState := 0;
-
-
-        LocalAddress := IpAddressToString(UdpTable^.table[i].dwLocalAddr);
-        //IpAddress.s_addr := UdpTable^.table[i].dwLocalAddr;
-        //LocalAddress := string(inet_ntoa(IpAddress));
-
-        //LocalRawPort := UdpTable^.table[i].dwLocalPort;
-        LocalRawPort := ntohs(UdpTable^.table[i].dwLocalPort);
-
-        RemoteAddress := '*';
-        RemoteRawPort := 0;
-        ProcessID := UdpTable^.table[i].dwOwningPid;
-      end;
-    end;
-  end else
-    Result := FALSE;
+      Result := TRUE;
+      for i := 0 to UdpTable^.dwNumEntries - 1 do
+        begin
+          SetLength(connectionArray, Length(connectionArray) + 1);
+          with connectionArray[Length(connectionArray) - 1] do
+            begin
+              Protocol := PROTOCOL_UDP;
+              ConnectionState := 0;
+              LocalAddress := UdpTable^.table[i].dwLocalAddr;
+              LocalRawPort := UdpTable^.table[i].dwLocalPort;
+              RemoteAddress := 0;
+              RemoteRawPort := 0;
+              ProcessID := UdpTable^.table[i].dwOwningPid;
+            end;
+        end;
+    end else
+      Result := FALSE;
   FreeMem(UdpTable);
 end;
 
@@ -236,12 +182,8 @@ type
   TIpAddressAsArray = array[0..3] of byte;
   PIpAddressAsArray = ^TIpAddressAsArray;
 begin
-  Result := Format('%d.%d.%d.%d', [
-    PIpAddressAsArray(@IpAddress)^[0],
-    PIpAddressAsArray(@IpAddress)^[1],
-    PIpAddressAsArray(@IpAddress)^[2],
-    PIpAddressAsArray(@IpAddress)^[3]
-  ]);
+  Result := Format('%d.%d.%d.%d', [PIpAddressAsArray(@IpAddress)^[0], PIpAddressAsArray(@IpAddress)^[1],
+    PIpAddressAsArray(@IpAddress)^[2], PIpAddressAsArray(@IpAddress)^[3]]);
 end;
 
 function CloseConnection(var Connection : TConnection) : boolean;
@@ -250,20 +192,17 @@ const
 var
   ConnectionToDelete : TMibTcpRow;
 begin
-  if Connection.Protocol = 'TCP' then
-  begin
-
-    ConnectionToDelete.dwState := MIB_TCP_STATE_DELETE_TCB;
-    ConnectionToDelete.dwLocalAddr := Connection.LocalAddress;
-    ConnectionToDelete.dwLocalPort := Connection.LocalRawPort;
-    ConnectionToDelete.dwRemoteAddr := Connection.RemoteAddress;
-    //ConnectionToDelete.dwLocalAddr := Connection.LocalAddrDWORD;
-    //ConnectionToDelete.dwRemoteAddr := Connection.RemoteAddrDWORD;
-
-    ConnectionToDelete.dwRemotePort := Connection.RemoteRawPort;
-    Result := SetTcpEntry(@ConnectionToDelete) = NO_ERROR;
-  end
-  else Result := FALSE;
+  if Connection.Protocol = PROTOCOL_TCP
+    then
+      begin
+        ConnectionToDelete.dwState := MIB_TCP_STATE_DELETE_TCB;
+        ConnectionToDelete.dwLocalAddr := Connection.LocalAddress;
+        ConnectionToDelete.dwLocalPort := Connection.LocalRawPort;
+        ConnectionToDelete.dwRemoteAddr := Connection.RemoteAddress;
+        ConnectionToDelete.dwRemotePort := Connection.RemoteRawPort;
+        Result := SetTcpEntry(@ConnectionToDelete) = NO_ERROR;
+      end
+    else Result := FALSE;
 end;
 
 function ConvertRawPortToRealPort(RawPort : DWORD) : DWORD;

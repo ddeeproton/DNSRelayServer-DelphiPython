@@ -3,7 +3,6 @@ A faire:
 [Netstat]
 -Mettre les icones du processus dans Netstat
 -Mettre le menu dans Netstat (fermer la connexion, fermer le processus, ouvrir le dossier du processus, etc.)
--Garder la position du scroll dans Netstat après rafraichissement (peut-être bloquer le rafraichissement si le menu est affiché)
 
 [Alertes]
 -factoriser le code des alertes

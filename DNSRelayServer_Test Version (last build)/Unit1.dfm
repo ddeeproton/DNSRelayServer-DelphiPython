@@ -1836,7 +1836,7 @@ object Form1: TForm1
             Height = 13
             Caption = 'Netstat'
           end
-          object ListView2: TListView
+          object ListViewNetstat: TListView
             Left = 2
             Top = 37
             Width = 301
@@ -1848,12 +1848,10 @@ object Form1: TForm1
             GridLines = True
             ReadOnly = True
             RowSelect = True
-            SmallImages = ImageList3
-            SortType = stText
             TabOrder = 0
             ViewStyle = vsReport
             OnChange = ListView1Change
-            OnContextPopup = ListView1ContextPopup
+            OnContextPopup = ListViewNetstatContextPopup
             OnKeyUp = ListView1KeyUp
           end
           object Panel8: TPanel
@@ -17928,6 +17926,22 @@ object Form1: TForm1
     object Netstat1: TMenuItem
       Caption = 'Netstat'
       OnClick = Netstat1Click
+    end
+  end
+  object ImageListNestat: TImageList
+    Left = 424
+    Top = 416
+  end
+  object PopupMenuListViewNetstat: TPopupMenu
+    Left = 422
+    Top = 350
+    object Fermerlaconnexion1: TMenuItem
+      Caption = 'Fermer la connexion'
+      OnClick = Fermerlaconnexion1Click
+    end
+    object Fermerleprocessus1: TMenuItem
+      Caption = 'Fermer le processus'
+      OnClick = Fermerleprocessus1Click
     end
   end
 end

@@ -22,7 +22,8 @@ uses
   UnitDialogIP in 'UnitDialogIP.pas' {FormDialogIP},
   UnitManageIP in 'UnitManageIP.pas' {FormManageIP},
   RulesManager in 'RulesManager.pas',
-  UnitTaskManager in 'UnitTaskManager.pas';
+  UnitTaskManager in 'UnitTaskManager.pas',
+  UnitNetstat2 in 'UnitNetstat2.pas';
 
 {$R *.res}
 

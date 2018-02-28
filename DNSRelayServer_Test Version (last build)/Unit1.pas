@@ -9,11 +9,11 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
-  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat, UnitTaskManager;
+  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
 
 var
-  CurrentApplicationVersion: string = '0.4.343.1';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.343';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -308,10 +308,14 @@ type
     Memo1: TMemo;
     GroupBox6: TGroupBox;
     Label25: TLabel;
-    ListView2: TListView;
+    ListViewNetstat: TListView;
     Panel8: TPanel;
     ToolBar3: TToolBar;
     ToolButtonRefreshNetstat: TToolButton;
+    ImageListNestat: TImageList;
+    PopupMenuListViewNetstat: TPopupMenu;
+    Fermerlaconnexion1: TMenuItem;
+    Fermerleprocessus1: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -348,8 +352,9 @@ type
     procedure ToolButton10Click(Sender: TObject);
     procedure Bloquerledomaine1Click(Sender: TObject);
     procedure Autoriser1Click(Sender: TObject);
-    procedure ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
-      var Handled: Boolean);
+    procedure ListView1ContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+    procedure ListViewNetstatContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+
     procedure Modifier1Click(Sender: TObject);
     procedure refreshListView1Click();
     procedure onServerDNSStart();
@@ -488,6 +493,9 @@ type
     procedure FormShow(Sender: TObject);
     procedure Netstat1Click(Sender: TObject);
     procedure ToolButtonRefreshNetstatClick(Sender: TObject);
+    procedure Fermerlaconnexion1Click(Sender: TObject);
+    procedure Fermerleprocessus1Click(Sender: TObject);
+    
   private
     { Private declarations }
   public
@@ -572,6 +580,8 @@ var
   opacity: Integer = 0;
   autostarted: Boolean = False;
   isFormHideOnStart: Boolean = False;
+
+  Connections: TConnectionArray = nil;
 implementation
 
 {$R *.dfm}
@@ -1375,35 +1385,35 @@ begin
 
 
   // ListViewNetstat
-  AjouterUneColone(ListView2.Columns.Add,
+  AjouterUneColone(ListViewNetstat.Columns.Add,
                    'Process',
                    100);
 
-  AjouterUneColone(ListView2.Columns.Add,
+  AjouterUneColone(ListViewNetstat.Columns.Add,
                    'PID',
                    50);
 
-  AjouterUneColone(ListView2.Columns.Add,
+  AjouterUneColone(ListViewNetstat.Columns.Add,
                    'Protocol',
                    50);
 
-  AjouterUneColone(ListView2.Columns.Add,
+  AjouterUneColone(ListViewNetstat.Columns.Add,
                    'Local Address',
                    100);
 
-  AjouterUneColone(ListView2.Columns.Add,
+  AjouterUneColone(ListViewNetstat.Columns.Add,
                    'Local Port',
                    50);
 
-  AjouterUneColone(ListView2.Columns.Add,
+  AjouterUneColone(ListViewNetstat.Columns.Add,
                    'Remote Address',
                    100);
 
-  AjouterUneColone(ListView2.Columns.Add,
+  AjouterUneColone(ListViewNetstat.Columns.Add,
                    'Remote Port',
                    50);
 
-  AjouterUneColone(ListView2.Columns.Add,
+  AjouterUneColone(ListViewNetstat.Columns.Add,
                    'State',
                    100);
   ToolButtonRefreshNetstatClick(nil);
@@ -1478,7 +1488,7 @@ begin
   EditThemeName.Color := bg2;
   EditExecOnDisconnected.Color := bg2;
   ListView1.Color := bg2;
-  ListView2.Color := bg2;
+  ListViewNetstat.Color := bg2;
   Memo1.Color := bg2;
   MemoLogs.Color := bg2;
   MemoHelpWebAdmin.Color := bg2;
@@ -1503,7 +1513,7 @@ begin
   EditThemeName.Font.Color := bg2;
   EditExecOnDisconnected.Font.Color := bg2;
   ListView1.Font.Color := bg2;
-  ListView2.Font.Color := bg2;
+  ListViewNetstat.Font.Color := bg2;
   Memo1.Font.Color := bg2;
   MemoLogs.Font.Color := bg2;
   MemoHelpWebAdmin.Font.Color := bg2;
@@ -2034,8 +2044,7 @@ begin
   if isServerStarted then ActionDNS.clearCache;
 end;
 
-procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;
-  var Handled: Boolean);
+procedure TForm1.ListView1ContextPopup(Sender: TObject; MousePos: TPoint;var Handled: Boolean);
 var
   ListItem:TListItem;
   CurPos:TPoint;
@@ -2047,6 +2056,22 @@ begin
   begin
     SelectedListItem := ListItem;
     PopupMenuListView.Popup(MousePos.x, MousePos.y);
+  end;
+end;
+
+
+procedure TForm1.ListViewNetstatContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+var
+  ListItem:TListItem;
+  CurPos:TPoint;
+begin
+  GetcursorPos(MousePos);
+  CurPos:=TListView(Sender).ScreenToClient(MousePos);
+  ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
+  if Assigned(ListItem) then
+  begin
+    SelectedListItem := ListItem;
+    PopupMenuListViewNetstat.Popup(MousePos.x, MousePos.y);
   end;
 end;
 
@@ -4281,36 +4306,211 @@ begin
   GotoMainPage(4);
 end;
 
+//=====================
+const
+  SHIL_LARGE     = $00;  //The image size is normally 32x32 pixels. However, if the Use large icons option is selected from the Effects section of the Appearance tab in Display Properties, the image is 48x48 pixels.
+  SHIL_SMALL     = $01;  //These images are the Shell standard small icon size of 16x16, but the size can be customized by the user.
+  SHIL_EXTRALARGE= $02;  //These images are the Shell standard extra-large icon size. This is typically 48x48, but the size can be customized by the user.
+  SHIL_SYSSMALL  = $03;  //These images are the size specified by GetSystemMetrics called with SM_CXSMICON and GetSystemMetrics called with SM_CYSMICON.
+  SHIL_JUMBO     = $04;  //Windows Vista and later. The image is normally 256x256 pixels.
+  IID_IImageList: TGUID= '{46EB5926-582E-4017-9FDF-E8998DAA0950}';
+
+
+function GetImageListSH(SHIL_FLAG:Cardinal): HIMAGELIST;
+type
+  _SHGetImageList = function (iImageList: integer; const riid: TGUID; var ppv: Pointer): hResult; stdcall;
+var
+  Handle        : THandle;
+  SHGetImageList: _SHGetImageList;
+begin
+  Result:= 0;
+  Handle:= LoadLibrary('Shell32.dll');
+  if Handle<> S_OK then
+  try
+    SHGetImageList:= GetProcAddress(Handle, PChar(727));
+    if Assigned(SHGetImageList) and (Win32Platform = VER_PLATFORM_WIN32_NT) then
+      SHGetImageList(SHIL_FLAG, IID_IImageList, Pointer(Result));
+  finally
+    FreeLibrary(Handle);
+  end;
+end;
+
+procedure GetIconFromFile( aFile: string; var aIcon: TIcon;SHIL_FLAG: Cardinal );
+var
+  aImgList: HIMAGELIST;
+  SFI: TSHFileInfo;
+  aIndex: integer;
+begin // Get the index of the imagelist
+  SHGetFileInfo( PChar( aFile ), FILE_ATTRIBUTE_NORMAL, SFI, SizeOf( TSHFileInfo ),
+    SHGFI_ICON or SHGFI_LARGEICON or SHGFI_SHELLICONSIZE or SHGFI_SYSICONINDEX or SHGFI_TYPENAME or SHGFI_DISPLAYNAME );
+  if not Assigned( aIcon ) then
+    aIcon := TIcon.Create;
+  // get the imagelist
+  aImgList := GetImageListSH( SHIL_FLAG );
+  // get index
+  //aIndex := Pred( ImageList_GetImageCount( aImgList ) );
+  aIndex := SFI.iIcon;
+  // extract the icon handle
+  aIcon.Handle := ImageList_GetIcon( aImgList, aIndex, ILD_NORMAL );
+end;
+
 procedure TForm1.ToolButtonRefreshNetstatClick(Sender: TObject);
 var
   i: Integer;
-  Connections: TConnectionArray;
+  //Connections: TConnectionArray;
   Protocol: String;
   pos: TPoint;
+
+  hicon :TIcon;
+  Bitmap: TBitmap;
+
+  sProtocol, sLocalAddr, sRemoteAdd: String;
+  sLocalPort, sRemotePort: Integer;
 begin
-  UnitNetstat.GetConnections(Connections);
+  Connections := nil;
+  UnitNetstat2.GetConnections(Connections);
 
 
-  pos := ListView2.ViewOrigin;
-  ListView2.Clear;
+  pos := ListViewNetstat.ViewOrigin;
+  ListViewNetstat.Clear;
+  {
+  for i:=0 to Length(Connections) - 1 do
+  begin
+    ListViewNetstat.Items.Add();
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(Connections[i].Protocol);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(Connections[i].LocalAddress);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].LocalRawPort));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(Connections[i].RemoteAddress);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].RemoteRawPort));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+    // Set caption after all (at the end) to prevent some issues
+    // Mettre cette ligne à la fin pour éviter un bug à l'affichage
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
+
+    Bitmap := TBitmap.Create;
+    hicon:= TIcon.Create;
+    try
+      if FileExists(TaskManager.GetPathFromPID(Connections[i].ProcessID)) then
+      begin
+      MemoLogs.Lines.Add(inttostr(Connections[i].ProcessID));
+      MemoLogs.Lines.Add(TaskManager.GetPathFromPID(Connections[i].ProcessID));
+      MemoLogs.Lines.Add(TaskManager.GetExeNameFromPID(Connections[i].ProcessID));
+
+      GetIconFromFile(TaskManager.GetPathFromPID(Connections[i].ProcessID),  hicon, SHIL_SMALL);
+      Bitmap.Width := 16;
+      Bitmap.Height := 16;
+      Bitmap.Canvas.Draw(0, 0, hicon);
+
+      //MemoLogs.Lines.Add(inttostr( ImageListNestat.Add(Bitmap, nil) )); //
+      ImageListNestat.Insert(0, Bitmap, nil); //.Add(Bitmap, nil);
+      ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := 0; //ImageListNestat.Add(Bitmap, nil); //ImageListNestat.Count - 1;
+      end else begin
+        ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex :=  -1;
+      end;
+    finally
+      hicon.Free;
+      Bitmap.Free;
+    end;
+
+  end;
+  }
+
+
+
 
   for i:=0 to Length(Connections) - 1 do
   begin
-    ListView2.Items.Add();
-    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
-    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].Protocol);
-    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].LocalAddress);
-    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].LocalRawPort));
-    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(Connections[i].RemoteAddress);
-    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(IntToStr(Connections[i].RemoteRawPort));
-    ListView2.Items.Item[ListView2.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+    if Connections[i].Protocol = PROTOCOL_TCP then
+      sProtocol := 'TCP'
+    else
+      sProtocol := 'UDP';
+
+    ListViewNetstat.Items.Add();
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(sProtocol);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].LocalAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].LocalRawPort)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].RemoteAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].RemoteRawPort)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
     // Set caption after all (at the end) to prevent some issues
     // Mettre cette ligne à la fin pour éviter un bug à l'affichage
-    ListView2.Items.Item[ListView2.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
+    //ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := i;
+
+    {
+    Bitmap := TBitmap.Create;
+    hicon:= TIcon.Create;
+    //try
+      if FileExists(TaskManager.GetPathFromPID(Connections[i].ProcessID)) then
+      begin
+
+      //MemoLogs.Lines.Add(inttostr(Connections[i].ProcessID));
+      //MemoLogs.Lines.Add(TaskManager.GetPathFromPID(Connections[i].ProcessID));
+      //MemoLogs.Lines.Add(TaskManager.GetExeNameFromPID(Connections[i].ProcessID));
+
+      GetIconFromFile(TaskManager.GetPathFromPID(Connections[i].ProcessID),  hicon, SHIL_SMALL);
+      Bitmap.Width := 16;
+      Bitmap.Height := 16;
+      Bitmap.Canvas.Draw(0, 0, hicon);
+
+      ImageListNestat.Add(Bitmap, nil);
+      //MemoLogs.Lines.Add(inttostr( ImageListNestat.Add(Bitmap, nil) )); //
+      //
+      //ImageListNestat.Insert(i, Bitmap, nil); //.Add(Bitmap, nil);
+      ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := ImageListNestat.Count - 1;
+      end else begin
+      ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := -1; //ImageListNestat.Add(Bitmap, nil); //ImageListNestat.Count - 1;
+      end;
+    //finally
+      hicon.Free;
+      Bitmap.Free;
+    //end;
+   }
   end;
 
-  ListView2.Scroll(pos.X, pos.Y);
+
+  ListViewNetstat.Scroll(pos.X, pos.Y);
   //UnitNetstat.CloseConnection(Connections[0]);
+end;
+
+procedure TForm1.Fermerlaconnexion1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  SelectedListItem := ListViewNetstat.Selected;
+  if not Assigned(SelectedListItem) then exit;
+  i := SelectedListItem.Index;
+  //ShowMessage(inttostr(i));
+  if i in [0..Length(Connections) - 1] then
+  //if (i >= 0) and (i <= Length(Connections) - 1) then
+  begin
+    //ShowMessage(IpAddressToString(Connections[i].RemoteAddress));
+    if UnitNetstat2.CloseConnection(Connections[i]) = False then
+      ShowMessage('Erreur');
+    ToolButtonRefreshNetstatClick(nil);
+    //
+  end;
+end;
+
+procedure TForm1.Fermerleprocessus1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  SelectedListItem := ListViewNetstat.Selected;
+  if not Assigned(SelectedListItem) then exit;
+  i := SelectedListItem.Index;
+  //ShowMessage(inttostr(i));
+  if i in [0..Length(Connections) - 1] then
+  begin
+    TaskManager.CloseProcessPID(Connections[i].ProcessID);
+    //if UnitNetstat2.CloseConnection(Connections[i]) = False then
+    //  ShowMessage('Erreur');
+    Sleep(500);
+    ToolButtonRefreshNetstatClick(nil);
+    //
+  end;
 end;
 
 end.

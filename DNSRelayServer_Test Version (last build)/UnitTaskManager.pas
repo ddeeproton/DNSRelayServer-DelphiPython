@@ -51,6 +51,7 @@ var
   hProcess: THandle;
   path: array[0..MAX_PATH - 1] of char;
 begin
+  result := '';
   try
     hProcess := OpenProcess(PROCESS_QUERY_INFORMATION or PROCESS_VM_READ, false, PID);
     if hProcess <> 0 then
@@ -83,8 +84,11 @@ begin
     while Integer(ContinueLoop) <> 0 do
     begin
       if FProcessEntry32.th32ProcessID = PID then
+      begin
+
         result := FProcessEntry32.szExeFile;
 
+      end;
       ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
     end;
 
