@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
 
 var
-  CurrentApplicationVersion: string = '0.4.344';
+  CurrentApplicationVersion: string = '0.4.345';
   isDevVersion: Boolean = False;
 
 type
@@ -4585,6 +4585,7 @@ end;
 procedure TForm1.Pause1Click(Sender: TObject);
 begin
   TimerRefreshNetstat.Enabled := False;  
+  TimerRefreshNetstat.Interval := 0;  
   WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', IntToStr(TimerRefreshNetstat.Interval));
 end;
 
