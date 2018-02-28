@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
 
 var
-  CurrentApplicationVersion: string = '0.4.345';
+  CurrentApplicationVersion: string = '0.4.346';
   isDevVersion: Boolean = False;
 
 type
@@ -4379,6 +4379,7 @@ end;
 procedure TForm1.ToolButtonRefreshNetstatClick(Sender: TObject);
 var
   i: Integer;
+  lastSelectedIndex: Integer;
   //Connections: TConnectionArray;
   Protocol: String;
   pos: TPoint;
@@ -4389,6 +4390,21 @@ var
   sProtocol, sLocalAddr, sRemoteAdd: String;
   sLocalPort, sRemotePort: Integer;
 begin
+  lastSelectedIndex := -1;
+  try
+    if ListViewNetstat.Selected <> nil then
+    begin
+      if ListViewNetstat.Selected.Index > -1 then
+      begin
+        lastSelectedIndex := ListViewNetstat.Selected.Index;
+      end;
+    end;
+  except
+    On E : EOSError do RaiseLastOSError;
+    On E : EAccessViolation do RaiseLastOSError;
+  end;
+
+
   Connections := nil;
   UnitNetstat2.GetConnections(Connections);
 
@@ -4494,6 +4510,14 @@ begin
 
 
   ListViewNetstat.Scroll(pos.X, pos.Y);
+  try
+    if lastSelectedIndex > -1 then
+      ListViewNetstat.Selected := ListViewNetstat.Items[lastSelectedIndex];
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
+  end;
+
   //UnitNetstat.CloseConnection(Connections[0]);
 end;
 
