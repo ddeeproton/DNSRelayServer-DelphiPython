@@ -150,21 +150,21 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
-                VertScrollBar.Position = 127
+                VertScrollBar.Position = 152
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = -127
+                  Top = -152
                   Width = 264
-                  Height = 383
+                  Height = 408
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     264
-                    383)
+                    408)
                   object Label1: TLabel
                     Left = 16
                     Top = 15
@@ -321,7 +321,7 @@ object Form1: TForm1
                   end
                   object Label20: TLabel
                     Left = 16
-                    Top = 327
+                    Top = 359
                     Width = 187
                     Height = 13
                     Caption = 'Dur'#233'e du cache DNS (0 expire jamais) :'
@@ -332,8 +332,19 @@ object Form1: TForm1
                     Top = 305
                     Width = 289
                     Height = 13
-                    Caption = 'Afficher un message pour les sites bloqu'#233's (HTTP seulement)'
+                    Caption = 'Afficher un message pour les sites bloqu'#233's (HTTP et HTTPS)'
                     FocusControl = CheckBoxServerHTTP
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
+                  end
+                  object Label49: TLabel
+                    Left = 55
+                    Top = 329
+                    Width = 240
+                    Height = 13
+                    Caption = 'Afficher les requ'#234'tes HTTP(S) re'#231'ues dans les logs'
+                    FocusControl = CheckBoxShowHTTPRequestInLogs
                     OnClick = LabelToCheckboxClick
                     OnMouseEnter = LabelCheckboxMouseEnter
                     OnMouseLeave = LabelCheckboxMouseLeave
@@ -440,7 +451,7 @@ object Form1: TForm1
                   end
                   object SpinEditTTLCache: TSpinEdit
                     Left = 16
-                    Top = 344
+                    Top = 376
                     Width = 121
                     Height = 22
                     Hint = 'Efface le cache apr'#232's X heures'
@@ -459,6 +470,14 @@ object Form1: TForm1
                     Height = 17
                     TabOrder = 11
                     OnClick = CheckBoxServerHTTPClick
+                  end
+                  object CheckBoxShowHTTPRequestInLogs: TCheckBox
+                    Left = 32
+                    Top = 327
+                    Width = 17
+                    Height = 17
+                    TabOrder = 12
+                    OnClick = CheckBoxShowHTTPRequestInLogsClick
                   end
                 end
               end
@@ -17995,11 +18014,18 @@ object Form1: TForm1
     Left = 423
     Top = 258
   end
-  object TcpServer1: TTcpServer
+  object TcpServerHTTP: TTcpServer
     LocalHost = '0.0.0.0'
     LocalPort = '80'
-    OnAccept = TcpServer1Accept
-    Left = 450
-    Top = 456
+    OnAccept = TcpServerHTTPAccept
+    Left = 330
+    Top = 454
+  end
+  object TcpServerHTTPS: TTcpServer
+    LocalHost = '0.0.0.0'
+    LocalPort = '443'
+    OnAccept = TcpServerHTTPAccept
+    Left = 358
+    Top = 454
   end
 end

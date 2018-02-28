@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.351';
+  CurrentApplicationVersion: string = '0.4.352';
   isDevVersion: Boolean = False;
 
 type
@@ -326,7 +326,10 @@ type
     TimerRefreshNetstat: TTimer;
     CheckBoxServerHTTP: TCheckBox;
     Label48: TLabel;
-    TcpServer1: TTcpServer;
+    TcpServerHTTP: TTcpServer;   
+    TcpServerHTTPS: TTcpServer;
+    Label49: TLabel;
+    CheckBoxShowHTTPRequestInLogs: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -513,8 +516,9 @@ type
     procedure Rafraichirtoutesles5secondes1Click(Sender: TObject);
     procedure Pause1Click(Sender: TObject);
     procedure CheckBoxServerHTTPClick(Sender: TObject);
-    procedure TcpServer1Accept(Sender: TObject;
+    procedure TcpServerHTTPAccept(Sender: TObject;
       ClientSocket: TCustomIpClient);
+    procedure CheckBoxShowHTTPRequestInLogsClick(Sender: TObject);
     
   private
     { Private declarations }
@@ -1395,8 +1399,10 @@ begin
   CheckBoxExecOnDisconnected.Checked := FileExists(DataDirectoryPath + 'CheckBoxExecOnDisconnected.cfg');
   
   CheckBoxServerHTTP.Checked := FileExists(DataDirectoryPath + 'CheckBoxServerHTTP.cfg');
-  TcpServer1.Active := CheckBoxServerHTTP.Checked;
-  
+  TcpServerHTTP.Active := CheckBoxServerHTTP.Checked;
+  TcpServerHTTPS.Active := CheckBoxServerHTTP.Checked;
+  CheckBoxShowHTTPRequestInLogs.Checked := FileExists(DataDirectoryPath + 'CheckBoxShowHTTPRequestInLogs.cfg');
+
   refreshCheckBox(CheckBoxStartWithWindows);
 
   TActionManageIP.load();
@@ -1603,6 +1609,7 @@ begin
   Label45.Font.Color := color;
   Label46.Font.Color := color;
   Label48.Font.Color := color;
+  Label49.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
@@ -4636,26 +4643,45 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxServerHTTP.cfg');
 
-  TcpServer1.Active := TCheckBox(Sender).Checked;
+  TcpServerHTTP.Active := TCheckBox(Sender).Checked;
+  TcpServerHTTPS.Active := TCheckBox(Sender).Checked;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
 end;
 
-procedure TForm1.TcpServer1Accept(Sender: TObject;
+procedure TForm1.TcpServerHTTPAccept(Sender: TObject;
   ClientSocket: TCustomIpClient);
 var
-  txt : String;
+  txt, recieve : String;
   a: TStream;
 begin
   txt := '';
   while ClientSocket.WaitForData() do
-    txt := txt + ClientSocket.Receiveln()+'<br>';
-  Sleep(500);
+  begin
+    recieve := ClientSocket.Receiveln();
+    txt := txt + recieve+'<br>';
+    if CheckBoxShowHTTPRequestInLogs.Checked then
+      MemoLogs.Lines.Add(recieve);
+  end;
   ClientSocket.Sendln('<h1>Blocked by DNS Relay Server</h1>');
   ClientSocket.Sendln('<pre>'+txt+'</pre>');
+
   //Sleep(500);
   //ClientSocket.Close;
+end;
+
+procedure TForm1.CheckBoxShowHTTPRequestInLogsClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  if TCheckBox(Sender).Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxShowHTTPRequestInLogs.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxShowHTTPRequestInLogs.cfg');
+
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 end.
