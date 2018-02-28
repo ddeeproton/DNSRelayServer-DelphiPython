@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.350';
+  CurrentApplicationVersion: string = '0.4.351';
   isDevVersion: Boolean = False;
 
 type
@@ -4654,8 +4654,8 @@ begin
   Sleep(500);
   ClientSocket.Sendln('<h1>Blocked by DNS Relay Server</h1>');
   ClientSocket.Sendln('<pre>'+txt+'</pre>');
-  Sleep(500);
-  ClientSocket.Close;
+  //Sleep(500);
+  //ClientSocket.Close;
 end;
 
 end.
