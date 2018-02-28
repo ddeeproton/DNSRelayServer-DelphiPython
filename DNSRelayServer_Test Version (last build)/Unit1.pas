@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
 
 var
-  CurrentApplicationVersion: string = '0.4.346';
+  CurrentApplicationVersion: string = '0.4.347';
   isDevVersion: Boolean = False;
 
 type
@@ -1436,6 +1436,8 @@ begin
                    'State',
                    100);
   ToolButtonRefreshNetstatClick(nil);
+
+  ListViewNetstat.DoubleBuffered := True;
 end;
 
 
