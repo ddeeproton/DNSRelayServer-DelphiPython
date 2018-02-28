@@ -1889,6 +1889,13 @@ object Form1: TForm1
                 ShowHint = True
                 OnClick = ToolButtonRefreshNetstatClick
               end
+              object ToolButtonNetstatMenu: TToolButton
+                Left = 25
+                Top = 0
+                Caption = 'ToolButtonNetstatMenu'
+                ImageIndex = 11
+                OnClick = ToolButtonNetstatMenuClick
+              end
             end
           end
         end
@@ -8058,8 +8065,8 @@ object Form1: TForm1
     Top = 447
   end
   object ImageList3: TImageList
-    Left = 394
-    Top = 414
+    Left = 450
+    Top = 386
     Bitmap = {
       494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -8867,8 +8874,8 @@ object Form1: TForm1
   object ImageList4: TImageList
     Height = 80
     Width = 71
-    Left = 452
-    Top = 386
+    Left = 395
+    Top = 412
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -17897,12 +17904,12 @@ object Form1: TForm1
   object TimerBootNoXP: TTimer
     Enabled = False
     OnTimer = TimerBootNoXPTimer
-    Left = 394
-    Top = 248
+    Left = 395
+    Top = 247
   end
   object MainMenu1: TMainMenu
-    Left = 448
-    Top = 256
+    Left = 456
+    Top = 264
     object Config2: TMenuItem
       Caption = 'Config'
       OnClick = ToolButton8Click
@@ -17929,8 +17936,8 @@ object Form1: TForm1
     end
   end
   object ImageListNestat: TImageList
-    Left = 424
-    Top = 416
+    Left = 423
+    Top = 413
   end
   object PopupMenuListViewNetstat: TPopupMenu
     Left = 422
@@ -17943,5 +17950,30 @@ object Form1: TForm1
       Caption = 'Fermer le processus'
       OnClick = Fermerleprocessus1Click
     end
+  end
+  object PopupMenuRefreshNetstat: TPopupMenu
+    Left = 450
+    Top = 350
+    object Rafraichirtoutesles1seconde1: TMenuItem
+      Caption = 'Rafraichir (1 seconde)'
+      OnClick = Rafraichirtoutesles1seconde1Click
+    end
+    object Rafraichirtoutesles2secondes1: TMenuItem
+      Caption = 'Rafraichir (2 secondes)'
+      OnClick = Rafraichirtoutesles2secondes1Click
+    end
+    object Rafraichirtoutesles5secondes1: TMenuItem
+      Caption = 'Rafraichir (5 secondes)'
+      OnClick = Rafraichirtoutesles5secondes1Click
+    end
+    object Pause1: TMenuItem
+      Caption = 'Pause'
+      OnClick = Pause1Click
+    end
+  end
+  object TimerRefreshNetstat: TTimer
+    OnTimer = TimerRefreshNetstatTimer
+    Left = 423
+    Top = 247
   end
 end

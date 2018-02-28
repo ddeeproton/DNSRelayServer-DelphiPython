@@ -12,7 +12,7 @@ uses
   UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
 
 var
-  CurrentApplicationVersion: string = '0.4.343';
+  CurrentApplicationVersion: string = '0.4.344';
   isDevVersion: Boolean = False;
 
 type
@@ -316,6 +316,13 @@ type
     PopupMenuListViewNetstat: TPopupMenu;
     Fermerlaconnexion1: TMenuItem;
     Fermerleprocessus1: TMenuItem;
+    ToolButtonNetstatMenu: TToolButton;
+    PopupMenuRefreshNetstat: TPopupMenu;
+    Rafraichirtoutesles1seconde1: TMenuItem;
+    Rafraichirtoutesles2secondes1: TMenuItem;
+    Rafraichirtoutesles5secondes1: TMenuItem;
+    Pause1: TMenuItem;
+    TimerRefreshNetstat: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -495,6 +502,12 @@ type
     procedure ToolButtonRefreshNetstatClick(Sender: TObject);
     procedure Fermerlaconnexion1Click(Sender: TObject);
     procedure Fermerleprocessus1Click(Sender: TObject);
+    procedure ToolButtonNetstatMenuClick(Sender: TObject);
+    procedure TimerRefreshNetstatTimer(Sender: TObject);
+    procedure Rafraichirtoutesles1seconde1Click(Sender: TObject);
+    procedure Rafraichirtoutesles2secondes1Click(Sender: TObject);
+    procedure Rafraichirtoutesles5secondes1Click(Sender: TObject);
+    procedure Pause1Click(Sender: TObject);
     
   private
     { Private declarations }
@@ -582,6 +595,7 @@ var
   isFormHideOnStart: Boolean = False;
 
   Connections: TConnectionArray = nil;
+  SelectedConnection : TConnection;
 implementation
 
 {$R *.dfm}
@@ -1383,6 +1397,11 @@ begin
 
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
 
+  if Not FileExists(DataDirectoryPath + 'TimerRefreshNetstat.cfg') then
+    WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', '5000');
+  TimerRefreshNetstat.Interval := StrToInt(ReadFromFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg'));
+  TimerRefreshNetstat.Enabled := TimerRefreshNetstat.Interval > 0;
+   
 
   // ListViewNetstat
   AjouterUneColone(ListViewNetstat.Columns.Add,
@@ -2071,6 +2090,9 @@ begin
   if Assigned(ListItem) then
   begin
     SelectedListItem := ListItem;
+    SelectedConnection := Connections[SelectedListItem.Index];
+
+
     PopupMenuListViewNetstat.Popup(MousePos.x, MousePos.y);
   end;
 end;
@@ -4479,6 +4501,12 @@ procedure TForm1.Fermerlaconnexion1Click(Sender: TObject);
 var
   i: Integer;
 begin
+
+  if UnitNetstat2.CloseConnection(SelectedConnection) = False then
+    ShowMessage('Erreur');
+  ToolButtonRefreshNetstatClick(nil);
+
+  {
   SelectedListItem := ListViewNetstat.Selected;
   if not Assigned(SelectedListItem) then exit;
   i := SelectedListItem.Index;
@@ -4492,12 +4520,18 @@ begin
     ToolButtonRefreshNetstatClick(nil);
     //
   end;
+  }
 end;
 
 procedure TForm1.Fermerleprocessus1Click(Sender: TObject);
 var
   i: Integer;
 begin
+  TaskManager.CloseProcessPID(SelectedConnection.ProcessID);
+  Sleep(500);
+  ToolButtonRefreshNetstatClick(nil);
+
+  {
   SelectedListItem := ListViewNetstat.Selected;
   if not Assigned(SelectedListItem) then exit;
   i := SelectedListItem.Index;
@@ -4511,6 +4545,47 @@ begin
     ToolButtonRefreshNetstatClick(nil);
     //
   end;
+  }
+end;
+
+procedure TForm1.ToolButtonNetstatMenuClick(Sender: TObject);
+var
+  Pos:TPoint;
+begin
+  GetCursorPos(Pos);
+  PopupMenuRefreshNetstat.Popup(Pos.X,Pos.Y);
+end;
+
+procedure TForm1.TimerRefreshNetstatTimer(Sender: TObject);
+begin
+  ToolButtonRefreshNetstatClick(nil);
+end;
+
+procedure TForm1.Rafraichirtoutesles1seconde1Click(Sender: TObject);
+begin
+  TimerRefreshNetstat.Interval := 1000;
+  TimerRefreshNetstat.Enabled := True;
+  WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', IntToStr(TimerRefreshNetstat.Interval));
+end;
+
+procedure TForm1.Rafraichirtoutesles2secondes1Click(Sender: TObject);
+begin
+  TimerRefreshNetstat.Interval := 2000;
+  TimerRefreshNetstat.Enabled := True;
+  WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', IntToStr(TimerRefreshNetstat.Interval));
+end;
+
+procedure TForm1.Rafraichirtoutesles5secondes1Click(Sender: TObject);
+begin
+  TimerRefreshNetstat.Interval := 5000;
+  TimerRefreshNetstat.Enabled := True;     
+  WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', IntToStr(TimerRefreshNetstat.Interval));
+end;
+
+procedure TForm1.Pause1Click(Sender: TObject);
+begin
+  TimerRefreshNetstat.Enabled := False;  
+  WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', IntToStr(TimerRefreshNetstat.Interval));
 end;
 
 end.
