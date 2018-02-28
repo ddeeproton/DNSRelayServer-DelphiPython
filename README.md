@@ -65,10 +65,6 @@ Lien direct Delphi 6
 
 https://delphi.developpez.com/telecharger-gratuit/delphi6-perso/fichiers/Delphi6PersoFR.exe
 
-Lien direct Delphi 2005
-
-https://delphi.developpez.com/telecharger-gratuit/delphi-2005/fichiers/Delphi2005PersoFR.exe
-
 
 ### Nouveautés :
 
