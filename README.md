@@ -55,15 +55,17 @@ https://github.com/ddeeproton/DNSRelayServer-DelphiPython/archive/master.zip
 
 Compile avec:
 
--Delphi 5, 6, 7, 2006, 2007, et +
+-Delphi 7 
 
-Téléchargez gratuitement Delphi 6 ici et si nécessaire, executez en mode admin le setup d'installation (Windows vous dira peut-être qu'il n'est pas compatible, mais ça marche quand-même). 
+Téléchargez gratuitement Delphi 7 ici et si nécessaire, executez en mode admin le setup d'installation (Windows vous dira peut-être qu'il n'est pas compatible, mais ça marche quand-même). 
 
-https://delphi.developpez.com/telecharger-gratuit/delphi6-perso/
+https://delphi.developpez.com/telecharger-gratuit/delphi7-perso/
 
-Lien direct Delphi 6
 
-https://delphi.developpez.com/telecharger-gratuit/delphi6-perso/fichiers/Delphi6PersoFR.exe
+-Ne compile pas avec: 
+
+Delphi 6
+
 
 
 ### Nouveautés :
