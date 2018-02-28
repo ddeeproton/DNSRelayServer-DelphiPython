@@ -5,7 +5,7 @@
 
 ### Télécharger le setup d'installation Windows:
 
-https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup%20installation/DNSRelayServerSetup_0.4.342.exe
+https://github.com/ddeeproton/DNSRelayServer-DelphiPython/raw/master/Setup%20installation/DNSRelayServerSetup_0.4.343.exe
 
 ### Bug
 
@@ -60,3 +60,9 @@ Compile avec:
 Téléchargez gratuitement Delphi 6 ici et si nécessaire, executez en mode admin le setup d'installation (Windows vous dira peut-être qu'il n'est pas compatible, mais ça marche quand-même). 
 
 https://delphi.developpez.com/telecharger-gratuit/delphi6-perso/
+
+### Nouveautés :
+
+Version 0.4.343 Ajout de Netstat:
+
+![](preview2.png)
