@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.352';
+  CurrentApplicationVersion: string = '0.4.353';
   isDevVersion: Boolean = False;
 
 type
@@ -4410,27 +4410,29 @@ var
   sProtocol, sLocalAddr, sRemoteAdd: String;
   sLocalPort, sRemotePort: Integer;
 begin
-  lastSelectedIndex := -1;
-  try
-    if ListViewNetstat.Selected <> nil then
-    begin
-      if ListViewNetstat.Selected.Index > -1 then
+  if not isXP then
+  begin
+    lastSelectedIndex := -1;
+    try
+      if ListViewNetstat.Selected <> nil then
       begin
-        lastSelectedIndex := ListViewNetstat.Selected.Index;
+        if ListViewNetstat.Selected.Index > -1 then
+        begin
+          lastSelectedIndex := ListViewNetstat.Selected.Index;
+        end;
       end;
+    except
+      On E : EOSError do RaiseLastOSError;
+      On E : EAccessViolation do RaiseLastOSError;
     end;
-  except
-    On E : EOSError do RaiseLastOSError;
-    On E : EAccessViolation do RaiseLastOSError;
+
+    pos.Y := ListViewNetstat.ViewOrigin.Y;
+    pos.X := ListViewNetstat.Left;
+    //pos := ListViewNetstat.ViewOrigin;
   end;
-
-
   Connections := nil;
   UnitNetstat2.GetConnections(Connections);
 
-  pos.Y := ListViewNetstat.ViewOrigin.Y;
-  pos.X := ListViewNetstat.Left;
-  //pos := ListViewNetstat.ViewOrigin;
   ListViewNetstat.Clear;
   {
   for i:=0 to Length(Connections) - 1 do
@@ -4529,17 +4531,17 @@ begin
    }
   end;
 
-
-  ListViewNetstat.Scroll(pos.X  - 2, pos.Y);
-  
-  try
-    if lastSelectedIndex > -1 then
-      ListViewNetstat.Selected := ListViewNetstat.Items[lastSelectedIndex];
-  except
-    On E : EOSError do exit;
-    On E : EAccessViolation do exit;
+  if not isXP then
+  begin
+    ListViewNetstat.Scroll(pos.X  - 2, pos.Y);
+    try
+      if lastSelectedIndex > -1 then
+        ListViewNetstat.Selected := ListViewNetstat.Items[lastSelectedIndex];
+    except
+      On E : EOSError do exit;
+      On E : EAccessViolation do exit;
+    end;
   end;
-
   //UnitNetstat.CloseConnection(Connections[0]);
 end;
 
