@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.353';
+  CurrentApplicationVersion: string = '0.4.354';
   isDevVersion: Boolean = False;
 
 type
@@ -4410,8 +4410,10 @@ var
   sProtocol, sLocalAddr, sRemoteAdd: String;
   sLocalPort, sRemotePort: Integer;
 begin
-  if not isXP then
+  if isXP then
   begin
+    pos := ListViewNetstat.ViewOrigin;
+  end else begin
     lastSelectedIndex := -1;
     try
       if ListViewNetstat.Selected <> nil then
@@ -4531,8 +4533,10 @@ begin
    }
   end;
 
-  if not isXP then
+  if isXP then
   begin
+    ListViewNetstat.Scroll(pos.X, pos.Y);
+  end else begin
     ListViewNetstat.Scroll(pos.X  - 2, pos.Y);
     try
       if lastSelectedIndex > -1 then
