@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.356';
+  CurrentApplicationVersion: string = '0.4.357';
   isDevVersion: Boolean = False;
 
 type
@@ -601,6 +601,7 @@ var
 
   lastLogOutput: string = '';
   isApplicationLoading: Boolean = True;
+  isFormVisible : Boolean = False;
   opacity: Integer = 0;
   autostarted: Boolean = False;
   isFormHideOnStart: Boolean = False;
@@ -647,7 +648,8 @@ var
   isNew, isRepeated: Boolean;
   sl: TStringList;
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
-  date, time, ipserver, ipclient, ipdomain, domain, ip, logs, tab, status, hostdata, blackhost:string;
+  date, time, ipserver, ipclient, ipdomain, domain, ip, logs, tab, status:string;
+  //hostdata, blackhost : String;
   FormAlert: TFormAlert;
   data: TRecordAlert;
 begin
@@ -949,8 +951,7 @@ begin
 end;
 
 procedure TForm1.onServerDNSStart();
-var 
-  bmp: TBitmap;
+//var bmp: TBitmap;
 begin
   Application.ProcessMessages;
   try
@@ -970,8 +971,7 @@ begin
 end;
 
 procedure TForm1.onServerDNSStop();
-var 
-  bmp: TBitmap; 
+//var  bmp: TBitmap; 
 begin
   try
     if ServerDoStart then
@@ -1025,8 +1025,7 @@ begin
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
-var 
-  bmp: TBitmap; 
+//var  bmp: TBitmap; 
 begin
   try
     setButtonStartText(2);
@@ -1760,6 +1759,7 @@ end;
 
 procedure TForm1.Masquer1Click(Sender: TObject);
 begin
+  isFormVisible := False;
   //  To hide the form, Don't use Hide; (because buggy on refresh),
   // use this code instead:
   Top := -Form1.Height;
@@ -1773,6 +1773,7 @@ end;
 
 procedure TForm1.Afficher1Click(Sender: TObject);
 begin
+  isFormVisible := True;
   Self.Show;
   try
     Top := Screen.WorkAreaHeight - Self.Height;
@@ -1862,10 +1863,10 @@ end;
 
 
 procedure TForm1.GotoMainPage(inexPage: Integer);
-var
-  isIndexChanged: Boolean;
-  isVisibleChanged: Boolean;
-  oldVisibility: Boolean;
+//var
+  //isIndexChanged: Boolean;
+  //isVisibleChanged: Boolean;
+  //oldVisibility: Boolean;
 begin
   Notebook1.PageIndex := inexPage;
   Panel1.Visible := True;
@@ -2200,7 +2201,7 @@ procedure TForm1.ButtonStartClick(Sender: TObject);
 var
   i, j, count: Integer;
   filepath, dns, script, config_cache_memory, config_display_log, bat, cmd: string;
-  bmp: TBitmap;
+  //bmp: TBitmap;
 begin
   try
     setButtonStartText(2);
@@ -4402,15 +4403,22 @@ var
   i: Integer;
   lastSelectedIndex: Integer;
   //Connections: TConnectionArray;
-  Protocol: String;
+  //Protocol: String;
   pos: TPoint;
 
-  hicon :TIcon;
-  Bitmap: TBitmap;
+  //hicon :TIcon;
+  //Bitmap: TBitmap;
 
-  sProtocol, sLocalAddr, sRemoteAdd: String;
-  sLocalPort, sRemotePort: Integer;
+  sProtocol: String;
+  //sLocalAddr, sRemoteAdd: String;
+  //sLocalPort, sRemotePort: Integer;
 begin
+
+  Connections := nil;
+  UnitNetstat2.GetConnections(Connections);
+
+  if not isFormVisible or (Notebook1.PageIndex <> 4) then exit;
+
   lastSelectedIndex := -1;
   if isXP then
   begin
@@ -4433,8 +4441,6 @@ begin
     pos.X := ListViewNetstat.Left;
     //pos := ListViewNetstat.ViewOrigin;
   end;
-  Connections := nil;
-  UnitNetstat2.GetConnections(Connections);
 
   ListViewNetstat.Clear;
   {
@@ -4551,8 +4557,7 @@ begin
 end;
 
 procedure TForm1.Fermerlaconnexion1Click(Sender: TObject);
-var
-  i: Integer;
+//var i: Integer;
 begin
 
   if UnitNetstat2.CloseConnection(SelectedConnection) = False then
@@ -4577,8 +4582,7 @@ begin
 end;
 
 procedure TForm1.Fermerleprocessus1Click(Sender: TObject);
-var
-  i: Integer;
+//var  i: Integer;
 begin
   TaskManager.CloseProcessPID(SelectedConnection.ProcessID);
   Sleep(500);
@@ -4661,7 +4665,7 @@ procedure TForm1.TcpServerHTTPAccept(Sender: TObject;
   ClientSocket: TCustomIpClient);
 var
   txt, recieve : String;
-  a: TStream;
+  //a: TStream;
 begin
   txt := '';
   while ClientSocket.WaitForData() do
