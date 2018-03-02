@@ -18,7 +18,7 @@ procedure ListViewEraseFromImageIndex(ListView:TListView;indexImage:integer);
 
 implementation
 
-
+uses Unit1;
 
 procedure ListViewCreate(ListView: TListView);
 begin
@@ -150,7 +150,7 @@ procedure EditerLigne2(ListView: TListView; Ligne:integer; ImageNum:integer = -1
   Colone1: string = ''; Colone2: string = ''; isChecked: Boolean = false);
 var ListItem: TListItem;
 begin
-  if (ListView.Items.Count < Ligne) then exit;
+  if (Ligne >= ListView.Items.Count) then exit;
   if (ListView.Items.Count = Ligne) then
     ListItem := ListView.Items.Add
   else
@@ -176,7 +176,8 @@ begin
       ListItem.SubItems.Strings[0] := Colone2;
   end;
   // Si on a indiqué un numéro d'image
-  if ImageNum > -1 then
+
+  if ImageNum in [0..Form1.ImageList3.Count-1] then
     // On change d'image
     ListItem.ImageIndex := ImageNum;
   ListItem.Checked := isChecked;

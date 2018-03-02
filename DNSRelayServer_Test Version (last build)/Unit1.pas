@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.355';
+  CurrentApplicationVersion: string = '0.4.356';
   isDevVersion: Boolean = False;
 
 type
@@ -651,6 +651,7 @@ var
   FormAlert: TFormAlert;
   data: TRecordAlert;
 begin
+  imgIndex := 0;
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
   txt := StringReplace(txt, #10, '', [rfReplaceAll, rfIgnoreCase]);
   if txt = '' then exit;
@@ -2590,7 +2591,7 @@ begin
   CheckListBoxDNSRelayIP.Clear;
   if GetNetworkInterfaces(net) then
   begin
-    for i := 0 to High (net) do
+    for i := 0 to High(net) - 1 do
     begin
       if net[i].AddrIP <> '127.0.0.1' then
       begin
@@ -2726,7 +2727,7 @@ begin
   dnslist := '';
   if GetNetworkInterfaces(net) then
   begin
-    for i := 0 to High (net) do
+    for i := 0 to High(net) - 1 do
     begin
       if net[i].AddrIP <> '127.0.0.1' then
       begin
@@ -3853,7 +3854,7 @@ function FindNetworkInterface(net:tNetworkInterface;netList:tNetworkInterfaceLis
 var
   i: integer;
 begin
-  for i := 0 to High(netList) do
+  for i := 0 to High(netList)-1 do
   begin
     if (netList[i].AddrIP = net.AddrIP)
     and (netList[i].IsInterfaceUp = net.IsInterfaceUp) then
@@ -3875,7 +3876,7 @@ begin
   if not GetNetworkInterfaces(net) then exit;
   if (oldNet <> nil) and (net <> nil) then
   begin
-    for i := 0 to High(net) do
+    for i := 0 to High(net) - 1 do
     begin
       if not FindNetworkInterface(net[i], oldNet) then
       begin
@@ -3888,7 +3889,7 @@ begin
         end;
       end;
     end;
-    for i := 0 to High(oldNet) do
+    for i := 0 to High(oldNet) - 1 do
     begin
       if not FindNetworkInterface(oldNet[i], net) then
       begin
@@ -4041,7 +4042,7 @@ begin
 
         i := ComboBox.ItemIndex;
         if (i >= 0) and (i < ComboBox.Items.Count) then
-        filename := DirCustomHost+'\'+ComboBox.Items.Strings[i]+'_blackhost.txt';
+          filename := DirCustomHost+'\'+ComboBox.Items.Strings[i]+'_blackhost.txt';
 
       end;
     end;
