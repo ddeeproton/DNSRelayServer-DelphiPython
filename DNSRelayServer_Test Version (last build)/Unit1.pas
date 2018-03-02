@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.358';
+  CurrentApplicationVersion: string = '0.4.359';
   isDevVersion: Boolean = False;
 
 type
@@ -2721,7 +2721,7 @@ end;
 
 procedure TForm1.ButtonNetCardIntegrationClick(Sender: TObject);
 var
-  i: Integer;
+  i, j: Integer;
   dnslist: String;
   net: tNetworkInterfaceList;
 begin
@@ -2732,8 +2732,12 @@ begin
     begin
       if net[i].AddrIP <> '127.0.0.1' then
       begin
-        if dnslist <> '' then dnslist := dnslist + ' ';
-        dnslist := dnslist + net[i].AddrIP;
+        j := CheckListBoxDNSRelayIP.Items.IndexOf(net[i].AddrIP);
+        if CheckListBoxDNSRelayIP.Checked[j] then
+        begin
+          if dnslist <> '' then dnslist := dnslist + ' ';
+          dnslist := dnslist + net[i].AddrIP;
+        end;
       end;
     end;
   end;

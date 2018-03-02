@@ -94,7 +94,7 @@ end;
 
 class function Rules.IsBlacklistDomain(domain: string): Boolean;
 var
-  hostdata: String;
+  //hostdata: String;
   i: Integer;
 begin
   result := False;
