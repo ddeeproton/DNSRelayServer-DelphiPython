@@ -31,7 +31,9 @@ var filename: String;
     attributs: Integer;
 begin
   result := TStringList.Create;
+  {$WARN SYMBOL_PLATFORM OFF}
   attributs := faDirectory + faHidden + faSysFile+ faVolumeID + faArchive ;
+  {$WARN SYMBOL_PLATFORM ON}
   dirHandle := FindFirst(dirname+'\'+filtre, attributs, searchResult);
   while dirHandle = 0 do
   begin
@@ -55,9 +57,12 @@ var
   sr : TSearchRec;
 begin
   if FindFirst(fileName, faAnyFile, sr ) = 0 then
-     result := Int64(sr.FindData.nFileSizeHigh) shl Int64(32) + Int64(sr.FindData.nFileSizeLow)
-  else
-     result := -1;
+  begin
+    {$WARN SYMBOL_PLATFORM OFF}
+    result := Int64(sr.FindData.nFileSizeHigh) shl Int64(32) + Int64(sr.FindData.nFileSizeLow);
+    {$WARN SYMBOL_PLATFORM ON}
+  end else
+    result := -1;
   FindClose(sr) ;
 end;
 
