@@ -106,8 +106,7 @@ end;
 
 
 procedure doAlert(data: TRecordAlert);
-var
-  temp: PAlert;
+//var temp: PAlert;
 begin
 
       if (data.index = 0) and Form1.CheckBoxAlertEventsKnown.Checked then // inconnu
@@ -145,10 +144,9 @@ begin
 end;
 
 procedure EraseAlertIndex(out ListAlert: PAlert; i: Integer);
-var
-  temp: PAlert;
+//var temp: PAlert;
 begin
-  temp := ListAlert;
+  //temp := ListAlert;
   while ListAlert <> nil do
   begin
     if ListAlert^.data.index = i then ListAlert := EraseAlert(ListAlert);

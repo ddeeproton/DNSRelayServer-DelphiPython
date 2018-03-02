@@ -78,13 +78,13 @@ implementation
 
 uses Unit1, AlertManager;
 
-var 
-  opacity: Integer;
+//var opacity: Integer;
 
 procedure TFormAlert.FormCreate(Sender: TObject);
 var
-  i, imgIndex: integer;
-  domain, txt, ip, hostdata, blackhost: string;
+  //i, imgIndex: integer;
+  domain, ip: string;
+  //txt, hostdata, blackhost: String;
 begin
 
 

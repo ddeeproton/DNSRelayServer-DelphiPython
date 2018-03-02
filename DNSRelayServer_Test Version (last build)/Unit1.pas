@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.357';
+  CurrentApplicationVersion: string = '0.4.358';
   isDevVersion: Boolean = False;
 
 type
@@ -4348,6 +4348,8 @@ end;
 procedure TForm1.Netstat1Click(Sender: TObject);
 begin
   GotoMainPage(4);
+  if not TimerRefreshNetstat.Enabled then
+    ToolButtonRefreshNetstatClick(nil);
 end;
 
 //=====================
