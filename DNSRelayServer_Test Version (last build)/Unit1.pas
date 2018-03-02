@@ -4411,11 +4411,11 @@ var
   sProtocol, sLocalAddr, sRemoteAdd: String;
   sLocalPort, sRemotePort: Integer;
 begin
+  lastSelectedIndex := -1;
   if isXP then
   begin
     pos := ListViewNetstat.ViewOrigin;
   end else begin
-    lastSelectedIndex := -1;
     try
       if ListViewNetstat.Selected <> nil then
       begin

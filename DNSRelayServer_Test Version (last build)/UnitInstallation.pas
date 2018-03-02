@@ -113,7 +113,7 @@ begin
   batFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'batch.bat';
   if FileExists(batFile) then DeleteFile(batFile);
   WriteInFile(batFile, bat);
-  LaunchAndWait(batFile, '', launchAndWWindow);
+  result := LaunchAndWait(batFile, '', launchAndWWindow);
 end;
 
 function TFormInstall.Download(url,path:string):Boolean;
@@ -123,6 +123,7 @@ begin
   //ExecBat('"'+wget+'" -O "'+path+'" "'+url+'" --no-check-certificate');
   WriteInFile(ExtractFilePath(Application.ExeName)+installDirectoryPath+'download.bat', '"'+wget+'" -O "'+path+'" "'+url+'" --no-check-certificate');
   LaunchAndWait(ExtractFilePath(Application.ExeName)+installDirectoryPath+'download.bat', '', launchAndWWindow);
+  result := FileExists(path);
 end;
 
 
