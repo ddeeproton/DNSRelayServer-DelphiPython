@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.360';
+  CurrentApplicationVersion: string = '0.4.361';
   isDevVersion: Boolean = False;
 
 type
@@ -1781,6 +1781,7 @@ begin
     Left := Screen.WorkAreaWidth - Self.Width;
     Application.Restore;
     Application.BringToFront;
+    BringToFront;
     // show from task bar:
     SetWindowLong(
       Handle,
@@ -1877,6 +1878,9 @@ begin
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
   if not isFormVisible then
     Afficher1Click(nil);
+  Application.Restore;
+  Application.BringToFront;
+  BringToFront;
 end;
 
 
