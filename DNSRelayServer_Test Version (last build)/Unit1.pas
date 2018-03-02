@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.359';
+  CurrentApplicationVersion: string = '0.4.360';
   isDevVersion: Boolean = False;
 
 type
@@ -330,6 +330,7 @@ type
     TcpServerHTTPS: TTcpServer;
     Label49: TLabel;
     CheckBoxShowHTTPRequestInLogs: TCheckBox;
+    Netstat2: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -1861,7 +1862,6 @@ begin
   GotoMainPage(4);
 end;
 
-
 procedure TForm1.GotoMainPage(inexPage: Integer);
 //var
   //isIndexChanged: Boolean;
@@ -1875,6 +1875,8 @@ begin
   GroupBox5.Visible := True;  
   GroupBox5.Align := alClient;
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  if not isFormVisible then
+    Afficher1Click(nil);
 end;
 
 
@@ -4700,6 +4702,8 @@ begin
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
 end;
+
+
 
 end.
 

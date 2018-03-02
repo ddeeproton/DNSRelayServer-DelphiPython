@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 176
   Top = 149
   Width = 519
-  Height = 534
+  Height = 538
   Caption = 'DNS Relay Server'
   Color = clWhite
   TransparentColorValue = clCream
@@ -3918,6 +3918,11 @@ object Form1: TForm1
       Caption = 'Web Filter (host file)'
       ImageIndex = 12
       OnClick = ToolButton6Click
+    end
+    object Netstat2: TMenuItem
+      Caption = 'Netstat'
+      ImageIndex = 10
+      OnClick = Netstat1Click
     end
     object N2: TMenuItem
       Caption = '-'
