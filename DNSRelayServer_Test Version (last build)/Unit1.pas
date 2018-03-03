@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.365';
+  CurrentApplicationVersion: string = '0.4.366';
   isDevVersion: Boolean = False;
 
 type
@@ -2209,6 +2209,7 @@ var
   filepath, dns, script, config_cache_memory, config_display_log, bat, cmd: string;
   //bmp: TBitmap;
 begin
+  debug('Start DNS (1)');
   try
     setButtonStartText(2);
     ImageList4.GetIcon(2, Application.Icon);
@@ -2227,13 +2228,16 @@ begin
     ButtonRefreshNetCardClick(nil);
     Application.ProcessMessages;
 
+
+    debug('Start DNS (2)');
+
     if FormInstall = nil then
     begin
       FormInstall := TFormInstall.Create(Self);
     end;
     FormInstall.CheckInstallation;
 
-    if not FormInstall.isPythonInstalled   
+    if not FormInstall.isPythonInstalled
     or not FormInstall.isMSVisualInstalled
     or not FormInstall.isDNSInstalled
     or not FormInstall.isSetuptoolInstalled
@@ -2249,6 +2253,8 @@ begin
     end;
 
     Application.ProcessMessages;
+    
+    debug('Start DNS (3)');
 
     filepath := String(EditFilehost.Text);
     if FileExists(filepath) = False then
@@ -2272,6 +2278,9 @@ begin
       exit;
     end;
 
+
+    debug('Start DNS (4)');
+
     count := 0;
     for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
     begin
@@ -2287,6 +2296,7 @@ begin
       exit;
     end;
 
+    debug('Start DNS (5)');
 
     DNSMasterSerialized := '';
     for i := 0 to ConfigDNSMaster.Count -1 do
@@ -2295,6 +2305,7 @@ begin
       DNSMasterSerialized := DNSMasterSerialized + ConfigDNSMaster[i];
     end;
 
+    debug('Start DNS (6)');
 
     if not FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg') then
     begin
@@ -2322,6 +2333,8 @@ begin
       end;
     end;
 
+    debug('Start DNS (7)');
+
     if DNSMasterSerialized = '' then
     begin
       MemoLogs.Lines.Add('Erreur: Lancement annulé');
@@ -2332,6 +2345,9 @@ begin
       if ServerDoStart then TimerRestart.Enabled := True;
       exit;
     end;
+
+
+    debug('Start DNS (8)');
 
     config_cache_memory := '1';
     config_display_log := 'True';
@@ -2349,6 +2365,9 @@ begin
     WriteInFile(filepath, script);
     LaunchAndWait(filepath,'', launchAndWWindow);
 
+
+    debug('Start DNS (9)');
+
     if not FileExists(DataDirectoryPath + 'relayDNS.pyo') then
     begin
       MemoLogs.Lines.Add('Erreur: Lancement annulé');
@@ -2363,9 +2382,12 @@ begin
       ButtonNetCardIntegrationClick(ButtonNetCardIntegration);
     end;
 
+
+    debug('Start DNS (10)');
+
     Application.ProcessMessages;
 
-    debug('Start threading');
+
 
     for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
     begin
