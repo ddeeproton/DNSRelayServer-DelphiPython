@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.372';
+  CurrentApplicationVersion: string = '0.4.373';
   isDevVersion: Boolean = False;
 
 type
@@ -4714,21 +4714,34 @@ procedure TForm1.TcpServerHTTPAccept(Sender: TObject;
   ClientSocket: TCustomIpClient);
 var
   txt, recieve : String;
+  i: Integer;
   //a: TStream;
 begin
   txt := '';
-  while ClientSocket.WaitForData() do
+  i := 0;
+  while ClientSocket.WaitForData()
+  and (i < 30) do
   begin
+
     recieve := ClientSocket.Receiveln();
     txt := txt + recieve+'<br>';
     if CheckBoxShowHTTPRequestInLogs.Checked then
       MemoLogs.Lines.Add(recieve);
+    debug('HTTP WaitForData: '+IntToStr(i));
+    if (i = 0)
+    and (Pos('GET',recieve) = 0)
+    and (Pos('POS',recieve) = 0) then
+    begin
+      ClientSocket.Close;
+      debug('HTTP Close');
+      exit;
+    end;
+    inc(i);
   end;
   ClientSocket.Sendln('<h1>Blocked by DNS Relay Server</h1>');
   ClientSocket.Sendln('<pre>'+txt+'</pre>');
-
-  Sleep(5000);
   ClientSocket.Close;
+  debug('HTTP Close');
 end;
 
 procedure TForm1.CheckBoxShowHTTPRequestInLogsClick(Sender: TObject);
