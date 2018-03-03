@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.366';
+  CurrentApplicationVersion: string = '0.4.367';
   isDevVersion: Boolean = False;
 
 type
@@ -2375,15 +2375,15 @@ begin
       if ServerDoStart then TimerRestart.Enabled := True;
       exit;
     end;
-
+               
+    debug('Start DNS (10)');
 
     if CheckBoxAllowModifyNetCard.Checked then
     begin
       ButtonNetCardIntegrationClick(ButtonNetCardIntegration);
     end;
 
-
-    debug('Start DNS (10)');
+    debug('Start DNS (11)');
 
     Application.ProcessMessages;
 
