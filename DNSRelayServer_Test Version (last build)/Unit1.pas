@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.373';
+  CurrentApplicationVersion: string = '0.4.374';
   isDevVersion: Boolean = False;
 
 type
@@ -157,7 +157,7 @@ type
     ScrollBox1: TScrollBox;
     ScrollBox2: TScrollBox;
     ScrollBox3: TScrollBox;
-    ScrollBoxAffichage: TScrollBox;
+    ScrollBox8: TScrollBox;
     ScrollBox5: TScrollBox;
     Masquer2: TMenuItem;
     N10: TMenuItem;
@@ -520,6 +520,8 @@ type
     procedure TcpServerHTTPAccept(Sender: TObject;
       ClientSocket: TCustomIpClient);
     procedure CheckBoxShowHTTPRequestInLogsClick(Sender: TObject);
+    procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     
   private
     { Private declarations }
@@ -1280,7 +1282,7 @@ begin
   ScrollBox1.Align := alClient;
   ScrollBox2.Align := alClient;
   ScrollBox3.Align := alClient;
-  ScrollBoxAffichage.Align := alClient;
+  ScrollBox8.Align := alClient;
   GroupBoxAffichage.Align := alTop;
   ScrollBox5.Align := alClient;
   ScrollBox6.Align := alClient;
@@ -3147,7 +3149,7 @@ begin
   GroupBoxUpdateTheme.Hint := 'add';
   GroupBoxUpdateTheme.Visible := True;
   GroupBoxAffichage.Height := GroupBoxUpdateTheme.Top + GroupBoxUpdateTheme.Height + GroupBox23.Top;
-  ScrollBoxAffichage.VertScrollBar.Position := GroupBoxUpdateTheme.Top - 50;
+  ScrollBox8.VertScrollBar.Position := GroupBoxUpdateTheme.Top - 50;
 end;
 
 
@@ -3158,7 +3160,7 @@ begin
   GroupBoxUpdateTheme.Hint := IntToStr(ComboBoxCurrentTheme.ItemIndex);
   GroupBoxUpdateTheme.Visible := True;                                  
   GroupBoxAffichage.Height := GroupBoxUpdateTheme.Top + GroupBoxUpdateTheme.Height + GroupBox23.Top;
-  ScrollBoxAffichage.VertScrollBar.Position := GroupBoxUpdateTheme.Top - 50;
+  ScrollBox8.VertScrollBar.Position := GroupBoxUpdateTheme.Top - 50;
 end;
 
 
@@ -4758,6 +4760,38 @@ begin
 end;
 
 
+
+procedure TForm1.FormMouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+var
+  i: Integer;
+  scrollBox: TScrollBox;
+begin
+  scrollBox := nil;
+  if Notebook1.PageIndex > 0 then exit;
+  if PageControl1.TabIndex = 0 then scrollBox := ScrollBox1;
+  if PageControl1.TabIndex = 7 then scrollBox := ScrollBox2;
+  if PageControl1.TabIndex = 2 then scrollBox := ScrollBox3;
+  if PageControl1.TabIndex = 4 then scrollBox := ScrollBox5;
+  if PageControl1.TabIndex = 5 then scrollBox := ScrollBox6;
+  if PageControl1.TabIndex = 6 then scrollBox := ScrollBox7;
+  if PageControl1.TabIndex = 3 then scrollBox := ScrollBox8;
+
+  if scrollBox = nil then exit;
+  Handled := PtInRect(scrollBox.ClientRect, scrollBox.ScreenToClient(MousePos));
+  if Handled then
+  begin
+    for i := 1 to Mouse.WheelScrollLines do
+    try
+      if WheelDelta > 0 then
+        scrollBox.Perform(WM_VSCROLL, SB_LINEUP, 0)
+      else
+        scrollBox.Perform(WM_VSCROLL, SB_LINEDOWN, 0);
+    finally
+      scrollBox.Perform(WM_VSCROLL, SB_ENDSCROLL, 0);
+    end;
+  end;
+end;
 
 end.
 

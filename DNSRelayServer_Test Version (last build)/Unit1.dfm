@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 176
-  Top = 149
+  Left = 190
+  Top = 148
   Width = 519
   Height = 538
   Caption = 'DNS Relay Server'
@@ -64,6 +64,7 @@ object Form1: TForm1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnMouseMove = FormMouseMove
+  OnMouseWheel = FormMouseWheel
   OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
@@ -131,7 +132,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet4
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -363,7 +364,7 @@ object Form1: TForm1
                   object EditFilehost: TEdit
                     Left = 16
                     Top = 151
-                    Width = 193
+                    Width = 177
                     Height = 21
                     Anchors = [akLeft, akTop, akRight]
                     Color = clWhite
@@ -417,7 +418,7 @@ object Form1: TForm1
                     OnClick = CheckBoxPureServerClick
                   end
                   object Button1: TButton
-                    Left = 216
+                    Left = 200
                     Top = 151
                     Width = 35
                     Height = 23
@@ -746,7 +747,7 @@ object Form1: TForm1
             object TabSheet5: TTabSheet
               Caption = 'Affichage'
               ImageIndex = 4
-              object ScrollBoxAffichage: TScrollBox
+              object ScrollBox8: TScrollBox
                 Left = 8
                 Top = 8
                 Width = 286
