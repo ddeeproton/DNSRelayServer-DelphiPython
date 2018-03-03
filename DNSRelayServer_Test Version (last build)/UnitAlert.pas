@@ -139,7 +139,9 @@ begin
 
 
     //if Pos('127.0.0', ip) > 0 then // if is blocked
-    if Rules.IsBlacklistDomain(domain) or Rules.IsBlackHostDomain(domain) then
+    if Rules.IsBlacklistDomain(domain)
+    or Rules.IsBlackHostDomain(domain)
+    or (Pos('127.0.0', ip) > 0) then
     begin
       PanelAllowed.Visible := False;
       PanelDisallowed.Visible := True;
