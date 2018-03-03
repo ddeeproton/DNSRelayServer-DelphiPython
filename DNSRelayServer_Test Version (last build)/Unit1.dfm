@@ -364,7 +364,7 @@ object Form1: TForm1
                   object EditFilehost: TEdit
                     Left = 16
                     Top = 151
-                    Width = 177
+                    Width = 193
                     Height = 21
                     Anchors = [akLeft, akTop, akRight]
                     Color = clWhite
@@ -418,7 +418,7 @@ object Form1: TForm1
                     OnClick = CheckBoxPureServerClick
                   end
                   object Button1: TButton
-                    Left = 200
+                    Left = 216
                     Top = 151
                     Width = 35
                     Height = 23
@@ -18020,6 +18020,7 @@ object Form1: TForm1
     Top = 258
   end
   object TcpServerHTTP: TTcpServer
+    BlockMode = bmNonBlocking
     LocalHost = '0.0.0.0'
     LocalPort = '80'
     OnAccept = TcpServerHTTPAccept
@@ -18027,6 +18028,7 @@ object Form1: TForm1
     Top = 454
   end
   object TcpServerHTTPS: TTcpServer
+    BlockMode = bmNonBlocking
     LocalHost = '0.0.0.0'
     LocalPort = '443'
     OnAccept = TcpServerHTTPAccept

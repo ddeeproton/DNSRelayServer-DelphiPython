@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.374';
+  CurrentApplicationVersion: string = '0.4.375';
   isDevVersion: Boolean = False;
 
 type
@@ -4724,7 +4724,6 @@ begin
   while ClientSocket.WaitForData()
   and (i < 30) do
   begin
-
     recieve := ClientSocket.Receiveln();
     txt := txt + recieve+'<br>';
     if CheckBoxShowHTTPRequestInLogs.Checked then
@@ -4776,7 +4775,6 @@ begin
   if PageControl1.TabIndex = 5 then scrollBox := ScrollBox6;
   if PageControl1.TabIndex = 6 then scrollBox := ScrollBox7;
   if PageControl1.TabIndex = 3 then scrollBox := ScrollBox8;
-
   if scrollBox = nil then exit;
   Handled := PtInRect(scrollBox.ClientRect, scrollBox.ScreenToClient(MousePos));
   if Handled then
