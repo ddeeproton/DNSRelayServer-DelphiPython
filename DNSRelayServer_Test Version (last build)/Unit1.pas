@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.363';
+  CurrentApplicationVersion: string = '0.4.364';
   isDevVersion: Boolean = False;
 
 type
@@ -674,7 +674,7 @@ begin
     ipdomain := onlyChars(sl.Strings[4]);
     domain := onlyChars(sl.Strings[5]);
 
-    SetLength(domain, Length(domain)-1);
+    //SetLength(domain, Length(domain));
 
     if form1.ListBoxIpClients.Items.IndexOf(ipclient) = -1 then
     begin
