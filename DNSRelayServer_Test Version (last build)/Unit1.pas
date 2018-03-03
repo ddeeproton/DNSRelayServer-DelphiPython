@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.364';
+  CurrentApplicationVersion: string = '0.4.365';
   isDevVersion: Boolean = False;
 
 type
@@ -2364,6 +2364,8 @@ begin
     end;
 
     Application.ProcessMessages;
+
+    debug('Start threading');
 
     for i := 0 to CheckListBoxDNSRelayIP.Count -1 do
     begin
