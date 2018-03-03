@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.369';
+  CurrentApplicationVersion: string = '0.4.370';
   isDevVersion: Boolean = False;
 
 type
@@ -730,7 +730,7 @@ begin
         // Use this code instead
         ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
         FormAlert.Visible := true;
-        FormAlert.Repaint;
+
       end;
 
 
