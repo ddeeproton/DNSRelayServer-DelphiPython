@@ -264,6 +264,8 @@ begin
                   WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
     ShowWindow(Handle, SW_HIDE);
 
+    SetWindowPos(Self.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE or SWP_NOSIZE or SWP_NOACTIVATE);
+
     opacity := 0;
     SetFormOpacity(Self.Handle, opacity);
     TimerFadeIn.Enabled := True;
