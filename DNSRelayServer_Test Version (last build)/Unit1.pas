@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.368';
+  CurrentApplicationVersion: string = '0.4.369';
   isDevVersion: Boolean = False;
 
 type
@@ -4727,8 +4727,8 @@ begin
   ClientSocket.Sendln('<h1>Blocked by DNS Relay Server</h1>');
   ClientSocket.Sendln('<pre>'+txt+'</pre>');
 
-  //Sleep(500);
-  //ClientSocket.Close;
+  Sleep(5000);
+  ClientSocket.Close;
 end;
 
 procedure TForm1.CheckBoxShowHTTPRequestInLogsClick(Sender: TObject);
