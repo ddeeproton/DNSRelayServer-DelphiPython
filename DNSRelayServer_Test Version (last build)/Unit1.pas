@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.367';
+  CurrentApplicationVersion: string = '0.4.368';
   isDevVersion: Boolean = False;
 
 type
@@ -2762,12 +2762,25 @@ begin
     begin
       if net[i].AddrIP <> '127.0.0.1' then
       begin
-        j := CheckListBoxDNSRelayIP.Items.IndexOf(net[i].AddrIP);
-        if CheckListBoxDNSRelayIP.Checked[j] then
+        if CheckBoxBindAllIP.Checked then
         begin
+
           if dnslist <> '' then dnslist := dnslist + ' ';
           dnslist := dnslist + net[i].AddrIP;
+
+        end else begin
+
+          j := CheckListBoxDNSRelayIP.Items.IndexOf(net[i].AddrIP);
+          if j > -1 then
+          begin
+            if CheckListBoxDNSRelayIP.Checked[j] then
+            begin
+              if dnslist <> '' then dnslist := dnslist + ' ';
+              dnslist := dnslist + net[i].AddrIP;
+            end;
+          end;
         end;
+
       end;
     end;
   end;
