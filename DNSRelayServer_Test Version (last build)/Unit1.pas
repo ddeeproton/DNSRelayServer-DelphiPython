@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.362';
+  CurrentApplicationVersion: string = '0.4.363';
   isDevVersion: Boolean = False;
 
 type
@@ -665,7 +665,7 @@ begin
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
   //form1.MemoLogs.Lines.Add(sl.Text);
-  if sl.Count >= 5 then
+  if sl.Count >= 6 then
   begin
     date := onlyChars(sl.Strings[0]);
     time := onlyChars(sl.Strings[1]);
