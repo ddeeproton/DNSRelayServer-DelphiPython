@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.376';
+  CurrentApplicationVersion: string = '0.4.377';
   isDevVersion: Boolean = False;
 
 type
@@ -130,7 +130,6 @@ type
     AllowAll: TMenuItem;
     DisallowAll: TMenuItem;
     Toutautoriser1: TMenuItem;
-    N9: TMenuItem;
     AjouterBlackworkds1: TMenuItem;
     ToolButtonMenuLogs: TToolButton;
     PopupMenuLogs: TPopupMenu;
@@ -325,6 +324,9 @@ type
     Pause1: TMenuItem;
     TimerRefreshNetstat: TTimer;
     Netstat2: TMenuItem;
+    Ajouterunnouveaudomaine1: TMenuItem;
+    N9: TMenuItem;
+    N11: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -513,6 +515,7 @@ type
     procedure CheckBoxShowHTTPRequestInLogsClick(Sender: TObject);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+    procedure Ajouterunnouveaudomaine1Click(Sender: TObject);
     
   private
     { Private declarations }
@@ -4455,23 +4458,23 @@ begin
   if not isFormVisible or (Notebook1.PageIndex <> 4) then exit;
 
   lastSelectedIndex := -1;
+  try
+    if ListViewNetstat.Selected <> nil then
+    begin
+      if ListViewNetstat.Selected.Index > -1 then
+      begin
+        lastSelectedIndex := ListViewNetstat.Selected.Index;
+      end;
+    end;
+  except
+    On E : EOSError do RaiseLastOSError;
+    On E : EAccessViolation do RaiseLastOSError;
+  end;
+
   if isXP then
   begin
     pos := ListViewNetstat.ViewOrigin;
   end else begin
-    try
-      if ListViewNetstat.Selected <> nil then
-      begin
-        if ListViewNetstat.Selected.Index > -1 then
-        begin
-          lastSelectedIndex := ListViewNetstat.Selected.Index;
-        end;
-      end;
-    except
-      On E : EOSError do RaiseLastOSError;
-      On E : EAccessViolation do RaiseLastOSError;
-    end;
-
     pos.Y := ListViewNetstat.ViewOrigin.Y;
     pos.X := ListViewNetstat.Left;
     //pos := ListViewNetstat.ViewOrigin;
@@ -4728,6 +4731,42 @@ begin
 end;
 
 
+
+procedure TForm1.Ajouterunnouveaudomaine1Click(Sender: TObject);
+var
+  i: Integer;
+  ip, domain:string;
+  isNew: Boolean;
+  item: TListItem;
+begin
+  if not InputQuery('Nom de domaine', 'Exemple: www.exemple.com', domain) then exit;
+  if not InputQuery('IP du domaine', 'Exemple: pour bloquer 127.0.0.1', ip) then exit;
+  isNew := True;
+  for i := 0 to ListView1.Items.Count - 1 do
+  begin
+    if UpperCase(ListView1.Items[i].Caption) = UpperCase(domain) then
+    begin
+      if MessageDlg(PChar('Le domaine existe déjà. Le modifier? ("non" pour annuler)'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then
+        exit;
+      isNew := False;
+      SelectedListItem := ListView1.Items[i];
+      if SelectedListItem.SubItems.Count = 0 then
+        SelectedListItem.SubItems.Add(ip)
+      else
+        SelectedListItem.SubItems.Strings[0] := ip;
+    end;
+  end;
+  if isNew then
+  begin
+    item := ListView1.Items.Add();
+    item.Caption := domain;
+    item.SubItems.Add(ip);
+    SelectedListItem := item;
+  end;
+  setDomain(EditFilehost.Text, domain, ip);
+  refreshListView1Click();
+  if isServerStarted then ActionDNS.clearCache;
+end;
 
 end.
 
