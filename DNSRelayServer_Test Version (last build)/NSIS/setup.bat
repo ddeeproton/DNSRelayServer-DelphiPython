@@ -78,13 +78,14 @@ cd "NSIS"
 
 %ns% setup.nsi
 
-del /Q ..\DNSRelayServer_%v%_Source.zip
+copy /Y "..\DNSRelayServer_%v%_Source.zip" "..\..\Sources"
+del /Q "..\DNSRelayServer_%v%_Source.zip"
 
 
 echo ==============================
 echo Done.
 echo ==============================
 
-"..\..\Setup installation\DNSRelayServerSetup_%v%.exe" 
+"..\..\Setup installation\DNSRelayServerSetup_%v%.exe" /S
 
 @rem pause

@@ -136,7 +136,7 @@ begin
         ListItem := ListView.Items.Add;
         ListItem.Caption := domain;
         ListItem.SubItems.Add(ip);
-        if ip = '127.0.0.1' then
+        if Pos('127.0.0.', ip) > 0 then
           ListItem.ImageIndex := 3
         else
           ListItem.ImageIndex := 1;
