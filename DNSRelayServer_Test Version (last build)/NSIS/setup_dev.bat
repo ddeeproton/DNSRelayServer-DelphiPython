@@ -78,7 +78,7 @@ echo ==============================
 set si="..\Setup installation"
 if not exist %si% mkdir %si%
 
-set si="..\Setup installation\old versions"
+set si="..\Setup installation\test versions (bugged)"
 if not exist %si% mkdir %si%
 
 cd "NSIS"

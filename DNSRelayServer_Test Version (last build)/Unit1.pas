@@ -13,8 +13,8 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.379';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.380.1';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -327,6 +327,7 @@ type
     Ajouterunnouveaudomaine1: TMenuItem;
     N9: TMenuItem;
     N11: TMenuItem;
+    ListViewLogs: TListView;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -516,7 +517,7 @@ type
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure Ajouterunnouveaudomaine1Click(Sender: TObject);
-    
+    procedure LogsAdd(log:String);    
   private
     { Private declarations }
   public
@@ -660,7 +661,7 @@ begin
 
   sl:=TStringList.Create;
   SplitStr(txt,';',sl);
-  //form1.MemoLogs.Lines.Add(sl.Text);
+  //form1.LogsAdd(sl.Text);
   if sl.Count >= 6 then
   begin
     date := onlyChars(sl.Strings[0]);
@@ -709,7 +710,7 @@ begin
       if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
       if form1.MemoLogs.Visible then
-        form1.MemoLogs.Lines.Add(logs);
+        form1.LogsAdd(logs);
 
       if ((status = 'OK') and
           (CheckBoxAlertEventsKnown.Checked
@@ -807,7 +808,7 @@ begin
     end
     else begin
         logs := StringReplace(txt, ';', '', [rfReplaceAll, rfIgnoreCase]);
-        form1.MemoLogs.Lines.Add(logs);
+        form1.LogsAdd(logs);
     end;
   end;
   if sl <> nil then
@@ -1446,6 +1447,15 @@ begin
   ToolButtonRefreshNetstatClick(nil);
 
   ListViewNetstat.DoubleBuffered := True;
+
+  // ==========================
+
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Domaine', 100);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Domaine', 100);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Client', 100);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Serveur', 100);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Date', 100);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Heure', 100);
 end;
 
 
@@ -2386,7 +2396,7 @@ begin
         bat := DataDirectoryPath+'relayDNS'+IntToStr(i)+'.bat';
         cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
         WriteInFile(bat, '@start "titre" /B /WAIT /REALTIME '+cmd+#13#10'@exit');
-        if CheckBoxShowDebug.Checked then MemoLogs.Lines.Add(cmd);
+        if CheckBoxShowDebug.Checked then LogsAdd(cmd);
         j := Length(listThreads);
         SetLength(listThreads, j+1);
         listThreads[j] := Unit1.ThreadProcess.Create(True);
@@ -4501,16 +4511,16 @@ begin
     try
       if FileExists(TaskManager.GetPathFromPID(Connections[i].ProcessID)) then
       begin
-      MemoLogs.Lines.Add(inttostr(Connections[i].ProcessID));
-      MemoLogs.Lines.Add(TaskManager.GetPathFromPID(Connections[i].ProcessID));
-      MemoLogs.Lines.Add(TaskManager.GetExeNameFromPID(Connections[i].ProcessID));
+      LogsAdd(inttostr(Connections[i].ProcessID));
+      LogsAdd(TaskManager.GetPathFromPID(Connections[i].ProcessID));
+      LogsAdd(TaskManager.GetExeNameFromPID(Connections[i].ProcessID));
 
       GetIconFromFile(TaskManager.GetPathFromPID(Connections[i].ProcessID),  hicon, SHIL_SMALL);
       Bitmap.Width := 16;
       Bitmap.Height := 16;
       Bitmap.Canvas.Draw(0, 0, hicon);
 
-      //MemoLogs.Lines.Add(inttostr( ImageListNestat.Add(Bitmap, nil) )); //
+      //LogsAdd(inttostr( ImageListNestat.Add(Bitmap, nil) )); //
       ImageListNestat.Insert(0, Bitmap, nil); //.Add(Bitmap, nil);
       ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := 0; //ImageListNestat.Add(Bitmap, nil); //ImageListNestat.Count - 1;
       end else begin
@@ -4554,9 +4564,9 @@ begin
       if FileExists(TaskManager.GetPathFromPID(Connections[i].ProcessID)) then
       begin
 
-      //MemoLogs.Lines.Add(inttostr(Connections[i].ProcessID));
-      //MemoLogs.Lines.Add(TaskManager.GetPathFromPID(Connections[i].ProcessID));
-      //MemoLogs.Lines.Add(TaskManager.GetExeNameFromPID(Connections[i].ProcessID));
+      //LogsAdd(inttostr(Connections[i].ProcessID));
+      //LogsAdd(TaskManager.GetPathFromPID(Connections[i].ProcessID));
+      //LogsAdd(TaskManager.GetExeNameFromPID(Connections[i].ProcessID));
 
       GetIconFromFile(TaskManager.GetPathFromPID(Connections[i].ProcessID),  hicon, SHIL_SMALL);
       Bitmap.Width := 16;
@@ -4564,7 +4574,7 @@ begin
       Bitmap.Canvas.Draw(0, 0, hicon);
 
       ImageListNestat.Add(Bitmap, nil);
-      //MemoLogs.Lines.Add(inttostr( ImageListNestat.Add(Bitmap, nil) )); //
+      //LogsAdd(inttostr( ImageListNestat.Add(Bitmap, nil) )); //
       //
       //ImageListNestat.Insert(i, Bitmap, nil); //.Add(Bitmap, nil);
       ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := ImageListNestat.Count - 1;
@@ -4766,6 +4776,12 @@ begin
   setDomain(EditFilehost.Text, domain, ip);
   refreshListView1Click();
   if isServerStarted then ActionDNS.clearCache;
+end;
+
+procedure TForm1.LogsAdd(log:String);
+begin
+  //ListViewLogs
+  MemoLogs.Lines.Add(log);
 end;
 
 end.

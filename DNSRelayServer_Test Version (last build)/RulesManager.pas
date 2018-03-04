@@ -112,7 +112,7 @@ begin
   hostdata := ReadFromFile(Unit1.BlackListCfgFile);
   result := Pos(domain+#1310, hostdata) > 0;
   if Form1.CheckBoxShowDebug.Checked then
-    Form1.MemoLogs.Lines.Add(IntToStr(Pos(domain+#1310, hostdata)));
+    Form1.LogsAdd(IntToStr(Pos(domain+#1310, hostdata)));
   }
 end;
 

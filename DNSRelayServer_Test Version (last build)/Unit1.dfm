@@ -1,8 +1,9 @@
 object Form1: TForm1
   Left = 190
-  Top = 148
-  Width = 519
+  Top = 164
+  Width = 520
   Height = 538
+  VertScrollBar.Position = 143
   Caption = 'DNS Relay Server'
   Color = clWhite
   TransparentColorValue = clCream
@@ -71,8 +72,8 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 60
-    Width = 495
+    Top = -83
+    Width = 496
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -84,7 +85,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 79
+    Top = -64
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -95,7 +96,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -133,7 +133,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet1
+            ActivePage = TabSheet3
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -1945,7 +1945,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 473
+    Top = 330
     Width = 313
     Height = 82
     Caption = '           '
@@ -2012,9 +2012,8 @@ object Form1: TForm1
     object MemoLogs: TMemo
       Left = 2
       Top = 40
-      Width = 309
+      Width = 79
       Height = 39
-      Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlack
@@ -2027,21 +2026,30 @@ object Form1: TForm1
       WordWrap = False
       OnChange = MemoLogsChange
     end
+    object ListViewLogs: TListView
+      Left = 81
+      Top = 40
+      Width = 231
+      Height = 41
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      Columns = <>
+      TabOrder = 2
+    end
   end
   object Panel5: TPanel
     Left = 0
-    Top = 0
-    Width = 495
+    Top = -143
+    Width = 496
     Height = 60
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 2
     DesignSize = (
-      495
+      496
       60)
     object SpeedButton3: TSpeedButton
-      Left = 210
+      Left = 211
       Top = 2
       Width = 101
       Height = 58
@@ -2150,7 +2158,7 @@ object Form1: TForm1
       OnClick = ToolButtonBlockAllClick
     end
     object SpeedButton2: TSpeedButton
-      Left = 383
+      Left = 384
       Top = 2
       Width = 110
       Height = 58
@@ -2880,7 +2888,7 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 3
-    Top = 602
+    Top = 459
     Width = 313
     Height = 33
     TabOrder = 3
@@ -2925,7 +2933,7 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 8
-    Top = 561
+    Top = 418
     Width = 313
     Height = 33
     TabOrder = 4
