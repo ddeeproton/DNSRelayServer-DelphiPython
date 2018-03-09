@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.380.1';
+  CurrentApplicationVersion: string = '0.4.380.2';
   isDevVersion: Boolean = True;
 
 type
@@ -300,7 +300,6 @@ type
     SpeedButton2: TSpeedButton;
     SpeedButton3: TSpeedButton;
     Config2: TMenuItem;
-    MemoLogs: TMemo;
     Shape3: TShape;
     Netstat1: TMenuItem;
     GroupBox8: TGroupBox;
@@ -327,7 +326,13 @@ type
     Ajouterunnouveaudomaine1: TMenuItem;
     N9: TMenuItem;
     N11: TMenuItem;
+    PageControl2: TPageControl;
+    TabSheet10: TTabSheet;
+    MemoLogs: TMemo;
+    TabSheet11: TTabSheet;
     ListViewLogs: TListView;
+    TabSheet12: TTabSheet;
+    ListViewLogsNetstat: TListView;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
