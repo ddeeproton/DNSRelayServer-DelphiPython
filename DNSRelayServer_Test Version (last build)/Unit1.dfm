@@ -95,7 +95,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 4
       TabOrder = 0
       object TPage
         Left = 0
@@ -17998,6 +17997,10 @@ object Form1: TForm1
       Caption = 'D'#233'filement automatique'
       OnClick = LogDNSAutoScrollClick
     end
+    object EraseLogsListViewDNS: TMenuItem
+      Caption = 'Effacer les logs'
+      OnClick = EraseLogsListViewDNSClick
+    end
   end
   object TimerLogsNetstat: TTimer
     OnTimer = TimerLogsNetstatTimer
@@ -18010,6 +18013,10 @@ object Form1: TForm1
     object LogNetstatAutoScroll: TMenuItem
       Caption = 'D'#233'filement automatique'
       OnClick = LogNetstatAutoScrollClick
+    end
+    object EraseLogsListViewNetstat: TMenuItem
+      Caption = 'Effacer les logs'
+      OnClick = EraseLogsListViewNetstatClick
     end
   end
 end

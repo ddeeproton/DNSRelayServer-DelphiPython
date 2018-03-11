@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.380.6';
+  CurrentApplicationVersion: string = '0.4.380.7';
   isDevVersion: Boolean = True;
 
 type
@@ -346,6 +346,8 @@ type
     LogDNSAutoScroll: TMenuItem;
     PopupMenuListViewLogsNetstat: TPopupMenu;
     LogNetstatAutoScroll: TMenuItem;
+    EraseLogsListViewDNS: TMenuItem;
+    EraseLogsListViewNetstat: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -548,6 +550,8 @@ type
     procedure ListViewLogsNetstatContextPopup(Sender: TObject;
       MousePos: TPoint; var Handled: Boolean);
     procedure LogNetstatAutoScrollClick(Sender: TObject);
+    procedure EraseLogsListViewDNSClick(Sender: TObject);
+    procedure EraseLogsListViewNetstatClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -3394,6 +3398,8 @@ procedure TForm1.ButtonClearLogsClick(Sender: TObject);
 begin
   //if MessageDlg(PChar('Voulez-vous effacer les logs?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   MemoLogs.Clear;
+  ListViewLogsNetstat.Clear;
+  ListViewLogs.Clear;
 end;
 
 
@@ -5080,6 +5086,17 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
 end;
+
+procedure TForm1.EraseLogsListViewDNSClick(Sender: TObject);
+begin
+  ListViewLogs.Clear;
+end;
+
+procedure TForm1.EraseLogsListViewNetstatClick(Sender: TObject);
+begin
+  ListViewLogsNetstat.Clear;
+end;
+     
 
 end.
 
