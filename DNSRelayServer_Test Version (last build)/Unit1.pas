@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.380.2';
+  CurrentApplicationVersion: string = '0.4.380.3';
   isDevVersion: Boolean = True;
 
 type
@@ -326,13 +326,22 @@ type
     Ajouterunnouveaudomaine1: TMenuItem;
     N9: TMenuItem;
     N11: TMenuItem;
-    PageControl2: TPageControl;
+    PageControlLogs: TPageControl;
     TabSheet10: TTabSheet;
     MemoLogs: TMemo;
     TabSheet11: TTabSheet;
     ListViewLogs: TListView;
     TabSheet12: TTabSheet;
     ListViewLogsNetstat: TListView;
+    PopupMenuListViewLogsDNS: TPopupMenu;
+    MenuItemLogsDNSAdd: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItemLogsDNSAllow: TMenuItem;
+    MenuItemLogsDNSModify: TMenuItem;
+    MenuItemLogsDNSBan: TMenuItem;
+    MenuItem6: TMenuItem;
+    MenuItemLogsDNSBanBlackhost: TMenuItem;
+    TimerLogsNetstat: TTimer;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -522,7 +531,15 @@ type
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure Ajouterunnouveaudomaine1Click(Sender: TObject);
-    procedure LogsAdd(log:String);    
+    procedure LogsAdd(log:String);
+    procedure ListViewLogsContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure MenuItemLogsDNSAddClick(Sender: TObject);
+    procedure MenuItemLogsDNSAllowClick(Sender: TObject);
+    procedure MenuItemLogsDNSModifyClick(Sender: TObject);
+    procedure MenuItemLogsDNSBanClick(Sender: TObject);
+    procedure MenuItemLogsDNSBanBlackhostClick(Sender: TObject);
+    procedure TimerLogsNetstatTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -610,6 +627,7 @@ var
   isFormHideOnStart: Boolean = False;
 
   Connections: TConnectionArray = nil;
+  oldConnections: TConnectionArray = nil;
   SelectedConnection : TConnection;
 implementation
 
@@ -655,6 +673,7 @@ var
   //hostdata, blackhost : String;
   FormAlert: TFormAlert;
   data: TRecordAlert;
+  p: TPoint;
 begin
   imgIndex := 0;
   txt := StringReplace(txt, #13, '', [rfReplaceAll, rfIgnoreCase]);
@@ -688,7 +707,7 @@ begin
     for i := 0 to form1.ListView1.Items.Count-1 do
     begin
       //if form1.ListView1.Items[i].SubItems[0] =  domain then isNew := false;
-      if form1.ListView1.Items[i].Caption =  domain then isNew := false;
+      if form1.ListView1.Items[i].Caption = Rules.DomainWithoutDotAtEnd(domain) then isNew := false;
     end;
 
     ip := ipdomain;
@@ -713,9 +732,38 @@ begin
       if ipdomain = '127.0.0.3' then status := 'BLOCKED by Block ALL';
       if ipdomain = '127.0.0.4' then status := 'BLOCKED by DNS Master fail';
       if ipdomain = '127.0.0.9' then status := 'BLOCKED by BlackHost';
+
       logs := logs + tab+#9+' ['+status+'] -> ('+ipdomain+')';
-      if form1.MemoLogs.Visible then
-        form1.LogsAdd(logs);
+
+      //if form1.MemoLogs.Visible then
+      form1.LogsAdd(logs);
+
+      ListViewLogs.Items.Add().Caption := domain;
+      i := ListViewLogs.Items.Count - 1;
+
+      // ==== Image
+      ListViewLogs.Items[i].ImageIndex := 0;
+      
+      if Rules.IsBlacklistDomain(domain)
+      or Rules.IsBlackHostDomain(domain)
+      or (Pos('127.0.0.', ipdomain) > 0) then
+      begin
+        ListViewLogs.Items[i].ImageIndex := 3;
+      end;
+      if Rules.IsDefinedHostDomain(domain) then
+      begin
+        ListViewLogs.Items[i].ImageIndex := 1;
+      end;
+      // ====
+     
+      ListViewLogs.Items[i].SubItems.Add(ipdomain);
+      ListViewLogs.Items[i].SubItems.Add(status);
+      ListViewLogs.Items[i].SubItems.Add(ipclient);
+      ListViewLogs.Items[i].SubItems.Add(ipserver);
+      ListViewLogs.Items[i].SubItems.Add(date);
+      ListViewLogs.Items[i].SubItems.Add(time);
+      p := ListViewLogs.Items[i].Position;
+      ListViewLogs.Scroll(p.X, p.Y);
 
       if ((status = 'OK') and
           (CheckBoxAlertEventsKnown.Checked
@@ -1418,49 +1466,40 @@ begin
    
 
   // ListViewNetstat
-  AjouterUneColone(ListViewNetstat.Columns.Add,
-                   'Process',
-                   100);
-
-  AjouterUneColone(ListViewNetstat.Columns.Add,
-                   'PID',
-                   50);
-
-  AjouterUneColone(ListViewNetstat.Columns.Add,
-                   'Protocol',
-                   50);
-
-  AjouterUneColone(ListViewNetstat.Columns.Add,
-                   'Local Address',
-                   100);
-
-  AjouterUneColone(ListViewNetstat.Columns.Add,
-                   'Local Port',
-                   50);
-
-  AjouterUneColone(ListViewNetstat.Columns.Add,
-                   'Remote Address',
-                   100);
-
-  AjouterUneColone(ListViewNetstat.Columns.Add,
-                   'Remote Port',
-                   50);
-
-  AjouterUneColone(ListViewNetstat.Columns.Add,
-                   'State',
-                   100);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Process', 100);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'PID', 50);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Protocol', 50);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Local Address', 100);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Local Port', 50);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Address', 100);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Port', 50);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'State', 100);
   ToolButtonRefreshNetstatClick(nil);
 
   ListViewNetstat.DoubleBuffered := True;
 
   // ==========================
 
-  AjouterUneColone(ListViewLogs.Columns.Add, 'Domaine', 100);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Domaine', 100);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Client', 100);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Serveur', 100);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'Date', 100);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'Heure', 100);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Domaine', 130);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Domaine', 95);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Status', 130);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Client', 95);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Serveur', 95);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Date', 55);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Heure', 55);
+  ListViewLogs.DoubleBuffered := True;
+  
+  // ==========================
+
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Process', 100);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'PID', 50);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Protocol', 50);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Local Address', 100);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Local Port', 50);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Address', 100);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Port', 50);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'State', 100);
+
 end;
 
 
@@ -3538,7 +3577,7 @@ begin
 
   MemoLogs.Lines.Add('Mode "tout autoriser"');
   RefreshModeFilter();
-
+  if isServerStarted then ActionDNS.clearCache;
 end;
 
 
@@ -3565,6 +3604,7 @@ begin
   Toutautoriser1.Checked := False;
 
   RefreshModeFilter();
+  if isServerStarted then ActionDNS.clearCache;
 end;
 
 
@@ -3591,7 +3631,7 @@ begin
   Toutautoriser1.Checked := AllowAll.Checked;
 
   RefreshModeFilter();
-
+  if isServerStarted then ActionDNS.clearCache;
 end;
 
 
@@ -4787,6 +4827,199 @@ procedure TForm1.LogsAdd(log:String);
 begin
   //ListViewLogs
   MemoLogs.Lines.Add(log);
+end;
+
+procedure TForm1.ListViewLogsContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+var
+  ListItem:TListItem;
+  CurPos:TPoint;
+begin
+  GetcursorPos(MousePos);
+  CurPos:=TListView(Sender).ScreenToClient(MousePos);
+  ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
+  if Assigned(ListItem) then
+  begin
+    SelectedListItem := ListItem;
+    PopupMenuListViewLogsDNS.Popup(MousePos.x, MousePos.y);
+  end;
+end;
+
+procedure TForm1.MenuItemLogsDNSAddClick(Sender: TObject);
+var
+  i: Integer;
+  ip, domain:string;
+  isNew: Boolean;
+  item: TListItem;
+begin
+  if not InputQuery('Nom de domaine', 'Exemple: www.exemple.com', domain) then exit;
+  if not InputQuery('IP du domaine', 'Exemple: pour bloquer 127.0.0.1', ip) then exit;
+  isNew := True;
+  for i := 0 to ListView1.Items.Count - 1 do
+  begin
+    if UpperCase(ListView1.Items[i].Caption) = UpperCase(domain) then
+    begin
+      if MessageDlg(PChar('Le domaine existe déjà. Le modifier? ("non" pour annuler)'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then
+        exit;
+      isNew := False;
+      SelectedListItem := ListView1.Items[i];
+      if SelectedListItem.SubItems.Count = 0 then
+        SelectedListItem.SubItems.Add(ip)
+      else
+        SelectedListItem.SubItems.Strings[0] := ip;
+    end;
+  end;
+  if isNew then
+  begin
+    item := ListView1.Items.Add();
+    item.Caption := domain;
+    item.SubItems.Add(ip);
+    SelectedListItem := item;
+  end;
+  setDomain(EditFilehost.Text, domain, ip);
+  refreshListView1Click();
+  if isServerStarted then ActionDNS.clearCache;
+end;
+
+procedure TForm1.MenuItemLogsDNSAllowClick(Sender: TObject);
+begin
+  SelectedListItem := ListViewLogs.Selected;
+  if not Assigned(SelectedListItem) then exit;
+  if (SelectedListItem.SubItems.Strings[0] = '') then exit;
+  //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
+  delDomain(EditFilehost.Text, SelectedListItem.Caption);
+  LogsAdd('Débloquage de '+SelectedListItem.Caption);
+  //SelectedListItem.Delete;
+  ListView1.OnChange := nil;
+  ListView1.Clear;
+  getDomains(EditFilehost.Text, ListView1);
+  ListView1.OnChange := ListView1Change;
+
+  refreshListView1Click();
+  if isServerStarted then ActionDNS.clearCache;
+end;
+
+procedure TForm1.MenuItemLogsDNSModifyClick(Sender: TObject);
+var
+  ip:string;
+begin
+  SelectedListItem := ListViewLogs.Selected;
+  if not Assigned(SelectedListItem) then exit;
+  ip := SelectedListItem.SubItems.Strings[0];
+  //txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]); // This method can't cancel input
+  if not InputQuery('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', ip) then exit;
+  setDomain( EditFilehost.Text, SelectedListItem.Caption, ip);
+  //SelectedListItem.SubItems.Strings[0] := ip;
+  ListView1.OnChange := nil;
+  ListView1.Clear;
+  getDomains(EditFilehost.Text, ListView1);
+  ListView1.OnChange := ListView1Change;
+
+  refreshListView1Click();
+  if isServerStarted then ActionDNS.clearCache;
+end;
+
+procedure TForm1.MenuItemLogsDNSBanClick(Sender: TObject);
+begin
+  SelectedListItem := ListViewLogs.Selected;
+  if not Assigned(SelectedListItem) then exit;
+  //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
+  setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
+  SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
+  LogsAdd('Bloquage de '+SelectedListItem.Caption);
+  ListView1.OnChange := nil;
+  ListView1.Clear;
+  getDomains(EditFilehost.Text, ListView1);
+  ListView1.OnChange := ListView1Change;
+
+  refreshListView1Click();
+  if isServerStarted then ActionDNS.clearCache;
+end;
+
+procedure TForm1.MenuItemLogsDNSBanBlackhostClick(Sender: TObject);
+var
+  domain: string;
+begin
+  SelectedListItem := ListViewLogs.Selected;
+  if not Assigned(SelectedListItem) then exit;
+  domain := SelectedListItem.Caption; //SelectedListItem.SubItems.Strings[0];
+  //txt := InputBox('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain);
+  if not InputQuery('Add Blackword', 'Interdit tous les domaines comportant le mot suivant', domain) then exit;
+  ListBoxBlacklist.Items.Add(domain);
+  ListBoxBlacklist.Items.SaveToFile(BlackListCfgFile);
+  if isServerStarted then PanelRestart.Visible := True;
+end;
+
+procedure TForm1.TimerLogsNetstatTimer(Sender: TObject);
+var
+  i: Integer;
+  sProtocol: String;
+  p: TPoint;
+begin
+  TTimer(Sender).Enabled := False;
+  Connections := nil;
+  UnitNetstat2.GetConnections(Connections);
+
+  if (Connections <> nil) and (oldConnections <> nil) then
+  begin
+
+    for i:=0 to Length(Connections) - 1 do
+    begin
+      if not UnitNetstat2.FindConnection(Connections[i], oldConnections)
+      and (Connections[i].ConnectionState = 5) then
+      begin
+        if Connections[i].Protocol = PROTOCOL_TCP then
+          sProtocol := 'TCP'
+        else
+          sProtocol := 'UDP';
+
+        ListViewLogsNetstat.Items.Add();
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(sProtocol);
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].LocalAddress));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].LocalRawPort)));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].RemoteAddress));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].RemoteRawPort)));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+        // Set caption after all (at the end) to prevent some issues
+        // Mettre cette ligne à la fin pour éviter un bug à l'affichage
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
+        //Application.ProcessMessages;
+        //Sleep(300);
+        p := ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Position;
+        ListViewLogsNetstat.Scroll(p.X, p.Y);
+
+      end;
+    end;
+    {
+    for i:=0 to Length(oldConnections) - 1 do
+    begin
+      if not UnitNetstat2.FindConnection(oldConnections[i], Connections) then
+      begin
+        if oldConnections[i].Protocol = PROTOCOL_TCP then
+          sProtocol := 'TCP'
+        else
+          sProtocol := 'UDP';
+
+        ListViewLogsNetstat.Items.Add();
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(oldConnections[i].ProcessID));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(sProtocol);
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(oldConnections[i].LocalAddress));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(oldConnections[i].LocalRawPort)));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(oldConnections[i].RemoteAddress));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(oldConnections[i].RemoteRawPort)));
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[oldConnections[i].ConnectionState]);
+        // Set caption after all (at the end) to prevent some issues
+        // Mettre cette ligne à la fin pour éviter un bug à l'affichage
+        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(oldConnections[i].ProcessID);
+        //Application.ProcessMessages;
+        //Sleep(300);
+      end;
+    end;
+    }
+  end;
+  oldConnections := Connections;
+  TTimer(Sender).Enabled := True;
 end;
 
 end.

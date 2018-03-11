@@ -11,6 +11,8 @@ type
     { Private declarations }
   public
     { Public declarations }
+    class function DomainWithoutDotAtEnd(domain: string): String;
+    class function IsDefinedHostDomain(domain: string): Boolean;
     class procedure BlackListDomain(domain: string);
     class procedure BlackHostDomain(domain: string);
     class procedure RemoveBlacklistDomain(domain: string);
@@ -24,12 +26,31 @@ implementation
 uses Unit1;
 
 // ====================== Hostfile
+class function Rules.DomainWithoutDotAtEnd(domain: string): String;
+begin
+  result := domain;
+  if domain[Length(domain)] = '.' then
+    result := StrLCopy(PChar(domain), PChar(domain), Length(domain) - 1);
+end;
+
+
+class function Rules.IsDefinedHostDomain(domain: string): Boolean;
+var
+  hostdata: String;
+begin                                  
+  // Check if rule in host file
+  domain := DomainWithoutDotAtEnd(domain);
+  hostdata := ReadFromFile(form1.EditFilehost.Text);
+  result := (Pos('127.0.0.1	'+domain, hostdata) = 0)
+        and (Pos('	'+domain, hostdata) > 0);
+end;
 
 class function Rules.IsBlackHostDomain(domain: string): Boolean;
 var
   hostdata: String;
 begin
-  // Check if rule in host file
+  // Check if rule in host file    
+  domain := DomainWithoutDotAtEnd(domain);
   hostdata := ReadFromFile(form1.EditFilehost.Text);
   result := Pos('127.0.0.1	'+domain, hostdata) > 0;
 end;

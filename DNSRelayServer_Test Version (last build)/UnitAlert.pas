@@ -137,7 +137,7 @@ begin
     Self.Left := Screen.WorkAreaWidth - Self.Width - 30;
 
 
-
+    {
     //if Pos('127.0.0', ip) > 0 then // if is blocked
     if Rules.IsBlacklistDomain(domain)
     or Rules.IsBlackHostDomain(domain)
@@ -149,6 +149,23 @@ begin
       PanelAllowed.Visible := True;
       PanelDisallowed.Visible := False;
     end;
+    }
+    PanelAllowed.Visible := True;
+    PanelDisallowed.Visible := False;
+
+    if Rules.IsBlacklistDomain(domain)
+    or Rules.IsBlackHostDomain(domain)
+    or (Pos('127.0.0.', ip) > 0) then
+    begin
+      PanelAllowed.Visible := False;
+      PanelDisallowed.Visible := True;
+    end;
+    if Rules.IsDefinedHostDomain(domain) then
+    begin
+      PanelAllowed.Visible := True;
+      PanelDisallowed.Visible := False;
+    end;
+
 
     if Rules.IsBlackHostDomain(domain) then
     begin

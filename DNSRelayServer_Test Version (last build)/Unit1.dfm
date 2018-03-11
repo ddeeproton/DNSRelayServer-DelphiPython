@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 190
-  Top = 164
+  Left = 186
+  Top = 106
   Width = 525
   Height = 557
   Caption = 'DNS Relay Server'
@@ -132,7 +132,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 323
-            ActivePage = TabSheet8
+            ActivePage = TabSheet1
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -2008,7 +2008,7 @@ object Form1: TForm1
         end
       end
     end
-    object PageControl2: TPageControl
+    object PageControlLogs: TPageControl
       Left = 0
       Top = 40
       Width = 313
@@ -2049,7 +2049,12 @@ object Form1: TForm1
           Height = 42
           Align = alClient
           Columns = <>
+          ReadOnly = True
+          RowSelect = True
+          SmallImages = ImageList3
           TabOrder = 0
+          ViewStyle = vsReport
+          OnContextPopup = ListViewLogsContextPopup
         end
       end
       object TabSheet12: TTabSheet
@@ -2062,7 +2067,10 @@ object Form1: TForm1
           Height = 42
           Align = alClient
           Columns = <>
+          ReadOnly = True
+          RowSelect = True
           TabOrder = 0
+          ViewStyle = vsReport
         end
       end
     end
@@ -3013,7 +3021,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 394
-    Top = 320
+    Top = 368
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -3817,7 +3825,7 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Images = ImageList3
     Left = 394
-    Top = 228
+    Top = 244
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -3970,7 +3978,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 423
-    Top = 320
+    Top = 368
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -8107,11 +8115,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 395
-    Top = 381
+    Top = 429
   end
   object ImageList3: TImageList
     Left = 450
-    Top = 320
+    Top = 368
     Bitmap = {
       494C010111001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -8790,7 +8798,7 @@ object Form1: TForm1
   object PopupMenuListView: TPopupMenu
     Images = ImageList3
     Left = 394
-    Top = 284
+    Top = 300
     object Ajouterunnouveaudomaine1: TMenuItem
       Caption = 'Ajouter (un nouveau nom de domaine)'
       ImageIndex = 16
@@ -8840,7 +8848,7 @@ object Form1: TForm1
     Height = 80
     Width = 71
     Left = 395
-    Top = 346
+    Top = 394
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -17662,7 +17670,7 @@ object Form1: TForm1
   end
   object PopupMenuDNSMaster: TPopupMenu
     Left = 394
-    Top = 256
+    Top = 272
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -17713,7 +17721,7 @@ object Form1: TForm1
   end
   object PopupMenuBlacklist: TPopupMenu
     Left = 422
-    Top = 256
+    Top = 272
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -17732,11 +17740,11 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 422
-    Top = 381
+    Top = 429
   end
   object PopupMenuTheme: TPopupMenu
     Left = 450
-    Top = 256
+    Top = 272
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -17759,7 +17767,7 @@ object Form1: TForm1
   end
   object PopupMenuForAllDNSRules: TPopupMenu
     Left = 449
-    Top = 228
+    Top = 244
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -17775,7 +17783,7 @@ object Form1: TForm1
   end
   object PopupMenuLogs: TPopupMenu
     Left = 422
-    Top = 228
+    Top = 244
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -17874,7 +17882,7 @@ object Form1: TForm1
   end
   object MainMenu1: TMainMenu
     Left = 456
-    Top = 198
+    Top = 214
     object Config2: TMenuItem
       Caption = 'Config'
       OnClick = ToolButton8Click
@@ -17902,11 +17910,11 @@ object Form1: TForm1
   end
   object ImageListNestat: TImageList
     Left = 423
-    Top = 347
+    Top = 395
   end
   object PopupMenuListViewNetstat: TPopupMenu
     Left = 422
-    Top = 284
+    Top = 300
     object Fermerlaconnexion1: TMenuItem
       Caption = 'Fermer la connexion'
       OnClick = Fermerlaconnexion1Click
@@ -17918,7 +17926,7 @@ object Form1: TForm1
   end
   object PopupMenuRefreshNetstat: TPopupMenu
     Left = 450
-    Top = 284
+    Top = 300
     object Rafraichirtoutesles1seconde1: TMenuItem
       Caption = 'Rafraichir (1 seconde)'
       OnClick = Rafraichirtoutesles1seconde1Click
@@ -17940,5 +17948,52 @@ object Form1: TForm1
     OnTimer = TimerRefreshNetstatTimer
     Left = 423
     Top = 181
+  end
+  object PopupMenuListViewLogsDNS: TPopupMenu
+    Images = ImageList3
+    Left = 394
+    Top = 328
+    object MenuItemLogsDNSAdd: TMenuItem
+      Caption = 'Ajouter (un nouveau nom de domaine)'
+      ImageIndex = 16
+      ShortCut = 8237
+      OnClick = MenuItemLogsDNSAddClick
+    end
+    object MenuItem2: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemLogsDNSAllow: TMenuItem
+      Caption = 'Autoriser (supprime du host)'
+      SubMenuImages = ImageList3
+      ImageIndex = 0
+      ShortCut = 45
+      OnClick = MenuItemLogsDNSAllowClick
+    end
+    object MenuItemLogsDNSModify: TMenuItem
+      Caption = 'Modifier (affecte une IP d'#233'sir'#233')'
+      ImageIndex = 1
+      ShortCut = 16429
+      OnClick = MenuItemLogsDNSModifyClick
+    end
+    object MenuItemLogsDNSBan: TMenuItem
+      Caption = 'Bloquer (affecte 127.0.0.1)'
+      ImageIndex = 3
+      ShortCut = 46
+      OnClick = MenuItemLogsDNSBanClick
+    end
+    object MenuItem6: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemLogsDNSBanBlackhost: TMenuItem
+      Caption = 'Bloquer (ajouter '#224' Blackworkds)'
+      ImageIndex = 13
+      ShortCut = 8238
+      OnClick = MenuItemLogsDNSBanBlackhostClick
+    end
+  end
+  object TimerLogsNetstat: TTimer
+    OnTimer = TimerLogsNetstatTimer
+    Left = 451
+    Top = 293
   end
 end

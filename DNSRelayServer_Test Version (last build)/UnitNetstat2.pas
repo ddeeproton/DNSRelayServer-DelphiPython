@@ -31,6 +31,7 @@ function GetConnections(var ConnectionArray : TConnectionArray) : boolean;
 function CloseConnection(var Connection : TConnection) : boolean;
 function IpAddressToString(IpAddress : DWORD) : string;
 function ConvertRawPortToRealPort(RawPort : DWORD) : DWORD;
+function FindConnection(Connection: TConnection; Connections: TConnectionArray) : Boolean;
 
 implementation
 
@@ -117,6 +118,28 @@ begin
   Result := GetTcpConnections(ConnectionArray) and GetUdpConnections(ConnectionArray);
 end;
 
+function FindConnection(Connection: TConnection; Connections: TConnectionArray) : Boolean;
+var
+  i : Integer;
+begin
+  Result := False;
+  for i:=0 to Length(Connections) - 1 do
+  begin
+    if (Connections[i].Protocol = Connection.Protocol)
+    and (Connections[i].ConnectionState = Connection.ConnectionState)
+    and (Connections[i].LocalAddress = Connection.LocalAddress)
+    and (Connections[i].LocalRawPort = Connection.LocalRawPort)
+    and (Connections[i].RemoteAddress = Connection.RemoteAddress)
+    and (Connections[i].RemoteRawPort = Connection.RemoteRawPort)
+    and (Connections[i].ProcessID = Connection.ProcessID) then
+    begin
+      Result := True;
+      Exit;
+    end;
+  end;
+end;
+
+
 function GetTcpConnections(var ConnectionArray : TConnectionArray) : boolean;
 var
   TcpTable : PMibTcpTableOwnerPID;
@@ -125,25 +148,26 @@ var
 begin
   GetExtendedTcpTable(nil, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0);
   GetMem(TcpTable, size);
-  if GetExtendedTcpTable(TcpTable, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0) = NO_ERROR then
+  if not GetExtendedTcpTable(TcpTable, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0) = NO_ERROR then
+  begin
+    Result := FALSE;
+    exit;
+  end;
+  Result := TRUE;
+  for i := 0 to TcpTable^.dwNumEntries - 1 do
+  begin
+    SetLength(connectionArray, Length(connectionArray) + 1);
+    with connectionArray[Length(connectionArray) - 1] do
     begin
-      Result := TRUE;
-      for i := 0 to TcpTable^.dwNumEntries - 1 do
-        begin
-          SetLength(connectionArray, Length(connectionArray) + 1);
-          with connectionArray[Length(connectionArray) - 1] do
-            begin
-              Protocol := PROTOCOL_TCP;
-              ConnectionState := TcpTable^.table[i].dwState;
-              LocalAddress := TcpTable^.table[i].dwLocalAddr;
-              LocalRawPort := TcpTable^.table[i].dwLocalPort;
-              RemoteAddress := TcpTable^.table[i].dwRemoteAddr;
-              RemoteRawPort := TcpTable^.table[i].dwRemotePort;
-              ProcessID := TcpTable^.table[i].dwOwningPid;
-            end;
-        end;
-    end else
-      Result := FALSE;
+      Protocol := PROTOCOL_TCP;
+      ConnectionState := TcpTable^.table[i].dwState;
+      LocalAddress := TcpTable^.table[i].dwLocalAddr;
+      LocalRawPort := TcpTable^.table[i].dwLocalPort;
+      RemoteAddress := TcpTable^.table[i].dwRemoteAddr;
+      RemoteRawPort := TcpTable^.table[i].dwRemotePort;
+      ProcessID := TcpTable^.table[i].dwOwningPid;
+    end;
+  end;
   FreeMem(TcpTable);
 end;
 
@@ -156,24 +180,25 @@ begin
   GetExtendedUdpTable(nil, @size, FALSE, AF_INET, UDP_TABLE_OWNER_PID, 0);
   GetMem(UdpTable, size);
   if GetExtendedUdpTable(UdpTable, @size, FALSE, AF_INET, UDP_TABLE_OWNER_PID, 0) = NO_ERROR then
+  begin
+    Result := FALSE;
+    Exit;
+  end;
+  Result := TRUE;
+  for i := 0 to UdpTable^.dwNumEntries - 1 do
+  begin
+    SetLength(connectionArray, Length(connectionArray) + 1);
+    with connectionArray[Length(connectionArray) - 1] do
     begin
-      Result := TRUE;
-      for i := 0 to UdpTable^.dwNumEntries - 1 do
-        begin
-          SetLength(connectionArray, Length(connectionArray) + 1);
-          with connectionArray[Length(connectionArray) - 1] do
-            begin
-              Protocol := PROTOCOL_UDP;
-              ConnectionState := 0;
-              LocalAddress := UdpTable^.table[i].dwLocalAddr;
-              LocalRawPort := UdpTable^.table[i].dwLocalPort;
-              RemoteAddress := 0;
-              RemoteRawPort := 0;
-              ProcessID := UdpTable^.table[i].dwOwningPid;
-            end;
-        end;
-    end else
-      Result := FALSE;
+      Protocol := PROTOCOL_UDP;
+      ConnectionState := 0;
+      LocalAddress := UdpTable^.table[i].dwLocalAddr;
+      LocalRawPort := UdpTable^.table[i].dwLocalPort;
+      RemoteAddress := 0;
+      RemoteRawPort := 0;
+      ProcessID := UdpTable^.table[i].dwOwningPid;
+    end;
+  end;
   FreeMem(UdpTable);
 end;
 
@@ -182,8 +207,12 @@ type
   TIpAddressAsArray = array[0..3] of byte;
   PIpAddressAsArray = ^TIpAddressAsArray;
 begin
-  Result := Format('%d.%d.%d.%d', [PIpAddressAsArray(@IpAddress)^[0], PIpAddressAsArray(@IpAddress)^[1],
-    PIpAddressAsArray(@IpAddress)^[2], PIpAddressAsArray(@IpAddress)^[3]]);
+  Result := Format('%d.%d.%d.%d', [
+    PIpAddressAsArray(@IpAddress)^[0],
+    PIpAddressAsArray(@IpAddress)^[1],
+    PIpAddressAsArray(@IpAddress)^[2],
+    PIpAddressAsArray(@IpAddress)^[3]
+  ]);
 end;
 
 function CloseConnection(var Connection : TConnection) : boolean;
@@ -192,17 +221,17 @@ const
 var
   ConnectionToDelete : TMibTcpRow;
 begin
-  if Connection.Protocol = PROTOCOL_TCP
-    then
-      begin
-        ConnectionToDelete.dwState := MIB_TCP_STATE_DELETE_TCB;
-        ConnectionToDelete.dwLocalAddr := Connection.LocalAddress;
-        ConnectionToDelete.dwLocalPort := Connection.LocalRawPort;
-        ConnectionToDelete.dwRemoteAddr := Connection.RemoteAddress;
-        ConnectionToDelete.dwRemotePort := Connection.RemoteRawPort;
-        Result := SetTcpEntry(@ConnectionToDelete) = NO_ERROR;
-      end
-    else Result := FALSE;
+  if not Connection.Protocol = PROTOCOL_TCP then
+  begin
+    Result := FALSE;
+    Exit;
+  end;
+  ConnectionToDelete.dwState := MIB_TCP_STATE_DELETE_TCB;
+  ConnectionToDelete.dwLocalAddr := Connection.LocalAddress;
+  ConnectionToDelete.dwLocalPort := Connection.LocalRawPort;
+  ConnectionToDelete.dwRemoteAddr := Connection.RemoteAddress;
+  ConnectionToDelete.dwRemotePort := Connection.RemoteRawPort;
+  Result := SetTcpEntry(@ConnectionToDelete) = NO_ERROR;
 end;
 
 function ConvertRawPortToRealPort(RawPort : DWORD) : DWORD;
