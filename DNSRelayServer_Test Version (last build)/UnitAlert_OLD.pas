@@ -90,6 +90,16 @@ begin
 
   try
     domain := Label1.Caption;
+    if Label1.Caption = 'Label1' then
+    begin
+      Close;
+      Exit;
+    end;
+    if Label2.Caption = 'Label2' then
+    begin
+      Close;
+      Exit;
+    end;
     ip := dataip;
 
     {
@@ -281,14 +291,16 @@ begin
     SetWindowLong(Handle, GWL_EXSTYLE,
                   GetWindowLong(Handle, GWL_EXSTYLE) or
                   WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
-    ShowWindow(Handle, SW_HIDE);
+    //ShowWindow(Handle, SW_HIDE);
 
     SetWindowPos(Self.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE or SWP_NOSIZE or SWP_NOACTIVATE);
 
-    opacity := 0;
-    SetFormOpacity(Self.Handle, opacity);
-    TimerFadeIn.Enabled := True;
-
+    ShowWindow(Handle, SW_SHOW);
+    Self.Visible := True;
+    //opacity := 0;
+    //SetFormOpacity(Self.Handle, opacity);
+    //TimerFadeIn.Enabled := True;
+    //Show;
   except
     On E : EOSError do exit;
     On E : EAccessViolation do exit;
@@ -332,8 +344,10 @@ end;
 
 procedure TFormAlert.PanelAllowedClick(Sender: TObject);
 begin
-  opacity := 100;
-  TimerFadeOut.Enabled := True;
+  //opacity := 100;
+  //TimerFadeOut.Enabled := True;
+  Hide;
+  Close;
 end;
 
 
@@ -581,16 +595,20 @@ end;
 
 procedure TFormAlert.TimerFadeInTimer(Sender: TObject);
 begin
+{
   SetFormOpacity(Self.Handle, opacity);
   if opacity < 100 then
     //Inc(opacity)
     opacity := opacity + 20
   else
-    TTimer(Sender).Enabled := False;
+}
+  Show;
+  TTimer(Sender).Enabled := False;
 end;
 
 procedure TFormAlert.TimerFadeOutTimer(Sender: TObject);
 begin
+{
   SetFormOpacity(Self.Handle, opacity);
   if opacity > 0 then
     //Dec(opacity)
@@ -603,6 +621,10 @@ begin
     Self.Close;
     Self.Free;
   end;
+}
+  Hide;
+  Close;
+  TTimer(Sender).Enabled := False;
 end;
 
 procedure TFormAlert.SpeedButton1DblClick(Sender: TObject);

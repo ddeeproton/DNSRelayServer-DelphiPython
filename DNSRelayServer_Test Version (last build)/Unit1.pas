@@ -6,14 +6,14 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
   UnitHost, Systray, Registry, md5,  ListViewManager, HostParser, XPMan,
-  Spin, Buttons, NetworkManager, DNSManager, UnitAlert, UnitNetConfig, DNSServer,
+  Spin, Buttons, NetworkManager, DNSManager, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
-  CheckLst, StringManager, UnitRestartAlert, AlertManager, WindowsManager,
+  CheckLst, StringManager, UnitRestartAlert, WindowsManager,
   UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock,
-  Sockets;
+  Sockets;  //AlertManager, UnitAlert, 
 
 var
-  CurrentApplicationVersion: string = '0.4.380.9';
+  CurrentApplicationVersion: string = '0.4.380.10';
   isDevVersion: Boolean = True;
 
 type
@@ -684,8 +684,8 @@ var
   // 04.03.17; 09:33:09; 127.0.0.1; 185.22.116.72; tf1.fr.
   date, time, ipserver, ipclient, ipdomain, domain, ip, logs, tab, status:string;
   //hostdata, blackhost : String;
-  FormAlert: TFormAlert;
-  data: TRecordAlert;
+  //FormAlert: TFormAlert;
+  //data: TRecordAlert;
   p: TPoint;
 begin
   imgIndex := 0;
@@ -788,16 +788,16 @@ begin
            or CheckBoxAlertEventsUnknown.Checked))
       or ((status <> 'OK') and CheckBoxAlertEventDisallowed.Checked) then // bloqué
       begin
-        data.ip := ip;
-        data.domain := domain;
-        data.typeAlert := imgIndex;
+        //data.ip := ip;
+        //data.domain := domain;
+        //data.typeAlert := imgIndex;
 
-        AlertManager.createNewAlert(FormAlert, data);
+        //AlertManager.createNewAlert(FormAlert, data);
 
         // Don't do FormAlert.Show; because you loose the focus.
         // Use this code instead
-        ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
-        FormAlert.Visible := true;
+        //ShowWindow(FormAlert.Handle, SW_SHOWNOACTIVATE);
+        //FormAlert.Visible := true;
 
       end;
 
@@ -3425,7 +3425,7 @@ begin
     GroupBox5.Visible := True;
     Splitter1.Visible := True;
     GroupBox5.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
-    GroupBox5.Width := Form1.Width;
+    GroupBox5.Width := Form1.Width - 10;
     Panel1.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
     Panel1.Width := Form1.Width;
     Splitter1.Top := ((Form1.height - Panel5.Height) div 2);
@@ -3443,7 +3443,7 @@ begin
     GroupBox5.Visible := True;
     Splitter1.Visible := True;
     GroupBox5.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
-    GroupBox5.Width := Form1.Width;
+    GroupBox5.Width := Form1.Width - 10;
     Panel1.Height := ((Form1.height - Panel5.Height) div 2) - Splitter1.Height;
     Panel1.Width := Form1.Width;
     Splitter1.Top := ((Form1.height - Panel5.Height) div 2);
@@ -3879,7 +3879,7 @@ end;
 
 procedure TForm1.CheckBoxNoTestDNSMasterClick(Sender: TObject);
 begin
-  if isApplicationLoading then exit;
+  if isApplicationLoading then Exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg', '1')
   else
@@ -3892,7 +3892,7 @@ end;
 
 procedure TForm1.CheckBoxNoCacheDNSClick(Sender: TObject);
 begin
-  if isApplicationLoading then exit;
+  if isApplicationLoading then Exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg', '1')
   else
@@ -3931,10 +3931,12 @@ end;
 
 procedure TForm1.TimerAlertTimer(Sender: TObject);
 begin
+{
   debug('TimerAlertTimer');
   TTimer(Sender).Enabled := False;
   AlertManager.ShowAllAlert(AlertManager.MainListAlert);
   TTimer(Sender).Enabled := True;
+}
 end;
 
 

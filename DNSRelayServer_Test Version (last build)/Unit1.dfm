@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 186
-  Top = 106
-  Width = 525
+  Left = 271
+  Top = 157
+  Width = 521
   Height = 557
   Caption = 'DNS Relay Server'
   Color = clWhite
@@ -72,7 +72,7 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 60
-    Width = 501
+    Width = 497
     Height = 10
     Cursor = crVSplit
     Align = alTop
@@ -95,7 +95,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 4
       TabOrder = 0
       object TPage
         Left = 0
@@ -1957,9 +1956,6 @@ object Form1: TForm1
     ParentFont = False
     TabOrder = 1
     Visible = False
-    DesignSize = (
-      313
-      108)
     object Label21: TLabel
       Left = 13
       Top = 0
@@ -1968,10 +1964,11 @@ object Form1: TForm1
       Caption = 'Logs'
     end
     object Panel7: TPanel
-      Left = 2
-      Top = 15
-      Width = 79
+      Left = 1
+      Top = 14
+      Width = 311
       Height = 24
+      Align = alTop
       BevelOuter = bvNone
       BorderWidth = 10
       Color = clWhite
@@ -2010,12 +2007,12 @@ object Form1: TForm1
       end
     end
     object PageControlLogs: TPageControl
-      Left = 0
-      Top = 40
-      Width = 313
-      Height = 68
+      Left = 1
+      Top = 38
+      Width = 311
+      Height = 69
       ActivePage = TabSheet10
-      Anchors = [akLeft, akTop, akRight, akBottom]
+      Align = alClient
       MultiLine = True
       TabOrder = 1
       object TabSheet10: TTabSheet
@@ -2023,8 +2020,8 @@ object Form1: TForm1
         object MemoLogs: TMemo
           Left = 0
           Top = 0
-          Width = 305
-          Height = 40
+          Width = 303
+          Height = 41
           Align = alClient
           Color = clWhite
           Font.Charset = ANSI_CHARSET
@@ -2045,8 +2042,8 @@ object Form1: TForm1
         object ListViewLogs: TListView
           Left = 0
           Top = 0
-          Width = 305
-          Height = 40
+          Width = 303
+          Height = 41
           Align = alClient
           Columns = <>
           ReadOnly = True
@@ -2063,8 +2060,8 @@ object Form1: TForm1
         object ListViewLogsNetstat: TListView
           Left = 0
           Top = 0
-          Width = 305
-          Height = 40
+          Width = 303
+          Height = 41
           Align = alClient
           Columns = <>
           ReadOnly = True
@@ -2079,17 +2076,17 @@ object Form1: TForm1
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 501
+    Width = 497
     Height = 60
     Align = alTop
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 2
     DesignSize = (
-      501
+      497
       60)
     object SpeedButton3: TSpeedButton
-      Left = 214
+      Left = 212
       Top = 2
       Width = 101
       Height = 58
@@ -2198,7 +2195,7 @@ object Form1: TForm1
       OnClick = ToolButtonBlockAllClick
     end
     object SpeedButton2: TSpeedButton
-      Left = 389
+      Left = 385
       Top = 2
       Width = 110
       Height = 58
@@ -17900,13 +17897,13 @@ object Form1: TForm1
       Caption = 'Web Filter'
       OnClick = ToolButton6Click
     end
-    object Logs1: TMenuItem
-      Caption = 'Logs'
-      OnClick = ButtonShowLogsClick
-    end
     object Netstat1: TMenuItem
       Caption = 'Netstat'
       OnClick = Netstat1Click
+    end
+    object Logs1: TMenuItem
+      Caption = 'Logs'
+      OnClick = ButtonShowLogsClick
     end
   end
   object ImageListNestat: TImageList
