@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.380.4';
+  CurrentApplicationVersion: string = '0.4.380.5';
   isDevVersion: Boolean = True;
 
 type
@@ -342,6 +342,10 @@ type
     MenuItem6: TMenuItem;
     MenuItemLogsDNSBanBlackhost: TMenuItem;
     TimerLogsNetstat: TTimer;
+    N12: TMenuItem;
+    LogDNSAutoScroll: TMenuItem;
+    PopupMenuListViewLogsNetstat: TPopupMenu;
+    LogNetstatAutoScroll: TMenuItem;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -540,6 +544,10 @@ type
     procedure MenuItemLogsDNSBanClick(Sender: TObject);
     procedure MenuItemLogsDNSBanBlackhostClick(Sender: TObject);
     procedure TimerLogsNetstatTimer(Sender: TObject);
+    procedure LogDNSAutoScrollClick(Sender: TObject);
+    procedure ListViewLogsNetstatContextPopup(Sender: TObject;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure LogNetstatAutoScrollClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -738,12 +746,13 @@ begin
       //if form1.MemoLogs.Visible then
       form1.LogsAdd(logs);
 
+
       ListViewLogs.Items.Add().Caption := domain;
       i := ListViewLogs.Items.Count - 1;
 
       // ==== Image
       ListViewLogs.Items[i].ImageIndex := 0;
-      
+
       if Rules.IsBlacklistDomain(domain)
       or Rules.IsBlackHostDomain(domain)
       or (Pos('127.0.0.', ipdomain) > 0) then
@@ -754,16 +763,20 @@ begin
       begin
         ListViewLogs.Items[i].ImageIndex := 1;
       end;
-      // ====
-     
+        // ====
+
       ListViewLogs.Items[i].SubItems.Add(ipdomain);
       ListViewLogs.Items[i].SubItems.Add(status);
       ListViewLogs.Items[i].SubItems.Add(ipclient);
       ListViewLogs.Items[i].SubItems.Add(ipserver);
       ListViewLogs.Items[i].SubItems.Add(date);
       ListViewLogs.Items[i].SubItems.Add(time);
-      p := ListViewLogs.Items[i].Position;
-      ListViewLogs.Scroll(p.X, p.Y);
+
+      if LogDNSAutoScroll.Checked then
+      begin
+        p := ListViewLogs.Items[i].Position;
+        ListViewLogs.Scroll(p.X, p.Y);
+      end;
 
       if ((status = 'OK') and
           (CheckBoxAlertEventsKnown.Checked
@@ -1250,7 +1263,7 @@ begin
   Form1.Left := Screen.WorkAreaWidth - Form1.Width;
 
   if (ParamCount() >= 1) and (ParamStr(1) = '/taskschd') then
-  begin         
+  begin
     Masquer1Click(nil);
     StopDNS1Click(nil);
     TimerBootNoXP.Enabled := True;
@@ -1416,6 +1429,8 @@ begin
   bloques1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
   CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
 
+  LogDNSAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
+  LogNetstatAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
 
   ComboBoxCurrentTheme.OnSelect := nil;
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
@@ -1793,7 +1808,7 @@ begin
   case X of
     WM_LBUTTONDBLCLK: Afficher1Click(nil); 
     WM_LBUTTONDOWN:  Afficher1Click(nil); 
-    WM_LBUTTONUP: ; //PopupMenu1.Popup(Pos.X,Pos.Y); 
+    WM_LBUTTONUP: ; //PopupMenu1.Popup(Pos.X,Pos.Y);
     WM_RBUTTONDBLCLK:; 
     WM_RBUTTONDOWN:;   
     WM_RBUTTONUP:PopupMenu1.Popup(Pos.X,Pos.Y);
@@ -4505,10 +4520,11 @@ var
   sProtocol: String;
   //sLocalAddr, sRemoteAdd: String;
   //sLocalPort, sRemotePort: Integer;
+  connect : TConnectionArray;
 begin
-
-  Connections := nil;
-  UnitNetstat2.GetConnections(Connections);
+  //FreeAndNil(Connections);
+  connect := nil;
+  UnitNetstat2.GetConnections(connect);
 
   if not isFormVisible or (Notebook1.PageIndex <> 4) then exit;
 
@@ -4582,21 +4598,21 @@ begin
 
 
 
-  for i:=0 to Length(Connections) - 1 do
+  for i:=0 to Length(connect) - 1 do
   begin
-    if Connections[i].Protocol = PROTOCOL_TCP then
+    if connect[i].Protocol = PROTOCOL_TCP then
       sProtocol := 'TCP'
     else
       sProtocol := 'UDP';
 
     ListViewNetstat.Items.Add();
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(connect[i].ProcessID));
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(sProtocol);
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].LocalAddress));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].LocalRawPort)));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].RemoteAddress));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].RemoteRawPort)));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(connect[i].LocalAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(connect[i].LocalRawPort)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(connect[i].RemoteAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(connect[i].RemoteRawPort)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[connect[i].ConnectionState]);
     // Set caption after all (at the end) to prevent some issues
     // Mettre cette ligne à la fin pour éviter un bug à l'affichage
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
@@ -4835,13 +4851,13 @@ var
   ListItem:TListItem;
   CurPos:TPoint;
 begin
-  GetcursorPos(MousePos);
+  GetcursorPos(MousePos);        
+  PopupMenuListViewLogsDNS.Popup(MousePos.x, MousePos.y);
   CurPos:=TListView(Sender).ScreenToClient(MousePos);
   ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
   if Assigned(ListItem) then
   begin
     SelectedListItem := ListItem;
-    PopupMenuListViewLogsDNS.Popup(MousePos.x, MousePos.y);
   end;
 end;
 
@@ -4965,30 +4981,35 @@ begin
 
     for i:=0 to Length(Connections) - 1 do
     begin
-      if not UnitNetstat2.FindConnection(Connections[i], oldConnections)
-      and (Connections[i].ConnectionState = 5) then
+      if (Connections[i].ConnectionState = 5) then
       begin
-        if Connections[i].Protocol = PROTOCOL_TCP then
-          sProtocol := 'TCP'
-        else
-          sProtocol := 'UDP';
+        if not UnitNetstat2.FindConnection(Connections[i], oldConnections) then
+        begin
+          if Connections[i].Protocol = PROTOCOL_TCP then
+            sProtocol := 'TCP'
+          else
+            sProtocol := 'UDP';
 
-        ListViewLogsNetstat.Items.Add();
-        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
-        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(sProtocol);
-        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].LocalAddress));
-        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].LocalRawPort)));
-        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].RemoteAddress));
-        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].RemoteRawPort)));
-        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
-        // Set caption after all (at the end) to prevent some issues
-        // Mettre cette ligne à la fin pour éviter un bug à l'affichage
-        ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
-        //Application.ProcessMessages;
-        //Sleep(300);
-        p := ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Position;
-        ListViewLogsNetstat.Scroll(p.X, p.Y);
+          ListViewLogsNetstat.Items.Add();
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(sProtocol);
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].LocalAddress));
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].LocalRawPort)));
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].RemoteAddress));
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].RemoteRawPort)));
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+          // Set caption after all (at the end) to prevent some issues
+          // Mettre cette ligne à la fin pour éviter un bug à l'affichage
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
+          //Application.ProcessMessages;
+          //Sleep(300);
+          if LogNetstatAutoScroll.Checked then
+          begin
+            p := ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Position;
+            ListViewLogsNetstat.Scroll(p.X, p.Y);
 
+          end;
+        end;
       end;
     end;
     {
@@ -5019,7 +5040,45 @@ begin
     }
   end;
   oldConnections := Connections;
+  Connections := nil;
   TTimer(Sender).Enabled := True;
+end;
+
+procedure TForm1.LogDNSAutoScrollClick(Sender: TObject);
+begin
+  LogDNSAutoScroll.Checked := not LogDNSAutoScroll.Checked;
+
+  if LogDNSAutoScroll.Checked then
+    WriteInFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
+
+end;
+
+procedure TForm1.ListViewLogsNetstatContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+var
+  ListItem:TListItem;
+  CurPos:TPoint;
+begin
+  GetcursorPos(MousePos);
+  PopupMenuListViewLogsNetstat.Popup(MousePos.x, MousePos.y);
+  CurPos:=TListView(Sender).ScreenToClient(MousePos);
+  ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
+  if Assigned(ListItem) then
+  begin
+    SelectedListItem := ListItem;
+  end;
+end;
+
+procedure TForm1.LogNetstatAutoScrollClick(Sender: TObject);
+begin
+  LogNetstatAutoScroll.Checked := not LogNetstatAutoScroll.Checked;
+
+  if LogNetstatAutoScroll.Checked then
+    WriteInFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
 end;
 
 end.

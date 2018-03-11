@@ -2017,14 +2017,13 @@ object Form1: TForm1
       Anchors = [akLeft, akTop, akRight, akBottom]
       MultiLine = True
       TabOrder = 1
-      TabPosition = tpBottom
       object TabSheet10: TTabSheet
         Caption = 'Logs Text'
         object MemoLogs: TMemo
           Left = 0
           Top = 0
           Width = 305
-          Height = 42
+          Height = 40
           Align = alClient
           Color = clWhite
           Font.Charset = ANSI_CHARSET
@@ -2046,7 +2045,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 305
-          Height = 42
+          Height = 40
           Align = alClient
           Columns = <>
           ReadOnly = True
@@ -2064,13 +2063,14 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 305
-          Height = 42
+          Height = 40
           Align = alClient
           Columns = <>
           ReadOnly = True
           RowSelect = True
           TabOrder = 0
           ViewStyle = vsReport
+          OnContextPopup = ListViewLogsNetstatContextPopup
         end
       end
     end
@@ -17990,10 +17990,25 @@ object Form1: TForm1
       ShortCut = 8238
       OnClick = MenuItemLogsDNSBanBlackhostClick
     end
+    object N12: TMenuItem
+      Caption = '-'
+    end
+    object LogDNSAutoScroll: TMenuItem
+      Caption = 'D'#233'filement automatique'
+      OnClick = LogDNSAutoScrollClick
+    end
   end
   object TimerLogsNetstat: TTimer
     OnTimer = TimerLogsNetstatTimer
     Left = 451
-    Top = 293
+    Top = 181
+  end
+  object PopupMenuListViewLogsNetstat: TPopupMenu
+    Left = 424
+    Top = 328
+    object LogNetstatAutoScroll: TMenuItem
+      Caption = 'D'#233'filement automatique'
+      OnClick = LogNetstatAutoScrollClick
+    end
   end
 end
