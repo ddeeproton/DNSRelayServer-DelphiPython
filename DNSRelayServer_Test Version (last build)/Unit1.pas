@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.380.5';
+  CurrentApplicationVersion: string = '0.4.380.6';
   isDevVersion: Boolean = True;
 
 type
@@ -4615,7 +4615,7 @@ begin
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[connect[i].ConnectionState]);
     // Set caption after all (at the end) to prevent some issues
     // Mettre cette ligne à la fin pour éviter un bug à l'affichage
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(connect[i].ProcessID);
     //ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := i;
 
     {
