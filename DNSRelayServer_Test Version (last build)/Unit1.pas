@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.380.8';
+  CurrentApplicationVersion: string = '0.4.380.9';
   isDevVersion: Boolean = True;
 
 type
@@ -640,6 +640,7 @@ var
 
   Connections: TConnectionArray = nil;
   oldConnections: TConnectionArray = nil;
+  ConnectionsNetstat: TConnectionArray = nil;
   SelectedConnection : TConnection;
 implementation
 
@@ -2159,8 +2160,9 @@ var
   CurPos:TPoint;
 begin
   GetcursorPos(MousePos);
-  CurPos:=TListView(Sender).ScreenToClient(MousePos);
-  ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
+  CurPos:=ListView1.ScreenToClient(MousePos);
+
+  ListItem:=ListView1.GetItemAt(CurPos.x,CurPos.y);
   if Assigned(ListItem) then
   begin
     SelectedListItem := ListItem;
@@ -2177,10 +2179,11 @@ begin
   GetcursorPos(MousePos);
   CurPos:=TListView(Sender).ScreenToClient(MousePos);
   ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
+
   if Assigned(ListItem) then
   begin
     SelectedListItem := ListItem;
-    SelectedConnection := Connections[SelectedListItem.Index];
+    SelectedConnection := ConnectionsNetstat[SelectedListItem.Index];
 
 
     PopupMenuListViewNetstat.Popup(MousePos.x, MousePos.y);
@@ -4526,11 +4529,10 @@ var
   sProtocol: String;
   //sLocalAddr, sRemoteAdd: String;
   //sLocalPort, sRemotePort: Integer;
-  connect : TConnectionArray;
 begin
   //FreeAndNil(Connections);
-  connect := nil;
-  UnitNetstat2.GetConnections(connect);
+  ConnectionsNetstat := nil;
+  UnitNetstat2.GetConnections(ConnectionsNetstat);
 
   if not isFormVisible or (Notebook1.PageIndex <> 4) then exit;
 
@@ -4604,24 +4606,24 @@ begin
 
 
 
-  for i:=0 to Length(connect) - 1 do
+  for i:=0 to Length(ConnectionsNetstat) - 1 do
   begin
-    if connect[i].Protocol = PROTOCOL_TCP then
+    if ConnectionsNetstat[i].Protocol = PROTOCOL_TCP then
       sProtocol := 'TCP'
     else
       sProtocol := 'UDP';
 
     ListViewNetstat.Items.Add();
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(connect[i].ProcessID));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ConnectionsNetstat[i].ProcessID));
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(sProtocol);
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(connect[i].LocalAddress));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(connect[i].LocalRawPort)));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(connect[i].RemoteAddress));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(connect[i].RemoteRawPort)));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[connect[i].ConnectionState]);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(ConnectionsNetstat[i].LocalAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(ConnectionsNetstat[i].LocalRawPort)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(ConnectionsNetstat[i].RemoteAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(ConnectionsNetstat[i].RemoteRawPort)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[ConnectionsNetstat[i].ConnectionState]);
     // Set caption after all (at the end) to prevent some issues
     // Mettre cette ligne à la fin pour éviter un bug à l'affichage
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(connect[i].ProcessID);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(ConnectionsNetstat[i].ProcessID);
     //ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := i;
 
     {
