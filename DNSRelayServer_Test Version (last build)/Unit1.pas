@@ -13,7 +13,7 @@ uses
   Sockets;
 
 var
-  CurrentApplicationVersion: string = '0.4.380.7';
+  CurrentApplicationVersion: string = '0.4.380.8';
   isDevVersion: Boolean = True;
 
 type
@@ -5082,9 +5082,9 @@ begin
   LogNetstatAutoScroll.Checked := not LogNetstatAutoScroll.Checked;
 
   if LogNetstatAutoScroll.Checked then
-    WriteInFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg', '1')
+    WriteInFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg', '1')
   else
-    DeleteFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
+    DeleteFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
 end;
 
 procedure TForm1.EraseLogsListViewDNSClick(Sender: TObject);
