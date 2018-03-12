@@ -13,7 +13,7 @@ uses
   Sockets;   
 
 var
-  CurrentApplicationVersion: string = '0.4.380.11';
+  CurrentApplicationVersion: string = '0.4.380.12';
   isDevVersion: Boolean = True;
 
 type
