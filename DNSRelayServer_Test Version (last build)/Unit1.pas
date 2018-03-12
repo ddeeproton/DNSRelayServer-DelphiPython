@@ -4922,6 +4922,7 @@ begin
   SelectedListItem := ListViewLogs.Selected;
   if not Assigned(SelectedListItem) then exit;
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
+  SelectedListItem.ImageIndex := 0;
   //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
   delDomain(EditFilehost.Text, SelectedListItem.Caption);
   LogsAdd('Débloquage de '+SelectedListItem.Caption);
@@ -4944,6 +4945,10 @@ begin
   ip := SelectedListItem.SubItems.Strings[0];
   //txt := InputBox('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', SelectedListItem.SubItems.Strings[0]); // This method can't cancel input
   if not InputQuery('Update IP Domain', 'Exemple: pour bloquer 127.0.0.1', ip) then exit;
+  if Pos('127.0.0.', ip) > 0 then
+    SelectedListItem.ImageIndex := 3
+  else                               
+    SelectedListItem.ImageIndex := 1;  
   setDomain( EditFilehost.Text, SelectedListItem.Caption, ip);
   //SelectedListItem.SubItems.Strings[0] := ip;
   ListView1.OnChange := nil;
@@ -4962,6 +4967,7 @@ begin
   //setDomain( EditFilehost.Text, SelectedListItem.SubItems.Strings[0], '127.0.0.1');
   setDomain(EditFilehost.Text, SelectedListItem.Caption, '127.0.0.1');
   SelectedListItem.SubItems.Strings[0] := '127.0.0.1';
+  SelectedListItem.ImageIndex := 3;
   LogsAdd('Bloquage de '+SelectedListItem.Caption);
   ListView1.OnChange := nil;
   ListView1.Clear;
