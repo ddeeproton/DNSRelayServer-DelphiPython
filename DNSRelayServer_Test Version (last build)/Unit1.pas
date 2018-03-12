@@ -1666,6 +1666,7 @@ begin
   Label44.Font.Color := color;
   Label45.Font.Color := color;
   Label46.Font.Color := color;
+  Label47.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
