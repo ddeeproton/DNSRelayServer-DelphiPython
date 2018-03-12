@@ -153,6 +153,7 @@ begin
   GetMem(TcpTable, size);
   if not GetExtendedTcpTable(TcpTable, @size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_ALL, 0) = NO_ERROR then
   begin
+    FreeMem(TcpTable);
     Result := FALSE;
     exit;
   end;
@@ -184,6 +185,7 @@ begin
   GetMem(UdpTable, size);
   if GetExtendedUdpTable(UdpTable, @size, FALSE, AF_INET, UDP_TABLE_OWNER_PID, 0) = NO_ERROR then
   begin
+    FreeMem(UdpTable);
     Result := FALSE;
     Exit;
   end;
