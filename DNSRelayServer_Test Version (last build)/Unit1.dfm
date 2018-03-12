@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 271
-  Top = 157
+  Left = 492
+  Top = 153
   Width = 521
   Height = 557
   Caption = 'DNS Relay Server'
@@ -959,105 +959,6 @@ object Form1: TForm1
                         'Droite'
                         'Masqu'#233)
                     end
-                  end
-                end
-              end
-            end
-            object TabSheet6: TTabSheet
-              Caption = 'Alertes'
-              ImageIndex = 5
-              object ScrollBox5: TScrollBox
-                Left = 8
-                Top = 8
-                Width = 289
-                Height = 273
-                HorzScrollBar.Smooth = True
-                HorzScrollBar.Tracking = True
-                VertScrollBar.Smooth = True
-                VertScrollBar.Tracking = True
-                BorderStyle = bsNone
-                TabOrder = 0
-                object GroupBox12: TGroupBox
-                  Left = 0
-                  Top = 0
-                  Width = 289
-                  Height = 137
-                  Align = alTop
-                  TabOrder = 0
-                  object Label31: TLabel
-                    Left = 16
-                    Top = 86
-                    Width = 189
-                    Height = 13
-                    Caption = 'Afficher le message pendant (secondes)'
-                  end
-                  object Label18: TLabel
-                    Left = 34
-                    Top = 63
-                    Width = 218
-                    Height = 13
-                    Caption = 'Afficher des alertes pour les domaines bloqu'#233's'
-                    FocusControl = CheckBoxAlertEventDisallowed
-                    OnClick = LabelToCheckboxClick
-                    OnMouseEnter = LabelCheckboxMouseEnter
-                    OnMouseLeave = LabelCheckboxMouseLeave
-                  end
-                  object Label17: TLabel
-                    Left = 34
-                    Top = 40
-                    Width = 224
-                    Height = 13
-                    Caption = 'Afficher des alertes pour les domaines inconnus'
-                    FocusControl = CheckBoxAlertEventsUnknown
-                    OnClick = LabelToCheckboxClick
-                    OnMouseEnter = LabelCheckboxMouseEnter
-                    OnMouseLeave = LabelCheckboxMouseLeave
-                  end
-                  object Label16: TLabel
-                    Left = 34
-                    Top = 15
-                    Width = 216
-                    Height = 13
-                    Caption = 'Afficher des alertes pour les domaines connus'
-                    FocusControl = CheckBoxAlertEventsKnown
-                    OnClick = LabelToCheckboxClick
-                    OnMouseEnter = LabelCheckboxMouseEnter
-                    OnMouseLeave = LabelCheckboxMouseLeave
-                  end
-                  object SpinEditAlertDuration: TSpinEdit
-                    Left = 16
-                    Top = 102
-                    Width = 121
-                    Height = 22
-                    MaxValue = 0
-                    MinValue = 0
-                    TabOrder = 0
-                    Value = 10
-                    OnChange = SpinEditAlertDurationChange
-                  end
-                  object CheckBoxAlertEventDisallowed: TCheckBox
-                    Left = 16
-                    Top = 62
-                    Width = 17
-                    Height = 17
-                    TabOrder = 1
-                    OnClick = CheckBoxAlertEventDisallowedClick
-                  end
-                  object CheckBoxAlertEventsUnknown: TCheckBox
-                    Left = 16
-                    Top = 38
-                    Width = 17
-                    Height = 17
-                    TabOrder = 2
-                    OnClick = CheckBoxAlertEventsUnknownClick
-                  end
-                  object CheckBoxAlertEventsKnown: TCheckBox
-                    Left = 16
-                    Top = 14
-                    Width = 17
-                    Height = 17
-                    TabOrder = 3
-                    OnClick = CheckBoxAlertEventsKnownClick
                   end
                 end
               end
@@ -2046,8 +1947,14 @@ object Form1: TForm1
           Height = 41
           Align = alClient
           Columns = <>
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           ReadOnly = True
           RowSelect = True
+          ParentFont = False
           SmallImages = ImageList3
           TabOrder = 0
           ViewStyle = vsReport
@@ -3934,32 +3841,6 @@ object Form1: TForm1
       OnClick = Netstat1Click
     end
     object N2: TMenuItem
-      Caption = '-'
-    end
-    object Alertes1: TMenuItem
-      Caption = 'Alertes'
-      object connus1: TMenuItem
-        Caption = 'connus (vert)'
-        OnClick = connus1Click
-      end
-      object inconnus1: TMenuItem
-        Caption = 'inconnus (vert)'
-        OnClick = inconnus1Click
-      end
-      object bloques1: TMenuItem
-        Caption = 'bloqu'#233's (rouge)'
-        OnClick = bloques1Click
-      end
-    end
-    object Activertouteslesalertes1: TMenuItem
-      Caption = 'Activer toutes les alertes'
-      OnClick = Activertouteslesalertes1Click
-    end
-    object Dsactivertouteslesalertes1: TMenuItem
-      Caption = 'D'#233'sactiver toutes les alertes'
-      OnClick = Dsactivertouteslesalertes1Click
-    end
-    object N1: TMenuItem
       Caption = '-'
     end
     object Relancerlapplication1: TMenuItem

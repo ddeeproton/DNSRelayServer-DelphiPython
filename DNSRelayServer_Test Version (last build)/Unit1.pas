@@ -10,7 +10,7 @@ uses
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, WindowsManager,
   UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock,
-  Sockets;  //AlertManager, UnitAlert, 
+  Sockets;   
 
 var
   CurrentApplicationVersion: string = '0.4.380.10';
@@ -21,7 +21,6 @@ type
     ImageList1: TImageList;
     PopupMenu1: TPopupMenu;
     Quitter1: TMenuItem;
-    N1: TMenuItem;
     Masquer1: TMenuItem;
     Afficher1: TMenuItem;
     ImageList2: TImageList;
@@ -68,10 +67,6 @@ type
     TimerRestart: TTimer;
     TimerResetAlertPosition: TTimer;
     Panel5: TPanel;
-    Alertes1: TMenuItem;
-    connus1: TMenuItem;
-    inconnus1: TMenuItem;
-    bloques1: TMenuItem;
     N5: TMenuItem;
     GroupBox1: TGroupBox;
     ListBoxBlacklist: TListBox;
@@ -101,7 +96,6 @@ type
     Label23: TLabel;
     Label24: TLabel;
     ColorDialog1: TColorDialog;
-    TabSheet6: TTabSheet;
     PopupMenuTheme: TPopupMenu;
     Ajouter3: TMenuItem;
     Modifier4: TMenuItem;
@@ -137,8 +131,6 @@ type
     Afficherenbas1: TMenuItem;
     Affichergauche1: TMenuItem;
     Afficherdroite1: TMenuItem;
-    Dsactivertouteslesalertes1: TMenuItem;
-    Activertouteslesalertes1: TMenuItem;
     Toutnormal1: TMenuItem;
     Toutnormale1: TMenuItem;
     Config1: TMenuItem;
@@ -157,7 +149,6 @@ type
     ScrollBox2: TScrollBox;
     ScrollBox3: TScrollBox;
     ScrollBox8: TScrollBox;
-    ScrollBox5: TScrollBox;
     Masquer2: TMenuItem;
     N10: TMenuItem;
     TimerAlert: TTimer;
@@ -182,15 +173,6 @@ type
     Button1: TButton;
     CheckListBoxDNSRelayIP: TCheckListBox;
     GroupBox11: TGroupBox;
-    GroupBox12: TGroupBox;
-    Label31: TLabel;
-    Label18: TLabel;
-    Label17: TLabel;
-    Label16: TLabel;
-    SpinEditAlertDuration: TSpinEdit;
-    CheckBoxAlertEventDisallowed: TCheckBox;
-    CheckBoxAlertEventsUnknown: TCheckBox;
-    CheckBoxAlertEventsKnown: TCheckBox;
     Clients1: TMenuItem;
     Blacklist1: TMenuItem;
     Hostfile1: TMenuItem;
@@ -783,6 +765,7 @@ begin
         ListViewLogs.Scroll(p.X, p.Y);
       end;
 
+      {
       if ((status = 'OK') and
           (CheckBoxAlertEventsKnown.Checked
            or CheckBoxAlertEventsUnknown.Checked))
@@ -800,7 +783,7 @@ begin
         //FormAlert.Visible := true;
 
       end;
-
+      }
 
       {
       if (imgIndex = 0) and CheckBoxAlertEventsKnown.Checked then // inconnu
@@ -1350,7 +1333,7 @@ begin
   ScrollBox3.Align := alClient;
   ScrollBox8.Align := alClient;
   GroupBoxAffichage.Align := alTop;
-  ScrollBox5.Align := alClient;
+  //ScrollBox5.Align := alClient;
   ScrollBox6.Align := alClient;
   ScrollBox6.VertScrollBar.Position := 0;
 
@@ -1392,11 +1375,13 @@ begin
   if FileExists(DataDirectoryPath + 'EditExecOnDisconnected.cfg') then
     EditExecOnDisconnected.Text := ReadFromFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg');
 
+  {
   if FileExists(DataDirectoryPath + 'alertDisplayDuration.cfg') then
     SpinEditAlertDuration.Value := StrToInt(ReadFromFile(DataDirectoryPath + 'alertDisplayDuration.cfg'))
   else SpinEditAlertDuration.Value := 10;
   if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
-
+  }
+  
   if FileExists(SlaveDNSPortConfig) then
     SpinPort.Value := StrToInt(ReadFromFile(SlaveDNSPortConfig));
 
@@ -1425,6 +1410,7 @@ begin
   CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
   CheckBoxShowDebug.Checked := FileExists(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
 
+  {
   connus1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
   CheckBoxAlertEventsKnown.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
 
@@ -1433,7 +1419,8 @@ begin
 
   bloques1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
   CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
-
+  }
+  
   LogDNSAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
   LogNetstatAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
 
@@ -1592,6 +1579,8 @@ begin
   EditExecOnDisconnected.Color := bg2;
   ListView1.Color := bg2;
   ListViewNetstat.Color := bg2;
+  ListViewLogs.Color := bg2;
+  ListViewLogsNetstat.Color := bg2;
   Memo1.Color := bg2;
   MemoLogs.Color := bg2;
   MemoHelpWebAdmin.Color := bg2;
@@ -1600,7 +1589,7 @@ begin
   CheckListBoxDNSRelayIP.Color := bg2;
   SpinPort.Color := bg2;
   SpinTimeCheckUpdate.Color := bg2;
-  SpinEditAlertDuration.Color := bg2;
+  //SpinEditAlertDuration.Color := bg2;
   ComboBoxCurrentTheme.Color := bg2;
   ListBoxBlacklist.Color := bg2;
   ComboBoxPosLogs.Color := bg2;
@@ -1617,6 +1606,8 @@ begin
   EditExecOnDisconnected.Font.Color := bg2;
   ListView1.Font.Color := bg2;
   ListViewNetstat.Font.Color := bg2;
+  ListViewLogs.Font.Color := bg2;
+  ListViewLogsNetstat.Font.Color := bg2;
   Memo1.Font.Color := bg2;
   MemoLogs.Font.Color := bg2;
   MemoHelpWebAdmin.Font.Color := bg2;
@@ -1625,7 +1616,7 @@ begin
   CheckListBoxDNSRelayIP.Font.Color := bg2;
   SpinPort.Font.Color := bg2;
   SpinTimeCheckUpdate.Font.Color := bg2;
-  SpinEditAlertDuration.Font.Color := bg2;
+  //SpinEditAlertDuration.Font.Color := bg2;
   ComboBoxCurrentTheme.Font.Color := bg2;
   ListBoxBlacklist.Font.Color := bg2;
   ComboBoxPosLogs.Font.Color := bg2;
@@ -1655,13 +1646,13 @@ begin
   Label13.Font.Color := color;
   Label14.Font.Color := color;
   Label15.Font.Color := color;
-  Label16.Font.Color := color;
-  Label17.Font.Color := color;
-  Label18.Font.Color := color;
+  //Label16.Font.Color := color;
+  //Label17.Font.Color := color;
+  //Label18.Font.Color := color;
   Label20.Font.Color := color;
   Label26.Font.Color := color;
   Label30.Font.Color := color;
-  Label31.Font.Color := color;
+  //Label31.Font.Color := color;
   Label32.Font.Color := color;
   Label33.Font.Color := color;
   Label34.Font.Color := color;
@@ -2082,7 +2073,7 @@ begin
   WriteInFile(FilehostPathConfig, EditFilehost.Text);
   WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
   WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
-  WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
+  //WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
   WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
   WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
   TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
@@ -2931,6 +2922,7 @@ end;
 
 procedure TForm1.CheckBoxAlertEventsKnownClick(Sender: TObject);
 begin
+  {
   if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAlertEventsKnow.cfg', '1')
@@ -2941,10 +2933,12 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+  }
 end;
 
 procedure TForm1.CheckBoxAlertEventsUnknownClick(Sender: TObject);
 begin
+  {
   if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAlertEventsUnknown.cfg', '1')
@@ -2956,10 +2950,12 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+  }
 end;
 
 procedure TForm1.CheckBoxAlertEventDisallowedClick(Sender: TObject);
 begin
+{
   if isApplicationLoading then exit;
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAlertEventDisallowed.cfg', '1')
@@ -2970,6 +2966,7 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+}
 end;
 
 
@@ -3005,22 +3002,28 @@ end;
 
 procedure TForm1.inconnus1Click(Sender: TObject);
 begin
+{
   CheckBoxAlertEventsUnknown.Checked := not CheckBoxAlertEventsUnknown.Checked;
   CheckBoxAlertEventsUnknownClick(CheckBoxAlertEventsUnknown);
+}
 end;
 
 
 procedure TForm1.connus1Click(Sender: TObject);
 begin
+{
   CheckBoxAlertEventsKnown.Checked := not CheckBoxAlertEventsKnown.Checked;
   CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
+}
 end;
 
 
 procedure TForm1.bloques1Click(Sender: TObject);
 begin
+{
   CheckBoxAlertEventDisallowed.Checked := not CheckBoxAlertEventDisallowed.Checked;
   CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
+}
 end;
 
 
@@ -3724,23 +3727,27 @@ end;
 
 procedure TForm1.Activertouteslesalertes1Click(Sender: TObject);
 begin
+{
   CheckBoxAlertEventsUnknown.Checked := True;
   CheckBoxAlertEventsKnown.Checked := CheckBoxAlertEventsUnknown.Checked;
   CheckBoxAlertEventDisallowed.Checked := CheckBoxAlertEventsUnknown.Checked;
   CheckBoxAlertEventsUnknownClick(CheckBoxAlertEventsUnknown);
   CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
   CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
+}
 end;
 
 
 procedure TForm1.Dsactivertouteslesalertes1Click(Sender: TObject);
 begin
+{
   CheckBoxAlertEventsUnknown.Checked := False;
   CheckBoxAlertEventsKnown.Checked := CheckBoxAlertEventsUnknown.Checked;
   CheckBoxAlertEventDisallowed.Checked := CheckBoxAlertEventsUnknown.Checked;
   CheckBoxAlertEventsUnknownClick(CheckBoxAlertEventsUnknown);
   CheckBoxAlertEventsKnownClick(CheckBoxAlertEventsKnown);
   CheckBoxAlertEventDisallowedClick(CheckBoxAlertEventDisallowed);
+}
 end;
 
 
@@ -4791,7 +4798,7 @@ begin
   if PageControl1.TabIndex = 0 then scrollBox := ScrollBox1;
   if PageControl1.TabIndex = 7 then scrollBox := ScrollBox2;
   if PageControl1.TabIndex = 2 then scrollBox := ScrollBox3;
-  if PageControl1.TabIndex = 4 then scrollBox := ScrollBox5;
+  //if PageControl1.TabIndex = 4 then scrollBox := ScrollBox5;
   if PageControl1.TabIndex = 5 then scrollBox := ScrollBox6;
   if PageControl1.TabIndex = 6 then scrollBox := ScrollBox7;
   if PageControl1.TabIndex = 3 then scrollBox := ScrollBox8;
@@ -4976,6 +4983,7 @@ begin
   if isServerStarted then PanelRestart.Visible := True;
 end;
 
+
 procedure TForm1.TimerLogsNetstatTimer(Sender: TObject);
 var
   i: Integer;
@@ -5049,6 +5057,7 @@ begin
     end;
     }
   end;
+  oldConnections := nil;
   oldConnections := Connections;
   Connections := nil;
   TTimer(Sender).Enabled := True;
