@@ -17878,6 +17878,7 @@ object Form1: TForm1
     end
   end
   object TimerLogsNetstat: TTimer
+    Enabled = False
     OnTimer = TimerLogsNetstatTimer
     Left = 451
     Top = 181
