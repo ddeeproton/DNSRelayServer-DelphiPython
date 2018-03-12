@@ -133,10 +133,13 @@ begin
     and (Connections[i].RemoteRawPort = Connection.RemoteRawPort)
     and (Connections[i].ProcessID = Connection.ProcessID) then
     begin
+      SetLength(Connections, 0);
       Result := True;
       Exit;
     end;
   end;
+  SetLength(Connections, 0);
+  //if (Connections <> nil) and (Length(Connections) > 0) then FreeMem(Connections);
 end;
 
 
@@ -199,7 +202,7 @@ begin
       ProcessID := UdpTable^.table[i].dwOwningPid;
     end;
   end;
-  FreeMem(UdpTable);
+  //if not size = 0 then FreeMem(UdpTable);
 end;
 
 function IpAddressToString(IpAddress : DWORD) : string;

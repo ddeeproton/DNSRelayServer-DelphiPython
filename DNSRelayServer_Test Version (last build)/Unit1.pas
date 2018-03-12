@@ -13,7 +13,7 @@ uses
   Sockets;   
 
 var
-  CurrentApplicationVersion: string = '0.4.380.10';
+  CurrentApplicationVersion: string = '0.4.380.11';
   isDevVersion: Boolean = True;
 
 type
@@ -624,6 +624,8 @@ var
   ConnectionsNetstat: TConnectionArray = nil;
   SelectedConnection : TConnection;
 implementation
+
+uses TypInfo;
 
 {$R *.dfm}
 
@@ -4792,6 +4794,8 @@ var
   i: Integer;
   scrollBox: TScrollBox;
 begin
+  //if isXP then exit;
+  
   scrollBox := nil;
   if Notebook1.PageIndex > 0 then exit;
   if PageControl1.TabIndex = 0 then scrollBox := ScrollBox1;
@@ -4990,6 +4994,9 @@ var
   p: TPoint;
 begin
   TTimer(Sender).Enabled := False;
+
+  //if Connections <> nil then FreeMem(Connections);
+  SetLength(Connections, 0);
   Connections := nil;
   UnitNetstat2.GetConnections(Connections);
 
@@ -5056,8 +5063,13 @@ begin
     end;
     }
   end;
+  //if oldConnections <> nil then FreeMem(oldConnections);
+  //FreeAndNil(oldConnections);
+  SetLength(oldConnections, 0);
   oldConnections := nil;
   oldConnections := Connections;
+  SetLength(Connections, 0);
+  //if Connections <> nil then FreeMem(Connections);
   Connections := nil;
   TTimer(Sender).Enabled := True;
 end;
