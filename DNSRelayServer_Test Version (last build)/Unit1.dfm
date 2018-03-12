@@ -3815,10 +3815,6 @@ object Form1: TForm1
         Caption = 'Affichage'
         OnClick = Affichage1Click
       end
-      object Alertes2: TMenuItem
-        Caption = 'Alertes'
-        OnClick = Alertes2Click
-      end
     end
     object Clients1: TMenuItem
       Caption = 'Clients'

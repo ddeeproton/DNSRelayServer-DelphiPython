@@ -140,7 +140,6 @@ type
     Misejour1: TMenuItem;
     Carterseau1: TMenuItem;
     Affichage1: TMenuItem;
-    Alertes2: TMenuItem;
     TimerHideMessage: TTimer;
     PanelMessage: TPanel;
     SpeedButtonCloseMessage: TSpeedButton;
