@@ -77,3 +77,7 @@ Delphi 6
 Version 0.4.343 Ajout de Netstat:
 
 ![](preview2.png)
+
+Version 0.4.380 Remplacement du système d'alerte par des logs configurables
+
+![](preview3.png)
