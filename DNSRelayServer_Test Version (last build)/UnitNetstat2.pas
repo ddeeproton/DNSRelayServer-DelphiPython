@@ -202,7 +202,7 @@ begin
       ProcessID := UdpTable^.table[i].dwOwningPid;
     end;
   end;
-  //if not size = 0 then FreeMem(UdpTable);
+  FreeMem(UdpTable);
 end;
 
 function IpAddressToString(IpAddress : DWORD) : string;
