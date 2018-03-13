@@ -13,7 +13,7 @@ uses
   Sockets;   
 
 var
-  CurrentApplicationVersion: string = '0.4.382';
+  CurrentApplicationVersion: string = '0.4.383';
   isDevVersion: Boolean = False;
 
 type
@@ -533,6 +533,7 @@ type
     procedure LogNetstatAutoScrollClick(Sender: TObject);
     procedure EraseLogsListViewDNSClick(Sender: TObject);
     procedure EraseLogsListViewNetstatClick(Sender: TObject);
+    function GetDomainFromIP(ip: String): String;
   private
     { Private declarations }
   public
@@ -1509,7 +1510,7 @@ begin
   AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Local Port', 50);
   AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Address', 100);
   AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Port', 50);
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'State', 100);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Domaine', 100);
 
 end;
 
@@ -4996,10 +4997,23 @@ begin
   if isServerStarted then PanelRestart.Visible := True;
 end;
 
+function TForm1.GetDomainFromIP(ip: String): String;
+var i: Integer;
+begin
+  result := 'Direct IP or "Logs DNS" removed';
+  for i := 0 to ListViewLogs.Items.Count -1 do
+  begin
+    if ListViewLogs.Items[i].SubItems.Strings[0] = ip then
+    begin
+      result := ListViewLogs.Items[i].Caption;
+      Exit;
+    end;
+  end;
+end;
 
 procedure TForm1.TimerLogsNetstatTimer(Sender: TObject);
 var
-  i: Integer;
+  i, index: Integer;
   sProtocol: String;
   p: TPoint;
 begin
@@ -5025,13 +5039,17 @@ begin
             sProtocol := 'UDP';
 
           ListViewLogsNetstat.Items.Add();
-          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(Connections[i].ProcessID));
-          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(sProtocol);
-          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].LocalAddress));
-          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].LocalRawPort)));
-          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IpAddressToString(Connections[i].RemoteAddress));
-          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(Connections[i].RemoteRawPort)));
-          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+          index := ListViewLogsNetstat.Items.Count-1;
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(Connections[i].ProcessID));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(sProtocol);
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IpAddressToString(Connections[i].LocalAddress));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(ntohs(Connections[i].LocalRawPort)));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IpAddressToString(Connections[i].RemoteAddress));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(ntohs(Connections[i].RemoteRawPort)));
+          //ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(GetDomainFromIP(IpAddressToString(Connections[i].RemoteAddress)));
+
           // Set caption after all (at the end) to prevent some issues
           // Mettre cette ligne à la fin pour éviter un bug à l'affichage
           ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);

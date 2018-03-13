@@ -17879,6 +17879,7 @@ object Form1: TForm1
     end
   end
   object TimerLogsNetstat: TTimer
+    Interval = 2000
     OnTimer = TimerLogsNetstatTimer
     Left = 451
     Top = 181
