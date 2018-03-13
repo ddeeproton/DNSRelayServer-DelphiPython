@@ -13,7 +13,7 @@ uses
   Sockets;   
 
 var
-  CurrentApplicationVersion: string = '0.4.381';
+  CurrentApplicationVersion: string = '0.4.382';
   isDevVersion: Boolean = False;
 
 type
@@ -5035,8 +5035,9 @@ begin
           // Set caption after all (at the end) to prevent some issues
           // Mettre cette ligne à la fin pour éviter un bug à l'affichage
           ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(Connections[i].ProcessID);
-          //Application.ProcessMessages;
-          //Sleep(300);
+          Application.ProcessMessages;
+          Sleep(100);
+          Application.ProcessMessages;
           if LogNetstatAutoScroll.Checked then
           begin
             p := ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Position;
