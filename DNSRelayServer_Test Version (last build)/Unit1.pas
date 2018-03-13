@@ -13,7 +13,7 @@ uses
   Sockets;   
 
 var
-  CurrentApplicationVersion: string = '0.4.380';
+  CurrentApplicationVersion: string = '0.4.381';
   isDevVersion: Boolean = False;
 
 type
@@ -765,6 +765,9 @@ begin
         p := ListViewLogs.Items[i].Position;
         ListViewLogs.Scroll(p.X, p.Y);
       end;
+
+      if ListViewLogs.Items.Count > 200 then
+        ListViewLogs.Items[0].Delete;
 
       {
       if ((status = 'OK') and
@@ -5069,6 +5072,8 @@ begin
       end;
     end;
     }
+    if ListViewLogsNetstat.Items.Count > 200 then
+      ListViewLogsNetstat.Items[0].Delete;
   end;
   //if oldConnections <> nil then FreeMem(oldConnections);
   //FreeAndNil(oldConnections);
