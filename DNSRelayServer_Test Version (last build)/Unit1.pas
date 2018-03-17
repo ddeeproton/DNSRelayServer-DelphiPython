@@ -9,12 +9,12 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, WindowsManager,
-  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock,
-  Sockets;   
+  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager,
+  Commctrl, ShellApi, UnitConfig, Winsock;
 
 var
-  CurrentApplicationVersion: string = '0.4.383';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.5.0.0';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -596,16 +596,6 @@ var
   ThreadUpdate: TUpdate;
   ConfigDNSMaster: TStringList;
 
-
-  MasterDNSFile: string = 'MasterDNSFile.cfg';
-  SlaveDNSProcesslist: string = 'SlaveDNSProcesslist.cfg';
-  FilehostPathConfig: string = 'FileHostPath.cfg';
-  BlackListCfgFile: string = 'blackhost.txt';
-  SlaveDNSIPConfig: string = 'SlaveDNSIP.cfg';
-  SlaveDNSPortConfig: string = 'SlaveDNSPort.cfg';
-  TimeCheckUpdateFile: string = 'TimeCheckUpdate.cfg';
-  DirCustomHost : string = 'customhost';
-
   FormAlertLastShow: string = '';
 
   DNSMasterSerialized: string = '';
@@ -624,6 +614,12 @@ var
   oldConnections: TConnectionArray = nil;
   ConnectionsNetstat: TConnectionArray = nil;
   SelectedConnection : TConnection;
+
+  DirCustomHost : String = 'customhost';
+  BlackListCfgFile: String = 'blackhost.txt';
+
+  ThemesList: TStringList = nil;
+  RejectedIPLocalServer: TStringList = nil;
 implementation
 
 uses TypInfo;
@@ -699,7 +695,7 @@ begin
       form1.ListBoxIpClients.Items.Add(ipclient);
     end;
 
-  
+
     isNew := true;
     for i := 0 to form1.ListView1.Items.Count-1 do
     begin
@@ -767,7 +763,7 @@ begin
         ListViewLogs.Scroll(p.X, p.Y);
       end;
 
-      if ListViewLogs.Items.Count > 200 then
+      if ListViewLogs.Items.Count > 50 then
         ListViewLogs.Items[0].Delete;
 
       {
@@ -1109,7 +1105,7 @@ begin
   if not InputQuery('Add DNS Master', 'Exemple 209.244.0.3', dns) then exit;
   ConfigDNSMaster.Add(dns);
   ListBoxDNSMaster.Items.Add(dns);
-  ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
+  Config.Save;
   if isServerStarted then PanelRestart.Visible := True;
 end;
 
@@ -1132,7 +1128,7 @@ begin
     ConfigDNSMaster.Delete(i);
     ListBoxDNSMaster.DeleteSelected;
     ListBoxDNSMaster.ItemIndex := 1 - 1;
-    ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
+    Config.Save;
     if isServerStarted then PanelRestart.Visible := True;
     ShowMessage('Effacé');
   end;
@@ -1154,7 +1150,7 @@ begin
   if not InputQuery('Update DNS Master', 'Exemple 209.244.0.3', dns) then exit;
   ListBoxDNSMaster.Items.Strings[i] := dns;
   ConfigDNSMaster[i] := dns;
-  ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
+  Config.Save;
   if isServerStarted then PanelRestart.Visible := True;
 end;
 
@@ -1171,7 +1167,7 @@ begin
   ConfigDNSMaster.Exchange(i, i + 1);
   ListBoxDNSMaster.Items.Move(i, i + 1);
   ListBoxDNSMaster.ItemIndex := i + 1;
-  ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
+  Config.Save;
   if isServerStarted then PanelRestart.Visible := True;
 end;
 
@@ -1188,7 +1184,7 @@ begin
   ConfigDNSMaster.Exchange(i, i - 1);
   ListBoxDNSMaster.Items.Move(i, i - 1);
   ListBoxDNSMaster.ItemIndex := i - 1;
-  ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
+  Config.Save;
   if isServerStarted then PanelRestart.Visible := True;
 end;
 
@@ -1293,7 +1289,7 @@ begin
   Memo1.Clear;
   Memo1.Text := 'Veuillez lire les modalités et les conditions suivantes avant l''utilisation de ce logiciel.  L''utilisation de ce logiciel indique l''acceptation des termes et conditions de la licence.'+#13#10#13#10+
                 '1. Déni de garantie'+#13#10#13#10+
-                '"DNS Relay Server" est fourni "tel-que", et aucune garantie de quelque sorte n''est exprimée ou impliquée, incluant sans limitation, toute garantie de valeur marchande ou format physique pour un but particulier.'+#13#10#13#10+
+                '"DNS Relay Server" est fourni "tel-quel", et aucune garantie de quelque sorte n''est exprimée ou impliquée, incluant sans limitation, toute garantie de valeur marchande ou format physique pour un but particulier.'+#13#10#13#10+
                 'Dans aucun cas, l''auteur de ce logiciel ne sera jugé responsable de la perte de données, des dommages, du manque à gagner ou de n''importe quel autre genre de perte par l''utilisation correcte ou non de ce logiciel.'+#13#10#13#10+
                 'Le logiciel peut-être modifié. Le code source est fourni dans le setup d''installation.'+#13#10#13#10+
                 ''+#13#10#13#10+
@@ -1350,22 +1346,42 @@ begin
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 5;
 
-  DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
-  if not DirectoryExists(DataDirectoryPath) then makeDir(DataDirectoryPath);
-
-  FilehostPathConfig := DataDirectoryPath + FilehostPathConfig ;
-  SlaveDNSIPConfig := DataDirectoryPath + SlaveDNSIPConfig;
-  SlaveDNSPortConfig := DataDirectoryPath + SlaveDNSPortConfig;
-  MasterDNSFile := DataDirectoryPath + MasterDNSFile;
-  SlaveDNSProcesslist := DataDirectoryPath + SlaveDNSProcesslist;
-  TimeCheckUpdateFile :=  DataDirectoryPath + TimeCheckUpdateFile;
-  BlackListCfgFile := DataDirectoryPath + BlackListCfgFile;
-  DirCustomHost := DataDirectoryPath + DirCustomHost;
-
-  if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
-
   PythonPath := getPythonPath();
 
+
+
+  if not Config.Load then
+  begin
+Exit;
+    ConfigDeprecated.Load;
+
+    if ConfigDeprecated.Exists then
+    begin
+
+
+
+      if CheckBoxUpdateSilent.Checked then
+        ConfigDeprecated.EraseConfiguration
+      else
+      begin
+
+        if MessageDlg(PChar(
+          'Les fichiers de configuration passent à une nouvelle méthode de stockage (par XML) à partir des versions 0.5.x et plus.'+
+          'Les données de l''ancienne version ont été copiés dans la nouvelle.'+
+          'Voulez-vous garder vos anciens fichiers de configuration?'+
+          '("Oui", si vous-voulez continuer à utiliser une ancienne version (0.4.x et moins) '
+        ),  mtConfirmation, [mbYes, mbNo], 0) = IDYES then
+        begin
+          ConfigDeprecated.EraseConfiguration;
+        end;
+
+      end;
+    end;
+  end;
+
+
+  {
+  if EditFilehost.Text = '' then EditFilehost.Text := DataDirectoryPath + 'host.txt';
 
   if FileExists(MasterDNSFile) then
     ListBoxDNSMaster.Items.LoadFromFile(MasterDNSFile);
@@ -1380,12 +1396,16 @@ begin
   if FileExists(DataDirectoryPath + 'EditExecOnDisconnected.cfg') then
     EditExecOnDisconnected.Text := ReadFromFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg');
 
+  }
+
+  DirCustomHost := DataDirectoryPath + DirCustomHost;
+
   {
   if FileExists(DataDirectoryPath + 'alertDisplayDuration.cfg') then
     SpinEditAlertDuration.Value := StrToInt(ReadFromFile(DataDirectoryPath + 'alertDisplayDuration.cfg'))
   else SpinEditAlertDuration.Value := 10;
   if SpinEditAlertDuration.Value < 3 then SpinEditAlertDuration.Value := 3;
-  }
+
   
   if FileExists(SlaveDNSPortConfig) then
     SpinPort.Value := StrToInt(ReadFromFile(SlaveDNSPortConfig));
@@ -1396,24 +1416,29 @@ begin
 
   if FileExists(TimeCheckUpdateFile) then
     SpinTimeCheckUpdate.Value := StrToInt(ReadFromFile(TimeCheckUpdateFile));
+  }
+
+
 
   if FileExists(BlackListCfgFile) then
     ListBoxBlacklist.Items.LoadFromFile(BlackListCfgFile);
 
+  {
   SpinEditTTLCache.Value := 1;
   if FileExists(DataDirectoryPath + 'SpinEditTTLCache.cfg') then
      SpinEditTTLCache.Value := StrToInt(ReadFromFile(DataDirectoryPath + 'SpinEditTTLCache.cfg'));
   TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
   TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
+  }                                           
 
-  CheckBoxAutostartDNSOnBoot.Checked := FileExists(DataDirectoryPath + 'checkAutostartDNS.cfg');
-  CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
-  CheckBoxUpdateIntervall.Checked := FileExists(DataDirectoryPath + 'checkupdateIntervall.cfg');
-  CheckBoxUpdateSilent.Checked := FileExists(DataDirectoryPath + 'checkupdateSilent.cfg');
-  TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
-  TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
-  CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-  CheckBoxShowDebug.Checked := FileExists(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
+  //CheckBoxAutostartDNSOnBoot.Checked := FileExists(DataDirectoryPath + 'checkAutostartDNS.cfg');
+  //CheckBoxUpdate.Checked := FileExists(DataDirectoryPath + 'checkupdate.cfg');
+  //CheckBoxUpdateIntervall.Checked := FileExists(DataDirectoryPath + 'checkupdateIntervall.cfg');
+  //CheckBoxUpdateSilent.Checked := FileExists(DataDirectoryPath + 'checkupdateSilent.cfg');
+  //TimerCheckUpdate.Enabled := Form1.CheckBoxUpdateIntervall.Checked;
+  //TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 3600000;
+  //CheckBoxAllowModifyNetCard.Checked := FileExists(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
+  //CheckBoxShowDebug.Checked := FileExists(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
 
   {
   connus1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventsKnow.cfg');
@@ -1425,10 +1450,10 @@ begin
   bloques1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
   CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
   }
-  
-  LogDNSAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
-  LogNetstatAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
 
+  //LogDNSAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
+  //LogNetstatAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
+  {
   ComboBoxCurrentTheme.OnSelect := nil;
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
     ComboBoxCurrentTheme.Items.LoadFromFile(DataDirectoryPath + 'ThemeNames.cfg');
@@ -1443,7 +1468,6 @@ begin
     ComboBoxPosLogs.ItemIndex := StrToInt( ReadFromFile(DataDirectoryPath + 'PositionLogs.cfg'));
   ComboBoxPosLogsSelect(ComboBoxPosLogs);
 
-  Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
   CheckBoxBindAllIP.Checked := FileExists(DataDirectoryPath + 'CheckBoxBindAllIP.cfg');
   CheckBoxBindAllIPClick(nil);
   ButtonRefreshNetCardClick(nil);
@@ -1453,29 +1477,37 @@ begin
   CheckBoxNoTestDNSMaster.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
   CheckBoxNoCacheDNS.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
   CheckBoxPureServer.Checked := FileExists(DataDirectoryPath + 'CheckBoxPureServer.cfg');
-
   CheckBoxRemoteAccess.Checked := FileExists(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg');
+
   TimerRemoteAccess.Enabled := CheckBoxRemoteAccess.Checked;
 
   CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
-
   CheckBoxExecOnDisconnected.Checked := FileExists(DataDirectoryPath + 'CheckBoxExecOnDisconnected.cfg');
-  
+
   refreshCheckBox(CheckBoxStartWithWindows);
-
   TActionManageIP.load();
-
   ListViewCreate(ListView1);
   ListView1.Clear;
   getDomains(EditFilehost.Text, ListView1);
-
   TimerUpdateOnLoad.Enabled := CheckBoxUpdate.Enabled;
+
 
   if Not FileExists(DataDirectoryPath + 'TimerRefreshNetstat.cfg') then
     WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', '5000');
   TimerRefreshNetstat.Interval := StrToInt(ReadFromFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg'));
   TimerRefreshNetstat.Enabled := TimerRefreshNetstat.Interval > 0;
-   
+     
+  }
+  Systray.AjouteIconeTray(Handle,Application.Icon.Handle,Self.Caption);
+  ListViewCreate(ListView1);
+  ListView1.Clear;
+  getDomains(EditFilehost.Text, ListView1);
+
+
+
+
+
+
 
   // ListViewNetstat
   AjouterUneColone(ListViewNetstat.Columns.Add, 'Process', 100);
@@ -1719,7 +1751,7 @@ end;
 
 procedure TUpdate.Execute;
 begin
-  if FileExists(Form1.DataDirectoryPath + 'checkupdate.cfg') then
+  if Form1.CheckBoxUpdate.Checked then
   begin
     DoUpdate(True);
   end;
@@ -1750,16 +1782,19 @@ end;
 
 procedure TForm1.onProcessCreated(h: Cardinal);
 begin
-  WriteInFile(SlaveDNSProcesslist, IntToStr(h));
+  //WriteInFile(SlaveDNSProcesslist, IntToStr(h));
 end;
 
 procedure TForm1.closeProcessCreated();
+{
 var
   i: integer;
   txt: string;
   sl: TStringList;
   h: Cardinal;
+}
 begin
+  {
   if not FileExists(SlaveDNSProcesslist) then exit;
 
   txt := ReadFromFile(SlaveDNSProcesslist);
@@ -1788,6 +1823,7 @@ begin
   end;
   DeleteFile(SlaveDNSProcesslist);
   sl.Free;
+  }
 end;
 
 
@@ -2069,22 +2105,27 @@ begin
 end;
 
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
+{
 var
   i: Integer;
   txt: String;
-begin                     
+}
+begin
   debug('TimerSaveChangeTimer');
   TTimer(Sender).Enabled := False;
   if isApplicationLoading then exit;
-  WriteInFile(FilehostPathConfig, EditFilehost.Text);
-  WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
-  WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
+
+
+  //WriteInFile(FilehostPathConfig, EditFilehost.Text);
+  //WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
+  //WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
   //WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
-  WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
-  WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
+  //WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
+  //WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
   TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
   TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
 
+  {
   txt := #13#10;
   for i := 0 to CheckListBoxDNSRelayIP.Count - 1 do
   begin
@@ -2094,7 +2135,9 @@ begin
     end;
   end;
   WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
-
+  }
+  Config.Save;
+  
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2637,12 +2680,13 @@ end;
 procedure TForm1.CheckBoxUpdateClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
-
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdate.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
-
+  }
+  Config.Save;
   //ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 
   LabelMessage.Caption := PChar('Sauvé!');
@@ -2675,12 +2719,13 @@ procedure TForm1.ButtonRefreshNetCardClick(Sender: TObject);
 var
   i: Integer;
   net: tNetworkInterfaceList;
-  txt: String;
+  //txt: String;
 begin
   if CheckBoxBindAllIP.Checked then exit;
-  
-  txt := ReadFromFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg');
 
+  //txt := ReadFromFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg');
+  if RejectedIPLocalServer = nil then
+    RejectedIPLocalServer := TStringList.Create;
   CheckListBoxDNSRelayIP.Clear;
   if GetNetworkInterfaces(net) then
   begin
@@ -2689,7 +2734,8 @@ begin
       if net[i].AddrIP <> '127.0.0.1' then
       begin
         CheckListBoxDNSRelayIP.Items.Add(net[i].AddrIP);
-        CheckListBoxDNSRelayIP.Checked[CheckListBoxDNSRelayIP.Items.Count -1] := Pos(net[i].AddrIP, txt) = 0;
+        //CheckListBoxDNSRelayIP.Checked[CheckListBoxDNSRelayIP.Items.Count -1] := Pos(net[i].AddrIP, txt) = 0;
+        CheckListBoxDNSRelayIP.Checked[CheckListBoxDNSRelayIP.Items.Count -1] := (RejectedIPLocalServer.IndexOf(net[i].AddrIP) = -1)
       end;
     end;
   end;
@@ -2702,9 +2748,9 @@ begin
   debug('TimerAfterFormCreateTimer');
   TTimer(Sender).Enabled := False;
 
-
-  ComboBoxPosLogsSelect(ComboBoxPosLogs);
-  ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
+  
+  //ComboBoxPosLogsSelect(ComboBoxPosLogs);
+  //ComboBoxCurrentTheme.OnSelect := ComboBoxCurrentThemeSelect;
   TimerHideMessage.Enabled := False;
   TimerSaveChangeAndRestart.Enabled := False;
   if startedInBackground then exit;
@@ -2750,12 +2796,15 @@ end;
 procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
   else DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
-
+  }
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 60 * 60 * 1000;
   TimerCheckUpdate.Enabled := TCheckBox(Sender).Checked;
+
+  Config.Save;
 
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -2765,11 +2814,13 @@ end;
 procedure TForm1.CheckBoxUpdateSilentClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdateSilent.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdateSilent.cfg');
-
+  }
+  Config.Save;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2786,11 +2837,13 @@ end;
 procedure TForm1.CheckBoxAllowModifyNetCardClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-
+  }
+  Config.Save;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2800,11 +2853,13 @@ end;
 procedure TForm1.CheckBoxAutostartDNSOnBootClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAutostartDNS.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAutostartDNS.cfg');
-
+  }
+  Config.Save;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3148,44 +3203,12 @@ end;
 procedure TForm1.ComboBoxCurrentThemeSelect(Sender: TObject);
 var
   i:Integer;
-  ThemesList, s:TStringList;
+  s:TStringList;
 begin
   i := ComboBoxCurrentTheme.ItemIndex;
   if i = -1 then exit;
 
-  ThemesList := TStringList.Create;
-  if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then
-    ThemesList := ReadFileToStringList(DataDirectoryPath + 'ThemeListData.cfg')
-  else begin
-    // Create first list of themes
-    ThemesList.Add('0,0,0,255,255,255');
-    ThemesList.Add('0,0,0,210,226,227');
-    ThemesList.Add('250,250,250,30,30,30');
-    ThemesList.Add('0,255,0,0,0,0');
-    ThemesList.Add('0,255,255,0,0,0');
-    ThemesList.Add('0,0,0,255,0,255');
-    ThemesList.Add('255,255,255,168,0,168');
-    ThemesList.Add('255,255,255,0,0,160');
-    ThemesList.Add('0,0,0,0,221,221');
-    ThemesList.Add('0,0,0,192,192,192');
-    ThemesList.Add('0,0,0,238,238,238');
-    WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
-
-    ComboBoxCurrentTheme.Clear;
-    ComboBoxCurrentTheme.Items.Add('White');
-    ComboBoxCurrentTheme.Items.Add('Cream');
-    ComboBoxCurrentTheme.Items.Add('Black');
-    ComboBoxCurrentTheme.Items.Add('Matrix');
-    ComboBoxCurrentTheme.Items.Add('DarkBlue');
-    ComboBoxCurrentTheme.Items.Add('Pink');
-    ComboBoxCurrentTheme.Items.Add('DarkPink');
-    ComboBoxCurrentTheme.Items.Add('Blue');
-    ComboBoxCurrentTheme.Items.Add('BlueSky');
-    ComboBoxCurrentTheme.Items.Add('Gray');
-    ComboBoxCurrentTheme.Items.Add('Sylver');
-    ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
-    ComboBoxCurrentTheme.ItemIndex := 0;
-  end;
+  //Config.Load;
 
   if (i >= 0) and (i < ThemesList.Count) then
   begin
@@ -3204,8 +3227,9 @@ begin
   end;
   
   if isApplicationLoading then exit;
-  WriteInFile(DataDirectoryPath + 'contrasteTextarea.cfg', IntToStr(SpinEditContraste.Position));
-  WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(ComboBoxCurrentTheme.ItemIndex));
+  Config.Save;
+  //WriteInFile(DataDirectoryPath + 'contrasteTextarea.cfg', IntToStr(SpinEditContraste.Position));
+  //WriteInFile(DataDirectoryPath + 'ThemeSelected.cfg', IntToStr(ComboBoxCurrentTheme.ItemIndex));
 
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -3239,7 +3263,6 @@ end;
 procedure TForm1.Supprimer3Click(Sender: TObject);
 var
   i: Integer;
-  ThemesList:TStringList;
 begin
   if MessageDlg(PChar('Effacer le theme ['+ComboBoxCurrentTheme.Text+']?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
   if ComboBoxCurrentTheme.Items.Count <= 1 then
@@ -3248,10 +3271,10 @@ begin
     exit;
   end;
 
+  {
   ThemesList := TStringList.Create;
   if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then
     ThemesList := ReadFileToStringList(DataDirectoryPath + 'ThemeListData.cfg');
-
 
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then
     ComboBoxCurrentTheme.Items.LoadFromFile(DataDirectoryPath + 'ThemeNames.cfg');
@@ -3273,12 +3296,20 @@ begin
       ThemesList.Delete(i);
       ComboBoxCurrentTheme.DeleteSelected;
     end;
+  }
+  i := ComboBoxCurrentTheme.ItemIndex;
+  if i in [0..ThemesList.Count] then
+  begin
+    ThemesList.Delete(i);
+    ComboBoxCurrentTheme.DeleteSelected;
+    Config.Save;
+  end;
 
-  WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
-  ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
+  //WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
+  //ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
   ComboBoxCurrentTheme.ItemIndex := 0;
   ComboBoxCurrentThemeSelect(ComboBoxCurrentTheme);
-  GroupBoxUpdateTheme.Visible := False;    
+  GroupBoxUpdateTheme.Visible := False;
   GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
 end;
 
@@ -3286,11 +3317,12 @@ end;
 procedure TForm1.ButtonUpdateThemeClick(Sender: TObject);
 var
   i: Integer;
-  ThemesList:TStringList;
+  //ThemesList:TStringList;
   txt :String;
   c: TColor;
   fr,fg,fb,br,bg,bb:string;
 begin
+{
   ThemesList := TStringList.Create;
   if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then
     ThemesList := ReadFileToStringList(DataDirectoryPath + 'ThemeListData.cfg');
@@ -3302,7 +3334,7 @@ begin
   ComboBoxCurrentTheme.ItemIndex := 0;
   if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then
     ComboBoxCurrentTheme.ItemIndex := StrToInt(ReadFromFile(DataDirectoryPath + 'ThemeSelected.cfg'));
-
+}
 
 
   c := ShapeColorText.Brush.Color;
@@ -3326,6 +3358,12 @@ begin
   end else
   begin
     i := StrtoInt(GroupBoxUpdateTheme.Hint);
+    if i in [1..ThemesList.Count] then
+    begin
+      ThemesList.Strings[i] := txt;
+      ComboBoxCurrentTheme.Items.Strings[i] := EditThemeName.Text;
+    end;
+    {
     if (i >= ThemesList.Count) or (i < 0) then
     begin
       if MessageDlg(PChar('Erreur avec les fichiers template. Restaurer les templates à leur origine?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
@@ -3338,14 +3376,16 @@ begin
       ThemesList.Strings[i] := txt;
       ComboBoxCurrentTheme.Items.Strings[i] := EditThemeName.Text;
     end;
+    }
   end;
-  WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
-  ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
+  Config.Save;
+  //WriteStringListInFile(DataDirectoryPath + 'ThemeListData.cfg', ThemesList);
+  //ComboBoxCurrentTheme.Items.SaveToFile(DataDirectoryPath + 'ThemeNames.cfg');
   if GroupBoxUpdateTheme.Hint = 'add' then
     ComboBoxCurrentTheme.ItemIndex := ComboBoxCurrentTheme.Items.Count - 1
   else
     ComboBoxCurrentTheme.ItemIndex := i;
-  GroupBoxUpdateTheme.Visible := False;             
+  GroupBoxUpdateTheme.Visible := False;
   GroupBoxAffichage.Height := GroupBox19.Top + GroupBox19.Height + GroupBox23.Top;
 end;
 
@@ -3353,9 +3393,41 @@ end;
 procedure TForm1.Restaurer1Click(Sender: TObject);
 begin
   if MessageDlg(PChar('Restaurer les templates à leur origine?'),  mtConfirmation, [mbYes, mbNo], 0) = IDNO then exit;
+
+  ComboBoxCurrentTheme.Clear;
+  ComboBoxCurrentTheme.Items.Add('White');
+  ComboBoxCurrentTheme.Items.Add('Cream');
+  ComboBoxCurrentTheme.Items.Add('Black');
+  ComboBoxCurrentTheme.Items.Add('Matrix');
+  ComboBoxCurrentTheme.Items.Add('DarkBlue');
+  ComboBoxCurrentTheme.Items.Add('Pink');
+  ComboBoxCurrentTheme.Items.Add('DarkPink');
+  ComboBoxCurrentTheme.Items.Add('Blue');
+  ComboBoxCurrentTheme.Items.Add('BlueSky');
+  ComboBoxCurrentTheme.Items.Add('Gray');
+  ComboBoxCurrentTheme.Items.Add('Sylver');
+
+  ThemesList := TStringList.Create;
+  ThemesList.Add('0,0,0,255,255,255');
+  ThemesList.Add('0,0,0,210,226,227');
+  ThemesList.Add('250,250,250,30,30,30');
+  ThemesList.Add('0,255,0,0,0,0');
+  ThemesList.Add('0,255,255,0,0,0');
+  ThemesList.Add('0,0,0,255,0,255');
+  ThemesList.Add('255,255,255,168,0,168');
+  ThemesList.Add('255,255,255,0,0,160');
+  ThemesList.Add('0,0,0,0,221,221');
+  ThemesList.Add('0,0,0,192,192,192');
+  ThemesList.Add('0,0,0,238,238,238');
+
+  ComboBoxCurrentTheme.ItemIndex := 0;
+
+  Config.Save;
+  {
   if FileExists(DataDirectoryPath + 'ThemeListData.cfg') then DeleteFile(DataDirectoryPath + 'ThemeListData.cfg');
   if FileExists(DataDirectoryPath + 'ThemeNames.cfg') then DeleteFile(DataDirectoryPath + 'ThemeNames.cfg');
   if FileExists(DataDirectoryPath + 'ThemeSelected.cfg') then DeleteFile(DataDirectoryPath + 'ThemeSelected.cfg');
+  }
   ComboBoxCurrentThemeSelect(nil);
   ComboBoxCurrentThemeSelect(nil);
 end;
@@ -3425,7 +3497,8 @@ end;
 
 procedure TForm1.ComboBoxPosLogsSelect(Sender: TObject);
 begin
-  WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
+  //WriteInFile(DataDirectoryPath + 'PositionLogs.cfg', IntToStr(ComboBoxPosLogs.ItemIndex));
+  Config.Save;
   if ComboBoxPosLogs.ItemIndex = 0 then
   begin
     GroupBox5.Align := alTop;
@@ -3536,6 +3609,20 @@ begin
 end;
 
 
+procedure TForm1.RefreshModeFilter();
+begin
+  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  Toutautoriser1.Checked := AllowAll.Checked;
+  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
+
+  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
+  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
+  Toutnormale1.Checked := not AllowAll.Checked and not DisallowAll.Checked;
+  Toutnormal1.Checked := Toutnormale1.Checked;
+  toutbloquer1.Checked := DisallowAll.Checked;
+  if isServerStarted then ActionDNS.clearCache; //ButtonApplyChangesClick(nil);
+end;
+
 procedure TForm1.ButtonDisableHostClick(Sender: TObject);
 begin
   PanelRestart.Visible := True;
@@ -3571,20 +3658,6 @@ begin
     TToolButton(Sender).Down := True;
   end;
   DsactiverlefiltrageBlackword1.Checked := TToolButton(Sender).Down;
-end;
-
-procedure TForm1.RefreshModeFilter();
-begin
-  AllowAll.Checked := FileExists(DataDirectoryPath + 'disableHost.cfg') and FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  Toutautoriser1.Checked := AllowAll.Checked;
-  DisallowAll.Checked := FileExists(DataDirectoryPath + 'disableAll.cfg');
-
-  ButtonDisableBlackhost.Down := FileExists(DataDirectoryPath + 'disableBlackhost.cfg');
-  ButtonDisableHost.Down := FileExists(DataDirectoryPath + 'disableHost.cfg');
-  Toutnormale1.Checked := not AllowAll.Checked and not DisallowAll.Checked;
-  Toutnormal1.Checked := Toutnormale1.Checked;
-  toutbloquer1.Checked := DisallowAll.Checked;
-  if isServerStarted then ActionDNS.clearCache; //ButtonApplyChangesClick(nil);
 end;
 
 
@@ -3893,10 +3966,13 @@ end;
 procedure TForm1.CheckBoxNoTestDNSMasterClick(Sender: TObject);
 begin
   if isApplicationLoading then Exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
+  }
+  Config.Save;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3906,11 +3982,13 @@ end;
 procedure TForm1.CheckBoxNoCacheDNSClick(Sender: TObject);
 begin
   if isApplicationLoading then Exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
-
+  }
+  Config.Save;
   PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -3921,11 +3999,13 @@ end;
 procedure TForm1.CheckBoxPureServerClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxPureServer.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxPureServer.cfg');
-
+  }
+  Config.Save;
   PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -4083,12 +4163,13 @@ procedure TForm1.CheckBoxRemoteAccessClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
   TimerRemoteAccess.Enabled := TCheckBox(Sender).Checked;
-
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg');
-
+  }
+  Config.Save;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -4119,11 +4200,15 @@ procedure TForm1.CheckBoxRestartOnNetworkInterfaceChangeClick(
   Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
+  }
+
   TimerCheckSystemChanges.Enabled := isServerStarted and TCheckBox(Sender).Checked;
+  Config.Save;
 
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -4294,11 +4379,13 @@ end;
 procedure TForm1.CheckBoxExecOnDisconnectedClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + TCheckBox(Sender).Name + '.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + TCheckBox(Sender).Name + '.cfg');
-
+  }
+  Config.Save;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -4327,14 +4414,18 @@ begin
     CheckListBoxDNSRelayIP.Clear;
     CheckListBoxDNSRelayIP.Items.Add('0.0.0.0');
     CheckListBoxDNSRelayIP.Checked[0] := True;
-    WriteInFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg', '1');
+    //CheckBoxBindAllIP.Checked := True;
+    //WriteInFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg', '1');
   end else begin
+    //CheckBoxBindAllIP.Checked := False;
     ButtonRefreshNetCardClick(Nil);
-    DeleteFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg');
+    //DeleteFile(DataDirectoryPath + 'CheckBoxBindAllIP.cfg');
   end;
   CheckListBoxDNSRelayIP.Enabled := not isCheck;
 
   if isApplicationLoading then exit;
+  Config.Save;
+
   if isServerStarted then PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -5091,7 +5182,7 @@ begin
       end;
     end;
     }
-    if ListViewLogsNetstat.Items.Count > 200 then
+    if ListViewLogsNetstat.Items.Count > 50 then
       ListViewLogsNetstat.Items[0].Delete;
   end;
   //if oldConnections <> nil then FreeMem(oldConnections);
@@ -5108,12 +5199,13 @@ end;
 procedure TForm1.LogDNSAutoScrollClick(Sender: TObject);
 begin
   LogDNSAutoScroll.Checked := not LogDNSAutoScroll.Checked;
-
+  Config.Save;
+  {
   if LogDNSAutoScroll.Checked then
     WriteInFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
-
+  }
 end;
 
 procedure TForm1.ListViewLogsNetstatContextPopup(Sender: TObject;
@@ -5135,11 +5227,13 @@ end;
 procedure TForm1.LogNetstatAutoScrollClick(Sender: TObject);
 begin
   LogNetstatAutoScroll.Checked := not LogNetstatAutoScroll.Checked;
-
+  Config.Save;
+  {
   if LogNetstatAutoScroll.Checked then
     WriteInFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
+  }
 end;
 
 procedure TForm1.EraseLogsListViewDNSClick(Sender: TObject);
