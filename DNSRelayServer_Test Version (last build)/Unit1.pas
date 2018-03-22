@@ -14,7 +14,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.12';
+  CurrentApplicationVersion: string = '0.4.385.13';
   isDevVersion: Boolean = True;
 
 type
@@ -1507,7 +1507,7 @@ begin
   AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Port', 50);
   AjouterUneColone(ListViewNetstat.Columns.Add, 'State', 70);
   AjouterUneColone(ListViewNetstat.Columns.Add, 'Domaine', 100);
-  ToolButtonRefreshNetstatClick(nil);
+  //ToolButtonRefreshNetstatClick(nil);
 
   ListViewNetstat.DoubleBuffered := True;
 
