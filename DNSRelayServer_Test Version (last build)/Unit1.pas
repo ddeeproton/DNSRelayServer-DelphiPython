@@ -13,8 +13,8 @@ uses
   Sockets;   
 
 var
-  CurrentApplicationVersion: string = '0.4.384.0';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.384';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -691,7 +691,7 @@ begin
     ipclient := onlyChars(sl.Strings[3]);
     ipdomain := onlyChars(sl.Strings[4]);
     domain := onlyChars(sl.Strings[5]);
-
+    domain := Rules.DomainWithoutDotAtEnd(domain);
     //SetLength(domain, Length(domain));
 
     if form1.ListBoxIpClients.Items.IndexOf(ipclient) = -1 then
@@ -704,7 +704,8 @@ begin
     for i := 0 to form1.ListView1.Items.Count-1 do
     begin
       //if form1.ListView1.Items[i].SubItems[0] =  domain then isNew := false;
-      if form1.ListView1.Items[i].Caption = Rules.DomainWithoutDotAtEnd(domain) then isNew := false;
+      if Rules.DomainWithoutDotAtEnd(form1.ListView1.Items[i].Caption) = domain then
+        isNew := false;
     end;
 
     ip := ipdomain;

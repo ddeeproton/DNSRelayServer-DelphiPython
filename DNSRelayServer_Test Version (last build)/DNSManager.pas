@@ -46,7 +46,8 @@ begin
   dirPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
   WriteInFile(dirPath+'action_clear_cache.txt', ' ');
   //LaunchAndWait('ipconfig.exe','/flushdns', SW_SHOW);
-  ProcessManager.LaunchAndWait('ipconfig.exe','/flushdns', SW_HIDE);
+  ProcessManager.ExecAndContinue('ipconfig.exe','/flushdns', SW_HIDE);
+
   Unit1.Form1.MemoLogs.Lines.Add('Command Clear cache sent');
 end;
 
