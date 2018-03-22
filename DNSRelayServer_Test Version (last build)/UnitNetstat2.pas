@@ -9,7 +9,7 @@ const
   PROTOCOL_UDP = 1;
 
   TcpConnectionStates :
-    array[0..12] of string[20] =
+    array[0..12] of string =
     (
       '', 'CLOSED', 'LISTENING', 'SYN SENT', 'SYN RECIEVED', 'ESTABLISHED', 'FIN WAIT1', 'FIN WAIT2', 'CLOSE WAIT',
       'CLOSING', 'LAST ACKNOWLEDGMENT', 'TIME WAIT', 'DELETE TCP'
