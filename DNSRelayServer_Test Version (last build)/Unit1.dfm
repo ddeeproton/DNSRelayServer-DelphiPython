@@ -17798,6 +17798,7 @@ object Form1: TForm1
     Top = 173
   end
   object TimerCheckSystemChanges: TTimer
+    Enabled = False
     Interval = 30000
     OnTimer = CheckSystemChangesTimer
     Left = 452
@@ -17894,6 +17895,7 @@ object Form1: TForm1
     end
   end
   object TimerRefreshNetstat: TTimer
+    Enabled = False
     OnTimer = TimerRefreshNetstatTimer
     Left = 423
     Top = 229
@@ -17952,6 +17954,7 @@ object Form1: TForm1
     end
   end
   object TimerLogsNetstat: TTimer
+    Enabled = False
     Interval = 2000
     OnTimer = TimerLogsNetstatTimer
     Left = 451

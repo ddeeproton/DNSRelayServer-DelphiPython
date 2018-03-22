@@ -14,7 +14,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.9';
+  CurrentApplicationVersion: string = '0.4.385.10';
   isDevVersion: Boolean = True;
 
 type
@@ -1726,6 +1726,10 @@ begin
   debug('TimerAfterFormCreateLongTimer');
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
+
+  TimerRefreshNetstat.Enabled := True;
+  TimerLogsNetstat.Enabled := True;
+  TimerCheckSystemChanges.Enabled := True;
 
   if not ServerDoStart
   and CheckBoxAutostartDNSOnBoot.Checked
