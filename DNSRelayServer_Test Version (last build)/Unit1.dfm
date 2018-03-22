@@ -1837,6 +1837,7 @@ object Form1: TForm1
             Align = alClient
             Lines.Strings = (
               'Memo1')
+            ScrollBars = ssVertical
             TabOrder = 0
           end
         end
@@ -2926,7 +2927,7 @@ object Form1: TForm1
   end
   object ImageList1: TImageList
     Left = 394
-    Top = 368
+    Top = 416
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -3730,7 +3731,7 @@ object Form1: TForm1
   object PopupMenu1: TPopupMenu
     Images = ImageList3
     Left = 394
-    Top = 244
+    Top = 292
     object Afficher1: TMenuItem
       Caption = 'Afficher'
       OnClick = Afficher1Click
@@ -3853,7 +3854,7 @@ object Form1: TForm1
     Height = 40
     Width = 40
     Left = 423
-    Top = 368
+    Top = 416
     Bitmap = {
       494C010110001300040028002800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000A0000000C8000000010020000000000000F4
@@ -7990,11 +7991,11 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofEnableSizing, ofDontAddToRecent, ofForceShowHidden]
     Left = 395
-    Top = 429
+    Top = 477
   end
   object ImageList3: TImageList
     Left = 450
-    Top = 368
+    Top = 416
     Bitmap = {
       494C010111001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
@@ -8668,12 +8669,12 @@ object Form1: TForm1
     Interval = 2000
     OnTimer = TimerSaveChangeAndRestartTimer
     Left = 423
-    Top = 153
+    Top = 201
   end
   object PopupMenuListView: TPopupMenu
     Images = ImageList3
     Left = 394
-    Top = 300
+    Top = 348
     object Ajouterunnouveaudomaine1: TMenuItem
       Caption = 'Ajouter (un nouveau nom de domaine)'
       ImageIndex = 16
@@ -8717,13 +8718,13 @@ object Form1: TForm1
     Interval = 500
     OnTimer = Timer1Timer
     Left = 394
-    Top = 96
+    Top = 144
   end
   object ImageList4: TImageList
     Height = 80
     Width = 71
     Left = 395
-    Top = 394
+    Top = 442
     Bitmap = {
       494C010104000900040047005000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000001C010000F000000001002000000000000029
@@ -17527,25 +17528,25 @@ object Form1: TForm1
     Interval = 5000
     OnTimer = TimerUpdateOnLoadTimer
     Left = 395
-    Top = 41
+    Top = 89
   end
   object TimerAfterFormCreate: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerAfterFormCreateTimer
     Left = 423
-    Top = 13
+    Top = 61
   end
   object TimerCheckUpdate: TTimer
     Enabled = False
     Interval = 120000
     OnTimer = TimerCheckUpdateTimer
     Left = 395
-    Top = 13
+    Top = 61
   end
   object PopupMenuDNSMaster: TPopupMenu
     Left = 394
-    Top = 272
+    Top = 320
     object Ajouter1: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -17579,24 +17580,24 @@ object Form1: TForm1
     Enabled = False
     OnTimer = TimerStartInBackgroundTimer
     Left = 395
-    Top = 69
+    Top = 117
   end
   object TimerRestart: TTimer
     Enabled = False
     Interval = 3000
     OnTimer = TimerRestartTimer
     Left = 423
-    Top = 41
+    Top = 89
   end
   object TimerResetAlertPosition: TTimer
     Enabled = False
     OnTimer = TimerResetAlertPositionTimer
     Left = 423
-    Top = 125
+    Top = 173
   end
   object PopupMenuBlacklist: TPopupMenu
     Left = 422
-    Top = 272
+    Top = 320
     object Ajouter2: TMenuItem
       Caption = 'Ajouter'
       ShortCut = 45
@@ -17615,11 +17616,11 @@ object Form1: TForm1
   end
   object ColorDialog1: TColorDialog
     Left = 422
-    Top = 429
+    Top = 477
   end
   object PopupMenuTheme: TPopupMenu
     Left = 450
-    Top = 272
+    Top = 320
     object Ajouter3: TMenuItem
       Caption = 'Ajouter'
       OnClick = Ajouter3Click
@@ -17642,7 +17643,7 @@ object Form1: TForm1
   end
   object PopupMenuForAllDNSRules: TPopupMenu
     Left = 449
-    Top = 244
+    Top = 292
     object DisallowAll: TMenuItem
       Caption = 'Tout bloquer'
       OnClick = DisallowAllClick
@@ -17658,7 +17659,7 @@ object Form1: TForm1
   end
   object PopupMenuLogs: TPopupMenu
     Left = 422
-    Top = 244
+    Top = 292
     object Afficherenhaut1: TMenuItem
       Caption = 'Afficher en haut'
       OnClick = Afficherenhaut1Click
@@ -17688,76 +17689,76 @@ object Form1: TForm1
     Interval = 2000
     OnTimer = TimerHideMessageTimer
     Left = 423
-    Top = 97
+    Top = 145
   end
   object TimerAlert: TTimer
     Enabled = False
     Interval = 10000
     OnTimer = TimerAlertTimer
     Left = 395
-    Top = 125
+    Top = 173
   end
   object TimerFadeIn: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeInTimer
     Left = 452
-    Top = 69
+    Top = 117
   end
   object TimerFadeOut: TTimer
     Enabled = False
     Interval = 1
     OnTimer = TimerFadeOutTimer
     Left = 452
-    Top = 97
+    Top = 145
   end
   object TimerAfterFormCreateLong: TTimer
     Interval = 10000
     OnTimer = TimerAfterFormCreateLongTimer
     Left = 452
-    Top = 13
+    Top = 61
   end
   object TimerRemoteAccess: TTimer
     Enabled = False
     OnTimer = TimerRemoteAccessTimer
     Left = 452
-    Top = 125
+    Top = 173
   end
   object TimerCheckSystemChanges: TTimer
     Interval = 30000
     OnTimer = CheckSystemChangesTimer
     Left = 452
-    Top = 41
+    Top = 89
   end
   object TimerExecOnDisconnected: TTimer
     Enabled = False
     Interval = 60000
     OnTimer = TimerExecOnDisconnectedTimer
     Left = 395
-    Top = 153
+    Top = 201
   end
   object TimerClearCache: TTimer
     Enabled = False
     OnTimer = TimerClearCacheTimer
     Left = 423
-    Top = 69
+    Top = 117
   end
   object TimerSaveChange: TTimer
     Enabled = False
     Interval = 2000
     OnTimer = TimerSaveChangeTimer
     Left = 452
-    Top = 153
+    Top = 201
   end
   object TimerBootNoXP: TTimer
     Enabled = False
     OnTimer = TimerBootNoXPTimer
     Left = 395
-    Top = 181
+    Top = 229
   end
   object MainMenu1: TMainMenu
     Left = 456
-    Top = 214
+    Top = 262
     object Config2: TMenuItem
       Caption = 'Config'
       OnClick = ToolButton8Click
@@ -17785,11 +17786,11 @@ object Form1: TForm1
   end
   object ImageListNestat: TImageList
     Left = 423
-    Top = 395
+    Top = 443
   end
   object PopupMenuListViewNetstat: TPopupMenu
     Left = 422
-    Top = 300
+    Top = 348
     object Fermerlaconnexion1: TMenuItem
       Caption = 'Fermer la connexion'
       OnClick = Fermerlaconnexion1Click
@@ -17801,7 +17802,7 @@ object Form1: TForm1
   end
   object PopupMenuRefreshNetstat: TPopupMenu
     Left = 450
-    Top = 300
+    Top = 348
     object Rafraichirtoutesles1seconde1: TMenuItem
       Caption = 'Rafraichir (1 seconde)'
       OnClick = Rafraichirtoutesles1seconde1Click
@@ -17822,12 +17823,12 @@ object Form1: TForm1
   object TimerRefreshNetstat: TTimer
     OnTimer = TimerRefreshNetstatTimer
     Left = 423
-    Top = 181
+    Top = 229
   end
   object PopupMenuListViewLogsDNS: TPopupMenu
     Images = ImageList3
     Left = 394
-    Top = 328
+    Top = 376
     object MenuItemLogsDNSAdd: TMenuItem
       Caption = 'Ajouter (un nouveau nom de domaine)'
       ImageIndex = 16
@@ -17881,11 +17882,11 @@ object Form1: TForm1
     Interval = 2000
     OnTimer = TimerLogsNetstatTimer
     Left = 451
-    Top = 181
+    Top = 229
   end
   object PopupMenuListViewLogsNetstat: TPopupMenu
     Left = 424
-    Top = 328
+    Top = 376
     object LogNetstatAutoScroll: TMenuItem
       Caption = 'D'#233'filement automatique'
       OnClick = LogNetstatAutoScrollClick
