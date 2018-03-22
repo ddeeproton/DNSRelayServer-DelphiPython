@@ -14,7 +14,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.8';
+  CurrentApplicationVersion: string = '0.4.385.9';
   isDevVersion: Boolean = True;
 
 type
@@ -1079,6 +1079,7 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   i: Integer;
 begin
+{
   i := opacity;
   while i >= 0 do
   begin
@@ -1086,11 +1087,14 @@ begin
     Application.ProcessMessages;
     i := i - 5;
   end;
+}
   if isServerStarted then ButtonCloseClick(nil);
   for i := 0 to Form1.ControlCount - 1 do
   begin
     if Form1.Controls[i].ClassName = 'TTimer' then
+    begin
       TTimer(Form1.Controls[i]).Enabled := False;
+    end;
   end;
   Application.ProcessMessages;
   if FormDialogIP <> nil then FormDialogIP.Close;
@@ -1718,7 +1722,7 @@ end;
 
 
 procedure TForm1.TimerAfterFormCreateLongTimer(Sender: TObject);
-begin                                
+begin
   debug('TimerAfterFormCreateLongTimer');
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
