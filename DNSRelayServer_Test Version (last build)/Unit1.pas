@@ -14,7 +14,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.10';
+  CurrentApplicationVersion: string = '0.4.385.11';
   isDevVersion: Boolean = True;
 
 type
@@ -1251,13 +1251,13 @@ begin
   end;
   forOldVersions();
 
-
+  {
   // hide from task bar and task list
   SetWindowLong(Handle, GWL_EXSTYLE,
                 GetWindowLong(Handle, GWL_EXSTYLE) or
                 WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
   ShowWindow(Application.Handle, SW_HIDE);
-
+  }
   //SetWindowTheme(PageControl1.Handle, '', '');
 
   TimerAfterFormCreate.Enabled := True;
@@ -2738,6 +2738,12 @@ begin
 
   PanelRestart.Visible := False;
   PanelMessage.Visible := False;
+
+  // hide from task bar and task list
+  SetWindowLong(Handle, GWL_EXSTYLE,
+                GetWindowLong(Handle, GWL_EXSTYLE) or
+                WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW);
+  ShowWindow(Application.Handle, SW_HIDE);
 
   if (ParamCount() >= 1) and (ParamStr(1) = '/uninst') then
   begin
