@@ -14,7 +14,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.6';
+  CurrentApplicationVersion: string = '0.4.385.7';
   isDevVersion: Boolean = True;
 
 type
@@ -5021,6 +5021,11 @@ end;
 function TForm1.GetDomainFromIP(ip: String): String;
 var i: Integer;
 begin
+  if Pos('127.0.0.', ip) > 0 then
+  begin
+    result := 'BLOCKED';
+    Exit;
+  end;
   result := 'Direct IP or "Logs DNS" removed';
   for i := 0 to ListViewLogs.Items.Count -1 do
   begin
