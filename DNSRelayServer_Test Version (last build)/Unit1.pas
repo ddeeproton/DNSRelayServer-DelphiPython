@@ -14,7 +14,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.11';
+  CurrentApplicationVersion: string = '0.4.385.12';
   isDevVersion: Boolean = True;
 
 type
@@ -1727,8 +1727,14 @@ begin
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
 
-  TimerRefreshNetstat.Enabled := True;
-  TimerLogsNetstat.Enabled := True;
+  if isXP then
+  begin
+    ListViewNetstat.Items.Add().Caption := 'Fonction désactivé pour XP';
+    ListViewLogsNetstat.Items.Add().Caption := 'Fonction désactivé pour XP';
+  end else begin
+    TimerRefreshNetstat.Enabled := True;
+    TimerLogsNetstat.Enabled := True;
+  end;
   TimerCheckSystemChanges.Enabled := True;
 
   if not ServerDoStart
