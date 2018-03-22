@@ -9,11 +9,11 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, WindowsManager,
-  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock,
-  Sockets;   
+  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
+  //, Sockets;   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.4';
+  CurrentApplicationVersion: string = '0.4.385.5';
   isDevVersion: Boolean = True;
 
 type
