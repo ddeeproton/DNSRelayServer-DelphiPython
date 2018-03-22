@@ -9,11 +9,12 @@ uses
   Spin, Buttons, NetworkManager, DNSManager, UnitNetConfig, DNSServer,
   UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
   CheckLst, StringManager, UnitRestartAlert, WindowsManager,
-  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager, Commctrl, ShellApi, Winsock;
-  //, Sockets;   
+  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager,
+  Commctrl, ShellApi, Winsock;
+  
 
 var
-  CurrentApplicationVersion: string = '0.4.385.5';
+  CurrentApplicationVersion: string = '0.4.385.6';
   isDevVersion: Boolean = True;
 
 type
@@ -1501,6 +1502,7 @@ begin
   AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Address', 100);
   AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Port', 50);
   AjouterUneColone(ListViewNetstat.Columns.Add, 'State', 100);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Domaine', 100);
   ToolButtonRefreshNetstatClick(nil);
 
   ListViewNetstat.DoubleBuffered := True;
@@ -4653,6 +4655,7 @@ begin
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(ConnectionsNetstat[i].RemoteAddress));
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(ConnectionsNetstat[i].RemoteRawPort)));
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[ConnectionsNetstat[i].ConnectionState]);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(GetDomainFromIP(IpAddressToString(ConnectionsNetstat[i].RemoteAddress)));
     // Set caption after all (at the end) to prevent some issues
     // Mettre cette ligne à la fin pour éviter un bug à l'affichage
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(ConnectionsNetstat[i].ProcessID);
