@@ -13,8 +13,8 @@ uses
   Sockets;   
 
 var
-  CurrentApplicationVersion: string = '0.4.384';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.385.0';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
