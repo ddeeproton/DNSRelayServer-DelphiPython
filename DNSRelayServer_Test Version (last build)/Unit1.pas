@@ -215,10 +215,6 @@ type
     Label13: TLabel;
     CheckBoxAllowModifyNetCard: TCheckBox;
     TabSheet9: TTabSheet;
-    GroupBox18: TGroupBox;
-    Label45: TLabel;
-    EditSourceURL: TEdit;
-    ButtonCopyEditSourceURL: TButton;
     GroupBox20: TGroupBox;
     ButtonUpdate: TButton;
     Label12: TLabel;
@@ -329,6 +325,16 @@ type
     LogNetstatAutoScroll: TMenuItem;
     EraseLogsListViewDNS: TMenuItem;
     EraseLogsListViewNetstat: TMenuItem;
+    ScrollBox4: TScrollBox;
+    GroupBox18: TGroupBox;
+    Label45: TLabel;
+    Label17: TLabel;
+    EditDonation: TEdit;
+    ButtonCopyEditDonation: TButton;
+    GroupBox9: TGroupBox;
+    Label16: TLabel;
+    EditSourceURL: TEdit;
+    ButtonCopyEditSourceURL: TButton;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -534,6 +540,7 @@ type
     procedure EraseLogsListViewDNSClick(Sender: TObject);
     procedure EraseLogsListViewNetstatClick(Sender: TObject);
     function GetDomainFromIP(ip: String): String;
+    procedure ButtonCopyEditDonationClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1609,6 +1616,7 @@ begin
   ComboBoxSelectIPBlackhost.Color := bg2;
   ComboBoxSelectIPhostfile.Color := bg2;
   EditSourceURL.Color := bg2;
+  EditDonation.Color := bg2;
   SpinEditTTLCache.Color := bg2;
 
   bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
@@ -1636,6 +1644,7 @@ begin
   ComboBoxSelectIPBlackhost.Font.Color := bg2;
   ComboBoxSelectIPhostfile.Font.Color := bg2;
   EditSourceURL.Font.Color := bg2;
+  EditDonation.Font.Color := bg2;
   SpinEditTTLCache.Font.Color := bg2;
 end;
 
@@ -1659,7 +1668,7 @@ begin
   Label13.Font.Color := color;
   Label14.Font.Color := color;
   Label15.Font.Color := color;
-  //Label16.Font.Color := color;
+  Label16.Font.Color := color;
   //Label17.Font.Color := color;
   //Label18.Font.Color := color;
   Label20.Font.Color := color;
@@ -4812,11 +4821,12 @@ begin
   scrollBox := nil;
   if Notebook1.PageIndex > 0 then exit;
   if PageControl1.TabIndex = 0 then scrollBox := ScrollBox1;
-  if PageControl1.TabIndex = 7 then scrollBox := ScrollBox2;
+  if PageControl1.TabIndex = 6 then scrollBox := ScrollBox2;
   if PageControl1.TabIndex = 2 then scrollBox := ScrollBox3;
+  if PageControl1.TabIndex = 7 then scrollBox := ScrollBox4;
   //if PageControl1.TabIndex = 4 then scrollBox := ScrollBox5;
-  if PageControl1.TabIndex = 5 then scrollBox := ScrollBox6;
-  if PageControl1.TabIndex = 6 then scrollBox := ScrollBox7;
+  if PageControl1.TabIndex = 4 then scrollBox := ScrollBox6;
+  if PageControl1.TabIndex = 5 then scrollBox := ScrollBox7;
   if PageControl1.TabIndex = 3 then scrollBox := ScrollBox8;
   if scrollBox = nil then exit;
   Handled := PtInRect(scrollBox.ClientRect, scrollBox.ScreenToClient(MousePos));
@@ -5167,6 +5177,15 @@ begin
   ListViewLogsNetstat.Clear;
 end;
      
+
+procedure TForm1.ButtonCopyEditDonationClick(Sender: TObject);
+begin
+  EditSourceURL.SelectAll;
+  EditSourceURL.CopyToClipboard;
+  LabelMessage.Caption := PChar('Copié!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
 
 end.
 

@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 492
   Top = 153
   Width = 521
-  Height = 557
+  Height = 553
   Caption = 'DNS Relay Server'
   Color = clWhite
   TransparentColorValue = clCream
@@ -95,7 +95,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 360
-      PageIndex = 3
       TabOrder = 0
       object TPage
         Left = 0
@@ -132,7 +131,7 @@ object Form1: TForm1
             Left = 5
             Top = 14
             Width = 311
-            Height = 323
+            Height = 303
             ActivePage = TabSheet1
             DragCursor = crArrow
             MultiLine = True
@@ -499,7 +498,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 29
                 Width = 303
-                Height = 248
+                Height = 228
                 Align = alClient
                 Color = clWhite
                 ItemHeight = 13
@@ -1087,7 +1086,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 277
+                Height = 257
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
@@ -1337,48 +1336,119 @@ object Form1: TForm1
             object TabSheet9: TTabSheet
               Caption = 'A propos'
               ImageIndex = 8
-              object GroupBox18: TGroupBox
+              object ScrollBox4: TScrollBox
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 65
-                Align = alTop
+                Height = 257
+                HorzScrollBar.Smooth = True
+                HorzScrollBar.Tracking = True
+                VertScrollBar.Smooth = True
+                VertScrollBar.Tracking = True
+                Align = alClient
+                BevelInner = bvNone
+                BevelOuter = bvNone
+                BorderStyle = bsNone
                 TabOrder = 0
-                DesignSize = (
-                  303
-                  65)
-                object Label45: TLabel
-                  Left = 10
-                  Top = 12
-                  Width = 45
-                  Height = 13
-                  Caption = 'Source:'
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clBlack
-                  Font.Height = -11
-                  Font.Name = 'MS Sans Serif'
-                  Font.Style = [fsBold]
-                  ParentFont = False
-                end
-                object EditSourceURL: TEdit
-                  Left = 8
-                  Top = 27
-                  Width = 231
-                  Height = 21
-                  Anchors = [akLeft, akTop, akRight]
-                  ReadOnly = True
+                object GroupBox18: TGroupBox
+                  Left = 0
+                  Top = 65
+                  Width = 303
+                  Height = 112
+                  Align = alTop
                   TabOrder = 0
-                  Text = 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython'
+                  DesignSize = (
+                    303
+                    112)
+                  object Label45: TLabel
+                    Left = 10
+                    Top = 12
+                    Width = 56
+                    Height = 13
+                    Caption = 'Donation:'
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clBlack
+                    Font.Height = -11
+                    Font.Name = 'MS Sans Serif'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                  end
+                  object Label17: TLabel
+                    Left = 8
+                    Top = 26
+                    Width = 280
+                    Height = 52
+                    Anchors = [akLeft, akTop, akRight]
+                    Caption = 
+                      'Vous pouvez soutenir le d'#233'veloppement de l'#39'application en donnan' +
+                      't du temps de processeur '#224' l'#39'adresse ci-dessous. Fermez la page ' +
+                      'quand vous aurez fini. En vous remerciant d'#39'avance! :)'
+                    WordWrap = True
+                  end
+                  object EditDonation: TEdit
+                    Left = 8
+                    Top = 81
+                    Width = 231
+                    Height = 21
+                    Anchors = [akLeft, akTop, akRight]
+                    ReadOnly = True
+                    TabOrder = 0
+                    Text = 'http://donate.cpufan.club/org/07863510'
+                  end
+                  object ButtonCopyEditDonation: TButton
+                    Left = 245
+                    Top = 80
+                    Width = 44
+                    Height = 22
+                    Anchors = [akTop, akRight]
+                    Caption = 'Copier'
+                    TabOrder = 1
+                    OnClick = ButtonCopyEditDonationClick
+                  end
                 end
-                object ButtonCopyEditSourceURL: TButton
-                  Left = 245
-                  Top = 26
-                  Width = 44
-                  Height = 22
-                  Anchors = [akTop, akRight]
-                  Caption = 'Copier'
+                object GroupBox9: TGroupBox
+                  Left = 0
+                  Top = 0
+                  Width = 303
+                  Height = 65
+                  Align = alTop
                   TabOrder = 1
-                  OnClick = ButtonCopyEditSourceURLClick
+                  DesignSize = (
+                    303
+                    65)
+                  object Label16: TLabel
+                    Left = 10
+                    Top = 12
+                    Width = 45
+                    Height = 13
+                    Caption = 'Source:'
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clBlack
+                    Font.Height = -11
+                    Font.Name = 'MS Sans Serif'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                  end
+                  object EditSourceURL: TEdit
+                    Left = 8
+                    Top = 27
+                    Width = 231
+                    Height = 21
+                    Anchors = [akLeft, akTop, akRight]
+                    ReadOnly = True
+                    TabOrder = 0
+                    Text = 'https://github.com/ddeeproton/DNSRelayServer-DelphiPython'
+                  end
+                  object ButtonCopyEditSourceURL: TButton
+                    Left = 245
+                    Top = 26
+                    Width = 44
+                    Height = 22
+                    Anchors = [akTop, akRight]
+                    Caption = 'Copier'
+                    TabOrder = 1
+                    OnClick = ButtonCopyEditSourceURLClick
+                  end
                 end
               end
             end
