@@ -3,18 +3,19 @@ unit Unit1;
 interface
 
 uses
+  UnitInstallation, UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat3,
+  UnitTaskManager, StringManager, UnitRestartAlert, WindowsManager, FilesManager,
+  ProcessManager,  DNSManager, UnitNetConfig, DNSServer,  ListViewManager,
+  HostParser, UnitHost,
+
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ImgList, ComCtrls, ToolWin, Menus,
-  UnitHost, Systray, Registry, md5,  ListViewManager, HostParser, XPMan,
-  Spin, Buttons, NetworkManager, DNSManager, UnitNetConfig, DNSServer,
-  UrlMon, FilesManager, Registre, UnitInstallation, StrUtils, ProcessManager,
-  CheckLst, StringManager, UnitRestartAlert, WindowsManager,
-  UnitDialogIP, UnitManageIP, RulesManager, UnitNetstat2, UnitTaskManager,
-  Commctrl, ShellApi, Winsock;
+  Systray, Registry, md5,  XPMan, Spin, Buttons, NetworkManager,
+  UrlMon,  Registre, StrUtils, CheckLst, Commctrl, ShellApi, Winsock;
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.13';
+  CurrentApplicationVersion: string = '0.4.385.14';
   isDevVersion: Boolean = True;
 
 type
@@ -632,6 +633,7 @@ var
   oldConnections: TConnectionArray = nil;
   ConnectionsNetstat: TConnectionArray = nil;
   SelectedConnection : TConnection;
+  PileConnections: PPileElem = nil;
 implementation
 
 uses TypInfo;
@@ -1729,13 +1731,15 @@ begin
 
   if isXP then
   begin
-    ListViewNetstat.Items.Add().Caption := 'Fonction désactivé pour XP';
-    ListViewLogsNetstat.Items.Add().Caption := 'Fonction désactivé pour XP';
+    ListViewNetstat.Items.Add().Caption := 'Désactivé pour XP';
+    ListViewLogsNetstat.Items.Add().Caption := 'Désactivé pour XP';
   end else begin
     TimerRefreshNetstat.Enabled := True;
     TimerLogsNetstat.Enabled := True;
   end;
   TimerCheckSystemChanges.Enabled := True;
+
+
 
   if not ServerDoStart
   and CheckBoxAutostartDNSOnBoot.Checked
@@ -2205,18 +2209,33 @@ procedure TForm1.ListViewNetstatContextPopup(Sender: TObject; MousePos: TPoint; 
 var
   ListItem:TListItem;
   CurPos:TPoint;
+  temp: PPileElem;
+  i: Integer;
 begin
+
   GetcursorPos(MousePos);
   CurPos:=TListView(Sender).ScreenToClient(MousePos);
   ListItem:=TListView(Sender).GetItemAt(CurPos.x,CurPos.y);
 
   if Assigned(ListItem) then
   begin
-    SelectedListItem := ListItem;
-    SelectedConnection := ConnectionsNetstat[SelectedListItem.Index];
-
-
     PopupMenuListViewNetstat.Popup(MousePos.x, MousePos.y);
+    SelectedListItem := ListItem;
+    //SelectedConnection := ConnectionsNetstat[SelectedListItem.Index];
+    temp := PileConnections;
+    i := 0;
+    while temp <> nil do
+    begin
+      if i = SelectedListItem.Index then
+      begin
+        SelectedConnection := temp^.Connection;
+        temp := nil;
+      end else begin
+        temp := temp^.Suiv;
+        inc(i);
+      end;
+    end;
+
   end;
 end;
 
@@ -4571,7 +4590,7 @@ end;
 
 procedure TForm1.ToolButtonRefreshNetstatClick(Sender: TObject);
 var
-  i: Integer;
+  //i: Integer;
   lastSelectedIndex: Integer;
   //Connections: TConnectionArray;
   //Protocol: String;
@@ -4583,10 +4602,16 @@ var
   sProtocol: String;
   //sLocalAddr, sRemoteAdd: String;
   //sLocalPort, sRemotePort: Integer;
+
+  temp: PPileElem;
 begin
   //FreeAndNil(Connections);
-  ConnectionsNetstat := nil;
-  UnitNetstat2.GetConnections(ConnectionsNetstat);
+  //ConnectionsNetstat := nil;
+  //Netstat.GetConnections(ConnectionsNetstat);
+  if PileConnections <> nil then
+    Netstat.DestroyConnections(PileConnections);
+  //ShowMessage('ok');
+  Netstat.GetConnectionsPile(PileConnections);
 
   if not isFormVisible or (Notebook1.PageIndex <> 4) then exit;
 
@@ -4614,6 +4639,40 @@ begin
   end;
 
   ListViewNetstat.Clear;
+
+
+  temp := PileConnections;
+  while temp <> nil do
+  begin
+    //Sortie.Add(temp^.Elem);
+
+
+    if temp^.Connection.Protocol = PROTOCOL_TCP then
+      sProtocol := 'TCP'
+    else
+      sProtocol := 'UDP';
+
+    //ShowMessage(sProtocol);
+    ListViewNetstat.Items.Add();
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(temp^.Connection.ProcessID));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(sProtocol);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(Netstat.IpAddressToString(temp^.Connection.LocalAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(temp^.Connection.LocalRawPort)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(Netstat.IpAddressToString(temp^.Connection.RemoteAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(temp^.Connection.RemoteRawPort)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[temp^.Connection.ConnectionState]);
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(GetDomainFromIP(Netstat.IpAddressToString(temp^.Connection.RemoteAddress)));
+    // Set caption after all (at the end) to prevent some issues
+    // Mettre cette ligne à la fin pour éviter un bug à l'affichage
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(temp^.Connection.ProcessID);
+
+
+    temp := temp^.Suiv;
+  end;
+
+
+
+  
   {
   for i:=0 to Length(Connections) - 1 do
   begin
@@ -4659,7 +4718,7 @@ begin
 
 
 
-
+  {
   for i:=0 to Length(ConnectionsNetstat) - 1 do
   begin
     if ConnectionsNetstat[i].Protocol = PROTOCOL_TCP then
@@ -4670,16 +4729,17 @@ begin
     ListViewNetstat.Items.Add();
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ConnectionsNetstat[i].ProcessID));
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(sProtocol);
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(ConnectionsNetstat[i].LocalAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(Netstat.IpAddressToString(ConnectionsNetstat[i].LocalAddress));
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(ConnectionsNetstat[i].LocalRawPort)));
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IpAddressToString(ConnectionsNetstat[i].RemoteAddress));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(Netstat.IpAddressToString(ConnectionsNetstat[i].RemoteAddress));
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(IntToStr(ntohs(ConnectionsNetstat[i].RemoteRawPort)));
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[ConnectionsNetstat[i].ConnectionState]);
-    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(GetDomainFromIP(IpAddressToString(ConnectionsNetstat[i].RemoteAddress)));
+    ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].SubItems.Add(GetDomainFromIP(Netstat.IpAddressToString(ConnectionsNetstat[i].RemoteAddress)));
     // Set caption after all (at the end) to prevent some issues
     // Mettre cette ligne à la fin pour éviter un bug à l'affichage
     ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(ConnectionsNetstat[i].ProcessID);
     //ListViewNetstat.Items.Item[ListViewNetstat.Items.Count-1].ImageIndex := i;
+    }
 
     {
     Bitmap := TBitmap.Create;
@@ -4710,7 +4770,7 @@ begin
       Bitmap.Free;
     //end;
    }
-  end;
+  //end;
 
   if isXP then
   begin
@@ -4732,7 +4792,7 @@ procedure TForm1.Fermerlaconnexion1Click(Sender: TObject);
 //var i: Integer;
 begin
 
-  if UnitNetstat2.CloseConnection(SelectedConnection) = False then
+  if Netstat.CloseConnection(SelectedConnection) = False then
     ShowMessage('Erreur');
   ToolButtonRefreshNetstatClick(nil);
 
@@ -5068,7 +5128,7 @@ begin
   //if Connections <> nil then FreeMem(Connections);
   SetLength(Connections, 0);
   Connections := nil;
-  UnitNetstat2.GetConnections(Connections);
+  Netstat.GetConnections(Connections);
 
   if (Connections <> nil) and (oldConnections <> nil) then
   begin
@@ -5077,7 +5137,7 @@ begin
     begin
       if (Connections[i].ConnectionState = 5) then
       begin
-        if not UnitNetstat2.FindConnection(Connections[i], oldConnections) then
+        if not Netstat.FindConnection(Connections[i], oldConnections) then
         begin
           if Connections[i].Protocol = PROTOCOL_TCP then
             sProtocol := 'TCP'
@@ -5088,13 +5148,13 @@ begin
           index := ListViewLogsNetstat.Items.Count-1;
           ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(Connections[i].ProcessID));
           ListViewLogsNetstat.Items.Item[index].SubItems.Add(sProtocol);
-          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IpAddressToString(Connections[i].LocalAddress));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(Netstat.IpAddressToString(Connections[i].LocalAddress));
           ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(ntohs(Connections[i].LocalRawPort)));
-          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IpAddressToString(Connections[i].RemoteAddress));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(Netstat.IpAddressToString(Connections[i].RemoteAddress));
           ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(ntohs(Connections[i].RemoteRawPort)));
           //ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
 
-          ListViewLogsNetstat.Items.Item[index].SubItems.Add(GetDomainFromIP(IpAddressToString(Connections[i].RemoteAddress)));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(GetDomainFromIP(Netstat.IpAddressToString(Connections[i].RemoteAddress)));
 
           // Set caption after all (at the end) to prevent some issues
           // Mettre cette ligne à la fin pour éviter un bug à l'affichage

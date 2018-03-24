@@ -1,9 +1,8 @@
 object Form1: TForm1
-  Left = 492
-  Top = 153
+  Left = 840
+  Top = 45
   Width = 521
   Height = 553
-  VertScrollBar.Position = 152
   Caption = 'DNS Relay Server'
   Color = clWhite
   TransparentColorValue = clCream
@@ -72,7 +71,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = -92
+    Top = 60
     Width = 497
     Height = 10
     Cursor = crVSplit
@@ -85,7 +84,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = -73
+    Top = 79
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -1919,7 +1918,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 321
+    Top = 473
     Width = 313
     Height = 108
     Caption = '           '
@@ -2056,7 +2055,7 @@ object Form1: TForm1
   end
   object Panel5: TPanel
     Left = 0
-    Top = -152
+    Top = 0
     Width = 497
     Height = 60
     Align = alTop
@@ -2906,7 +2905,7 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 3
-    Top = 474
+    Top = 626
     Width = 313
     Height = 33
     TabOrder = 3
@@ -2951,7 +2950,7 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 8
-    Top = 433
+    Top = 585
     Width = 313
     Height = 33
     TabOrder = 4
