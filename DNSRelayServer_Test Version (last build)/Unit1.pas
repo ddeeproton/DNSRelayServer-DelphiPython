@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.16';
+  CurrentApplicationVersion: string = '0.4.385.17';
   isDevVersion: Boolean = True;
 
 type
@@ -2224,7 +2224,6 @@ begin
 
   if Assigned(ListItem) then
   begin
-    PopupMenuListViewNetstat.Popup(MousePos.x, MousePos.y);
     SelectedListItem := ListItem;
     //SelectedConnection := ConnectionsNetstat[SelectedListItem.Index];
     temp := PileConnections;
@@ -2241,6 +2240,7 @@ begin
       end;
     end;
 
+    PopupMenuListViewNetstat.Popup(MousePos.x, MousePos.y);    
   end;
 end;
 
