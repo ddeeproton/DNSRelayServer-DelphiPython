@@ -15,8 +15,8 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.18';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.385';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
