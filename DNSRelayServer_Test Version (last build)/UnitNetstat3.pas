@@ -43,9 +43,11 @@ type
     class function CloseConnection(var Connection : TConnection) : boolean;
     class function IpAddressToString(IpAddress : DWORD) : string;
     class function ConvertRawPortToRealPort(RawPort : DWORD) : DWORD;
-    class function FindConnection(Connection: TConnection; Connections: TConnectionArray) : Boolean; 
+    class function FindConnection(Connection: TConnection; Connections: TConnectionArray) : Boolean;
     class function GetConnectionsPile(var Pile: PPileElem) : boolean;
     class procedure DestroyConnections(var Pile: PPileElem);
+    class procedure CopyConnections(Pile: PPileElem;var CopyPile: PPileElem);
+    class function FindConnectionPile(Connection: TConnection; Pile: PPileElem) : Boolean;
   end;
 
 
@@ -142,6 +144,19 @@ begin
 end;
 
 
+class procedure Netstat.CopyConnections(Pile: PPileElem;var CopyPile: PPileElem);
+var
+  temp: PPileElem;
+begin
+  CopyPile := nil;
+  temp := Pile;
+  while temp <> nil do
+  begin
+    addConnection(temp^.Connection, CopyPile);
+    temp := temp^.Suiv;
+  end;
+end;
+
 class procedure Netstat.DestroyConnections(var Pile: PPileElem);
 var
   temp: PPileElem;
@@ -154,7 +169,7 @@ begin
       Pile := temp;
     end
     else
-      temp := nil;
+      Pile := nil;
 end;
 
 
@@ -231,6 +246,32 @@ begin
   Result := GetTcpConnectionsPile(Pile) and GetUdpConnectionsPile(Pile);
 end;
 
+
+
+class function Netstat.FindConnectionPile(Connection: TConnection; Pile: PPileElem) : Boolean;
+var
+  //i : Integer;
+  temp: PPileElem;
+begin
+  Result := False;
+  temp := Pile;
+  while temp <> nil do
+  begin
+    if (temp^.Connection.Protocol = Connection.Protocol)
+    and (temp^.Connection.ConnectionState = Connection.ConnectionState)
+    and (temp^.Connection.LocalAddress = Connection.LocalAddress)
+    and (temp^.Connection.LocalRawPort = Connection.LocalRawPort)
+    and (temp^.Connection.RemoteAddress = Connection.RemoteAddress)
+    and (temp^.Connection.RemoteRawPort = Connection.RemoteRawPort)
+    and (temp^.Connection.ProcessID = Connection.ProcessID) then
+    begin
+      Result := True;
+      Exit;
+    end;
+    temp := temp^.Suiv;
+  end;
+  //if (Connections <> nil) and (Length(Connections) > 0) then FreeMem(Connections);
+end;
 
 // ============
 

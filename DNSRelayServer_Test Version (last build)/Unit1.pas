@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.14';
+  CurrentApplicationVersion: string = '0.4.385.15';
   isDevVersion: Boolean = True;
 
 type
@@ -634,6 +634,7 @@ var
   ConnectionsNetstat: TConnectionArray = nil;
   SelectedConnection : TConnection;
   PileConnections: PPileElem = nil;
+  oldPileConnections: PPileElem = nil;
 implementation
 
 uses TypInfo;
@@ -1728,7 +1729,7 @@ begin
   debug('TimerAfterFormCreateLongTimer');
   TTimer(Sender).Enabled := False;
   isApplicationLoading := False;
-
+{
   if isXP then
   begin
     ListViewNetstat.Items.Add().Caption := 'Désactivé pour XP';
@@ -1737,6 +1738,10 @@ begin
     TimerRefreshNetstat.Enabled := True;
     TimerLogsNetstat.Enabled := True;
   end;
+}
+  TimerRefreshNetstat.Enabled := True;
+  TimerLogsNetstat.Enabled := True;
+
   TimerCheckSystemChanges.Enabled := True;
 
 
@@ -5119,20 +5124,76 @@ end;
 
 procedure TForm1.TimerLogsNetstatTimer(Sender: TObject);
 var
-  i, index: Integer;
+  //i,
+  index: Integer;
   sProtocol: String;
   p: TPoint;
+  temp: PPileElem;
 begin
   TTimer(Sender).Enabled := False;
 
   //if Connections <> nil then FreeMem(Connections);
-  SetLength(Connections, 0);
-  Connections := nil;
-  Netstat.GetConnections(Connections);
+  //SetLength(Connections, 0);
+  //Connections := nil;
+  //Netstat.GetConnections(Connections);
 
-  if (Connections <> nil) and (oldConnections <> nil) then
+  //FreeAndNil(Connections);
+  //ConnectionsNetstat := nil;
+  //Netstat.GetConnections(ConnectionsNetstat);
+
+  if PileConnections <> nil then
+    Netstat.DestroyConnections(PileConnections);
+  Netstat.GetConnectionsPile(PileConnections);
+
+
+
+  if (PileConnections <> nil) and (oldPileConnections <> nil) then
   begin
 
+
+
+    temp := PileConnections;
+    while temp <> nil do
+    begin
+      if (temp^.Connection.ConnectionState = 5) then
+      begin
+        if not Netstat.FindConnectionPile(temp^.Connection, oldPileConnections) then
+        begin
+         if temp^.Connection.Protocol = PROTOCOL_TCP then
+            sProtocol := 'TCP'
+          else
+            sProtocol := 'UDP';
+
+          ListViewLogsNetstat.Items.Add();
+          index := ListViewLogsNetstat.Items.Count-1;
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(temp^.Connection.ProcessID));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(sProtocol);
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(Netstat.IpAddressToString(temp^.Connection.LocalAddress));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(ntohs(temp^.Connection.LocalRawPort)));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(Netstat.IpAddressToString(temp^.Connection.RemoteAddress));
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(ntohs(temp^.Connection.RemoteRawPort)));
+          //ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
+
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(GetDomainFromIP(Netstat.IpAddressToString(temp^.Connection.RemoteAddress)));
+
+          // Set caption after all (at the end) to prevent some issues
+          // Mettre cette ligne à la fin pour éviter un bug à l'affichage
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(temp^.Connection.ProcessID);
+          Application.ProcessMessages;
+          Sleep(100);
+          Application.ProcessMessages;
+          if LogNetstatAutoScroll.Checked then
+          begin
+            p := ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Position;
+            ListViewLogsNetstat.Scroll(p.X, p.Y);
+
+          end;
+        end;
+      end;
+      temp := temp^.Suiv;
+    end;
+    
+{
     for i:=0 to Length(Connections) - 1 do
     begin
       if (Connections[i].ConnectionState = 5) then
@@ -5171,6 +5232,7 @@ begin
         end;
       end;
     end;
+}
     {
     for i:=0 to Length(oldConnections) - 1 do
     begin
@@ -5209,12 +5271,16 @@ begin
   end;
   //if oldConnections <> nil then FreeMem(oldConnections);
   //FreeAndNil(oldConnections);
+
+  Netstat.CopyConnections(PileConnections, oldPileConnections);
+  {
   SetLength(oldConnections, 0);
   oldConnections := nil;
   oldConnections := Connections;
   SetLength(Connections, 0);
   //if Connections <> nil then FreeMem(Connections);
   Connections := nil;
+  }
   TTimer(Sender).Enabled := True;
 end;
 
