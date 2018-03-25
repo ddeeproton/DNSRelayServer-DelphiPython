@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.15';
+  CurrentApplicationVersion: string = '0.4.385.16';
   isDevVersion: Boolean = True;
 
 type
@@ -5271,7 +5271,8 @@ begin
   end;
   //if oldConnections <> nil then FreeMem(oldConnections);
   //FreeAndNil(oldConnections);
-
+  if oldPileConnections <> nil then
+    Netstat.DestroyConnections(oldPileConnections);
   Netstat.CopyConnections(PileConnections, oldPileConnections);
   {
   SetLength(oldConnections, 0);
