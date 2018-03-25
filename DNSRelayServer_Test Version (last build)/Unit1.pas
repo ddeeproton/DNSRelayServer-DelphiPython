@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.385.17';
+  CurrentApplicationVersion: string = '0.4.385.18';
   isDevVersion: Boolean = True;
 
 type
@@ -4782,13 +4782,14 @@ begin
     ListViewNetstat.Scroll(pos.X, pos.Y);
   end else begin
     ListViewNetstat.Scroll(pos.X  - 2, pos.Y);
-    try
-      if lastSelectedIndex > -1 then
-        ListViewNetstat.Selected := ListViewNetstat.Items[lastSelectedIndex];
-    except
-      On E : EOSError do exit;
-      On E : EAccessViolation do exit;
-    end;
+  end;
+
+  try
+    if lastSelectedIndex > -1 then
+      ListViewNetstat.Selected := ListViewNetstat.Items[lastSelectedIndex];
+  except
+    On E : EOSError do exit;
+    On E : EAccessViolation do exit;
   end;
   //UnitNetstat.CloseConnection(Connections[0]);
 end;
