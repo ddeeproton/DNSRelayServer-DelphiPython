@@ -15,8 +15,8 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.386.0';
-  isDevVersion: Boolean = True;
+  CurrentApplicationVersion: string = '0.4.386';
+  isDevVersion: Boolean = False;
 
 type
   TForm1 = class(TForm)
@@ -1104,7 +1104,8 @@ begin
   Netstat.DestroyConnections(OldPileConnections);
 
   if FormDialogIP <> nil then FormDialogIP.Close;
-  Systray.EnleveIconeTray();
+  Systray.EnleveIconeTray();  
+  KillProcess(Self.Handle);
 end;
 
 procedure TForm1.ButtonCloseClick(Sender: TObject);
