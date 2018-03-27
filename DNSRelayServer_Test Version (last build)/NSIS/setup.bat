@@ -86,6 +86,9 @@ echo ==============================
 echo Done.
 echo ==============================
 
+del /Q "..\..\Setup installation\DNSRelayServerSetup.exe"
+copy "..\..\Setup installation\DNSRelayServerSetup_%v%.exe" "..\..\Setup installation\DNSRelayServerSetup.exe"
+
 "..\..\Setup installation\DNSRelayServerSetup_%v%.exe"
 
 @rem pause
