@@ -183,7 +183,9 @@ Function "un.DoCloseProcess"
   ClearErrors
   #Exec "kill.exe k $\"youtube downloader$\"" 
   ExecShell "open" "kill.exe" "k $\"DNS Relay Server $\"" SW_HIDE
-  Sleep 5000
+  Sleep 4000
+  ExecShell "open" "taskkill" "/F /IM $\"DNSRelayServer.exe$\"" SW_HIDE
+  Sleep 1000
 FunctionEnd
 
 Function "CloseProcess"
@@ -191,7 +193,9 @@ Function "CloseProcess"
   File "libgcc_s_dw2-1.dll" 
   File "kill.exe" 
   ExecShell "open" "kill.exe" "k $\"DNS Relay Server $\"" SW_HIDE
-  Sleep 5000
+  Sleep 4000
+  ExecShell "open" "taskkill" "/F /IM $\"DNSRelayServer.exe$\"" SW_HIDE
+  Sleep 1000
 FunctionEnd
 
 

@@ -15,8 +15,8 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.386';
-  isDevVersion: Boolean = False;
+  CurrentApplicationVersion: string = '0.4.387.0';
+  isDevVersion: Boolean = True;
 
 type
   TForm1 = class(TForm)
@@ -337,6 +337,11 @@ type
     Label16: TLabel;
     EditSourceURL: TEdit;
     ButtonCopyEditSourceURL: TButton;
+    GroupBox24: TGroupBox;
+    Panel9: TPanel;
+    Panel13: TPanel;
+    Label18: TLabel;
+    CheckBoxDisableIPv6: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -543,6 +548,7 @@ type
     procedure EraseLogsListViewNetstatClick(Sender: TObject);
     function GetDomainFromIP(ip: String): String;
     procedure ButtonCopyEditDonationClick(Sender: TObject);
+    procedure CheckBoxDisableIPv6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1082,6 +1088,7 @@ procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   i: Integer;
 begin
+
 {
   i := opacity;
   while i >= 0 do
@@ -1091,7 +1098,8 @@ begin
     i := i - 5;
   end;
 }
-  if isServerStarted then ButtonCloseClick(nil);
+  //if isServerStarted then ButtonCloseClick(nil);
+  KillTask('python.exe');
   for i := 0 to Form1.ControlCount - 1 do
   begin
     if Form1.Controls[i].ClassName = 'TTimer' then
@@ -1100,6 +1108,8 @@ begin
     end;
   end;
   Application.ProcessMessages;
+  TimerRefreshNetstat.Enabled := False;
+  TimerLogsNetstat.Enabled := False;
   Netstat.DestroyConnections(PileConnections);
   Netstat.DestroyConnections(OldPileConnections);
 
@@ -1240,7 +1250,7 @@ var
   i: Integer;
   param, txt: string;
   canClose: Boolean;
-
+  Reg: TRegistry;
 begin
 
 
@@ -1502,7 +1512,23 @@ begin
     WriteInFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg', '5000');
   TimerRefreshNetstat.Interval := StrToInt(ReadFromFile(DataDirectoryPath + 'TimerRefreshNetstat.cfg'));
   TimerRefreshNetstat.Enabled := TimerRefreshNetstat.Interval > 0;
-   
+
+
+  if isXP() then
+  begin
+    CheckBoxDisableIPv6.Enabled := False;
+  end else begin
+    Reg := TRegistry.Create;
+    Reg.RootKey := HKEY_CURRENT_USER;
+    if Reg.OpenKey('\SYSTEM\CurrentControlSet\services\TCPIP6\Parameters', True) then
+    begin
+      CheckBoxDisableIPv6.Checked := Reg.ValueExists('DisabledComponents');
+      Reg.CloseKey;
+    end;
+    Reg.Free;
+  end;
+
+
 
   // ListViewNetstat
   AjouterUneColone(ListViewNetstat.Columns.Add, 'Process', 100);
@@ -5343,6 +5369,38 @@ begin
   EditSourceURL.SelectAll;
   EditSourceURL.CopyToClipboard;
   LabelMessage.Caption := PChar('Copié!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.CheckBoxDisableIPv6Click(Sender: TObject);
+var
+  Reg: TRegistry;
+begin
+  if isApplicationLoading then exit;
+  if isXP() then exit;
+
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  try
+    if Reg.OpenKey('\SYSTEM\CurrentControlSet\services\TCPIP6\Parameters', True) then
+    begin
+      if TCheckBox(Sender).Checked then
+      begin
+        {$WARNINGS OFF}
+        Reg.WriteInteger('DisabledComponents', 4294967295);
+        {$WARNINGS ON}
+        ShowMessage('Vous devez redémarrer l''ordinateur pour que les changements prennent effet');
+      end else
+        Reg.DeleteValue('DisabledComponents');
+
+      Reg.CloseKey;
+    end;
+  finally
+    Reg.Free;
+  end;
+
+  LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
 end;

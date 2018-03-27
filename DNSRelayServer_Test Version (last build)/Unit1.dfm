@@ -3,6 +3,7 @@ object Form1: TForm1
   Top = 125
   Width = 521
   Height = 553
+  VertScrollBar.Position = 1
   Caption = 'DNS Relay Server'
   Color = clWhite
   TransparentColorValue = clCream
@@ -71,7 +72,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 60
+    Top = 59
     Width = 497
     Height = 10
     Cursor = crVSplit
@@ -84,7 +85,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 79
+    Top = 78
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -94,8 +95,7 @@ object Form1: TForm1
       Left = 17
       Top = 9
       Width = 344
-      Height = 360
-      PageIndex = 4
+      Height = 370
       TabOrder = 0
       object TPage
         Left = 0
@@ -103,12 +103,12 @@ object Form1: TForm1
         Caption = 'Default'
         DesignSize = (
           344
-          360)
+          370)
         object GroupBox2: TGroupBox
           Left = 8
           Top = 16
           Width = 329
-          Height = 329
+          Height = 339
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = '            '
           Ctl3D = True
@@ -132,8 +132,8 @@ object Form1: TForm1
             Left = 5
             Top = 14
             Width = 311
-            Height = 303
-            ActivePage = TabSheet1
+            Height = 315
+            ActivePage = TabSheet4
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -499,7 +499,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 29
                 Width = 303
-                Height = 228
+                Height = 240
                 Align = alClient
                 Color = clWhite
                 ItemHeight = 13
@@ -530,12 +530,12 @@ object Form1: TForm1
                   Left = 0
                   Top = 0
                   Width = 274
-                  Height = 331
+                  Height = 377
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     274
-                    331)
+                    377)
                   object Panel12: TPanel
                     Left = 34
                     Top = 170
@@ -548,16 +548,16 @@ object Form1: TForm1
                   end
                   object GroupBox15: TGroupBox
                     Left = 8
-                    Top = 11
-                    Width = 259
-                    Height = 53
+                    Top = 10
+                    Width = 257
+                    Height = 50
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 1
                     DesignSize = (
-                      259
-                      53)
+                      257
+                      50)
                     object Panel10: TPanel
-                      Left = 34
+                      Left = 33
                       Top = 170
                       Width = 193
                       Height = 55
@@ -569,7 +569,7 @@ object Form1: TForm1
                     object Panel11: TPanel
                       Left = 2
                       Top = 15
-                      Width = 255
+                      Width = 253
                       Height = 25
                       Align = alTop
                       BevelOuter = bvNone
@@ -601,7 +601,7 @@ object Form1: TForm1
                   end
                   object GroupBox7: TGroupBox
                     Left = 8
-                    Top = 70
+                    Top = 119
                     Width = 259
                     Height = 249
                     Anchors = [akLeft, akTop, akRight]
@@ -701,6 +701,59 @@ object Form1: TForm1
                         State = cbChecked
                         TabOrder = 0
                         OnClick = CheckBoxAllowModifyNetCardClick
+                      end
+                    end
+                  end
+                  object GroupBox24: TGroupBox
+                    Left = 7
+                    Top = 62
+                    Width = 259
+                    Height = 53
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 3
+                    DesignSize = (
+                      259
+                      53)
+                    object Panel9: TPanel
+                      Left = 34
+                      Top = 170
+                      Width = 193
+                      Height = 55
+                      Anchors = [akTop]
+                      BevelOuter = bvNone
+                      Color = clWhite
+                      TabOrder = 0
+                    end
+                    object Panel13: TPanel
+                      Left = 2
+                      Top = 15
+                      Width = 255
+                      Height = 25
+                      Align = alTop
+                      BevelOuter = bvNone
+                      BevelWidth = 4
+                      Color = clWhite
+                      TabOrder = 1
+                      object Label18: TLabel
+                        Left = 25
+                        Top = 6
+                        Width = 224
+                        Height = 13
+                        Caption = 'D'#233'sactiver IPv6 pour les non-XP (recommand'#233')'
+                        FocusControl = CheckBoxDisableIPv6
+                        OnClick = LabelToCheckboxClick
+                        OnMouseEnter = LabelCheckboxMouseEnter
+                        OnMouseLeave = LabelCheckboxMouseLeave
+                      end
+                      object CheckBoxDisableIPv6: TCheckBox
+                        Left = 8
+                        Top = 4
+                        Width = 15
+                        Height = 17
+                        Checked = True
+                        State = cbChecked
+                        TabOrder = 0
+                        OnClick = CheckBoxDisableIPv6Click
                       end
                     end
                   end
@@ -1087,7 +1140,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 257
+                Height = 269
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
@@ -1341,7 +1394,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 303
-                Height = 257
+                Height = 269
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
                 VertScrollBar.Smooth = True
@@ -1557,12 +1610,12 @@ object Form1: TForm1
         Caption = 'IP Clients'
         DesignSize = (
           344
-          360)
+          370)
         object GroupBox3: TGroupBox
           Left = 8
           Top = 24
           Width = 328
-          Height = 297
+          Height = 307
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = '             '
           Font.Charset = DEFAULT_CHARSET
@@ -1583,7 +1636,7 @@ object Form1: TForm1
             Left = 1
             Top = 14
             Width = 326
-            Height = 282
+            Height = 292
             Align = alClient
             Color = clWhite
             Font.Charset = DEFAULT_CHARSET
@@ -1604,12 +1657,12 @@ object Form1: TForm1
         Caption = 'DNS Domains'
         DesignSize = (
           344
-          360)
+          370)
         object GroupBox4: TGroupBox
           Left = 8
           Top = 16
           Width = 328
-          Height = 328
+          Height = 338
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 
             '                                                                ' +
@@ -1625,7 +1678,7 @@ object Form1: TForm1
           TabOrder = 0
           DesignSize = (
             328
-            328)
+            338)
           object Label24: TLabel
             Left = 11
             Top = 0
@@ -1644,7 +1697,7 @@ object Form1: TForm1
             Left = 2
             Top = 56
             Width = 324
-            Height = 270
+            Height = 280
             Anchors = [akLeft, akTop, akRight, akBottom]
             BevelWidth = 10
             Color = clWhite
@@ -1879,12 +1932,12 @@ object Form1: TForm1
         Caption = 'config'
         DesignSize = (
           344
-          360)
+          370)
         object GroupBox8: TGroupBox
           Left = 16
           Top = 32
           Width = 328
-          Height = 297
+          Height = 307
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = '              '
           Font.Charset = DEFAULT_CHARSET
@@ -1905,7 +1958,7 @@ object Form1: TForm1
             Left = 1
             Top = 14
             Width = 326
-            Height = 282
+            Height = 292
             Align = alClient
             Lines.Strings = (
               'Memo1')
@@ -1918,7 +1971,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 473
+    Top = 472
     Width = 313
     Height = 108
     Caption = '           '
@@ -2055,7 +2108,7 @@ object Form1: TForm1
   end
   object Panel5: TPanel
     Left = 0
-    Top = 0
+    Top = -1
     Width = 497
     Height = 60
     Align = alTop
@@ -2905,7 +2958,7 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 3
-    Top = 626
+    Top = 625
     Width = 313
     Height = 33
     TabOrder = 3
@@ -2950,7 +3003,7 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 8
-    Top = 585
+    Top = 584
     Width = 313
     Height = 33
     TabOrder = 4
