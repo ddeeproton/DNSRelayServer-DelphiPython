@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.387';
+  CurrentApplicationVersion: string = '0.4.388';
   isDevVersion: Boolean = False;
 
 type
@@ -380,7 +380,6 @@ type
     procedure Autoriser1Click(Sender: TObject);
     procedure ListView1ContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
     procedure ListViewNetstatContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
-
     procedure Modifier1Click(Sender: TObject);
     procedure refreshListView1Click();
     procedure onServerDNSStart();
@@ -549,6 +548,8 @@ type
     function GetDomainFromIP(ip: String): String;
     procedure ButtonCopyEditDonationClick(Sender: TObject);
     procedure CheckBoxDisableIPv6Click(Sender: TObject);
+    procedure Config_Save();
+    procedure Config_Load();
   private
     { Private declarations }
   public
@@ -1118,6 +1119,7 @@ begin
   KillProcess(Self.Handle);
 end;
 
+
 procedure TForm1.ButtonCloseClick(Sender: TObject);
 //var  bmp: TBitmap; 
 begin
@@ -1171,7 +1173,6 @@ begin
     ListBoxDNSMaster.ItemIndex := 1 - 1;
     ListBoxDNSMaster.Items.SaveToFile(MasterDNSFile);
     if isServerStarted then PanelRestart.Visible := True;
-    ShowMessage('Effacé');
   end;
 end;
 
@@ -1250,7 +1251,6 @@ var
   i: Integer;
   param, txt: string;
   canClose: Boolean;
-  Reg: TRegistry;
 begin
 
 
@@ -1330,7 +1330,7 @@ begin
   Memo1.Clear;
   Memo1.Text := 'Veuillez lire les modalités et les conditions suivantes avant l''utilisation de ce logiciel.  L''utilisation de ce logiciel indique l''acceptation des termes et conditions de la licence.'+#13#10#13#10+
                 '1. Déni de garantie'+#13#10#13#10+
-                '"DNS Relay Server" est fourni "tel-que", et aucune garantie de quelque sorte n''est exprimée ou impliquée, incluant sans limitation, toute garantie de valeur marchande ou format physique pour un but particulier.'+#13#10#13#10+
+                '"DNS Relay Server" est fourni "tel-quel", et aucune garantie de quelque sorte n''est exprimée ou impliquée, incluant sans limitation, toute garantie de valeur marchande ou format physique pour un but particulier.'+#13#10#13#10+
                 'Dans aucun cas, l''auteur de ce logiciel ne sera jugé responsable de la perte de données, des dommages, du manque à gagner ou de n''importe quel autre genre de perte par l''utilisation correcte ou non de ce logiciel.'+#13#10#13#10+
                 'Le logiciel peut-être modifié. Le code source est fourni dans le setup d''installation.'+#13#10#13#10+
                 ''+#13#10#13#10+
@@ -1387,6 +1387,150 @@ begin
   PageControl1.ActivePageIndex := PageControl1.TabIndex;
   Notebook1.PageIndex := 5;
 
+
+
+  Config_Load();
+
+  // ListViewNetstat
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Process', 100);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'PID', 50);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Protocol', 50);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Local Address', 100);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Local Port', 50);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Address', 100);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Port', 50);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'State', 70);
+  AjouterUneColone(ListViewNetstat.Columns.Add, 'Domaine', 100);
+  //ToolButtonRefreshNetstatClick(nil);
+
+  ListViewNetstat.DoubleBuffered := True;
+
+  // ==========================
+
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Domaine', 130);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Domaine', 95);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Status', 130);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Client', 95);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Serveur', 95);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Date', 55);
+  AjouterUneColone(ListViewLogs.Columns.Add, 'Heure', 55);
+  ListViewLogs.DoubleBuffered := True;
+  
+  // ==========================
+
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Process', 100);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'PID', 50);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Protocol', 50);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Local Address', 100);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Local Port', 50);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Address', 100);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Port', 50);
+  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Domaine', 100);
+
+end;
+
+procedure TForm1.Config_Save();
+var
+  i: Integer;
+  txt: String;
+begin
+  WriteInFile(FilehostPathConfig, EditFilehost.Text);
+  WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
+  WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
+  //WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
+  WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
+  WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
+  TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
+  TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
+
+  txt := #13#10;
+  for i := 0 to CheckListBoxDNSRelayIP.Count - 1 do
+  begin
+    if not CheckListBoxDNSRelayIP.Checked[i] then
+    begin
+      txt := txt + CheckListBoxDNSRelayIP.Items.Strings[i]+#13#10;
+    end;
+  end;
+  WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
+  
+  if CheckBoxUpdate.Checked then
+    WriteInFile(DataDirectoryPath + 'checkupdate.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
+    
+  if CheckBoxUpdateIntervall.Checked then
+    WriteInFile(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
+  else 
+    DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
+    
+  if CheckBoxUpdateSilent.Checked then
+    WriteInFile(DataDirectoryPath + 'checkupdateSilent.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkupdateSilent.cfg');
+    
+  if CheckBoxAllowModifyNetCard.Checked then
+    WriteInFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
+    
+  if CheckBoxAutostartDNSOnBoot.Checked then
+    WriteInFile(DataDirectoryPath + 'checkAutostartDNS.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'checkAutostartDNS.cfg'); 
+
+  if CheckBoxNoTestDNSMaster.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
+
+  if CheckBoxNoCacheDNS.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
+    
+  if CheckBoxPureServer.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxPureServer.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxPureServer.cfg');
+    
+  if CheckBoxRemoteAccess.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg');
+
+  if CheckBoxRestartOnNetworkInterfaceChange.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
+  TimerCheckSystemChanges.Enabled := isServerStarted and CheckBoxRestartOnNetworkInterfaceChange.Checked;    
+  
+  if CheckBoxExecOnDisconnected.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxExecOnDisconnected.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxExecOnDisconnected.cfg'); 
+
+
+  if CheckBoxShowDebug.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxShowDebug.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
+    
+  if LogDNSAutoScroll.Checked then
+    WriteInFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
+    
+  if LogNetstatAutoScroll.Checked then
+    WriteInFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');    
+end;
+
+procedure TForm1.Config_Load();
+var
+  i: Integer;
+  Reg: TRegistry; 
+begin
   DataDirectoryPath := ExtractFilePath(Application.ExeName)+AnsiReplaceStr(ExtractFileName(Application.ExeName), '.exe', '')+'\';
   if not DirectoryExists(DataDirectoryPath) then makeDir(DataDirectoryPath);
 
@@ -1462,7 +1606,7 @@ begin
   bloques1.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
   CheckBoxAlertEventDisallowed.Checked := FileExists(DataDirectoryPath + 'checkAlertEventDisallowed.cfg');
   }
-  
+
   LogDNSAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
   LogNetstatAutoScroll.Checked := FileExists(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
 
@@ -1527,47 +1671,7 @@ begin
     end;
     Reg.Free;
   end;
-
-
-
-  // ListViewNetstat
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'Process', 100);
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'PID', 50);
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'Protocol', 50);
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'Local Address', 100);
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'Local Port', 50);
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Address', 100);
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'Remote Port', 50);
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'State', 70);
-  AjouterUneColone(ListViewNetstat.Columns.Add, 'Domaine', 100);
-  //ToolButtonRefreshNetstatClick(nil);
-
-  ListViewNetstat.DoubleBuffered := True;
-
-  // ==========================
-
-  AjouterUneColone(ListViewLogs.Columns.Add, 'Domaine', 130);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Domaine', 95);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'Status', 130);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Client', 95);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'IP Serveur', 95);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'Date', 55);
-  AjouterUneColone(ListViewLogs.Columns.Add, 'Heure', 55);
-  ListViewLogs.DoubleBuffered := True;
-  
-  // ==========================
-
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Process', 100);
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'PID', 50);
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Protocol', 50);
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Local Address', 100);
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Local Port', 50);
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Address', 100);
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Port', 50);
-  AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Domaine', 100);
-
 end;
-
 
 procedure TForm1.setTheme(color, bg:TColor);
 begin
@@ -2141,32 +2245,11 @@ begin
 end;
 
 procedure TForm1.TimerSaveChangeTimer(Sender: TObject);
-var
-  i: Integer;
-  txt: String;
 begin                     
   debug('TimerSaveChangeTimer');
   TTimer(Sender).Enabled := False;
   if isApplicationLoading then exit;
-  WriteInFile(FilehostPathConfig, EditFilehost.Text);
-  WriteInFile(SlaveDNSPortConfig, IntToStr(SpinPort.Value));
-  WriteInFile(TimeCheckUpdateFile, IntToStr(SpinTimeCheckUpdate.Value));
-  //WriteInFile(DataDirectoryPath + 'alertDisplayDuration.cfg', IntToStr(SpinEditAlertDuration.Value));
-  WriteInFile(DataDirectoryPath + 'EditExecOnDisconnected.cfg', EditExecOnDisconnected.Text);
-  WriteInFile(DataDirectoryPath + 'SpinEditTTLCache.cfg', IntToStr(SpinEditTTLCache.Value));
-  TimerClearCache.Interval := SpinEditTTLCache.Value * 1000 * 60 * 60;
-  TimerClearCache.Enabled := SpinEditTTLCache.Value > 0;
-
-  txt := #13#10;
-  for i := 0 to CheckListBoxDNSRelayIP.Count - 1 do
-  begin
-    if not CheckListBoxDNSRelayIP.Checked[i] then
-    begin
-      txt := txt + CheckListBoxDNSRelayIP.Items.Strings[i]+#13#10;
-    end;
-  end;
-  WriteInFile(DataDirectoryPath + 'CheckListBoxDNSRelayIP.cfg', txt);
-
+  Config_Save;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2190,7 +2273,7 @@ begin
   if (SelectedListItem.SubItems.Strings[0] = '') then exit;
   //delDomain(EditFilehost.Text, SelectedListItem.SubItems.Strings[0]);
   delDomain(EditFilehost.Text, SelectedListItem.Caption);
-  MemoLogs.Lines.Add('Débloquage de '+SelectedListItem.Caption);
+  MemoLogs.Lines.Add('Déblocage de '+SelectedListItem.Caption);
   SelectedListItem.Delete;
   refreshListView1Click();
   if isServerStarted then ActionDNS.clearCache;
@@ -2641,7 +2724,7 @@ end;
 procedure TUpdate.UpdateUrl(urlLastVersion, urlUpdate, suffixe: string; isSilent, isDev: Boolean);
 var
   lastversion, lastverFile, url, msg: string;
-  canClose: Boolean;
+  //canClose: Boolean;
 begin
   url := urlLastVersion+'?'+DateTimeToStr(Now);
   lastverFile := ExtractFilePath(Application.ExeName)+installDirectoryPath+'lastversion.txt';
@@ -2703,12 +2786,13 @@ begin
       else
         ExecAndWait(lastverFile, '', SW_SHOWNORMAL);
 
+    {
       canClose := True;
       Form1.FormCloseQuery(nil, canClose);
       KillTask('python.exe');
       KillTask(ExtractFileName(Application.ExeName));
       Application.Terminate;
-
+     }
     end
     else begin
       if isSilent then
@@ -2724,12 +2808,13 @@ end;
 procedure TForm1.CheckBoxUpdateClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
-
+  Config_Save();
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdate.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdate.cfg');
-
+}
   //ActionDNS.setDNSOnBoot(not CheckBoxStartWithWindows.Checked);
 
   LabelMessage.Caption := PChar('Sauvé!');
@@ -2843,10 +2928,13 @@ end;
 procedure TForm1.CheckBoxUpdateIntervallClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  Config_Save();
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdateIntervall.cfg', '1')
-  else DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
-
+  else 
+    DeleteFile(DataDirectoryPath + 'checkupdateIntervall.cfg');
+}
   TimerCheckUpdate.Interval := SpinTimeCheckUpdate.Value * 60 * 60 * 1000;
   TimerCheckUpdate.Enabled := TCheckBox(Sender).Checked;
 
@@ -2858,11 +2946,13 @@ end;
 procedure TForm1.CheckBoxUpdateSilentClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  Config_Save();
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkupdateSilent.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkupdateSilent.cfg');
-
+  }
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2879,11 +2969,13 @@ end;
 procedure TForm1.CheckBoxAllowModifyNetCardClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  Config_Save;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAllowModifyNetcard.cfg');
-
+  }
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -2893,11 +2985,13 @@ end;
 procedure TForm1.CheckBoxAutostartDNSOnBootClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  Config_Save;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'checkAutostartDNS.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'checkAutostartDNS.cfg');
-
+  }
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3917,16 +4011,21 @@ procedure TForm1.Relancerlapplication1Click(Sender: TObject);
 var
   i: Integer;
   param: string;
-  canclose: Boolean;
+  //canclose: Boolean;
 begin
   param := '';
   for i:=1 to ParamCount() do
     param := param +' '+ParamStr(i);
   ExecAndBringToFront(Application.ExeName, param);
+
+  KillTask('python.exe');
+  KillProcess(Self.Handle);
+{
   canClose := True;
   FormCloseQuery(nil, canClose);
   KillProcess(Self.Handle);
   Application.Terminate;
+}
 end;
 
 
@@ -3986,10 +4085,13 @@ end;
 procedure TForm1.CheckBoxNoTestDNSMasterClick(Sender: TObject);
 begin
   if isApplicationLoading then Exit;
+  Config_Save;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoTestDNSMaster.cfg');
+  }
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -3999,11 +4101,13 @@ end;
 procedure TForm1.CheckBoxNoCacheDNSClick(Sender: TObject);
 begin
   if isApplicationLoading then Exit;
+  Config_Save;
+  {  
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoCacheDNS.cfg');
-
+  }
   PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -4014,11 +4118,13 @@ end;
 procedure TForm1.CheckBoxPureServerClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  Config_Save;
+  {  
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxPureServer.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxPureServer.cfg');
-
+  }
   PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
@@ -4176,12 +4282,13 @@ procedure TForm1.CheckBoxRemoteAccessClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
   TimerRemoteAccess.Enabled := TCheckBox(Sender).Checked;
-
+  Config_Save;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxRemoteAccess.cfg');
-
+  }
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -4212,12 +4319,14 @@ procedure TForm1.CheckBoxRestartOnNetworkInterfaceChangeClick(
   Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  Config_Save;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
   TimerCheckSystemChanges.Enabled := isServerStarted and TCheckBox(Sender).Checked;
-
+  }
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -4387,11 +4496,14 @@ end;
 procedure TForm1.CheckBoxExecOnDisconnectedClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  
+  Config_Save;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + TCheckBox(Sender).Name + '.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + TCheckBox(Sender).Name + '.cfg');
-
+  }
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -4523,11 +4635,13 @@ end;
 procedure TForm1.CheckBoxShowDebugClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
+  Config_Save;
+  {
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxShowDebug.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxShowDebug.cfg');
-
+  }
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
@@ -4916,15 +5030,19 @@ end;
 
 procedure TForm1.CheckBoxShowHTTPRequestInLogsClick(Sender: TObject);
 begin
+{
   if isApplicationLoading then exit;
+  Config_Save;
+  
   if TCheckBox(Sender).Checked then
     WriteInFile(DataDirectoryPath + 'CheckBoxShowHTTPRequestInLogs.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxShowHTTPRequestInLogs.cfg');
-
+  
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+  }
 end;
 
 
@@ -5319,12 +5437,13 @@ end;
 procedure TForm1.LogDNSAutoScrollClick(Sender: TObject);
 begin
   LogDNSAutoScroll.Checked := not LogDNSAutoScroll.Checked;
-
+  Config_Save;
+  {
   if LogDNSAutoScroll.Checked then
     WriteInFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'LogDNSAutoScroll.cfg');
-
+  }
 end;
 
 procedure TForm1.ListViewLogsNetstatContextPopup(Sender: TObject;
@@ -5346,11 +5465,13 @@ end;
 procedure TForm1.LogNetstatAutoScrollClick(Sender: TObject);
 begin
   LogNetstatAutoScroll.Checked := not LogNetstatAutoScroll.Checked;
-
+  Config_Save;
+  {
   if LogNetstatAutoScroll.Checked then
     WriteInFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
+  }
 end;
 
 procedure TForm1.EraseLogsListViewDNSClick(Sender: TObject);

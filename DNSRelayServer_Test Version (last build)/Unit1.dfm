@@ -133,7 +133,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 315
-            ActivePage = TabSheet4
+            ActivePage = TabSheet1
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
