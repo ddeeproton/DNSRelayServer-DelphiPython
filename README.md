@@ -84,6 +84,10 @@ Version 0.4.380 Remplacement du système d'alerte par des logs configurables
 
 ![](preview3.png)
 
+Version 0.4.389 Ajout de la section Firewall
+
+![](preview4.png)
+
 ### Site web
 
 https://dnsrelay.000webhostapp.com/
