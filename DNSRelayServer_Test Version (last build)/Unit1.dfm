@@ -96,7 +96,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 370
-      PageIndex = 6
       TabOrder = 0
       object TPage
         Left = 0
@@ -134,7 +133,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 315
-            ActivePage = TabSheet9
+            ActivePage = TabSheet1
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -2011,8 +2010,8 @@ object Form1: TForm1
             object Label49: TLabel
               Left = 40
               Top = 24
-              Width = 207
-              Height = 25
+              Width = 199
+              Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = '(bloque les connexions qui contournent le serveur DNS)'
               WordWrap = True
@@ -2020,8 +2019,8 @@ object Form1: TForm1
             object Label50: TLabel
               Left = 39
               Top = 49
-              Width = 204
-              Height = 25
+              Width = 173
+              Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = '(Ferme quelques secondes apr'#232's sa connexion!)'
               WordWrap = True

@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.391';
+  CurrentApplicationVersion: string = '0.4.392';
   isDevVersion: Boolean = False;
 
 type
@@ -1750,6 +1750,7 @@ begin
   Panel7.Color := bg;
   Panel8.Color := bg;
   Panel11.Color := bg;
+  Panel13.Color := bg;
   PanelMessage.Color := bg;
 
   Splitter1.Color := bg;
