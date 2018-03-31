@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 491
-  Top = 125
+  Left = 466
+  Top = 158
   Width = 521
   Height = 553
   VertScrollBar.Position = 1
@@ -100,7 +100,7 @@ object Form1: TForm1
       object TPage
         Left = 0
         Top = 0
-        Caption = 'Default'
+        Caption = 'Config'
         DesignSize = (
           344
           370)
@@ -133,7 +133,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 315
-            ActivePage = TabSheet1
+            ActivePage = TabSheet9
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -1512,7 +1512,7 @@ object Form1: TForm1
       object TPage
         Left = 0
         Top = 0
-        Caption = 'Config DNS Master'
+        Caption = 'Blacklist'
         object GroupBox1: TGroupBox
           Left = 8
           Top = 32
@@ -1654,7 +1654,7 @@ object Form1: TForm1
       object TPage
         Left = 0
         Top = 0
-        Caption = 'DNS Domains'
+        Caption = 'WebFilter'
         DesignSize = (
           344
           370)
@@ -1844,7 +1844,7 @@ object Form1: TForm1
       object TPage
         Left = 0
         Top = 0
-        Caption = 'Logs'
+        Caption = 'Netstat'
         object GroupBox6: TGroupBox
           Left = 16
           Top = 32
@@ -1929,7 +1929,7 @@ object Form1: TForm1
       object TPage
         Left = 0
         Top = 0
-        Caption = 'config'
+        Caption = 'License'
         DesignSize = (
           344
           370)
@@ -1964,6 +1964,129 @@ object Form1: TForm1
               'Memo1')
             ScrollBars = ssVertical
             TabOrder = 0
+          end
+        end
+      end
+      object TPage
+        Left = 0
+        Top = 0
+        Caption = 'Firewall'
+        object GroupBox12: TGroupBox
+          Left = 16
+          Top = 24
+          Width = 305
+          Height = 329
+          Caption = '                 '
+          TabOrder = 0
+          object Label31: TLabel
+            Left = 16
+            Top = 0
+            Width = 35
+            Height = 13
+            Caption = 'Firewall'
+          end
+          object ScrollBox5: TScrollBox
+            Left = 16
+            Top = 16
+            Width = 265
+            Height = 305
+            TabOrder = 0
+            DesignSize = (
+              263
+              303)
+            object Label48: TLabel
+              Left = 32
+              Top = 9
+              Width = 181
+              Height = 13
+              Caption = 'Bloquer les connexions directes'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label49: TLabel
+              Left = 40
+              Top = 24
+              Width = 207
+              Height = 25
+              Anchors = [akLeft, akTop, akRight]
+              Caption = '(bloque les connexions qui contournent le serveur DNS)'
+              WordWrap = True
+            end
+            object Label50: TLabel
+              Left = 39
+              Top = 49
+              Width = 204
+              Height = 25
+              Anchors = [akLeft, akTop, akRight]
+              Caption = '(Ferme quelques secondes apr'#232's sa connexion!)'
+              WordWrap = True
+            end
+            object Label51: TLabel
+              Left = 18
+              Top = 80
+              Width = 212
+              Height = 26
+              Anchors = [akLeft, akTop, akRight]
+              Caption = 'Autorise les applications suivantes '#224' contourner le serveur DNS'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = [fsBold]
+              ParentFont = False
+              WordWrap = True
+            end
+            object CheckBoxFirewallNoDirectIP: TCheckBox
+              Left = 15
+              Top = 8
+              Width = 17
+              Height = 17
+              TabOrder = 0
+              OnClick = CheckBoxFirewallNoDirectIPClick
+            end
+            object ButtonAddFirewallWhitelist: TButton
+              Left = 180
+              Top = 112
+              Width = 75
+              Height = 25
+              Anchors = [akTop, akRight]
+              Caption = 'Ajouter'
+              TabOrder = 1
+              OnClick = ButtonAddFirewallWhitelistClick
+            end
+            object ButtonModifyFirewallWhitelist: TButton
+              Left = 180
+              Top = 144
+              Width = 75
+              Height = 25
+              Anchors = [akTop, akRight]
+              Caption = 'Modifier'
+              TabOrder = 2
+              OnClick = ButtonModifyFirewallWhitelistClick
+            end
+            object ButtonRemoveFirewallWhitelist: TButton
+              Left = 180
+              Top = 176
+              Width = 75
+              Height = 25
+              Anchors = [akTop, akRight]
+              Caption = 'Effacer'
+              TabOrder = 3
+              OnClick = ButtonRemoveFirewallWhitelistClick
+            end
+            object CheckListBoxDirectIPWhiteList: TListBox
+              Left = 16
+              Top = 112
+              Width = 153
+              Height = 177
+              Anchors = [akLeft, akTop, akRight, akBottom]
+              ItemHeight = 13
+              TabOrder = 4
+            end
           end
         end
       end
@@ -17901,6 +18024,10 @@ object Form1: TForm1
       Caption = 'Web Filter'
       OnClick = ToolButton6Click
     end
+    object Firewall1: TMenuItem
+      Caption = 'Firewall'
+      OnClick = Firewall1Click
+    end
     object Netstat1: TMenuItem
       Caption = 'Netstat'
       OnClick = Netstat1Click
@@ -18007,7 +18134,6 @@ object Form1: TForm1
   end
   object TimerLogsNetstat: TTimer
     Enabled = False
-    Interval = 2000
     OnTimer = TimerLogsNetstatTimer
     Left = 451
     Top = 229

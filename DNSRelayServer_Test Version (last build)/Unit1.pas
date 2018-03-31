@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.388';
+  CurrentApplicationVersion: string = '0.4.389';
   isDevVersion: Boolean = False;
 
 type
@@ -342,6 +342,19 @@ type
     Panel13: TPanel;
     Label18: TLabel;
     CheckBoxDisableIPv6: TCheckBox;
+    Firewall1: TMenuItem;
+    GroupBox12: TGroupBox;
+    Label31: TLabel;
+    ScrollBox5: TScrollBox;
+    CheckBoxFirewallNoDirectIP: TCheckBox;
+    Label48: TLabel;
+    Label49: TLabel;
+    Label50: TLabel;
+    Label51: TLabel;
+    ButtonAddFirewallWhitelist: TButton;
+    ButtonModifyFirewallWhitelist: TButton;
+    ButtonRemoveFirewallWhitelist: TButton;
+    CheckListBoxDirectIPWhiteList: TListBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -550,6 +563,11 @@ type
     procedure CheckBoxDisableIPv6Click(Sender: TObject);
     procedure Config_Save();
     procedure Config_Load();
+    procedure ButtonAddFirewallWhitelistClick(Sender: TObject);
+    procedure Firewall1Click(Sender: TObject);
+    procedure CheckBoxFirewallNoDirectIPClick(Sender: TObject);
+    procedure ButtonModifyFirewallWhitelistClick(Sender: TObject);
+    procedure ButtonRemoveFirewallWhitelistClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1368,6 +1386,7 @@ begin
   GroupBox4.Align := alClient;
   GroupBox6.Align := alClient;
   GroupBox8.Align := alClient;
+  GroupBox12.Align := alClient;
   Notebook1.Align := alClient;
   PageControl1.Align := alClient;
   ScrollBox1.Align := alClient;
@@ -1375,9 +1394,12 @@ begin
   ScrollBox3.Align := alClient;
   ScrollBox8.Align := alClient;
   GroupBoxAffichage.Align := alTop;
-  //ScrollBox5.Align := alClient;
   ScrollBox6.Align := alClient;
   ScrollBox6.VertScrollBar.Position := 0;
+  ScrollBox5.Align := alClient;
+  ScrollBox5.BevelInner := bvNone;
+  ScrollBox5.BevelOuter := bvNone;
+  ScrollBox5.BorderStyle := bsNone;
 
   GroupBox5.Align := alBottom;
   PanelRestart.Align := alBottom;
@@ -1523,7 +1545,12 @@ begin
   if LogNetstatAutoScroll.Checked then
     WriteInFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg', '1')
   else
-    DeleteFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');    
+    DeleteFile(DataDirectoryPath + 'LogNetstatAutoScroll.cfg');
+
+  if CheckBoxFirewallNoDirectIP.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxFirewallNoDirectIP.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxFirewallNoDirectIP.cfg');
 end;
 
 procedure TForm1.Config_Load();
@@ -1639,9 +1666,9 @@ begin
   TimerRemoteAccess.Enabled := CheckBoxRemoteAccess.Checked;
 
   CheckBoxRestartOnNetworkInterfaceChange.Checked := FileExists(DataDirectoryPath + 'CheckBoxRestartOnNetworkInterfaceChange.cfg');
-
   CheckBoxExecOnDisconnected.Checked := FileExists(DataDirectoryPath + 'CheckBoxExecOnDisconnected.cfg');
-  
+  CheckBoxFirewallNoDirectIP.Checked := FileExists(DataDirectoryPath + 'CheckBoxFirewallNoDirectIP.cfg');
+
   refreshCheckBox(CheckBoxStartWithWindows);
 
   TActionManageIP.load();
@@ -1671,6 +1698,9 @@ begin
     end;
     Reg.Free;
   end;
+
+  if FileExists(DataDirectoryPath + 'DirectIPWhiteList.cfg') then
+    CheckListBoxDirectIPWhiteList.Items.LoadFromFile(DataDirectoryPath + 'DirectIPWhiteList.cfg');
 end;
 
 procedure TForm1.setTheme(color, bg:TColor);
@@ -1831,6 +1861,10 @@ begin
   Label45.Font.Color := color;
   Label46.Font.Color := color;
   Label47.Font.Color := color;
+  Label48.Font.Color := color;
+  Label49.Font.Color := color;
+  Label50.Font.Color := color;
+  Label51.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
@@ -4019,7 +4053,9 @@ begin
   ExecAndBringToFront(Application.ExeName, param);
 
   KillTask('python.exe');
-  KillProcess(Self.Handle);
+  //KillProcess(Self.Handle);
+  Systray.EnleveIconeTray;
+  Application.Terminate;
 {
   canClose := True;
   FormCloseQuery(nil, canClose);
@@ -4685,8 +4721,7 @@ end;
 procedure TForm1.Netstat1Click(Sender: TObject);
 begin
   GotoMainPage(4);
-  if not TimerRefreshNetstat.Enabled then
-    ToolButtonRefreshNetstatClick(nil);
+  ToolButtonRefreshNetstatClick(nil);
 end;
 
 //=====================
@@ -4757,10 +4792,11 @@ begin
   //FreeAndNil(Connections);
   //ConnectionsNetstat := nil;
   //Netstat.GetConnections(ConnectionsNetstat);
-  if PileConnections <> nil then
-    Netstat.DestroyConnections(PileConnections);
-  //ShowMessage('ok');
-  Netstat.GetConnectionsPile(PileConnections);
+
+  //if PileConnections <> nil then
+  //  Netstat.DestroyConnections(PileConnections);
+  if PileConnections = nil then
+    Netstat.GetConnectionsPile(PileConnections);
 
   if not isFormVisible or (Notebook1.PageIndex <> 4) then exit;
 
@@ -5260,7 +5296,7 @@ begin
     result := 'BLOCKED';
     Exit;
   end;
-  result := 'Direct IP or "Logs DNS" removed';
+  result := 'Direct IP';
   for i := 0 to ListViewLogs.Items.Count -1 do
   begin
     if ListViewLogs.Items[i].SubItems.Strings[0] = ip then
@@ -5275,7 +5311,7 @@ procedure TForm1.TimerLogsNetstatTimer(Sender: TObject);
 var
   //i,
   index: Integer;
-  sProtocol: String;
+  sProtocol, domain, appname: String;
   p: TPoint;
   temp: PPileElem;
 begin
@@ -5306,6 +5342,18 @@ begin
     begin
       if (temp^.Connection.ConnectionState = 5) then
       begin
+
+        domain := GetDomainFromIP(Netstat.IpAddressToString(temp^.Connection.RemoteAddress));
+        appname := TaskManager.GetExeNameFromPID(temp^.Connection.ProcessID);
+
+        if CheckBoxFirewallNoDirectIP.Checked
+        and (domain = 'Direct IP')
+        and (CheckListBoxDirectIPWhiteList.Items.IndexOf(LowerCase(appname)) = -1) then
+        begin
+          Netstat.CloseConnection(temp^.Connection);
+          domain := 'BLOCKED (direct IP)';
+        end;
+
         if not Netstat.FindConnectionPile(temp^.Connection, oldPileConnections) then
         begin
          if temp^.Connection.Protocol = PROTOCOL_TCP then
@@ -5323,11 +5371,13 @@ begin
           ListViewLogsNetstat.Items.Item[index].SubItems.Add(IntToStr(ntohs(temp^.Connection.RemoteRawPort)));
           //ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].SubItems.Add(TcpConnectionStates[Connections[i].ConnectionState]);
 
-          ListViewLogsNetstat.Items.Item[index].SubItems.Add(GetDomainFromIP(Netstat.IpAddressToString(temp^.Connection.RemoteAddress)));
+
+
+          ListViewLogsNetstat.Items.Item[index].SubItems.Add(domain);
 
           // Set caption after all (at the end) to prevent some issues
           // Mettre cette ligne à la fin pour éviter un bug à l'affichage
-          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := TaskManager.GetExeNameFromPID(temp^.Connection.ProcessID);
+          ListViewLogsNetstat.Items.Item[ListViewLogsNetstat.Items.Count-1].Caption := appname;
           Application.ProcessMessages;
           Sleep(100);
           Application.ProcessMessages;
@@ -5524,6 +5574,55 @@ begin
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
+end;
+      
+procedure TForm1.Firewall1Click(Sender: TObject);
+begin
+  GotoMainPage(6);
+end;
+
+procedure TForm1.CheckBoxFirewallNoDirectIPClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  Config_Save;
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+procedure TForm1.ButtonAddFirewallWhitelistClick(Sender: TObject);
+var
+  appName: String;
+begin
+  if not InputQuery('Add Whitelist', 'Nom de l''application', appName) then exit;
+  CheckListBoxDirectIPWhiteList.Items.Add(LowerCase(appName));
+  CheckListBoxDirectIPWhiteList.Items.SaveToFile(DataDirectoryPath + 'DirectIPWhiteList.cfg');
+end;
+
+
+procedure TForm1.ButtonModifyFirewallWhitelistClick(Sender: TObject);
+var
+  i : Integer;
+  appName: String;
+begin
+  i := CheckListBoxDirectIPWhiteList.ItemIndex;
+  if i = -1 then exit;  
+  appName := CheckListBoxDirectIPWhiteList.Items.Strings[i];
+  if not InputQuery('Add Whitelist', 'Nom de l''application', appName) then exit;
+  CheckListBoxDirectIPWhiteList.Items.Strings[i] := LowerCase(appName);
+  CheckListBoxDirectIPWhiteList.Items.SaveToFile(DataDirectoryPath + 'DirectIPWhiteList.cfg');
+end;
+
+procedure TForm1.ButtonRemoveFirewallWhitelistClick(Sender: TObject);
+var
+  i : Integer;
+  appName: String;
+begin
+  i := CheckListBoxDirectIPWhiteList.ItemIndex;
+  if i = -1 then exit;
+  appName := CheckListBoxDirectIPWhiteList.Items.Strings[i];
+  if MessageDlg(PChar('Effacer ['+appName+']?'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then exit;
+  CheckListBoxDirectIPWhiteList.DeleteSelected;
+  CheckListBoxDirectIPWhiteList.Items.SaveToFile(DataDirectoryPath + 'DirectIPWhiteList.cfg');
 end;
 
 end.
