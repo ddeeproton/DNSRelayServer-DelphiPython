@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.390';
+  CurrentApplicationVersion: string = '0.4.391';
   isDevVersion: Boolean = False;
 
 type
@@ -1791,6 +1791,7 @@ begin
   EditSourceURL.Color := bg2;
   EditDonation.Color := bg2;
   SpinEditTTLCache.Color := bg2;
+  CheckListBoxDirectIPWhiteList.Color := bg2;
 
   bg2 := changeColor(bg, -SpinEditContraste.Position, -SpinEditContraste.Position, -SpinEditContraste.Position);
 
@@ -1819,6 +1820,7 @@ begin
   EditSourceURL.Font.Color := bg2;
   EditDonation.Font.Color := bg2;
   SpinEditTTLCache.Font.Color := bg2;
+  CheckListBoxDirectIPWhiteList.Font.Color := bg2;
 end;
 
 
