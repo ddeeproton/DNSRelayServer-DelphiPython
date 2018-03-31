@@ -96,6 +96,7 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 370
+      PageIndex = 6
       TabOrder = 0
       object TPage
         Left = 0
@@ -2083,7 +2084,7 @@ object Form1: TForm1
               Top = 112
               Width = 153
               Height = 177
-              Anchors = [akLeft, akTop, akRight, akBottom]
+              Anchors = [akLeft, akTop, akRight]
               ItemHeight = 13
               TabOrder = 4
             end

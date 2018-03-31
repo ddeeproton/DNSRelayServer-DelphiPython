@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.389';
+  CurrentApplicationVersion: string = '0.4.390';
   isDevVersion: Boolean = False;
 
 type
@@ -5092,15 +5092,21 @@ begin
   //if isXP then exit;
   
   scrollBox := nil;
-  if Notebook1.PageIndex > 0 then exit;
-  if PageControl1.TabIndex = 0 then scrollBox := ScrollBox1;
-  if PageControl1.TabIndex = 6 then scrollBox := ScrollBox2;
-  if PageControl1.TabIndex = 2 then scrollBox := ScrollBox3;
-  if PageControl1.TabIndex = 7 then scrollBox := ScrollBox4;
-  //if PageControl1.TabIndex = 4 then scrollBox := ScrollBox5;
-  if PageControl1.TabIndex = 4 then scrollBox := ScrollBox6;
-  if PageControl1.TabIndex = 5 then scrollBox := ScrollBox7;
-  if PageControl1.TabIndex = 3 then scrollBox := ScrollBox8;
+  if Notebook1.PageIndex = 0 then
+  begin
+    if PageControl1.TabIndex = 0 then scrollBox := ScrollBox1;
+    if PageControl1.TabIndex = 6 then scrollBox := ScrollBox2;
+    if PageControl1.TabIndex = 2 then scrollBox := ScrollBox3;
+    if PageControl1.TabIndex = 7 then scrollBox := ScrollBox4;
+    //if PageControl1.TabIndex = 4 then scrollBox := ScrollBox5;
+    if PageControl1.TabIndex = 4 then scrollBox := ScrollBox6;
+    if PageControl1.TabIndex = 5 then scrollBox := ScrollBox7;
+    if PageControl1.TabIndex = 3 then scrollBox := ScrollBox8;
+  end;
+  if Notebook1.PageIndex = 6 then
+  begin
+    scrollBox := ScrollBox5;
+  end;  
   if scrollBox = nil then exit;
   Handled := PtInRect(scrollBox.ClientRect, scrollBox.ScreenToClient(MousePos));
   if Handled then
