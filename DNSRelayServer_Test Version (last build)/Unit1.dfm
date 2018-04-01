@@ -3,7 +3,6 @@ object Form1: TForm1
   Top = 158
   Width = 521
   Height = 553
-  VertScrollBar.Position = 60
   Caption = 'DNS Relay Server'
   Color = clWhite
   TransparentColorValue = clCream
@@ -72,7 +71,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 0
+    Top = 60
     Width = 497
     Height = 10
     Cursor = crVSplit
@@ -85,7 +84,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 19
+    Top = 79
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -96,7 +95,6 @@ object Form1: TForm1
       Top = 9
       Width = 344
       Height = 370
-      PageIndex = 6
       TabOrder = 0
       object TPage
         Left = 0
@@ -153,21 +151,20 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
-                VertScrollBar.Position = 105
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = -105
+                  Top = 0
                   Width = 264
-                  Height = 361
+                  Height = 389
                   Align = alTop
                   TabOrder = 0
                   DesignSize = (
                     264
-                    361)
+                    389)
                   object Label1: TLabel
                     Left = 16
                     Top = 15
@@ -324,11 +321,22 @@ object Form1: TForm1
                   end
                   object Label20: TLabel
                     Left = 16
-                    Top = 311
+                    Top = 335
                     Width = 187
                     Height = 13
                     Caption = 'Dur'#233'e du cache DNS (0 expire jamais) :'
                     Transparent = True
+                  end
+                  object Label52: TLabel
+                    Left = 35
+                    Top = 305
+                    Width = 255
+                    Height = 13
+                    Caption = 'D'#233'tacher le serveur DNS de cette interface graphique'
+                    FocusControl = CheckBoxNoGUI
+                    OnClick = LabelToCheckboxClick
+                    OnMouseEnter = LabelCheckboxMouseEnter
+                    OnMouseLeave = LabelCheckboxMouseLeave
                   end
                   object SpinPort: TSpinEdit
                     Left = 152
@@ -432,7 +440,7 @@ object Form1: TForm1
                   end
                   object SpinEditTTLCache: TSpinEdit
                     Left = 16
-                    Top = 328
+                    Top = 352
                     Width = 121
                     Height = 22
                     Hint = 'Efface le cache apr'#232's X heures'
@@ -443,6 +451,15 @@ object Form1: TForm1
                     TabOrder = 10
                     Value = 0
                     OnChange = SpinEditTTLCacheChange
+                  end
+                  object CheckBoxNoGUI: TCheckBox
+                    Left = 16
+                    Top = 303
+                    Width = 17
+                    Height = 17
+                    Caption = 'D'#233'tacher le serveur DNS de cette interface graphique'
+                    TabOrder = 11
+                    OnClick = CheckBoxNoGUIClick
                   end
                 end
               end
@@ -1978,7 +1995,7 @@ object Form1: TForm1
             object Label51: TLabel
               Left = 18
               Top = 120
-              Width = 199
+              Width = 197
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Autorise les applications suivantes '#224' contourner le serveur DNS'
@@ -1993,8 +2010,8 @@ object Form1: TForm1
             object Label45: TLabel
               Left = 39
               Top = 81
-              Width = 194
-              Height = 40
+              Width = 182
+              Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'La surveillance r'#233'seau doit '#234'tre activ'#233' dans les "Logs Netstat"'
               WordWrap = True
@@ -2053,7 +2070,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 413
+    Top = 473
     Width = 313
     Height = 108
     Caption = '           '
@@ -2218,7 +2235,7 @@ object Form1: TForm1
   end
   object Panel5: TPanel
     Left = 0
-    Top = -60
+    Top = 0
     Width = 497
     Height = 60
     Align = alTop
@@ -3068,7 +3085,7 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 3
-    Top = 566
+    Top = 626
     Width = 313
     Height = 33
     TabOrder = 3
@@ -3113,7 +3130,7 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 8
-    Top = 525
+    Top = 585
     Width = 313
     Height = 33
     TabOrder = 4

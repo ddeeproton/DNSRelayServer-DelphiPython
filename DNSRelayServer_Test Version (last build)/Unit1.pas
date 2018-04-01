@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.397';
+  CurrentApplicationVersion: string = '0.4.398';
   isDevVersion: Boolean = False;
 
 type
@@ -354,6 +354,8 @@ type
     CheckBoxEnableSurveyNetwork: TCheckBox;
     Label17: TLabel;
     Label45: TLabel;
+    Label52: TLabel;
+    CheckBoxNoGUI: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -568,6 +570,7 @@ type
     procedure ButtonModifyFirewallWhitelistClick(Sender: TObject);
     procedure ButtonRemoveFirewallWhitelistClick(Sender: TObject);
     procedure CheckBoxEnableSurveyNetworkClick(Sender: TObject);
+    procedure CheckBoxNoGUIClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1272,6 +1275,7 @@ var
 begin
 
 
+
   if not IsUserAnAdmin() then
   begin
     param := '';
@@ -1295,7 +1299,7 @@ begin
   }
   //SetWindowTheme(PageControl1.Handle, '', '');
 
-  TimerAfterFormCreate.Enabled := True;
+
   ServerDoStart := False;
   ServerFailStartCount := 0;
   GroupBoxUpdateTheme.Visible := False;
@@ -1340,6 +1344,8 @@ begin
     KillProcess(Self.Handle);
     Application.Terminate;
   end;
+  
+
 
   if isDevVersion then txt := ' alpha' else txt := '';
   Form1.Caption := PChar('DNS Relay Server '+CurrentApplicationVersion+txt);
@@ -1410,7 +1416,6 @@ begin
   Notebook1.PageIndex := 5;
 
 
-
   Config_Load();
 
   // ListViewNetstat
@@ -1449,6 +1454,7 @@ begin
   AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Remote Port', 50);
   AjouterUneColone(ListViewLogsNetstat.Columns.Add, 'Domaine', 100);
 
+  TimerAfterFormCreate.Enabled := True;  
 end;
 
 procedure TForm1.Config_Save();
@@ -1557,6 +1563,11 @@ begin
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxEnableSurveyNetwork.cfg');
   TimerLogsNetstat.Enabled := CheckBoxEnableSurveyNetwork.Checked;
+
+  if CheckBoxNoGUI.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxNoGUI.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxNoGUI.cfg');
 end;
 
 procedure TForm1.Config_Load();
@@ -1710,6 +1721,9 @@ begin
 
   CheckBoxEnableSurveyNetwork.Checked := FileExists(DataDirectoryPath + 'CheckBoxEnableSurveyNetwork.cfg');
   TimerLogsNetstat.Enabled := CheckBoxEnableSurveyNetwork.Checked;
+
+  CheckBoxNoGUI.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoGUI.cfg');
+
 end;
 
 procedure TForm1.setTheme(color, bg:TColor);
@@ -1875,6 +1889,7 @@ begin
   Label49.Font.Color := color;
   Label50.Font.Color := color;
   Label51.Font.Color := color;
+  Label52.Font.Color := color;
 
   LabelMessage.Font.Color := color;
   CheckBoxStartWithWindows.Font.Color := color;
@@ -2674,14 +2689,22 @@ begin
         cmd := '"'+PythonPath+'python.exe" "'+DataDirectoryPath + 'relayDNS.pyo" config_dnsip "'+CheckListBoxDNSRelayIP.Items.Strings[i]+'" config_hostfile "'+EditFilehost.Text+'" config_blackhost "'+BlackListCfgFile+'"';
         WriteInFile(bat, '@start "titre" /B /WAIT /REALTIME '+cmd+#13#10'@exit');
         if CheckBoxShowDebug.Checked then LogsAdd(cmd);
-        j := Length(listThreads);
-        SetLength(listThreads, j+1);
-        listThreads[j] := Unit1.ThreadProcess.Create(True);
-        listThreads[j].cmd := bat;
-        listThreads[j].output := TStringList.Create;
-        listThreads[j].EnMemo := MemoLogs;
-        listThreads[j].indexThread := i;
-        listThreads[j].Suspended := False;
+
+        if CheckBoxNoGUI.Checked then
+        begin
+          ExecAndContinue(bat, '', SW_SHOW);
+        end else begin
+          j := Length(listThreads);
+          SetLength(listThreads, j+1);
+          listThreads[j] := Unit1.ThreadProcess.Create(True);
+          listThreads[j].cmd := bat;
+          listThreads[j].output := TStringList.Create;
+          listThreads[j].EnMemo := MemoLogs;
+          listThreads[j].indexThread := i;
+          listThreads[j].Suspended := False;
+        end;
+
+
       end;
     end;
 
@@ -5650,6 +5673,16 @@ procedure TForm1.CheckBoxEnableSurveyNetworkClick(Sender: TObject);
 begin
   if isApplicationLoading then exit;
   Config_Save;
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.CheckBoxNoGUIClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  Config_Save;
+  PanelRestart.Visible := True;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;
