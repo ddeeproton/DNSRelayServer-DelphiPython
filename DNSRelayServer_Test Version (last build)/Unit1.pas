@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.396';
+  CurrentApplicationVersion: string = '0.4.397';
   isDevVersion: Boolean = False;
 
 type
@@ -350,6 +350,10 @@ type
     ButtonModifyFirewallWhitelist: TButton;
     ButtonRemoveFirewallWhitelist: TButton;
     CheckListBoxDirectIPWhiteList: TListBox;
+    Panel14: TPanel;
+    CheckBoxEnableSurveyNetwork: TCheckBox;
+    Label17: TLabel;
+    Label45: TLabel;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -563,6 +567,7 @@ type
     procedure CheckBoxFirewallNoDirectIPClick(Sender: TObject);
     procedure ButtonModifyFirewallWhitelistClick(Sender: TObject);
     procedure ButtonRemoveFirewallWhitelistClick(Sender: TObject);
+    procedure CheckBoxEnableSurveyNetworkClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1546,6 +1551,12 @@ begin
     WriteInFile(DataDirectoryPath + 'CheckBoxFirewallNoDirectIP.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxFirewallNoDirectIP.cfg');
+
+  if CheckBoxEnableSurveyNetwork.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxEnableSurveyNetwork.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxEnableSurveyNetwork.cfg');
+  TimerLogsNetstat.Enabled := CheckBoxEnableSurveyNetwork.Checked;
 end;
 
 procedure TForm1.Config_Load();
@@ -1696,6 +1707,9 @@ begin
 
   if FileExists(DataDirectoryPath + 'DirectIPWhiteList.cfg') then
     CheckListBoxDirectIPWhiteList.Items.LoadFromFile(DataDirectoryPath + 'DirectIPWhiteList.cfg');
+
+  CheckBoxEnableSurveyNetwork.Checked := FileExists(DataDirectoryPath + 'CheckBoxEnableSurveyNetwork.cfg');
+  TimerLogsNetstat.Enabled := CheckBoxEnableSurveyNetwork.Checked;
 end;
 
 procedure TForm1.setTheme(color, bg:TColor);
@@ -1838,7 +1852,7 @@ begin
   Label14.Font.Color := color;
   Label15.Font.Color := color;
   Label16.Font.Color := color;
-  //Label17.Font.Color := color;
+  Label17.Font.Color := color;
   //Label18.Font.Color := color;
   Label20.Font.Color := color;
   Label26.Font.Color := color;
@@ -1854,6 +1868,7 @@ begin
   Label42.Font.Color := color;
   Label43.Font.Color := color;
   Label44.Font.Color := color;
+  Label45.Font.Color := color;
   Label46.Font.Color := color;
   Label47.Font.Color := color;
   Label48.Font.Color := color;
@@ -1902,8 +1917,8 @@ begin
     TimerLogsNetstat.Enabled := True;
   end;
 }
-  TimerRefreshNetstat.Enabled := True;
-  TimerLogsNetstat.Enabled := True;
+  //TimerRefreshNetstat.Enabled := True;
+  //TimerLogsNetstat.Enabled := True;
 
   TimerCheckSystemChanges.Enabled := True;
 
@@ -4788,11 +4803,14 @@ begin
   //ConnectionsNetstat := nil;
   //Netstat.GetConnections(ConnectionsNetstat);
 
-  //if PileConnections <> nil then
-  //  Netstat.DestroyConnections(PileConnections);
-  if PileConnections = nil then
-    Netstat.GetConnectionsPile(PileConnections);
 
+  if (PileConnections = nil)
+  or not CheckBoxEnableSurveyNetwork.Checked then
+  begin
+    if PileConnections <> nil then
+      Netstat.DestroyConnections(PileConnections);
+    Netstat.GetConnectionsPile(PileConnections);
+  end;
   if not isFormVisible or (Notebook1.PageIndex <> 4) then exit;
 
   lastSelectedIndex := -1;
@@ -5626,6 +5644,15 @@ begin
   if MessageDlg(PChar('Effacer ['+appName+']?'),  mtConfirmation, [mbYes, mbNo], 0) <> IDYES then exit;
   CheckListBoxDirectIPWhiteList.DeleteSelected;
   CheckListBoxDirectIPWhiteList.Items.SaveToFile(DataDirectoryPath + 'DirectIPWhiteList.cfg');
+end;
+
+procedure TForm1.CheckBoxEnableSurveyNetworkClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  Config_Save;
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
 end;
 
 end.
