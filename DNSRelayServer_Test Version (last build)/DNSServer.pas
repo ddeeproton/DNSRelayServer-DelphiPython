@@ -251,6 +251,7 @@ begin
     '			fp.close()'#13#10+
     ''#13#10+
     '	def checkHost(self, domain, hostfile):'#13#10+
+    '		global cache_host'#13#10+
     '		domain = domain[:-1]'#13#10+
     '		self.loadHostfile(hostfile)'#13#10+
     '		if hostfile in cache_host:'#13#10+
@@ -287,6 +288,7 @@ begin
     '		return res'#13#10+
     ''#13#10+
     '	def checkBlackHost(self, domain, blackhostfile):'#13#10+
+    '		global cache_blackhost'#13#10+
     '		domain = domain[:-1]'#13#10+
     '		self.loadBlackHost(blackhostfile)'#13#10+
     '		if blackhostfile in cache_blackhost:'#13#10+
