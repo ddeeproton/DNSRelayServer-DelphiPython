@@ -2010,7 +2010,7 @@ object Form1: TForm1
             object Label49: TLabel
               Left = 40
               Top = 24
-              Width = 199
+              Width = 197
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = '(bloque les connexions qui contournent le serveur DNS)'
@@ -2019,7 +2019,7 @@ object Form1: TForm1
             object Label50: TLabel
               Left = 39
               Top = 49
-              Width = 173
+              Width = 171
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = '(Ferme quelques secondes apr'#232's sa connexion!)'
@@ -2028,7 +2028,7 @@ object Form1: TForm1
             object Label51: TLabel
               Left = 18
               Top = 80
-              Width = 212
+              Width = 210
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Autorise les applications suivantes '#224' contourner le serveur DNS'
@@ -2049,7 +2049,7 @@ object Form1: TForm1
               OnClick = CheckBoxFirewallNoDirectIPClick
             end
             object ButtonAddFirewallWhitelist: TButton
-              Left = 180
+              Left = 178
               Top = 112
               Width = 75
               Height = 25
@@ -2059,7 +2059,7 @@ object Form1: TForm1
               OnClick = ButtonAddFirewallWhitelistClick
             end
             object ButtonModifyFirewallWhitelist: TButton
-              Left = 180
+              Left = 178
               Top = 144
               Width = 75
               Height = 25
@@ -2069,7 +2069,7 @@ object Form1: TForm1
               OnClick = ButtonModifyFirewallWhitelistClick
             end
             object ButtonRemoveFirewallWhitelist: TButton
-              Left = 180
+              Left = 178
               Top = 176
               Width = 75
               Height = 25
@@ -2081,7 +2081,7 @@ object Form1: TForm1
             object CheckListBoxDirectIPWhiteList: TListBox
               Left = 16
               Top = 112
-              Width = 153
+              Width = 151
               Height = 177
               Anchors = [akLeft, akTop, akRight]
               ItemHeight = 13
@@ -8963,7 +8963,7 @@ object Form1: TForm1
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 500
+    Interval = 10
     OnTimer = Timer1Timer
     Left = 394
     Top = 144

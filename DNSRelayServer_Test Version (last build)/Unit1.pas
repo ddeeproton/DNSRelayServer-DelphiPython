@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.394';
+  CurrentApplicationVersion: string = '0.4.395';
   isDevVersion: Boolean = False;
 
 type
@@ -2414,9 +2414,9 @@ end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 var i, j: Integer;
-begin                        
+begin                     
+  Timer1.Enabled := False;   
   debug('Timer1Timer');
-  Timer1.Enabled := False;
   if listThreads = nil then exit;
   if Length(listThreads) = 0 then exit; 
   try
