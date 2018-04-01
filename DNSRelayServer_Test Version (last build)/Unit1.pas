@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.392';
+  CurrentApplicationVersion: string = '0.4.393';
   isDevVersion: Boolean = False;
 
 type

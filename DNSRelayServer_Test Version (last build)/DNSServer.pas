@@ -113,6 +113,8 @@ begin
     'currentDir = os.path.dirname(os.path.realpath(__file__))'#13#10+
     ''#13#10+
     'cache_domains = {}'#13#10+
+    'cache_host = {}'#13#10+
+    'cache_blackhost = {}'#13#10+
     ''#13#10+
     '#============================='#13#10+
     '# DNS Server'#13#10+
@@ -201,8 +203,59 @@ begin
     '				return ""'#13#10+
     '		return packet'#13#10+
     ''#13#10+
+    '	def clearCache(self):'#13#10+
+    '		global cache_domains, cache_host, cache_blackhost'#13#10+
+    '		cache_domains = None'#13#10+
+    '		cache_domains = {}'#13#10+
+    '		cache_host = None'#13#10+
+    '		cache_host = {}'#13#10+
+    '		self.loadHostfile(config_hostfile)'#13#10+
+    '		cache_blackhost = None'#13#10+
+    '		cache_blackhost = {}'#13#10+
+    '		self.loadBlackHost(config_blackhostfile)'#13#10+
+    '		print "Cache cleared;EOL;"'#13#10+
+    ''#13#10+
+    '	def loadHostfile(self, hostfile):'#13#10+
+    '		global cache_host'#13#10+
+    '		if hostfile in cache_host:'#13#10+
+    '			return'#13#10+
+    '		cache_host[hostfile] = None'#13#10+
+    '		cache_host[hostfile] = {}'#13#10+
+    '		if os.path.isfile(hostfile) == True:'#13#10+
+    '			fp = open(hostfile, ''r'')'#13#10+
+    '			for line in fp.readlines():'#13#10+
+    '				charSplit = ""'#13#10+
+    '				if re.search(" ", line):'#13#10+
+    '					charSplit = " "'#13#10+
+    '				if re.search("	", line):'#13#10+
+    '					charSplit = "	"'#13#10+
+    '				if charSplit <> "":'#13#10+
+    '					ip = line.split(charSplit)[0]'#13#10+
+    '					domain = line.split(charSplit)[1]'#13#10+
+    '					domain = domain[:-1]'#13#10+
+    '					cache_host[hostfile][domain] = ip'#13#10+
+    '			fp.close()'#13#10+
+    ''#13#10+
+    '	def loadBlackHost(self, hostfile):'#13#10+
+    '		global cache_blackhost'#13#10+
+    '		if hostfile in cache_blackhost:'#13#10+
+    '			return'#13#10+
+    '		cache_blackhost[hostfile] = None'#13#10+
+    '		cache_blackhost[hostfile] = {}'#13#10+
+    '		if os.path.isfile(hostfile) == True:'#13#10+
+    '			fp = open(hostfile, ''r'')'#13#10+
+    '			for line in fp.readlines():'#13#10+
+    '				domain = line[:-1]'#13#10+
+    '				ip = ''127.0.0.9'''#13#10+
+    '				cache_blackhost[hostfile][domain] = ip'#13#10+
+    '			fp.close()'#13#10+
+    ''#13#10+
     '	def checkHost(self, domain, hostfile):'#13#10+
     '		domain = domain[:-1]'#13#10+
+    '		self.loadHostfile(hostfile)'#13#10+
+    '		if hostfile in cache_host:'#13#10+
+    '			if domain in cache_host[hostfile]:'#13#10+
+    '				return cache_host[hostfile][domain]'#13#10+
     '		res = '''''#13#10+
     '		if os.path.isfile(hostfile) == False:'#13#10+
     '			return ""'#13#10+
@@ -235,6 +288,10 @@ begin
     ''#13#10+
     '	def checkBlackHost(self, domain, blackhostfile):'#13#10+
     '		domain = domain[:-1]'#13#10+
+    '		self.loadBlackHost(blackhostfile)'#13#10+
+    '		if blackhostfile in cache_blackhost:'#13#10+
+    '			if domain in cache_blackhost[blackhostfile]:'#13#10+
+    '				return cache_blackhost[blackhostfile][domain]'#13#10+
     '		res = '''''#13#10+
     '		if os.path.isfile(blackhostfile) == False:'#13#10+
     '			return '''''#13#10+
@@ -277,13 +334,10 @@ begin
     '			cache_domains[ipclient][domain] = IPHost'#13#10+
     ''#13#10+
     '	def checkAction(self):'#13#10+
-    '		global cache_domains'#13#10+
     '		f = currentDir + "/action_clear_cache.txt"'#13#10+
     '		if os.path.isfile(f) == True:'#13#10+
-    '			cache_domains = None'#13#10+
-    '			cache_domains = {}'#13#10+
+    '			self.clearCache()'#13#10+
     '			os.remove(f)'#13#10+
-    '			print "Cache cleared;EOL;"'#13#10+
     ''#13#10+
     '	def resolveDomain(self, domain, idstatus, dnss, ipclient):'#13#10+
     '		global cache_domains'#13#10+
