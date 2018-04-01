@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.395';
+  CurrentApplicationVersion: string = '0.4.396';
   isDevVersion: Boolean = False;
 
 type
@@ -328,11 +328,6 @@ type
     EraseLogsListViewDNS: TMenuItem;
     EraseLogsListViewNetstat: TMenuItem;
     ScrollBox4: TScrollBox;
-    GroupBox18: TGroupBox;
-    Label45: TLabel;
-    Label17: TLabel;
-    EditDonation: TEdit;
-    ButtonCopyEditDonation: TButton;
     GroupBox9: TGroupBox;
     Label16: TLabel;
     EditSourceURL: TEdit;
@@ -1790,7 +1785,6 @@ begin
   ComboBoxSelectIPBlackhost.Color := bg2;
   ComboBoxSelectIPhostfile.Color := bg2;
   EditSourceURL.Color := bg2;
-  EditDonation.Color := bg2;
   SpinEditTTLCache.Color := bg2;
   CheckListBoxDirectIPWhiteList.Color := bg2;
 
@@ -1819,7 +1813,6 @@ begin
   ComboBoxSelectIPBlackhost.Font.Color := bg2;
   ComboBoxSelectIPhostfile.Font.Color := bg2;
   EditSourceURL.Font.Color := bg2;
-  EditDonation.Font.Color := bg2;
   SpinEditTTLCache.Font.Color := bg2;
   CheckListBoxDirectIPWhiteList.Font.Color := bg2;
 end;
@@ -1861,7 +1854,6 @@ begin
   Label42.Font.Color := color;
   Label43.Font.Color := color;
   Label44.Font.Color := color;
-  Label45.Font.Color := color;
   Label46.Font.Color := color;
   Label47.Font.Color := color;
   Label48.Font.Color := color;
@@ -2415,7 +2407,7 @@ end;
 procedure TForm1.Timer1Timer(Sender: TObject);
 var i, j: Integer;
 begin                     
-  Timer1.Enabled := False;   
+  Timer1.Enabled := False;
   debug('Timer1Timer');
   if listThreads = nil then exit;
   if Length(listThreads) = 0 then exit; 
@@ -5355,16 +5347,18 @@ begin
         domain := GetDomainFromIP(Netstat.IpAddressToString(temp^.Connection.RemoteAddress));
         appname := TaskManager.GetExeNameFromPID(temp^.Connection.ProcessID);
 
-        if CheckBoxFirewallNoDirectIP.Checked
-        and (domain = 'Direct IP')
-        and (CheckListBoxDirectIPWhiteList.Items.IndexOf(LowerCase(appname)) = -1) then
-        begin
-          Netstat.CloseConnection(temp^.Connection);
-          domain := 'BLOCKED (direct IP)';
-        end;
 
-        if not Netstat.FindConnectionPile(temp^.Connection, oldPileConnections) then
+
+        if Netstat.FindConnectionPile(temp^.Connection, oldPileConnections) then
         begin
+          if CheckBoxFirewallNoDirectIP.Checked
+          and (domain = 'Direct IP')
+          and (CheckListBoxDirectIPWhiteList.Items.IndexOf(LowerCase(appname)) = -1) then
+          begin
+            Netstat.CloseConnection(temp^.Connection);
+            domain := 'BLOCKED (direct IP)';
+          end;
+        end else begin
          if temp^.Connection.Protocol = PROTOCOL_TCP then
             sProtocol := 'TCP'
           else

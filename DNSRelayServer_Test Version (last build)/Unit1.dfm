@@ -133,7 +133,7 @@ object Form1: TForm1
             Top = 14
             Width = 311
             Height = 315
-            ActivePage = TabSheet1
+            ActivePage = TabSheet9
             DragCursor = crArrow
             MultiLine = True
             TabOrder = 0
@@ -152,13 +152,14 @@ object Form1: TForm1
                 Height = 256
                 HorzScrollBar.Smooth = True
                 HorzScrollBar.Tracking = True
+                VertScrollBar.Position = 105
                 VertScrollBar.Smooth = True
                 VertScrollBar.Tracking = True
                 BorderStyle = bsNone
                 TabOrder = 0
                 object GroupBox10: TGroupBox
                   Left = 0
-                  Top = 0
+                  Top = -105
                   Width = 264
                   Height = 361
                   Align = alTop
@@ -1404,69 +1405,13 @@ object Form1: TForm1
                 BevelOuter = bvNone
                 BorderStyle = bsNone
                 TabOrder = 0
-                object GroupBox18: TGroupBox
-                  Left = 0
-                  Top = 65
-                  Width = 303
-                  Height = 112
-                  Align = alTop
-                  TabOrder = 0
-                  DesignSize = (
-                    303
-                    112)
-                  object Label45: TLabel
-                    Left = 10
-                    Top = 12
-                    Width = 56
-                    Height = 13
-                    Caption = 'Donation:'
-                    Font.Charset = DEFAULT_CHARSET
-                    Font.Color = clBlack
-                    Font.Height = -11
-                    Font.Name = 'MS Sans Serif'
-                    Font.Style = [fsBold]
-                    ParentFont = False
-                  end
-                  object Label17: TLabel
-                    Left = 8
-                    Top = 26
-                    Width = 280
-                    Height = 52
-                    Anchors = [akLeft, akTop, akRight]
-                    Caption = 
-                      'Vous pouvez soutenir le d'#233'veloppement de l'#39'application en donnan' +
-                      't du temps de processeur '#224' l'#39'adresse ci-dessous. Fermez la page ' +
-                      'quand vous aurez fini. En vous remerciant d'#39'avance! :)'
-                    WordWrap = True
-                  end
-                  object EditDonation: TEdit
-                    Left = 8
-                    Top = 81
-                    Width = 231
-                    Height = 21
-                    Anchors = [akLeft, akTop, akRight]
-                    ReadOnly = True
-                    TabOrder = 0
-                    Text = 'http://donate.cpufan.club/org/07863510'
-                  end
-                  object ButtonCopyEditDonation: TButton
-                    Left = 245
-                    Top = 80
-                    Width = 44
-                    Height = 22
-                    Anchors = [akTop, akRight]
-                    Caption = 'Copier'
-                    TabOrder = 1
-                    OnClick = ButtonCopyEditDonationClick
-                  end
-                end
                 object GroupBox9: TGroupBox
                   Left = 0
                   Top = 0
                   Width = 303
                   Height = 65
                   Align = alTop
-                  TabOrder = 1
+                  TabOrder = 0
                   DesignSize = (
                     303
                     65)
@@ -2010,7 +1955,7 @@ object Form1: TForm1
             object Label49: TLabel
               Left = 40
               Top = 24
-              Width = 197
+              Width = 186
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = '(bloque les connexions qui contournent le serveur DNS)'
@@ -2019,7 +1964,7 @@ object Form1: TForm1
             object Label50: TLabel
               Left = 39
               Top = 49
-              Width = 171
+              Width = 157
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = '(Ferme quelques secondes apr'#232's sa connexion!)'
@@ -2028,7 +1973,7 @@ object Form1: TForm1
             object Label51: TLabel
               Left = 18
               Top = 80
-              Width = 210
+              Width = 199
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Autorise les applications suivantes '#224' contourner le serveur DNS'
@@ -2049,7 +1994,7 @@ object Form1: TForm1
               OnClick = CheckBoxFirewallNoDirectIPClick
             end
             object ButtonAddFirewallWhitelist: TButton
-              Left = 178
+              Left = 174
               Top = 112
               Width = 75
               Height = 25
@@ -2059,7 +2004,7 @@ object Form1: TForm1
               OnClick = ButtonAddFirewallWhitelistClick
             end
             object ButtonModifyFirewallWhitelist: TButton
-              Left = 178
+              Left = 174
               Top = 144
               Width = 75
               Height = 25
@@ -2069,7 +2014,7 @@ object Form1: TForm1
               OnClick = ButtonModifyFirewallWhitelistClick
             end
             object ButtonRemoveFirewallWhitelist: TButton
-              Left = 178
+              Left = 174
               Top = 176
               Width = 75
               Height = 25
@@ -2081,7 +2026,7 @@ object Form1: TForm1
             object CheckListBoxDirectIPWhiteList: TListBox
               Left = 16
               Top = 112
-              Width = 151
+              Width = 147
               Height = 177
               Anchors = [akLeft, akTop, akRight]
               ItemHeight = 13
