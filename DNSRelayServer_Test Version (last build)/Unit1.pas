@@ -15,7 +15,7 @@ uses
   
 
 var
-  CurrentApplicationVersion: string = '0.4.398';
+  CurrentApplicationVersion: string = '0.4.399';
   isDevVersion: Boolean = False;
 
 type
@@ -356,6 +356,9 @@ type
     Label45: TLabel;
     Label52: TLabel;
     CheckBoxNoGUI: TCheckBox;
+    Panel15: TPanel;
+    Label53: TLabel;
+    CheckBoxEnableLogDNS: TCheckBox;
     procedure ButtonStartClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonCloseClick(Sender: TObject);
@@ -571,6 +574,7 @@ type
     procedure ButtonRemoveFirewallWhitelistClick(Sender: TObject);
     procedure CheckBoxEnableSurveyNetworkClick(Sender: TObject);
     procedure CheckBoxNoGUIClick(Sender: TObject);
+    procedure CheckBoxEnableLogDNSClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -775,48 +779,49 @@ begin
       //if form1.MemoLogs.Visible then
       form1.LogsAdd(logs);
 
-
-      ListViewLogs.Items.Add().Caption := domain;
-      i := ListViewLogs.Items.Count - 1;
-
-      // ==== Image
-      ListViewLogs.Items[i].ImageIndex := 0;
-
-      if Rules.IsBlacklistDomain(domain)
-      or Rules.IsBlackHostDomain(domain)
-      or (Pos('127.0.0.', ipdomain) > 0) then
+      if CheckBoxEnableLogDNS.Checked then
       begin
-        ListViewLogs.Items[i].ImageIndex := 3;
-      end;
-      if Rules.IsDefinedHostDomain(domain) then
-      begin
-        ListViewLogs.Items[i].ImageIndex := 1;
-      end;
+        ListViewLogs.Items.Add().Caption := domain;
+        i := ListViewLogs.Items.Count - 1;
+
+        // ==== Image
+        ListViewLogs.Items[i].ImageIndex := 0;
+
+        if Rules.IsBlacklistDomain(domain)
+        or Rules.IsBlackHostDomain(domain)
+        or (Pos('127.0.0.', ipdomain) > 0) then
+        begin
+          ListViewLogs.Items[i].ImageIndex := 3;
+        end;
+        if Rules.IsDefinedHostDomain(domain) then
+        begin
+          ListViewLogs.Items[i].ImageIndex := 1;
+        end;
         // ====
 
-      ListViewLogs.Items[i].SubItems.Add(ipdomain);
-      ListViewLogs.Items[i].SubItems.Add(status);
-      ListViewLogs.Items[i].SubItems.Add(ipclient);
-      ListViewLogs.Items[i].SubItems.Add(ipserver);
-      ListViewLogs.Items[i].SubItems.Add(date);
-      ListViewLogs.Items[i].SubItems.Add(time);
+        ListViewLogs.Items[i].SubItems.Add(ipdomain);
+        ListViewLogs.Items[i].SubItems.Add(status);
+        ListViewLogs.Items[i].SubItems.Add(ipclient);
+        ListViewLogs.Items[i].SubItems.Add(ipserver);
+        ListViewLogs.Items[i].SubItems.Add(date);
+        ListViewLogs.Items[i].SubItems.Add(time);
 
-      if LogDNSAutoScroll.Checked then
-      begin
-        p := ListViewLogs.Items[i].Position;
-        ListViewLogs.Scroll(p.X, p.Y);
+        if LogDNSAutoScroll.Checked then
+        begin
+          p := ListViewLogs.Items[i].Position;
+          ListViewLogs.Scroll(p.X, p.Y);
+        end;
+
+        if isXP then
+        begin
+          if ListViewLogs.Items.Count > 50 then
+            ListViewLogs.Items[0].Delete;
+        end else begin
+          if ListViewLogs.Items.Count > 200 then
+            ListViewLogs.Items[0].Delete;
+        end;
+
       end;
-
-      if isXP then
-      begin
-        if ListViewLogs.Items.Count > 50 then
-          ListViewLogs.Items[0].Delete;
-      end else begin
-        if ListViewLogs.Items.Count > 200 then
-          ListViewLogs.Items[0].Delete;
-      end;
-
-
       {
       if ((status = 'OK') and
           (CheckBoxAlertEventsKnown.Checked
@@ -1568,6 +1573,11 @@ begin
     WriteInFile(DataDirectoryPath + 'CheckBoxNoGUI.cfg', '1')
   else
     DeleteFile(DataDirectoryPath + 'CheckBoxNoGUI.cfg');
+
+  if CheckBoxEnableLogDNS.Checked then
+    WriteInFile(DataDirectoryPath + 'CheckBoxEnableLogDNS.cfg', '1')
+  else
+    DeleteFile(DataDirectoryPath + 'CheckBoxEnableLogDNS.cfg');
 end;
 
 procedure TForm1.Config_Load();
@@ -1723,7 +1733,7 @@ begin
   TimerLogsNetstat.Enabled := CheckBoxEnableSurveyNetwork.Checked;
 
   CheckBoxNoGUI.Checked := FileExists(DataDirectoryPath + 'CheckBoxNoGUI.cfg');
-
+  CheckBoxEnableLogDNS.Checked := FileExists(DataDirectoryPath + 'CheckBoxEnableLogDNS.cfg');
 end;
 
 procedure TForm1.setTheme(color, bg:TColor);
@@ -5683,6 +5693,15 @@ begin
   if isApplicationLoading then exit;
   Config_Save;
   PanelRestart.Visible := True;
+  LabelMessage.Caption := PChar('Sauvé!');
+  PanelMessage.Visible := True;
+  TimerHideMessage.Enabled := True;
+end;
+
+procedure TForm1.CheckBoxEnableLogDNSClick(Sender: TObject);
+begin
+  if isApplicationLoading then exit;
+  Config_Save;
   LabelMessage.Caption := PChar('Sauvé!');
   PanelMessage.Visible := True;
   TimerHideMessage.Enabled := True;

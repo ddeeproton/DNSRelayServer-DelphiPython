@@ -1,8 +1,9 @@
 object Form1: TForm1
-  Left = 466
-  Top = 158
+  Left = 436
+  Top = 143
   Width = 521
   Height = 553
+  VertScrollBar.Position = 152
   Caption = 'DNS Relay Server'
   Color = clWhite
   TransparentColorValue = clCream
@@ -71,7 +72,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = 60
+    Top = -92
     Width = 497
     Height = 10
     Cursor = crVSplit
@@ -84,7 +85,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = 79
+    Top = -73
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -1977,8 +1978,8 @@ object Form1: TForm1
             object Label49: TLabel
               Left = 40
               Top = 24
-              Width = 135
-              Height = 26
+              Width = 124
+              Height = 39
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Bloque les connexions qui contournent le serveur DNS.'
               WordWrap = True
@@ -1986,7 +1987,7 @@ object Form1: TForm1
             object Label50: TLabel
               Left = 39
               Top = 53
-              Width = 170
+              Width = 165
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Ferme quelques secondes apr'#232's sa connexion.'
@@ -1995,8 +1996,8 @@ object Form1: TForm1
             object Label51: TLabel
               Left = 18
               Top = 120
-              Width = 197
-              Height = 26
+              Width = 193
+              Height = 39
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Autorise les applications suivantes '#224' contourner le serveur DNS'
               Font.Charset = DEFAULT_CHARSET
@@ -2010,7 +2011,7 @@ object Form1: TForm1
             object Label45: TLabel
               Left = 39
               Top = 81
-              Width = 182
+              Width = 177
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'La surveillance r'#233'seau doit '#234'tre activ'#233' dans les "Logs Netstat"'
@@ -2025,7 +2026,7 @@ object Form1: TForm1
               OnClick = CheckBoxFirewallNoDirectIPClick
             end
             object ButtonAddFirewallWhitelist: TButton
-              Left = 174
+              Left = 170
               Top = 160
               Width = 75
               Height = 25
@@ -2035,7 +2036,7 @@ object Form1: TForm1
               OnClick = ButtonAddFirewallWhitelistClick
             end
             object ButtonModifyFirewallWhitelist: TButton
-              Left = 174
+              Left = 170
               Top = 192
               Width = 75
               Height = 25
@@ -2045,7 +2046,7 @@ object Form1: TForm1
               OnClick = ButtonModifyFirewallWhitelistClick
             end
             object ButtonRemoveFirewallWhitelist: TButton
-              Left = 174
+              Left = 170
               Top = 224
               Width = 75
               Height = 25
@@ -2057,7 +2058,7 @@ object Form1: TForm1
             object CheckListBoxDirectIPWhiteList: TListBox
               Left = 16
               Top = 160
-              Width = 147
+              Width = 143
               Height = 129
               Anchors = [akLeft, akTop, akRight]
               ItemHeight = 13
@@ -2070,9 +2071,9 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 473
+    Top = 321
     Width = 313
-    Height = 108
+    Height = 128
     Caption = '           '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -2136,8 +2137,8 @@ object Form1: TForm1
       Left = 1
       Top = 38
       Width = 311
-      Height = 69
-      ActivePage = TabSheet12
+      Height = 89
+      ActivePage = TabSheet10
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -2147,7 +2148,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 303
-          Height = 41
+          Height = 61
           Align = alClient
           Color = clWhite
           Font.Charset = ANSI_CHARSET
@@ -2167,9 +2168,9 @@ object Form1: TForm1
         ImageIndex = 1
         object ListViewLogs: TListView
           Left = 0
-          Top = 0
+          Top = 17
           Width = 303
-          Height = 41
+          Height = 44
           Align = alClient
           Columns = <>
           Font.Charset = DEFAULT_CHARSET
@@ -2185,6 +2186,34 @@ object Form1: TForm1
           ViewStyle = vsReport
           OnContextPopup = ListViewLogsContextPopup
         end
+        object Panel15: TPanel
+          Left = 0
+          Top = 0
+          Width = 303
+          Height = 17
+          Align = alTop
+          ParentColor = True
+          TabOrder = 1
+          object Label53: TLabel
+            Left = 25
+            Top = 2
+            Width = 231
+            Height = 13
+            Caption = 'Activer les logs DNS (consomme des ressources)'
+            FocusControl = CheckBoxEnableLogDNS
+            OnClick = LabelToCheckboxClick
+            OnMouseEnter = LabelCheckboxMouseEnter
+            OnMouseLeave = LabelCheckboxMouseLeave
+          end
+          object CheckBoxEnableLogDNS: TCheckBox
+            Left = 5
+            Top = 2
+            Width = 20
+            Height = 14
+            TabOrder = 0
+            OnClick = CheckBoxEnableLogDNSClick
+          end
+        end
       end
       object TabSheet12: TTabSheet
         Caption = 'Logs Netstat'
@@ -2193,7 +2222,7 @@ object Form1: TForm1
           Left = 0
           Top = 17
           Width = 303
-          Height = 24
+          Height = 44
           Align = alClient
           Columns = <>
           ReadOnly = True
@@ -2235,7 +2264,7 @@ object Form1: TForm1
   end
   object Panel5: TPanel
     Left = 0
-    Top = 0
+    Top = -152
     Width = 497
     Height = 60
     Align = alTop
@@ -3085,7 +3114,7 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 3
-    Top = 626
+    Top = 474
     Width = 313
     Height = 33
     TabOrder = 3
@@ -3129,8 +3158,8 @@ object Form1: TForm1
     end
   end
   object PanelMessage: TPanel
-    Left = 8
-    Top = 585
+    Left = 176
+    Top = 449
     Width = 313
     Height = 33
     TabOrder = 4
