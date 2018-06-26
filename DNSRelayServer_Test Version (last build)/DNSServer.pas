@@ -112,9 +112,9 @@ begin
     ''#13#10+
     'currentDir = os.path.dirname(os.path.realpath(__file__))'#13#10+
     ''#13#10+
-    'cache_domains = {}'#13#10+
+    'cache_domains = None'#13#10+
     'cache_host = {}'#13#10+
-    'cache_blackhost = {}'#13#10+
+    'cache_blackhost = None'#13#10+
     ''#13#10+
     '#============================='#13#10+
     '# DNS Server'#13#10+
@@ -175,6 +175,8 @@ begin
     'class DNSQuery:'#13#10+
     '	def __init__(self, data):'#13#10+
     '		try:'#13#10+
+    '			if data == None:'#13#10+
+    '				return None'#13#10+
     '			self.data=data'#13#10+
     '			self.domain='''''#13#10+
     '			#tipo : Opcode query type =  [ standard (0) | inverse (1) | server status (2) ]'#13#10+
@@ -238,16 +240,22 @@ begin
     ''#13#10+
     '	def loadBlackHost(self, hostfile):'#13#10+
     '		global cache_blackhost'#13#10+
-    '		if hostfile in cache_blackhost:'#13#10+
-    '			return'#13#10+
+    '		if cache_blackhost == None:'#13#10+
+    '			self.clearCache()'#13#10+
+    '		#if hostfile in cache_blackhost:'#13#10+
+    '		#	if domain in cache_blackhost[hostfile]:'#13#10+
+    '		#		return cache_blackhost[hostfile][domain]'#13#10+
+    '		#print "loadBlackHost"'#13#10+
     '		cache_blackhost[hostfile] = None'#13#10+
-    '		cache_blackhost[hostfile] = {}'#13#10+
+    '		cache_blackhost[hostfile] = []'#13#10+
     '		if os.path.isfile(hostfile) == True:'#13#10+
     '			fp = open(hostfile, ''r'')'#13#10+
     '			for line in fp.readlines():'#13#10+
     '				domain = line[:-1]'#13#10+
     '				ip = ''127.0.0.9'''#13#10+
-    '				cache_blackhost[hostfile][domain] = ip'#13#10+
+    '				#print "%s => %s", domain, ip'#13#10+
+    '				#cache_blackhost[hostfile][domain] = ip'#13#10+
+    '				cache_blackhost[hostfile].append(domain)'#13#10+
     '			fp.close()'#13#10+
     ''#13#10+
     '	def checkHost(self, domain, hostfile):'#13#10+
@@ -287,16 +295,23 @@ begin
     '		if res <> "":'#13#10+
     '			if res[0] == "#":'#13#10+
     '				res = '''''#13#10+
-    '		return res'#13#10+      
+    '		return res'#13#10+
     '		'''''''#13#10+
     ''#13#10+
     '	def checkBlackHost(self, domain, blackhostfile):'#13#10+
     '		global cache_blackhost'#13#10+
     '		domain = domain[:-1]'#13#10+
-    '		#self.loadBlackHost(blackhostfile)'#13#10+
+    '		#print "blackhostfile = "'#13#10+
+    '		#print blackhostfile'#13#10+
+    '		if cache_blackhost == None:'#13#10+      
+    '			#print "<loadBlackHost> 1"'#13#10+
+    '			self.loadBlackHost(blackhostfile)'#13#10+
     '		if blackhostfile in cache_blackhost:'#13#10+
-    '			if domain in cache_blackhost[blackhostfile]:'#13#10+
-    '				return cache_blackhost[blackhostfile][domain]'#13#10+ 
+		'			for bdomain in cache_blackhost[blackhostfile]:'#13#10+    
+		'				#print bdomain'#13#10+
+		'				if bdomain in domain:'#13#10+
+		'					#print "%s => %s", bdomain, domain'#13#10+
+		'					return "127.0.0.9"'#13#10+
     '		return ""'#13#10+     
     '		'''''''#13#10+
     '		res = '''''#13#10+
@@ -348,16 +363,22 @@ begin
     '			os.remove(f)'#13#10+
     ''#13#10+
     '	def resolveDomain(self, domain, idstatus, dnss, ipclient):'#13#10+
+    '		#print "<resolveDomain>"'#13#10+
     '		global cache_domains'#13#10+
+    '		if cache_domains == None:'#13#10+
+    '			self.clearCache()'#13#10+
     '		self.checkAction()'#13#10+
-    '		if os.path.isfile(currentDir + "/disableAll.cfg") == True:'#13#10+
+    '		if os.path.isfile(currentDir + "/disableAll.cfg") == True:'#13#10+       
+    '			#print "<isDisableAll>"'#13#10+
     '			return "127.0.0.3"'#13#10+
     '		if config_cache_memory == 1:'#13#10+
     '			if ipclient in cache_domains:'#13#10+
-    '				if domain in cache_domains[ipclient]:'#13#10+
+    '				if domain in cache_domains[ipclient]:'#13#10+       
+    '					#print "<isCacheDomain>"'#13#10+
     '					return cache_domains[ipclient][domain]'#13#10+
     '				'#13#10+
-    '		if ".in-addr.arpa" in domain:'#13#10+
+    '		if ".in-addr.arpa" in domain:'#13#10+    
+    '			#print "<ARPA>"'#13#10+
     '			return "127.0.0.2"'#13#10+
     ''#13#10+
     '		if os.path.isdir(config_dircustomhost):'#13#10+
@@ -368,7 +389,8 @@ begin
     '					if IPHost <> '''':'#13#10+
     '						#if config_display:'#13#10+
     '						#	print "Host file domain:"'#13#10+
-    '						self.addToCache(ipclient, domain, IPHost)'#13#10+
+    '						self.addToCache(ipclient, domain, IPHost)'#13#10+  
+    '						#print "<isCustomHost>"'#13#10+
     '						return IPHost'#13#10+
     ''#13#10+
     '		if os.path.isdir(config_dircustomhost):'#13#10+
@@ -380,6 +402,7 @@ begin
     '						#if config_display:'#13#10+
     '						#	print "Host file domain:"'#13#10+
     '						self.addToCache(ipclient, domain, IPHost)'#13#10+
+    '						#print "<isCustomBlackHost>"'#13#10+
     '						return IPHost'#13#10+
     '		'#13#10+
     '		if os.path.isfile(currentDir + "/disableHost.cfg") == False:'#13#10+
@@ -387,13 +410,17 @@ begin
     '			if IPHost <> '''':'#13#10+
     '				#if config_display:'#13#10+
     '				#	print "Host file domain:"'#13#10+
-    '				self.addToCache(ipclient, domain, IPHost)'#13#10+
+    '				self.addToCache(ipclient, domain, IPHost)'#13#10+    
+    '				#print "<isDisabled>"'#13#10+
     '				return IPHost'#13#10+
     ''#13#10+
-    '		if os.path.isfile(currentDir + "/disableBlackhost.cfg") == False:'#13#10+
+    '		if os.path.isfile(currentDir + "/disableBlackhost.cfg") == False:'#13#10+ 
+    '			#print "<CheckBlackHost1>"'#13#10+
     '			IPHost = self.checkBlackHost(domain, config_blackhostfile)'#13#10+
+    '			#print IPHost'#13#10+
     '			if IPHost <> '''':'#13#10+
     '				self.addToCache(ipclient, domain, IPHost)'#13#10+
+    '				#print "<isBlackHost>"'#13#10+
     '				return IPHost'#13#10+
     ''#13#10+
     '		d = self.onlyDomain(domain)'#13#10+
@@ -401,12 +428,14 @@ begin
     '		IPHost = dnsc.dnsResolve(domain) # Ask the master DNS server'#13#10+
     '		if IPHost == 0: # Network error? Let''s try again!'#13#10+
     '			IPHost = dnsc.dnsResolve(domain)'#13#10+
-    '			if IPHost == 0:'#13#10+
+    '			if IPHost == 0:'#13#10+         
+    '				#print "<DNSFail>"'#13#10+
     '				return "127.0.0.4"'#13#10+
     '			'#13#10+
     '		#db.sqlsetdomain(domain, IPHost) # Add IP in database'#13#10+
     '		if IPHost <> 0 and IPHost <> '''':'#13#10+
-    '			self.addToCache(ipclient, domain, IPHost)'#13#10+
+    '			self.addToCache(ipclient, domain, IPHost)'#13#10+     
+    '		#print "<Normal resolved>"'#13#10+
     '		return IPHost'#13#10+
     ''#13#10+
     ''#13#10+
@@ -483,7 +512,7 @@ begin
     '		else:'#13#10+
     '			return "unkown"'#13#10+
     ''#13#10+
-    'def serveClient(data, addr):'#13#10+
+    'def serveClient(data, addr):'#13#10+ 
     '	#data, addr = req # recieve UDP data (usually on port 53)'#13#10+
     '	dnss = DNSQuery(data) # Parse DNS query'#13#10+
     '	'#13#10+
