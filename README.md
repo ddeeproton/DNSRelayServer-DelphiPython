@@ -88,6 +88,8 @@ Version 0.4.389 Ajout de la section Firewall
 
 ![](preview4.png)
 
+Version 0.4.402 Amélioration de la stabilité et des performances
+
 ### Site web
 
 https://dnsrelay.000webhostapp.com/
