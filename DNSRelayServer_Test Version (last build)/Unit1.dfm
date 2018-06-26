@@ -1,9 +1,8 @@
 object Form1: TForm1
-  Left = 436
-  Top = 143
+  Left = 592
+  Top = 109
   Width = 521
   Height = 553
-  VertScrollBar.Position = 152
   Caption = 'DNS Relay Server'
   Color = clWhite
   TransparentColorValue = clCream
@@ -72,7 +71,7 @@ object Form1: TForm1
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
-    Top = -92
+    Top = 60
     Width = 497
     Height = 10
     Cursor = crVSplit
@@ -85,7 +84,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 8
-    Top = -73
+    Top = 79
     Width = 369
     Height = 388
     BevelOuter = bvNone
@@ -1978,7 +1977,7 @@ object Form1: TForm1
             object Label49: TLabel
               Left = 40
               Top = 24
-              Width = 124
+              Width = 121
               Height = 39
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Bloque les connexions qui contournent le serveur DNS.'
@@ -1987,7 +1986,7 @@ object Form1: TForm1
             object Label50: TLabel
               Left = 39
               Top = 53
-              Width = 165
+              Width = 154
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Ferme quelques secondes apr'#232's sa connexion.'
@@ -1996,7 +1995,7 @@ object Form1: TForm1
             object Label51: TLabel
               Left = 18
               Top = 120
-              Width = 193
+              Width = 189
               Height = 39
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Autorise les applications suivantes '#224' contourner le serveur DNS'
@@ -2011,7 +2010,7 @@ object Form1: TForm1
             object Label45: TLabel
               Left = 39
               Top = 81
-              Width = 177
+              Width = 148
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'La surveillance r'#233'seau doit '#234'tre activ'#233' dans les "Logs Netstat"'
@@ -2026,7 +2025,7 @@ object Form1: TForm1
               OnClick = CheckBoxFirewallNoDirectIPClick
             end
             object ButtonAddFirewallWhitelist: TButton
-              Left = 170
+              Left = 168
               Top = 160
               Width = 75
               Height = 25
@@ -2036,7 +2035,7 @@ object Form1: TForm1
               OnClick = ButtonAddFirewallWhitelistClick
             end
             object ButtonModifyFirewallWhitelist: TButton
-              Left = 170
+              Left = 168
               Top = 192
               Width = 75
               Height = 25
@@ -2046,7 +2045,7 @@ object Form1: TForm1
               OnClick = ButtonModifyFirewallWhitelistClick
             end
             object ButtonRemoveFirewallWhitelist: TButton
-              Left = 170
+              Left = 168
               Top = 224
               Width = 75
               Height = 25
@@ -2058,7 +2057,7 @@ object Form1: TForm1
             object CheckListBoxDirectIPWhiteList: TListBox
               Left = 16
               Top = 160
-              Width = 143
+              Width = 141
               Height = 129
               Anchors = [akLeft, akTop, akRight]
               ItemHeight = 13
@@ -2071,7 +2070,7 @@ object Form1: TForm1
   end
   object GroupBox5: TGroupBox
     Left = 8
-    Top = 321
+    Top = 473
     Width = 313
     Height = 128
     Caption = '           '
@@ -2264,7 +2263,7 @@ object Form1: TForm1
   end
   object Panel5: TPanel
     Left = 0
-    Top = -152
+    Top = 0
     Width = 497
     Height = 60
     Align = alTop
@@ -3114,7 +3113,7 @@ object Form1: TForm1
   end
   object PanelRestart: TPanel
     Left = 3
-    Top = 474
+    Top = 626
     Width = 313
     Height = 33
     TabOrder = 3
@@ -3159,7 +3158,7 @@ object Form1: TForm1
   end
   object PanelMessage: TPanel
     Left = 176
-    Top = 449
+    Top = 601
     Width = 313
     Height = 33
     TabOrder = 4

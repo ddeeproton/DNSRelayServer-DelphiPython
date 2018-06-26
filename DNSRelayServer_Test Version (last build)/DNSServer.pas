@@ -257,6 +257,8 @@ begin
     '		if hostfile in cache_host:'#13#10+
     '			if domain in cache_host[hostfile]:'#13#10+
     '				return cache_host[hostfile][domain]'#13#10+
+    '		return ""'#13#10+
+    '		'''''''#13#10+
     '		res = '''''#13#10+
     '		if os.path.isfile(hostfile) == False:'#13#10+
     '			return ""'#13#10+
@@ -285,7 +287,8 @@ begin
     '		if res <> "":'#13#10+
     '			if res[0] == "#":'#13#10+
     '				res = '''''#13#10+
-    '		return res'#13#10+
+    '		return res'#13#10+      
+    '		'''''''#13#10+
     ''#13#10+
     '	def checkBlackHost(self, domain, blackhostfile):'#13#10+
     '		global cache_blackhost'#13#10+
@@ -293,7 +296,9 @@ begin
     '		self.loadBlackHost(blackhostfile)'#13#10+
     '		if blackhostfile in cache_blackhost:'#13#10+
     '			if domain in cache_blackhost[blackhostfile]:'#13#10+
-    '				return cache_blackhost[blackhostfile][domain]'#13#10+
+    '				return cache_blackhost[blackhostfile][domain]'#13#10+ 
+    '		return ""'#13#10+     
+    '		'''''''#13#10+
     '		res = '''''#13#10+
     '		if os.path.isfile(blackhostfile) == False:'#13#10+
     '			return '''''#13#10+
@@ -313,7 +318,8 @@ begin
     '			#else:'#13#10+
     '			#	print '' NO;EOL;'''#13#10+
     '		fp.close()'#13#10+
-    '		return res'#13#10+
+    '		return res'#13#10+         
+    '		'''''''#13#10+
     ''#13#10+
     '	def onlyDomain(self, domain):'#13#10+
     '		d = domain[:-1]'#13#10+
