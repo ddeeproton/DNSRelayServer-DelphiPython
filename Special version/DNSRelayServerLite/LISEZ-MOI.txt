@@ -1,0 +1,124 @@
+_____________________________________________________________
+
+DNS Relay Server
+_____________________________________________________________
+
+Description:
+	Ceci est un serveur relais DNS. 
+	ça sert à voir le trafique web et faire un filtrage.
+_____________________________________________________________
+
+Installation:
+
+[Python 2.7]
+	Vous devez télécharger Python (si possible la version 2.7) sur votre machine, puis l'installer. 
+	La façon d'installer Python varie entre les machines. Sur Linux et Android, il y a un Store pour ça.
+	Pour Mac, il est possible qu'il y aie un dmg. 
+	Si nécessaire cherchez sur Google (ou autre) comment installer Python 2.7 sur votre machine. 
+	
+	Pour android, l'application "QPython" fonctionne très bien "sur un appareil rooté". 
+	Vous pouvez aussi lancer le serveur sans root, mais dans ce cas, vous ne pourrez pas utiliser le port 53. 
+	Lancer le serveur sur un appareil non-rooté est utile seulement si vous avez un routeur sur lequel vous pouvez faire une redirection de port. 
+
+
+Installation des Libraires
+
+[setuptools-20.0]
+	SetupTools sert à installer la librairie "DNSPython". Parfois il est déjà disponible, parfois pas.
+	SetupTools est fourni dans le zip dans le dossier "Install Plugins Python". Vous pouvez le télécharger ici si nécessaire:
+		https://github.com/pypa/setuptools/archive/20.0.zip
+	Pour l'installer, il faut décompresser le fichier "setuptools-20.0.zip" ou "20.0.zip"
+	Puis ouvrir un terminal et se rendre dans le dossier dans lequel on vient de décompresser le zip.
+	Exemple:
+		cd "Votre Chemin"
+	Et lancer l'installation du plugin
+	Exemple:
+		python "setuptools-20.0/setup.py" install
+	ou
+		python setup.py install
+	ou
+		"Chemin complet/python" "Chemin complet/setup.py" install
+
+
+[dnspython-1.15.0.zip]
+	DNSPython sert à résoudre les noms de domaine sur Python (à transformer une adresse web en IP). Sans lui, pas de connexion au Master DNS possible. 
+	L'installation est exactement identique à setuptools. Il y a un fichier setup.py à lancer avec la ligne de commande install
+	Exemple:
+		python setup.py install
+	Pour télécharger DNSPython:
+	http://www.dnspython.org/kits/1.15.0/dnspython-1.15.0.zip
+
+
+Lancement du serveur DNS
+
+[DNS Relay Server]
+	Ouvrez le fichier "relayDNS.py" et éditez la configuration d'entête.
+	Ouvrez le terminal, rendez-vous dans le dossier qui contient le fichier relayDNS.py
+	Puis lancez le serveur:
+		python "relayDNS.py"
+	Vous pouvez aussi spécifier des options au serveur
+		python "relayDNS.py" config_dnsip "0.0.0.0" hostfile "host.txt" blackhost "blackhost.txt" config_dircustomhost "chemin du dossier"
+	Il est possible qu'il soit nécessaire d'indiquer des chemins absoluts (au lieu de relatif).
+
+	Vous pouvez télécharger la dernière version du fichier relayDNS.py en le cherchant dans le zip à cette adresse:
+	https://github.com/ddeeproton/DNSRelayServer-DelphiPython/tree/master/Special%20version/
+
+[host.txt]
+	Le fichier host.txt est un fichier texte (qui peut être vide). 
+	Vous pouvez vous servir de ce fichier pour bloquer des domaines qui sont strictement égales au nom que vous indiquez.
+	Exemple:
+127.0.0.1	unsiteweb.com
+127.0.0.1	www.unsiteweb.com
+
+	Notez que vous devez commencer directement par une adresse IP, suivi d'un caractère de tabulation (touche TAB, PAS ESPACE) et terminer avec le nom de domaine.
+	Un nom de domaine par ligne.
+
+	Nouveauté: Si vous mettez une étoile n'importe où dans le nom de domaine, alors la règle s'appliquera à tous les domaines ayant une partie du mot.
+
+	Exemple:
+127.0.0.1	*google
+
+	Tous les domaines ayant comme nom "google" prendront l'adresse IP 127.0.0.1
+	Vous pouvez aussi écrire
+
+127.0.0.1	google*
+127.0.0.1	goo*gle
+
+	L'étoile sera supprimée automatiquement et indiquera au serveur qu'il faut chercher une partie du mot (comme blackhost)
+
+[blackhost.txt]
+	Le fichier blackhost.txt est un fichier texte qui peut-être vide.
+	Vous pouvez vous servir de ce fichier pour bloquer des domaines avec tous leurs alias.
+
+	Exemple:
+unsiteweb.com
+unautresiteweb.com
+etc.com
+
+	Notez pas d'espace avant et après le nom de domaine. 
+	Un nom de domaine par ligne.
+	Dans cet exemple, le serveur va bloquer (retourner une adresse 127.0.0.1) pour le domaine unsiteweb.com ainsi que tous ces alias possible (genre www.unsiteweb.com, www est un alias de unsiteweb.com)
+	Le fichier blackhost.txt est déjà configuré pour bloquer les publicités (vidéos) de Youtube.com ;-)
+
+[Dossier customhost]
+	Le dossier customhost permet de donner une configuration supplémentaire par ip client.
+	Vous pouvez donner un fichier host et backhost spécifique à une adresse ip.
+	Le nom a donner au fichiers respectifs est:
+	
+	Exemple:
+ 	Dans le dossier "customhost"
+		192.168.1.2_blackhost.txt
+		192.168.1.2_host.txt
+
+	L'adresse 192.168.1.2 aura son propre fichier host et blackhost 
+
+	Le nom et le chemin du dossier "customhost" peuvent être modifiés en rajoutant le paramètre config_dircustomhost "chemin du dossier"
+
+Configuration de votre carte réseau
+
+	Lorsque le serveur est lancé, il vous reste à configurer votre carte réseau pour utiliser ce serveur relais. 
+	Changez le champ DNS Server par l'IP de votre machine.
+	La méthode pour changer de serveur DNS varie énormément entre les machines.
+	Si nécessaire cherchez sur Google (ou autre) un tutoriel pour changer de serveur DNS.
+	
+	
