@@ -90,6 +90,8 @@ Version 0.4.389 Ajout de la section Firewall
 
 Version 0.4.402 Amélioration de la stabilité et des performances
 
+Version 0.4.403 Supprime l'affichage des requêtes identiques qui ont été faites au même moment
+
 ### Site web
 
 https://dnsrelay.000webhostapp.com/
