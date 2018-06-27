@@ -115,6 +115,7 @@ begin
     'cache_domains = None'#13#10+
     'cache_host = {}'#13#10+
     'cache_blackhost = None'#13#10+
+    'lastQuery = None'#13#10+
     ''#13#10+
     '#============================='#13#10+
     '# DNS Server'#13#10+
@@ -512,7 +513,8 @@ begin
     '		else:'#13#10+
     '			return "unkown"'#13#10+
     ''#13#10+
-    'def serveClient(data, addr):'#13#10+ 
+    'def serveClient(data, addr):'#13#10+
+    '	global lastQuery'#13#10+
     '	#data, addr = req # recieve UDP data (usually on port 53)'#13#10+
     '	dnss = DNSQuery(data) # Parse DNS query'#13#10+
     '	'#13#10+
@@ -572,7 +574,10 @@ begin
     '	#if answer != ''127.0.0.1'':'#13#10+
     '	#	db.sqlsetdomain(dnss.domain, answer) # Add IP in database'#13#10+
     '	if isArpa == False and config_display == True:'#13#10+
-    '		print ''%s; %s; %s; %s; %s;EOL;'' % (heure, config_dnsip, addr[0], answer, dnss.domain)'#13#10+
+    '		display = heure+"; "+config_dnsip+"; "+addr[0]+"; "+answer+"; "+dnss.domain+";EOL;"'#13#10+
+    '		if display <> lastQuery:'#13#10+
+    '			print display'#13#10+
+    '		lastQuery = display'#13#10+
     '	sys.stdout.flush()'#13#10+
     ''#13#10+
     '	'#13#10+
