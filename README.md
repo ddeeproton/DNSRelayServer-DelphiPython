@@ -92,6 +92,8 @@ Version 0.4.402 Amélioration de la stabilité et des performances
 
 Version 0.4.403 Supprime l'affichage des requêtes identiques qui ont été faites au même moment
 
+Version 0.4.404.0 alpha - Tentative de réparation d'erreur lorsque le serveur Pyhton essaie d'effacer le fichier "action_clear_cache.txt"
+
 ### Site web
 
 https://dnsrelay.000webhostapp.com/
