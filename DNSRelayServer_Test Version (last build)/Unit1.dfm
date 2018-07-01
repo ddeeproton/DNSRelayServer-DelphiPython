@@ -1977,8 +1977,8 @@ object Form1: TForm1
             object Label49: TLabel
               Left = 40
               Top = 24
-              Width = 121
-              Height = 39
+              Width = 72
+              Height = 52
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Bloque les connexions qui contournent le serveur DNS.'
               WordWrap = True
@@ -1986,7 +1986,7 @@ object Form1: TForm1
             object Label50: TLabel
               Left = 39
               Top = 53
-              Width = 154
+              Width = 122
               Height = 26
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Ferme quelques secondes apr'#232's sa connexion.'
@@ -1995,7 +1995,7 @@ object Form1: TForm1
             object Label51: TLabel
               Left = 18
               Top = 120
-              Width = 189
+              Width = 141
               Height = 39
               Anchors = [akLeft, akTop, akRight]
               Caption = 'Autorise les applications suivantes '#224' contourner le serveur DNS'
@@ -2010,8 +2010,8 @@ object Form1: TForm1
             object Label45: TLabel
               Left = 39
               Top = 81
-              Width = 148
-              Height = 26
+              Width = 124
+              Height = 39
               Anchors = [akLeft, akTop, akRight]
               Caption = 'La surveillance r'#233'seau doit '#234'tre activ'#233' dans les "Logs Netstat"'
               WordWrap = True
@@ -2025,7 +2025,7 @@ object Form1: TForm1
               OnClick = CheckBoxFirewallNoDirectIPClick
             end
             object ButtonAddFirewallWhitelist: TButton
-              Left = 168
+              Left = 162
               Top = 160
               Width = 75
               Height = 25
@@ -2035,7 +2035,7 @@ object Form1: TForm1
               OnClick = ButtonAddFirewallWhitelistClick
             end
             object ButtonModifyFirewallWhitelist: TButton
-              Left = 168
+              Left = 162
               Top = 192
               Width = 75
               Height = 25
@@ -2045,7 +2045,7 @@ object Form1: TForm1
               OnClick = ButtonModifyFirewallWhitelistClick
             end
             object ButtonRemoveFirewallWhitelist: TButton
-              Left = 168
+              Left = 162
               Top = 224
               Width = 75
               Height = 25
@@ -2057,7 +2057,7 @@ object Form1: TForm1
             object CheckListBoxDirectIPWhiteList: TListBox
               Left = 16
               Top = 160
-              Width = 141
+              Width = 135
               Height = 129
               Anchors = [akLeft, akTop, akRight]
               ItemHeight = 13

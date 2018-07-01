@@ -361,7 +361,10 @@ begin
     '		f = currentDir + "/action_clear_cache.txt"'#13#10+
     '		if os.path.isfile(f) == True:'#13#10+
     '			self.clearCache()'#13#10+
-    '			os.remove(f)'#13#10+
+    '			try:'#13#10+
+    '				os.remove(f)'#13#10+      
+    '			except:'#13#10+               
+    '				sys.stdout.flush()'#13#10+      
     ''#13#10+
     '	def resolveDomain(self, domain, idstatus, dnss, ipclient):'#13#10+
     '		#print "<resolveDomain>"'#13#10+
